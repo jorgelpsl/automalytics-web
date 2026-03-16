@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automalytics — Automatiza · Capta · Convierte</title>
+  <meta name="description" content="Automatiza las conversaciones de tu negocio con Inteligencia Artificial. Más ventas, menos tiempo, atención 24/7." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- AOS Animations -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0A0F1A;
+      --bg2:       #0D1526;
+      --blue:      #2563EB;
+      --cyan:      #00F0FF;
+      --purple:    #7CA0FF;
+      --white:     #FFFFFF;
+      --gray:      #8B9CB6;
+      --card-bg:   rgba(255,255,255,0.04);
+      --card-bdr:  rgba(255,255,255,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5 { font-family: 'Montserrat', sans-serif; }
+
+    /* ─── PARTICLES CANVAS ─── */
+    #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5; }
+
+    /* ─── NAVBAR ─── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(10,15,26,.96);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(0,240,255,.18);
+      box-shadow: 0 1px 30px rgba(0,0,0,.5), 0 0 60px rgba(37,99,235,.06);
+    }
+
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .85rem 6%; gap: 1.5rem;
+    }
+
+    .nav-logo { display: flex; align-items: center; gap: .65rem; text-decoration: none; flex-shrink: 0; }
+    .nav-logo svg { width: 38px; height: 38px; }
+    .nav-logo-text { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--white); letter-spacing: -.5px; }
+    .nav-logo-text span { color: var(--cyan); }
+
+    /* Pill wrapper — gradient border via outline trick */
+    .nav-links-wrap {
+      flex: 1; display: flex; justify-content: center;
+    }
+    .nav-links-pill {
+      display: inline-flex; align-items: center;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(0,240,255,.22);
+      border-radius: 50px;
+      padding: .3rem .4rem;
+      box-shadow: 0 0 18px rgba(0,240,255,.06), inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .nav-links { display: flex; align-items: center; gap: .15rem; list-style: none; }
+    .nav-links a {
+      color: var(--gray); text-decoration: none; font-size: .85rem; font-weight: 500;
+      padding: .42rem .95rem; border-radius: 50px;
+      transition: color .2s, background .2s;
+      white-space: nowrap; display: block;
+    }
+    .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.07); }
+
+    .nav-right { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #000; font-weight: 700; font-family: 'Montserrat', sans-serif;
+      padding: .58rem 1.35rem; border-radius: 50px; text-decoration: none;
+      font-size: .84rem; transition: all .2s; white-space: nowrap;
+      box-shadow: 0 0 20px rgba(0,240,255,.28);
+    }
+    .nav-cta:hover { box-shadow: 0 0 35px rgba(0,240,255,.55); transform: translateY(-1px); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: .3s; }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 6% 4rem;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none;
+    }
+    .hero-glow-1 { width: 600px; height: 600px; background: rgba(37,99,235,.18); top: -100px; right: -100px; }
+    .hero-glow-2 { width: 400px; height: 400px; background: rgba(0,240,255,.1); bottom: 0; left: -100px; }
+
+    .hero-content { max-width: 620px; position: relative; z-index: 2; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(0,240,255,.08); border: 1px solid rgba(0,240,255,.25);
+      border-radius: 50px; padding: .4rem 1rem; margin-bottom: 1.5rem;
+      font-size: .8rem; font-weight: 600; color: var(--cyan); letter-spacing: .5px;
+    }
+    .hero-badge .dot { width: 7px; height: 7px; background: var(--cyan); border-radius: 50%; animation: pulse 2s infinite; }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.1;
+      margin-bottom: 1.25rem;
+    }
+    .hero-title .highlight {
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub { color: var(--gray); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem; max-width: 500px; }
+
+    .hero-pills { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 2.5rem; }
+    .pill {
+      background: rgba(255,255,255,.05); border: 1px solid var(--card-bdr);
+      border-radius: 50px; padding: .35rem .9rem; font-size: .8rem; color: var(--gray);
+    }
+    .pill span { color: var(--cyan); margin-right: .35rem; }
+
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .btn-primary, .btn-secondary { box-sizing: border-box; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #000; font-weight: 700; font-family: 'Montserrat', sans-serif;
+      padding: .85rem 2rem; border-radius: 50px; text-decoration: none;
+      font-size: .95rem; transition: all .25s;
+      box-shadow: 0 0 30px rgba(0,240,255,.3);
+      display: inline-flex; align-items: center; gap: .5rem;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 45px rgba(0,240,255,.5); }
+
+    .btn-secondary {
+      background: transparent; border: 1px solid rgba(255,255,255,.2);
+      color: var(--white); font-weight: 600; font-family: 'Montserrat', sans-serif;
+      padding: .85rem 2rem; border-radius: 50px; text-decoration: none;
+      font-size: .95rem; transition: all .25s;
+      display: inline-flex; align-items: center; gap: .5rem;
+    }
+    .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    /* Hero visual */
+    .hero-visual {
+      position: absolute; right: 6%; top: 50%; transform: translateY(-50%);
+      width: 420px; z-index: 2;
+    }
+    .hero-bot-card {
+      background: rgba(10,15,26,.85); border: 1px solid rgba(0,240,255,.25);
+      border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(16px);
+      animation: float 4s ease-in-out infinite;
+      box-shadow: 0 0 40px rgba(0,240,255,.08);
+    }
+    .bot-header { display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .bot-avatar {
+      width: 44px; height: 44px; background: linear-gradient(135deg, var(--blue), var(--cyan));
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .bot-name { font-weight: 700; font-size: .95rem; color: var(--white); }
+    .bot-status { font-size: .72rem; color: #22c55e; }
+    .bot-status::before { content: "● "; }
+
+    .chat-messages { max-height: 160px; overflow-y: auto; margin-bottom: .75rem; }
+    .chat-messages::-webkit-scrollbar { width: 3px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(0,240,255,.3); border-radius: 3px; }
+
+    .chat-bubble {
+      border-radius: 12px; padding: .6rem .9rem; margin-bottom: .5rem;
+      font-size: .8rem; max-width: 88%; line-height: 1.5;
+    }
+    .chat-bubble.bot { background: rgba(37,99,235,.2); border: 1px solid rgba(37,99,235,.3); color: var(--white); }
+    .chat-bubble.user { background: rgba(0,240,255,.1); border: 1px solid rgba(0,240,255,.2); color: var(--white); margin-left: auto; text-align: right; }
+    .chat-bubble.success { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.3); color: #86efac; text-align: center; max-width: 100%; }
+    .chat-bubble.error-msg { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); color: #fca5a5; text-align: center; max-width: 100%; }
+
+    .chat-form { display: flex; flex-direction: column; gap: .5rem; }
+    .chat-input {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px; padding: .55rem .85rem; color: var(--white);
+      font-family: 'Poppins', sans-serif; font-size: .82rem; outline: none;
+      transition: border-color .2s; width: 100%;
+    }
+    .chat-input::placeholder { color: rgba(255,255,255,.3); }
+    .chat-input:focus { border-color: rgba(0,240,255,.4); }
+    .chat-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+    .chat-send-btn {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #000; font-weight: 700; font-family: 'Montserrat', sans-serif;
+      border: none; border-radius: 10px; padding: .65rem; cursor: pointer;
+      font-size: .82rem; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: .4rem;
+    }
+    .chat-send-btn:hover { box-shadow: 0 0 20px rgba(0,240,255,.4); }
+    .chat-send-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+    .typing { display: flex; align-items: center; gap: .3rem; padding: .4rem .6rem; }
+    .typing-dot { width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; animation: typing .8s infinite alternate; }
+    .typing-dot:nth-child(2) { animation-delay: .2s; }
+    .typing-dot:nth-child(3) { animation-delay: .4s; }
+
+    /* Stats bar */
+    .stats-bar {
+      position: relative; z-index: 1;
+      background: rgba(255,255,255,.03); border-top: 1px solid var(--card-bdr); border-bottom: 1px solid var(--card-bdr);
+      padding: 2rem 6%;
+      display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; padding: 1rem 3rem; }
+    .stat-item + .stat-item { border-left: 1px solid var(--card-bdr); }
+    .stat-num { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; font-weight: 900; background: linear-gradient(90deg, var(--cyan), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-label { font-size: .82rem; color: var(--gray); margin-top: .25rem; }
+
+    /* ─── SECTIONS COMMON ─── */
+    section { position: relative; z-index: 1; padding: 6rem 6%; }
+    .section-label { color: var(--cyan); font-size: .8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: .75rem; }
+    .section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; line-height: 1.2; margin-bottom: 1rem; }
+    .section-title span { background: linear-gradient(90deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .section-sub { color: var(--gray); max-width: 560px; line-height: 1.7; }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-header .section-sub { margin: 0 auto; }
+
+    /* ─── SERVICES ─── */
+    #services { background: var(--bg2); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--card-bg); border: 1px solid var(--card-bdr);
+      border-radius: 16px; padding: 2rem; transition: all .3s; cursor: default;
+    }
+    .service-card:hover { border-color: rgba(0,240,255,.35); transform: translateY(-4px); box-shadow: 0 10px 40px rgba(0,240,255,.08); }
+    .service-icon {
+      width: 52px; height: 52px; border-radius: 12px; margin-bottom: 1.25rem;
+      display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+    }
+    .service-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .65rem; }
+    .service-card p { color: var(--gray); font-size: .88rem; line-height: 1.65; }
+
+    /* ─── HOW IT WORKS ─── */
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; position: relative; }
+    .step { text-align: center; }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.2rem;
+      margin: 0 auto 1.25rem; box-shadow: 0 0 25px rgba(0,240,255,.3);
+    }
+    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: .5rem; }
+    .step p { color: var(--gray); font-size: .87rem; line-height: 1.6; }
+
+    /* ─── PRICING ─── */
+    #pricing { background: var(--bg2); }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 960px; margin: 0 auto; }
+    .pricing-card {
+      background: var(--card-bg); border: 1px solid var(--card-bdr);
+      border-radius: 20px; padding: 2.5rem 2rem; position: relative; transition: all .3s;
+    }
+    .pricing-card.featured {
+      border-color: var(--cyan); background: rgba(0,240,255,.04);
+      box-shadow: 0 0 50px rgba(0,240,255,.12);
+    }
+    .featured-badge {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      color: #000; font-weight: 800; font-size: .75rem; padding: .3rem 1.2rem;
+      border-radius: 50px; font-family: 'Montserrat', sans-serif; white-space: nowrap;
+    }
+    .pricing-plan { font-size: .8rem; font-weight: 700; color: var(--cyan); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: .75rem; }
+    .pricing-price { font-family: 'Montserrat', sans-serif; font-size: 2.4rem; font-weight: 900; margin-bottom: .25rem; }
+    .pricing-price sup { font-size: 1rem; vertical-align: super; margin-right: .1rem; }
+    .pricing-period { color: var(--gray); font-size: .82rem; margin-bottom: 1.5rem; }
+    .pricing-desc { color: var(--gray); font-size: .87rem; line-height: 1.6; margin-bottom: 1.75rem; padding-bottom: 1.75rem; border-bottom: 1px solid var(--card-bdr); }
+    .pricing-features { list-style: none; margin-bottom: 2rem; }
+    .pricing-features li { display: flex; align-items: flex-start; gap: .65rem; font-size: .87rem; color: var(--gray); margin-bottom: .8rem; }
+    .pricing-features li .check { color: var(--cyan); font-size: .9rem; flex-shrink: 0; margin-top: .1rem; }
+    .pricing-features li .x { color: #ef4444; flex-shrink: 0; }
+    .btn-plan {
+      width: 100%; padding: .85rem; border-radius: 50px; font-weight: 700;
+      font-family: 'Montserrat', sans-serif; font-size: .9rem; cursor: pointer;
+      border: none; text-decoration: none; display: block; text-align: center; transition: all .25s;
+    }
+    .btn-plan-outline { background: transparent; border: 1px solid rgba(255,255,255,.2); color: var(--white); }
+    .btn-plan-outline:hover { border-color: var(--cyan); color: var(--cyan); }
+    .btn-plan-primary { background: linear-gradient(135deg, var(--blue), var(--cyan)); color: #000; box-shadow: 0 0 25px rgba(0,240,255,.25); }
+    .btn-plan-primary:hover { box-shadow: 0 0 40px rgba(0,240,255,.4); transform: translateY(-2px); }
+
+    /* ─── ABOUT ─── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .about-visual { position: relative; }
+    .about-card-main {
+      background: var(--card-bg); border: 1px solid var(--card-bdr);
+      border-radius: 20px; padding: 2rem; margin-bottom: 1.25rem;
+    }
+    .about-tag { display: inline-block; background: rgba(0,240,255,.1); border: 1px solid rgba(0,240,255,.2); color: var(--cyan); font-size: .75rem; font-weight: 600; padding: .25rem .75rem; border-radius: 50px; margin-bottom: 1rem; }
+    .about-card-main p { color: var(--gray); font-size: .9rem; line-height: 1.7; }
+    .about-mini-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .about-mini {
+      background: var(--card-bg); border: 1px solid var(--card-bdr);
+      border-radius: 14px; padding: 1.25rem; text-align: center;
+    }
+    .about-mini .num { font-family: 'Montserrat', sans-serif; font-size: 1.6rem; font-weight: 900; background: linear-gradient(90deg, var(--cyan), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .about-mini .label { color: var(--gray); font-size: .78rem; margin-top: .2rem; }
+    .about-content .section-sub { margin-bottom: 2rem; }
+    .about-features { list-style: none; }
+    .about-features li { display: flex; align-items: flex-start; gap: .75rem; margin-bottom: 1rem; font-size: .9rem; }
+    .about-features li .icon { font-size: 1.1rem; flex-shrink: 0; }
+
+    /* ─── FAQ ─── */
+    #faq { background: var(--bg2); }
+    .faq-list { max-width: 720px; margin: 0 auto; }
+    .faq-item { border: 1px solid var(--card-bdr); border-radius: 12px; margin-bottom: 1rem; overflow: hidden; }
+    .faq-q {
+      width: 100%; background: var(--card-bg); border: none; color: var(--white);
+      padding: 1.25rem 1.5rem; text-align: left; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: .92rem;
+      transition: background .2s;
+    }
+    .faq-q:hover { background: rgba(255,255,255,.06); }
+    .faq-q .arrow { transition: transform .3s; color: var(--cyan); font-size: 1rem; }
+    .faq-q.open .arrow { transform: rotate(180deg); }
+    .faq-a { display: none; padding: 1rem 1.5rem 1.5rem; color: var(--gray); font-size: .9rem; line-height: 1.7; }
+    .faq-a.show { display: block; }
+
+    /* ─── CTA ─── */
+    #cta {
+      background: radial-gradient(ellipse at center, rgba(37,99,235,.15) 0%, transparent 70%);
+      text-align: center; padding: 7rem 6%;
+    }
+    #cta .section-title { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.25rem; }
+    #cta .section-sub { margin: 0 auto 2.5rem; font-size: 1rem; }
+    .cta-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+    .btn-wa {
+      background: #25D366; color: #fff;
+      font-weight: 700; font-family: 'Montserrat', sans-serif;
+      padding: .9rem 2.2rem; border-radius: 50px; text-decoration: none;
+      font-size: .95rem; transition: all .25s; display: inline-flex; align-items: center; gap: .6rem;
+      box-shadow: 0 0 30px rgba(37,211,102,.3);
+    }
+    .btn-wa:hover { transform: translateY(-2px); box-shadow: 0 0 45px rgba(37,211,102,.5); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: rgba(255,255,255,.02); border-top: 1px solid var(--card-bdr);
+      padding: 3rem 6% 2rem;
+    }
+    .footer-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; margin-bottom: 2.5rem; }
+    .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .footer-links a { color: var(--gray); text-decoration: none; font-size: .87rem; transition: color .2s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--card-bdr); }
+    .footer-bottom p { color: var(--gray); font-size: .82rem; }
+    .footer-bottom span { color: var(--cyan); }
+
+    /* ─── MOBILE NAV MENU ─── */
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 99;
+      background: rgba(10,15,26,.97); backdrop-filter: blur(20px);
+      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--white); text-decoration: none; font-family: 'Montserrat', sans-serif; font-size: 1.4rem; font-weight: 700; }
+    .mobile-menu-close { position: absolute; top: 1.5rem; right: 6%; font-size: 1.5rem; cursor: pointer; background: none; border: none; color: var(--white); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,240,255,.5); } 100% { box-shadow: 0 0 0 8px rgba(0,240,255,0); } }
+    @keyframes typing { from { opacity: .3; transform: scale(.85); } to { opacity: 1; transform: scale(1); } }
+    @keyframes glow { 0%, 100% { text-shadow: 0 0 20px rgba(0,240,255,.4); } 50% { text-shadow: 0 0 40px rgba(0,240,255,.8); } }
+
+    /* ─── RESPONSIVE ─── */
+
+    /* Tablet grande */
+    @media (max-width: 1024px) {
+      .hero-visual { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .pricing-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Tablet / móvil grande */
+    @media (max-width: 768px) {
+      /* Nav */
+      .nav-links-wrap { display: none; }
+      .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .nav-inner { padding: .75rem 5%; }
+
+      /* Hero */
+      #hero { padding: 6.5rem 5% 3rem; min-height: auto; }
+      .hero-title { font-size: 2rem; }
+      .hero-sub { font-size: .95rem; }
+      .hero-pills { gap: .5rem; }
+      .pill { font-size: .75rem; padding: .28rem .75rem; }
+      .hero-buttons { flex-direction: column; }
+      .btn-primary, .btn-secondary { text-align: center; justify-content: center; width: 100%; }
+
+      /* Stats */
+      .stats-bar { flex-direction: column; align-items: stretch; padding: 1.5rem 5%; }
+      .stat-item { padding: 1rem 0; text-align: center; }
+      .stat-item + .stat-item { border-left: none; border-top: 1px solid var(--card-bdr); }
+      .stat-num { font-size: 1.8rem; }
+
+      /* Sections */
+      section { padding: 3.5rem 5%; }
+      .section-header { margin-bottom: 2.5rem; }
+      .section-title { font-size: 1.7rem; }
+
+      /* Services */
+      .services-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .service-card { padding: 1.5rem; }
+
+      /* How it works */
+      .steps-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+      /* Pricing */
+      .pricing-grid { grid-template-columns: 1fr; max-width: 420px; }
+      .pricing-card { padding: 2rem 1.5rem; }
+      .featured-badge { font-size: .7rem; }
+
+      /* About */
+      .about-mini-cards { grid-template-columns: 1fr 1fr; }
+      .about-card-main { padding: 1.25rem; }
+
+      /* FAQ */
+      .faq-q { padding: 1rem 1.1rem; font-size: .85rem; }
+      .faq-a { padding: .75rem 1.1rem 1.1rem; }
+
+      /* CTA */
+      #cta { padding: 4rem 5%; }
+      #cta .section-title { font-size: 1.8rem; }
+      .cta-buttons { flex-direction: column; align-items: stretch; }
+      .btn-wa, .btn-secondary { text-align: center; justify-content: center; }
+
+      /* Footer */
+      .footer-top { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+      .footer-links { gap: 1.25rem; flex-wrap: wrap; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: .5rem; }
+    }
+
+    /* Móvil pequeño (iPhone SE, Galaxy A, etc.) */
+    @media (max-width: 480px) {
+      .nav-inner { padding: .7rem 4%; }
+      .nav-logo-text { font-size: 1.05rem; }
+
+      #hero { padding: 5.5rem 4% 2.5rem; }
+      .hero-title { font-size: 1.75rem; line-height: 1.15; }
+      .hero-badge { font-size: .72rem; }
+      .hero-sub { font-size: .88rem; }
+
+      .section-title { font-size: 1.5rem; }
+      section { padding: 3rem 4%; }
+
+      .stats-bar { padding: 1rem 4%; }
+
+      /* Chat form en hero — stack inputs */
+      .chat-input-row { grid-template-columns: 1fr; }
+
+      .services-grid { grid-template-columns: 1fr; }
+      .service-icon { width: 44px; height: 44px; font-size: 1.25rem; }
+
+      .step-num { width: 46px; height: 46px; font-size: 1rem; }
+
+      .pricing-grid { max-width: 100%; }
+      .pricing-price { font-size: 2rem; }
+
+      .about-mini-cards { grid-template-columns: 1fr 1fr; }
+      .about-mini { padding: 1rem .75rem; }
+
+      .mobile-menu a { font-size: 1.2rem; }
+
+      footer { padding: 2rem 4% 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Particles -->
+<canvas id="particles"></canvas>
+
+<!-- ─── NAVBAR ─── -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#2563EB"/>
+            <stop offset="100%" stop-color="#00F0FF"/>
+          </linearGradient>
+        </defs>
+        <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill="url(#lg1)" opacity=".15" stroke="url(#lg1)" stroke-width="1.5"/>
+        <polygon points="20,7 31,13 31,27 20,33 9,27 9,13" fill="url(#lg1)" opacity=".2"/>
+        <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-weight="900" font-size="16" fill="url(#lg1)">A</text>
+      </svg>
+      <span class="nav-logo-text">Auto<span>malytics</span></span>
+    </a>
+
+    <div class="nav-links-wrap">
+      <div class="nav-links-pill">
+        <ul class="nav-links">
+          <li><a href="#services">Servicios</a></li>
+          <li><a href="#how-it-works">Cómo funciona</a></li>
+          <li><a href="#pricing">Precios</a></li>
+          <li><a href="#about">Nosotros</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <a href="#cta" class="nav-cta">Solicitar Demo</a>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-menu-close" id="mobileClose">✕</button>
+  <a href="#services" onclick="closeMobile()">Servicios</a>
+  <a href="#how-it-works" onclick="closeMobile()">Cómo funciona</a>
+  <a href="#pricing" onclick="closeMobile()">Precios</a>
+  <a href="#about" onclick="closeMobile()">Nosotros</a>
+  <a href="#faq" onclick="closeMobile()">FAQ</a>
+  <a href="#cta" onclick="closeMobile()" style="color:var(--cyan)">Solicitar Demo →</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-glow hero-glow-1"></div>
+  <div class="hero-glow hero-glow-2"></div>
+
+  <div class="hero-content" data-aos="fade-right" data-aos-duration="800">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      IA Conversacional para negocios
+    </div>
+
+    <h1 class="hero-title">
+      Automatiza tu Negocio con<br>
+      <span class="highlight">Inteligencia Artificial</span>
+    </h1>
+
+    <p class="hero-sub">
+      Convierte tu WhatsApp en un vendedor 24/7. Capta leads, agenda reuniones y atiende clientes automáticamente — sin perder el toque humano.
+    </p>
+
+    <div class="hero-pills">
+      <div class="pill"><span>✓</span>Más Ventas</div>
+      <div class="pill"><span>✓</span>Menos Tiempo</div>
+      <div class="pill"><span>✓</span>Atención 24/7</div>
+      <div class="pill"><span>✓</span>Sin código</div>
+    </div>
+
+    <div class="hero-buttons">
+      <a href="#cta" class="btn-primary">🚀 Solicitar Demo Gratis</a>
+      <a href="#pricing" class="btn-secondary">Ver Planes →</a>
+    </div>
+  </div>
+
+  <!-- Hero Bot Visual — Chat funcional -->
+  <div class="hero-visual" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
+    <div class="hero-bot-card">
+      <div class="bot-header">
+        <div class="bot-avatar">🤖</div>
+        <div>
+          <div class="bot-name">AutoBot IA</div>
+          <div class="bot-status">Activo ahora</div>
+        </div>
+      </div>
+
+      <!-- Mensajes -->
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-bubble bot">Hola 👋 ¿Quieres automatizar tu negocio? Déjame tus datos y te contactamos.</div>
+      </div>
+
+      <!-- Formulario -->
+      <div class="chat-form" id="chatForm">
+        <div class="chat-input-row">
+          <input class="chat-input" type="text" id="chatName" placeholder="Tu nombre" maxlength="60" />
+          <input class="chat-input" type="tel" id="chatPhone" placeholder="WhatsApp" maxlength="20" />
+        </div>
+        <input class="chat-input" type="email" id="chatEmail" placeholder="Tu email" maxlength="100" />
+        <input class="chat-input" type="text" id="chatMsg" placeholder="¿Cómo podemos ayudarte?" maxlength="300" />
+        <button class="chat-send-btn" id="chatSendBtn" onclick="sendLead()">
+          <span id="chatBtnText">Enviar mensaje →</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STATS ─── -->
+<div class="stats-bar">
+  <div class="stat-item" data-aos="fade-up">
+    <div class="stat-num" data-target="500">0</div>
+    <div class="stat-label">Conversaciones automatizadas</div>
+  </div>
+  <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+    <div class="stat-num">99.9%</div>
+    <div class="stat-label">Uptime garantizado</div>
+  </div>
+  <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+    <div class="stat-num">24/7</div>
+    <div class="stat-label">Disponibilidad total</div>
+  </div>
+  <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+    <div class="stat-num">3x</div>
+    <div class="stat-label">Más conversiones</div>
+  </div>
+</div>
+
+<!-- ─── SERVICES ─── -->
+<section id="services">
+  <div class="section-header" data-aos="fade-up">
+    <p class="section-label">Nuestros Servicios</p>
+    <h2 class="section-title">Todo lo que necesita tu negocio<br><span>en un solo lugar</span></h2>
+    <p class="section-sub">Integramos IA directamente en tus canales de comunicación para que nunca pierdas una oportunidad de venta.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="service-icon" style="background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);">💬</div>
+      <h3>WhatsApp Automatizado</h3>
+      <p>Tu WhatsApp Business trabajando 24/7. Responde preguntas frecuentes, captura leads y cierra ventas mientras duermes.</p>
+    </div>
+    <div class="service-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="service-icon" style="background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.25);">📊</div>
+      <h3>CRM Integrado</h3>
+      <p>Cada conversación queda registrada automáticamente. Gestiona tus clientes, seguimientos y oportunidades en un solo panel.</p>
+    </div>
+    <div class="service-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="service-icon" style="background:rgba(124,160,255,.12);border:1px solid rgba(124,160,255,.25);">🤖</div>
+      <h3>Chatbot con IA</h3>
+      <p>No es un bot genérico — es un agente entrenado con el conocimiento de tu negocio que entiende el contexto de cada conversación.</p>
+    </div>
+    <div class="service-card" data-aos="fade-up" data-aos-delay="240">
+      <div class="service-icon" style="background:rgba(0,240,255,.1);border:1px solid rgba(0,240,255,.2);">⚡</div>
+      <h3>Automatizaciones</h3>
+      <p>Flujos automáticos para cotizaciones, confirmaciones de citas, recordatorios y seguimientos post-venta sin intervención manual.</p>
+    </div>
+    <div class="service-card" data-aos="fade-up" data-aos-delay="320">
+      <div class="service-icon" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.25);">📅</div>
+      <h3>Agenda Inteligente</h3>
+      <p>El bot agenda, confirma y envía recordatorios de citas automáticamente. Reduce los no-shows hasta un 60%.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section id="how-it-works" style="background:var(--bg2);">
+  <div class="section-header" data-aos="fade-up">
+    <p class="section-label">Proceso Simple</p>
+    <h2 class="section-title">¿Cómo funciona <span>Automalytics</span>?</h2>
+    <p class="section-sub">Tres pasos simples para transformar la comunicación de tu negocio.</p>
+  </div>
+
+  <div class="steps-grid">
+    <div class="step" data-aos="fade-up" data-aos-delay="0">
+      <div class="step-num">1</div>
+      <h3>Cuéntanos tu negocio</h3>
+      <p>Agendamos una reunión, conocemos tu operación, tus clientes y tus objetivos de automatización.</p>
+    </div>
+    <div class="step" data-aos="fade-up" data-aos-delay="120">
+      <div class="step-num">2</div>
+      <h3>Configuramos tu IA</h3>
+      <p>Entrenamos el agente con la información de tu negocio y configuramos los flujos automáticos a tu medida.</p>
+    </div>
+    <div class="step" data-aos="fade-up" data-aos-delay="240">
+      <div class="step-num">3</div>
+      <h3>Lanzamos y escalamos</h3>
+      <p>Activamos el sistema, monitoreamos resultados y ajustamos continuamente para maximizar tus conversiones.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRICING ─── -->
+<section id="pricing">
+  <div class="section-header" data-aos="fade-up">
+    <p class="section-label">Planes y Precios</p>
+    <h2 class="section-title">Invierte en tu crecimiento,<br><span>empieza cuando quieras</span></h2>
+    <p class="section-sub">Sin contratos de permanencia. Cancela cuando quieras. Todos los planes incluyen soporte.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <!-- Básico -->
+    <div class="pricing-card" data-aos="fade-up" data-aos-delay="0">
+      <p class="pricing-plan">Básico</p>
+      <div class="pricing-price"><sup>$</sup>49.990</div>
+      <p class="pricing-period">CLP / mes</p>
+      <p class="pricing-desc">Ideal para negocios pequeños que quieren empezar a automatizar su WhatsApp sin complejidad.</p>
+      <ul class="pricing-features">
+        <li><span class="check">✓</span> 1 línea WhatsApp Business</li>
+        <li><span class="check">✓</span> Chatbot IA básico</li>
+        <li><span class="check">✓</span> Hasta 500 conversaciones/mes</li>
+        <li><span class="check">✓</span> Respuestas automáticas 24/7</li>
+        <li><span class="check">✓</span> Soporte por email</li>
+        <li><span class="x">✕</span> <span style="opacity:.5">CRM integrado</span></li>
+        <li><span class="x">✕</span> <span style="opacity:.5">Agenda automática</span></li>
+      </ul>
+      <a href="#cta" class="btn-plan btn-plan-outline">Comenzar ahora</a>
+    </div>
+
+    <!-- Pro -->
+    <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="120">
+      <div class="featured-badge">⭐ Más popular</div>
+      <p class="pricing-plan">Pro</p>
+      <div class="pricing-price"><sup>$</sup>119.990</div>
+      <p class="pricing-period">CLP / mes</p>
+      <p class="pricing-desc">Para negocios en crecimiento que necesitan capturar más leads y gestionar clientes de forma eficiente.</p>
+      <ul class="pricing-features">
+        <li><span class="check">✓</span> 3 líneas WhatsApp Business</li>
+        <li><span class="check">✓</span> IA conversacional avanzada</li>
+        <li><span class="check">✓</span> Hasta 3.000 conversaciones/mes</li>
+        <li><span class="check">✓</span> CRM integrado</li>
+        <li><span class="check">✓</span> Agenda automática de citas</li>
+        <li><span class="check">✓</span> Reportes mensuales</li>
+        <li><span class="check">✓</span> Soporte prioritario WhatsApp</li>
+      </ul>
+      <a href="#cta" class="btn-plan btn-plan-primary">Comenzar ahora</a>
+    </div>
+
+    <!-- Enterprise -->
+    <div class="pricing-card" data-aos="fade-up" data-aos-delay="240">
+      <p class="pricing-plan">Enterprise</p>
+      <div class="pricing-price"><sup>$</sup>299.990</div>
+      <p class="pricing-period">CLP / mes</p>
+      <p class="pricing-desc">Para empresas que requieren una solución robusta, personalizada y escalable a nivel corporativo.</p>
+      <ul class="pricing-features">
+        <li><span class="check">✓</span> Líneas WhatsApp ilimitadas</li>
+        <li><span class="check">✓</span> IA personalizada con tu marca</li>
+        <li><span class="check">✓</span> Conversaciones ilimitadas</li>
+        <li><span class="check">✓</span> CRM + Analytics avanzado</li>
+        <li><span class="check">✓</span> Integraciones a medida</li>
+        <li><span class="check">✓</span> Gerente de cuenta dedicado</li>
+        <li><span class="check">✓</span> SLA y soporte 24/7</li>
+      </ul>
+      <a href="#cta" class="btn-plan btn-plan-outline">Hablar con ventas</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about" style="background:var(--bg2);">
+  <div class="about-grid">
+    <div class="about-visual" data-aos="fade-right">
+      <div class="about-card-main">
+        <span class="about-tag">¿Quiénes somos?</span>
+        <p>Somos una agencia especializada en automatización de conversaciones con Inteligencia Artificial. Transformamos la forma en que los negocios se comunican con sus clientes — haciendo que cada interacción sea más rápida, más efectiva y completamente automatizada.</p>
+      </div>
+      <div class="about-mini-cards">
+        <div class="about-mini">
+          <div class="num">IA</div>
+          <div class="label">Tecnología de punta</div>
+        </div>
+        <div class="about-mini">
+          <div class="num">🇨🇱</div>
+          <div class="label">Base en Chile</div>
+        </div>
+        <div class="about-mini">
+          <div class="num">24/7</div>
+          <div class="label">Siempre disponibles</div>
+        </div>
+        <div class="about-mini">
+          <div class="num">🌎</div>
+          <div class="label">Cobertura global</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-content" data-aos="fade-left">
+      <p class="section-label">Nuestra misión</p>
+      <h2 class="section-title">Democratizamos la <span>IA para negocios</span> de todos los tamaños</h2>
+      <p class="section-sub">Creemos que la inteligencia artificial no debería ser exclusiva de las grandes corporaciones. Nuestro objetivo es que cualquier negocio en Chile y el mundo pueda automatizar sus conversaciones y crecer sin límites.</p>
+      <ul class="about-features">
+        <li>
+          <span class="icon">🎯</span>
+          <div><strong>Enfoque en resultados</strong> — Cada automatización está diseñada para aumentar tus ventas y reducir tu carga operativa.</div>
+        </li>
+        <li>
+          <span class="icon">🔧</span>
+          <div><strong>Implementación rápida</strong> — Tu sistema funcionando en días, no meses.</div>
+        </li>
+        <li>
+          <span class="icon">📈</span>
+          <div><strong>Escalabilidad garantizada</strong> — Crece sin que tus costos operativos crezcan al mismo ritmo.</div>
+        </li>
+        <li>
+          <span class="icon">🤝</span>
+          <div><strong>Soporte real</strong> — Un equipo humano detrás de cada proyecto para acompañarte en el proceso.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FAQ ─── -->
+<section id="faq">
+  <div class="section-header" data-aos="fade-up">
+    <p class="section-label">FAQ</p>
+    <h2 class="section-title">Preguntas <span>frecuentes</span></h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item" data-aos="fade-up">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Necesito saber de tecnología para usar Automalytics?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-a">No. Nosotros nos encargamos de toda la configuración técnica. Tú solo necesitas conocer tu negocio — el resto lo hacemos nosotros.</div>
+    </div>
+    <div class="faq-item" data-aos="fade-up" data-aos-delay="60">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Cuánto tiempo tarda en estar funcionando?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-a">Dependiendo del plan, el tiempo de implementación es de 3 a 7 días hábiles. Los planes Básico y Pro se configuran en menos de una semana.</div>
+    </div>
+    <div class="faq-item" data-aos="fade-up" data-aos-delay="120">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿El bot puede responder en lenguaje natural, como un humano?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-a">Sí. Usamos modelos de IA de última generación que comprenden el contexto, las intenciones y el lenguaje coloquial. Los clientes muchas veces no notan que están hablando con un bot.</div>
+    </div>
+    <div class="faq-item" data-aos="fade-up" data-aos-delay="180">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Qué pasa si el bot no sabe responder algo?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-a">El sistema está configurado para transferir la conversación a un agente humano cuando no puede resolver la consulta, asegurando que ningún cliente quede sin atención.</div>
+    </div>
+    <div class="faq-item" data-aos="fade-up" data-aos-delay="240">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Puedo cancelar mi plan en cualquier momento?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-a">Sí, sin cargos ni penalizaciones. No tenemos contratos de permanencia. Puedes cancelar o cambiar de plan cuando quieras con 30 días de aviso.</div>
+    </div>
+    <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Funciona para negocios fuera de Chile?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-a">Absolutamente. Aunque nuestra base está en Chile, trabajamos con clientes en toda Latinoamérica y a nivel global. WhatsApp es la app de mensajería #1 en la región.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section id="cta">
+  <div data-aos="fade-up">
+    <p class="section-label" style="text-align:center;">¿Listo para automatizar?</p>
+    <h2 class="section-title">Transforma tu negocio<br><span>hoy mismo</span></h2>
+    <p class="section-sub">Agenda una demo gratuita y descubre cómo Automalytics puede multiplicar tus ventas en 30 días.</p>
+    <div class="cta-buttons">
+      <a href="https://wa.me/56900000000?text=Hola!%20Quiero%20una%20demo%20de%20Automalytics" class="btn-wa" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Agendar Demo por WhatsApp
+      </a>
+      <a href="mailto:contacto@automalytics.cl" class="btn-secondary">
+        ✉️ Enviar un email
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-top">
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px">
+        <defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#00F0FF"/></linearGradient></defs>
+        <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill="url(#lg2)" opacity=".15" stroke="url(#lg2)" stroke-width="1.5"/>
+        <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-weight="900" font-size="16" fill="url(#lg2)">A</text>
+      </svg>
+      <span class="nav-logo-text" style="font-size:1.1rem">Auto<span>malytics</span></span>
+    </a>
+    <nav class="footer-links">
+      <a href="#services">Servicios</a>
+      <a href="#pricing">Precios</a>
+      <a href="#about">Nosotros</a>
+      <a href="#faq">FAQ</a>
+      <a href="#cta">Contacto</a>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 <span>Automalytics</span>. Todos los derechos reservados.</p>
+    <p style="color:var(--gray);font-size:.8rem;">Automatiza · Capta · Convierte</p>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  // ── AOS Init ──
+  AOS.init({ once: true, offset: 60 });
+
+  // ── Chat Lead Form ──
+  const WEBHOOK_URL = 'https://guacamayo1.app.n8n.cloud/webhook/automalytics-lead';
+
+  function addBubble(text, type) {
+    const msgs = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = 'chat-bubble ' + type;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  async function sendLead() {
+    const name    = document.getElementById('chatName').value.trim();
+    const phone   = document.getElementById('chatPhone').value.trim();
+    const email   = document.getElementById('chatEmail').value.trim();
+    const message = document.getElementById('chatMsg').value.trim();
+    const btn     = document.getElementById('chatSendBtn');
+    const btnText = document.getElementById('chatBtnText');
+
+    if (!name || !message) {
+      addBubble('Por favor ingresa tu nombre y mensaje 😊', 'bot');
+      return;
+    }
+
+    // Show user message in chat
+    addBubble(message, 'user');
+    document.getElementById('chatMsg').value = '';
+
+    // Typing indicator
+    const typingDiv = document.createElement('div');
+    typingDiv.innerHTML = '<div class="typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+    typingDiv.id = 'typingIndicator';
+    document.getElementById('chatMessages').appendChild(typingDiv);
+
+    btn.disabled = true;
+    btnText.textContent = 'Enviando...';
+
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, email, message })
+      });
+
+      document.getElementById('typingIndicator')?.remove();
+
+      if (res.ok) {
+        addBubble('✅ Mensaje recibido, ' + name + '! Te contactamos pronto.', 'success');
+        document.getElementById('chatForm').style.display = 'none';
+      } else {
+        throw new Error('Error del servidor');
+      }
+    } catch (e) {
+      document.getElementById('typingIndicator')?.remove();
+      addBubble('❌ Hubo un error. Inténtalo de nuevo.', 'error-msg');
+      btn.disabled = false;
+      btnText.textContent = 'Enviar mensaje →';
+    }
+  }
+
+  // Allow Enter key to send
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('chatMsg')?.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendLead(); }
+    });
+  });
+
+  // ── Navbar scroll ──
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ── Mobile menu ──
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('mobileClose').addEventListener('click', closeMobile);
+  function closeMobile() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── FAQ accordion ──
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+    document.querySelectorAll('.faq-q.open').forEach(b => {
+      b.classList.remove('open');
+      b.nextElementSibling.classList.remove('show');
+    });
+    if (!isOpen) {
+      btn.classList.add('open');
+      answer.classList.add('show');
+    }
+  }
+
+  // ── Particles ──
+  (function() {
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let W, H, dots = [];
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    for (let i = 0; i < 80; i++) {
+      dots.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 1.5 + .3,
+        vx: (Math.random() - .5) * .3,
+        vy: (Math.random() - .5) * .3,
+        alpha: Math.random() * .5 + .2
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      dots.forEach(d => {
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < 0) d.x = W;
+        if (d.x > W) d.x = 0;
+        if (d.y < 0) d.y = H;
+        if (d.y > H) d.y = 0;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0,240,255,${d.alpha})`;
+        ctx.fill();
+      });
+      // Draw connecting lines
+      dots.forEach((a, i) => {
+        dots.slice(i + 1).forEach(b => {
+          const dist = Math.hypot(a.x - b.x, a.y - b.y);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(37,99,235,${.15 * (1 - dist / 120)})`;
+            ctx.lineWidth = .5;
+            ctx.stroke();
+          }
+        });
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+</script>
+</body>
+</html>
