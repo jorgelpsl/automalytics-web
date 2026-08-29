@@ -11,9 +11,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- AOS Animations -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -38,7 +35,7 @@
       --moss:      #9FB05A;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       background: var(--bg);
@@ -62,9 +59,9 @@
       display: flex; align-items: center; justify-content: space-between;
       max-width: 1180px; margin: 0 auto;
       padding: .7rem 1.5rem; gap: 1.5rem;
-      background: rgba(18,20,13,.8);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(18,20,13,.86);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(215,255,63,.18);
       border-radius: 50px;
       box-shadow: 0 10px 35px rgba(0,0,0,.5), 0 0 40px rgba(122,138,31,.08);
@@ -248,7 +245,7 @@
     }
     .hero-bot-card {
       background: rgba(10,12,7,.85); border: 1px solid rgba(215,255,63,.25);
-      border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(16px);
+      border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(8px);
       animation: float 4s ease-in-out infinite;
       box-shadow: 0 0 40px rgba(215,255,63,.08);
     }
@@ -467,7 +464,7 @@
     /* ─── MOBILE NAV MENU ─── */
     .mobile-menu {
       display: none; position: fixed; inset: 0; z-index: 1001;
-      background: rgba(10,12,7,.97); backdrop-filter: blur(20px);
+      background: rgba(10,12,7,.98); backdrop-filter: blur(12px);
       flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
     }
     .mobile-menu.open { display: flex; }
@@ -479,6 +476,24 @@
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(215,255,63,.5); } 100% { box-shadow: 0 0 0 8px rgba(215,255,63,0); } }
     @keyframes typing { from { opacity: .3; transform: scale(.85); } to { opacity: 1; transform: scale(1); } }
     @keyframes glow { 0%, 100% { text-shadow: 0 0 20px rgba(215,255,63,.4); } 50% { text-shadow: 0 0 40px rgba(215,255,63,.8); } }
+
+    /* ─── SCROLL REVEAL ───
+       Self-contained replacement for the AOS CDN library: no external
+       request to wait on before elements can animate in, and a shorter,
+       snappier transition than AOS's 800ms default. */
+    [data-aos] {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .45s ease, transform .45s ease;
+      transition-delay: var(--aos-delay, 0ms);
+    }
+    [data-aos].aos-in { opacity: 1; transform: translateY(0); }
+    [data-aos="fade-right"] { transform: translateX(-20px); }
+    [data-aos="fade-right"].aos-in { transform: translateX(0); }
+    [data-aos="fade-left"] { transform: translateX(20px); }
+    [data-aos="fade-left"].aos-in { transform: translateX(0); }
+    @media (prefers-reduced-motion: reduce) {
+      [data-aos] { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
 
     /* ─── RESPONSIVE ─── */
 
@@ -1179,11 +1194,27 @@
 </footer>
 
 <!-- Scripts -->
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-  // ── AOS Init ── (guarded: a blocked/failed CDN load shouldn't take down
-  // every other script below — menu, FAQ, particles, lead form)
-  if (typeof AOS !== 'undefined') { AOS.init({ once: true, offset: 60 }); }
+  // ── Scroll reveal ── (native IntersectionObserver, no external library —
+  // animates elements in once as they enter the viewport)
+  (function() {
+    const els = document.querySelectorAll('[data-aos]');
+    if (!('IntersectionObserver' in window) || !els.length) {
+      els.forEach(el => el.classList.add('aos-in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const delay = entry.target.getAttribute('data-aos-delay');
+          if (delay) entry.target.style.setProperty('--aos-delay', delay + 'ms');
+          entry.target.classList.add('aos-in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(el => io.observe(el));
+  })();
 
   // ── Chat Lead Form ──
   const WEBHOOK_URL = 'https://guacamayo1.app.n8n.cloud/webhook/automalytics-lead';
@@ -1284,11 +1315,20 @@
     }
   }
 
-  // ── Particles ──
+  // ── Particles ── (dot count and link radius scaled down on mobile — the
+  // O(n²) connecting-line pass is the expensive part of this loop and was
+  // contributing to sluggishness on lower-end phones)
   (function() {
     const canvas = document.getElementById('particles');
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      canvas.style.display = 'none';
+      return;
+    }
     const ctx = canvas.getContext('2d');
     let W, H, dots = [];
+    const isMobile = window.innerWidth < 768;
+    const DOT_COUNT = isMobile ? 32 : 80;
+    const LINK_DIST = isMobile ? 90 : 120;
 
     function resize() {
       W = canvas.width = window.innerWidth;
@@ -1297,7 +1337,7 @@
     resize();
     window.addEventListener('resize', resize);
 
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < DOT_COUNT; i++) {
       dots.push({
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
@@ -1325,11 +1365,11 @@
       dots.forEach((a, i) => {
         dots.slice(i + 1).forEach(b => {
           const dist = Math.hypot(a.x - b.x, a.y - b.y);
-          if (dist < 120) {
+          if (dist < LINK_DIST) {
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(122,138,31,${.15 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `rgba(122,138,31,${.15 * (1 - dist / LINK_DIST)})`;
             ctx.lineWidth = .5;
             ctx.stroke();
           }
