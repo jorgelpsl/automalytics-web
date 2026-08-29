@@ -713,8 +713,10 @@
     </div>
   </div>
 
-  <!-- Hero Visual — website mockup with the functional lead-capture widget layered on top -->
-  <div class="hero-visual-wrap" data-aos="fade-up" data-aos-duration="800" data-aos-delay="150">
+  <!-- Hero Visual — website mockup with the functional lead-capture widget layered on top.
+       No scroll-reveal here: this is the real lead-capture form, so it must render
+       immediately instead of waiting to scroll into view + fade in. -->
+  <div class="hero-visual-wrap">
     <div class="mockup-tag">Ejemplo de diseño</div>
     <div class="browser-mockup">
       <div class="browser-bar">
