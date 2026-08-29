@@ -9,7 +9,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- AOS Animations -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
@@ -18,15 +18,20 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0A0F1A;
-      --bg2:       #0D1526;
-      --blue:      #2563EB;
-      --cyan:      #00F0FF;
-      --purple:    #7CA0FF;
-      --white:     #FFFFFF;
-      --gray:      #8B9CB6;
+      /* Repurposed to match Prospectos CRM's dark/lime palette. Names kept
+         (blue/cyan/purple) to minimize diff — all three now resolve to the
+         lime accent family instead of their original hues. */
+      --bg:        #0A0C07;
+      --bg2:       #14160F;
+      --bg3:       #1C1F16;
+      --blue:      #7A8A1F;
+      --cyan:      #D7FF3F;
+      --purple:    #D7FF3F;
+      --white:     #F3F5EA;
+      --gray:      #888E78;
       --card-bg:   rgba(255,255,255,0.04);
       --card-bdr:  rgba(255,255,255,0.08);
+      --lime-ink:  #12140A;
     }
 
     html { scroll-behavior: smooth; }
@@ -34,11 +39,11 @@
     body {
       background: var(--bg);
       color: var(--white);
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Manrope', sans-serif;
       overflow-x: hidden;
     }
 
-    h1, h2, h3, h4, h5 { font-family: 'Montserrat', sans-serif; }
+    h1, h2, h3, h4, h5 { font-family: 'Space Grotesk', sans-serif; }
 
     /* ─── PARTICLES CANVAS ─── */
     #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5; }
@@ -46,11 +51,11 @@
     /* ─── NAVBAR ─── */
     #navbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: rgba(10,15,26,.96);
+      background: rgba(10,12,7,.96);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid rgba(0,240,255,.18);
-      box-shadow: 0 1px 30px rgba(0,0,0,.5), 0 0 60px rgba(37,99,235,.06);
+      border-bottom: 1px solid rgba(215,255,63,.18);
+      box-shadow: 0 1px 30px rgba(0,0,0,.5), 0 0 60px rgba(122,138,31,.06);
     }
 
     .nav-inner {
@@ -60,7 +65,7 @@
 
     .nav-logo { display: flex; align-items: center; gap: .65rem; text-decoration: none; flex-shrink: 0; }
     .nav-logo svg { width: 38px; height: 38px; }
-    .nav-logo-text { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--white); letter-spacing: -.5px; }
+    .nav-logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--white); letter-spacing: -.5px; }
     .nav-logo-text span { color: var(--cyan); }
 
     /* Pill wrapper — gradient border via outline trick */
@@ -70,10 +75,10 @@
     .nav-links-pill {
       display: inline-flex; align-items: center;
       background: rgba(255,255,255,.035);
-      border: 1px solid rgba(0,240,255,.22);
+      border: 1px solid rgba(215,255,63,.22);
       border-radius: 50px;
       padding: .3rem .4rem;
-      box-shadow: 0 0 18px rgba(0,240,255,.06), inset 0 1px 0 rgba(255,255,255,.06);
+      box-shadow: 0 0 18px rgba(215,255,63,.06), inset 0 1px 0 rgba(255,255,255,.06);
     }
     .nav-links { display: flex; align-items: center; gap: .15rem; list-style: none; }
     .nav-links a {
@@ -88,12 +93,12 @@
 
     .nav-cta {
       background: linear-gradient(135deg, var(--blue), var(--cyan));
-      color: #000; font-weight: 700; font-family: 'Montserrat', sans-serif;
+      color: var(--lime-ink); font-weight: 700; font-family: 'Space Grotesk', sans-serif;
       padding: .58rem 1.35rem; border-radius: 50px; text-decoration: none;
       font-size: .84rem; transition: all .2s; white-space: nowrap;
-      box-shadow: 0 0 20px rgba(0,240,255,.28);
+      box-shadow: 0 0 20px rgba(215,255,63,.28);
     }
-    .nav-cta:hover { box-shadow: 0 0 35px rgba(0,240,255,.55); transform: translateY(-1px); }
+    .nav-cta:hover { box-shadow: 0 0 35px rgba(215,255,63,.55); transform: translateY(-1px); }
 
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
     .hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: .3s; }
@@ -109,14 +114,14 @@
     .hero-glow {
       position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none;
     }
-    .hero-glow-1 { width: 600px; height: 600px; background: rgba(37,99,235,.18); top: -100px; right: -100px; }
-    .hero-glow-2 { width: 400px; height: 400px; background: rgba(0,240,255,.1); bottom: 0; left: -100px; }
+    .hero-glow-1 { width: 600px; height: 600px; background: rgba(122,138,31,.18); top: -100px; right: -100px; }
+    .hero-glow-2 { width: 400px; height: 400px; background: rgba(215,255,63,.1); bottom: 0; left: -100px; }
 
     .hero-content { max-width: 620px; position: relative; z-index: 2; }
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: .5rem;
-      background: rgba(0,240,255,.08); border: 1px solid rgba(0,240,255,.25);
+      background: rgba(215,255,63,.08); border: 1px solid rgba(215,255,63,.25);
       border-radius: 50px; padding: .4rem 1rem; margin-bottom: 1.5rem;
       font-size: .8rem; font-weight: 600; color: var(--cyan); letter-spacing: .5px;
     }
@@ -144,17 +149,17 @@
     .btn-primary, .btn-secondary { box-sizing: border-box; }
     .btn-primary {
       background: linear-gradient(135deg, var(--blue), var(--cyan));
-      color: #000; font-weight: 700; font-family: 'Montserrat', sans-serif;
+      color: var(--lime-ink); font-weight: 700; font-family: 'Space Grotesk', sans-serif;
       padding: .85rem 2rem; border-radius: 50px; text-decoration: none;
       font-size: .95rem; transition: all .25s;
-      box-shadow: 0 0 30px rgba(0,240,255,.3);
+      box-shadow: 0 0 30px rgba(215,255,63,.3);
       display: inline-flex; align-items: center; gap: .5rem;
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 45px rgba(0,240,255,.5); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 45px rgba(215,255,63,.5); }
 
     .btn-secondary {
       background: transparent; border: 1px solid rgba(255,255,255,.2);
-      color: var(--white); font-weight: 600; font-family: 'Montserrat', sans-serif;
+      color: var(--white); font-weight: 600; font-family: 'Space Grotesk', sans-serif;
       padding: .85rem 2rem; border-radius: 50px; text-decoration: none;
       font-size: .95rem; transition: all .25s;
       display: inline-flex; align-items: center; gap: .5rem;
@@ -167,10 +172,10 @@
       width: 420px; z-index: 2;
     }
     .hero-bot-card {
-      background: rgba(10,15,26,.85); border: 1px solid rgba(0,240,255,.25);
+      background: rgba(10,12,7,.85); border: 1px solid rgba(215,255,63,.25);
       border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(16px);
       animation: float 4s ease-in-out infinite;
-      box-shadow: 0 0 40px rgba(0,240,255,.08);
+      box-shadow: 0 0 40px rgba(215,255,63,.08);
     }
     .bot-header { display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,.07); }
     .bot-avatar {
@@ -184,14 +189,14 @@
 
     .chat-messages { max-height: 160px; overflow-y: auto; margin-bottom: .75rem; }
     .chat-messages::-webkit-scrollbar { width: 3px; }
-    .chat-messages::-webkit-scrollbar-thumb { background: rgba(0,240,255,.3); border-radius: 3px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(215,255,63,.3); border-radius: 3px; }
 
     .chat-bubble {
       border-radius: 12px; padding: .6rem .9rem; margin-bottom: .5rem;
       font-size: .8rem; max-width: 88%; line-height: 1.5;
     }
-    .chat-bubble.bot { background: rgba(37,99,235,.2); border: 1px solid rgba(37,99,235,.3); color: var(--white); }
-    .chat-bubble.user { background: rgba(0,240,255,.1); border: 1px solid rgba(0,240,255,.2); color: var(--white); margin-left: auto; text-align: right; }
+    .chat-bubble.bot { background: rgba(122,138,31,.2); border: 1px solid rgba(122,138,31,.3); color: var(--white); }
+    .chat-bubble.user { background: rgba(215,255,63,.1); border: 1px solid rgba(215,255,63,.2); color: var(--white); margin-left: auto; text-align: right; }
     .chat-bubble.success { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.3); color: #86efac; text-align: center; max-width: 100%; }
     .chat-bubble.error-msg { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); color: #fca5a5; text-align: center; max-width: 100%; }
 
@@ -199,19 +204,19 @@
     .chat-input {
       background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
       border-radius: 10px; padding: .55rem .85rem; color: var(--white);
-      font-family: 'Poppins', sans-serif; font-size: .82rem; outline: none;
+      font-family: 'Manrope', sans-serif; font-size: .82rem; outline: none;
       transition: border-color .2s; width: 100%;
     }
     .chat-input::placeholder { color: rgba(255,255,255,.3); }
-    .chat-input:focus { border-color: rgba(0,240,255,.4); }
+    .chat-input:focus { border-color: rgba(215,255,63,.4); }
     .chat-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
     .chat-send-btn {
       background: linear-gradient(135deg, var(--blue), var(--cyan));
-      color: #000; font-weight: 700; font-family: 'Montserrat', sans-serif;
+      color: var(--lime-ink); font-weight: 700; font-family: 'Space Grotesk', sans-serif;
       border: none; border-radius: 10px; padding: .65rem; cursor: pointer;
       font-size: .82rem; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: .4rem;
     }
-    .chat-send-btn:hover { box-shadow: 0 0 20px rgba(0,240,255,.4); }
+    .chat-send-btn:hover { box-shadow: 0 0 20px rgba(215,255,63,.4); }
     .chat-send-btn:disabled { opacity: .6; cursor: not-allowed; }
 
     .typing { display: flex; align-items: center; gap: .3rem; padding: .4rem .6rem; }
@@ -228,7 +233,7 @@
     }
     .stat-item { text-align: center; padding: 1rem 3rem; }
     .stat-item + .stat-item { border-left: 1px solid var(--card-bdr); }
-    .stat-num { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; font-weight: 900; background: linear-gradient(90deg, var(--cyan), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; font-weight: 900; background: linear-gradient(90deg, var(--cyan), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .stat-label { font-size: .82rem; color: var(--gray); margin-top: .25rem; }
 
     /* ─── SECTIONS COMMON ─── */
@@ -249,7 +254,7 @@
       background: var(--card-bg); border: 1px solid var(--card-bdr);
       border-radius: 16px; padding: 2rem; transition: all .3s; cursor: default;
     }
-    .service-card:hover { border-color: rgba(0,240,255,.35); transform: translateY(-4px); box-shadow: 0 10px 40px rgba(0,240,255,.08); }
+    .service-card:hover { border-color: rgba(215,255,63,.35); transform: translateY(-4px); box-shadow: 0 10px 40px rgba(215,255,63,.08); }
     .service-icon {
       width: 52px; height: 52px; border-radius: 12px; margin-bottom: 1.25rem;
       display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
@@ -264,8 +269,8 @@
       width: 56px; height: 56px; border-radius: 50%;
       background: linear-gradient(135deg, var(--blue), var(--cyan));
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.2rem;
-      margin: 0 auto 1.25rem; box-shadow: 0 0 25px rgba(0,240,255,.3);
+      font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 1.2rem;
+      margin: 0 auto 1.25rem; box-shadow: 0 0 25px rgba(215,255,63,.3);
     }
     .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: .5rem; }
     .step p { color: var(--gray); font-size: .87rem; line-height: 1.6; }
@@ -278,17 +283,17 @@
       border-radius: 20px; padding: 2.5rem 2rem; position: relative; transition: all .3s;
     }
     .pricing-card.featured {
-      border-color: var(--cyan); background: rgba(0,240,255,.04);
-      box-shadow: 0 0 50px rgba(0,240,255,.12);
+      border-color: var(--cyan); background: rgba(215,255,63,.04);
+      box-shadow: 0 0 50px rgba(215,255,63,.12);
     }
     .featured-badge {
       position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
       background: linear-gradient(90deg, var(--blue), var(--cyan));
-      color: #000; font-weight: 800; font-size: .75rem; padding: .3rem 1.2rem;
-      border-radius: 50px; font-family: 'Montserrat', sans-serif; white-space: nowrap;
+      color: var(--lime-ink); font-weight: 800; font-size: .75rem; padding: .3rem 1.2rem;
+      border-radius: 50px; font-family: 'Space Grotesk', sans-serif; white-space: nowrap;
     }
     .pricing-plan { font-size: .8rem; font-weight: 700; color: var(--cyan); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: .75rem; }
-    .pricing-price { font-family: 'Montserrat', sans-serif; font-size: 2.4rem; font-weight: 900; margin-bottom: .25rem; }
+    .pricing-price { font-family: 'Space Grotesk', sans-serif; font-size: 2.4rem; font-weight: 900; margin-bottom: .25rem; }
     .pricing-price sup { font-size: 1rem; vertical-align: super; margin-right: .1rem; }
     .pricing-period { color: var(--gray); font-size: .82rem; margin-bottom: 1.5rem; }
     .pricing-desc { color: var(--gray); font-size: .87rem; line-height: 1.6; margin-bottom: 1.75rem; padding-bottom: 1.75rem; border-bottom: 1px solid var(--card-bdr); }
@@ -298,13 +303,13 @@
     .pricing-features li .x { color: #ef4444; flex-shrink: 0; }
     .btn-plan {
       width: 100%; padding: .85rem; border-radius: 50px; font-weight: 700;
-      font-family: 'Montserrat', sans-serif; font-size: .9rem; cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif; font-size: .9rem; cursor: pointer;
       border: none; text-decoration: none; display: block; text-align: center; transition: all .25s;
     }
     .btn-plan-outline { background: transparent; border: 1px solid rgba(255,255,255,.2); color: var(--white); }
     .btn-plan-outline:hover { border-color: var(--cyan); color: var(--cyan); }
-    .btn-plan-primary { background: linear-gradient(135deg, var(--blue), var(--cyan)); color: #000; box-shadow: 0 0 25px rgba(0,240,255,.25); }
-    .btn-plan-primary:hover { box-shadow: 0 0 40px rgba(0,240,255,.4); transform: translateY(-2px); }
+    .btn-plan-primary { background: linear-gradient(135deg, var(--blue), var(--cyan)); color: var(--lime-ink); box-shadow: 0 0 25px rgba(215,255,63,.25); }
+    .btn-plan-primary:hover { box-shadow: 0 0 40px rgba(215,255,63,.4); transform: translateY(-2px); }
 
     /* ─── ABOUT ─── */
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
@@ -313,14 +318,14 @@
       background: var(--card-bg); border: 1px solid var(--card-bdr);
       border-radius: 20px; padding: 2rem; margin-bottom: 1.25rem;
     }
-    .about-tag { display: inline-block; background: rgba(0,240,255,.1); border: 1px solid rgba(0,240,255,.2); color: var(--cyan); font-size: .75rem; font-weight: 600; padding: .25rem .75rem; border-radius: 50px; margin-bottom: 1rem; }
+    .about-tag { display: inline-block; background: rgba(215,255,63,.1); border: 1px solid rgba(215,255,63,.2); color: var(--cyan); font-size: .75rem; font-weight: 600; padding: .25rem .75rem; border-radius: 50px; margin-bottom: 1rem; }
     .about-card-main p { color: var(--gray); font-size: .9rem; line-height: 1.7; }
     .about-mini-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .about-mini {
       background: var(--card-bg); border: 1px solid var(--card-bdr);
       border-radius: 14px; padding: 1.25rem; text-align: center;
     }
-    .about-mini .num { font-family: 'Montserrat', sans-serif; font-size: 1.6rem; font-weight: 900; background: linear-gradient(90deg, var(--cyan), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .about-mini .num { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 900; background: linear-gradient(90deg, var(--cyan), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .about-mini .label { color: var(--gray); font-size: .78rem; margin-top: .2rem; }
     .about-content .section-sub { margin-bottom: 2rem; }
     .about-features { list-style: none; }
@@ -335,7 +340,7 @@
       width: 100%; background: var(--card-bg); border: none; color: var(--white);
       padding: 1.25rem 1.5rem; text-align: left; cursor: pointer;
       display: flex; justify-content: space-between; align-items: center;
-      font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: .92rem;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: .92rem;
       transition: background .2s;
     }
     .faq-q:hover { background: rgba(255,255,255,.06); }
@@ -346,7 +351,7 @@
 
     /* ─── CTA ─── */
     #cta {
-      background: radial-gradient(ellipse at center, rgba(37,99,235,.15) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(122,138,31,.15) 0%, transparent 70%);
       text-align: center; padding: 7rem 6%;
     }
     #cta .section-title { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.25rem; }
@@ -354,7 +359,7 @@
     .cta-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
     .btn-wa {
       background: #25D366; color: #fff;
-      font-weight: 700; font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-family: 'Space Grotesk', sans-serif;
       padding: .9rem 2.2rem; border-radius: 50px; text-decoration: none;
       font-size: .95rem; transition: all .25s; display: inline-flex; align-items: center; gap: .6rem;
       box-shadow: 0 0 30px rgba(37,211,102,.3);
@@ -376,19 +381,19 @@
 
     /* ─── MOBILE NAV MENU ─── */
     .mobile-menu {
-      display: none; position: fixed; inset: 0; z-index: 99;
-      background: rgba(10,15,26,.97); backdrop-filter: blur(20px);
+      display: none; position: fixed; inset: 0; z-index: 1001;
+      background: rgba(10,12,7,.97); backdrop-filter: blur(20px);
       flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
     }
     .mobile-menu.open { display: flex; }
-    .mobile-menu a { color: var(--white); text-decoration: none; font-family: 'Montserrat', sans-serif; font-size: 1.4rem; font-weight: 700; }
+    .mobile-menu a { color: var(--white); text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700; }
     .mobile-menu-close { position: absolute; top: 1.5rem; right: 6%; font-size: 1.5rem; cursor: pointer; background: none; border: none; color: var(--white); }
 
     /* ─── ANIMATIONS ─── */
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,240,255,.5); } 100% { box-shadow: 0 0 0 8px rgba(0,240,255,0); } }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(215,255,63,.5); } 100% { box-shadow: 0 0 0 8px rgba(215,255,63,0); } }
     @keyframes typing { from { opacity: .3; transform: scale(.85); } to { opacity: 1; transform: scale(1); } }
-    @keyframes glow { 0%, 100% { text-shadow: 0 0 20px rgba(0,240,255,.4); } 50% { text-shadow: 0 0 40px rgba(0,240,255,.8); } }
+    @keyframes glow { 0%, 100% { text-shadow: 0 0 20px rgba(215,255,63,.4); } 50% { text-shadow: 0 0 40px rgba(215,255,63,.8); } }
 
     /* ─── RESPONSIVE ─── */
 
@@ -506,13 +511,13 @@
       <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#2563EB"/>
-            <stop offset="100%" stop-color="#00F0FF"/>
+            <stop offset="0%" stop-color="#7A8A1F"/>
+            <stop offset="100%" stop-color="#D7FF3F"/>
           </linearGradient>
         </defs>
         <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill="url(#lg1)" opacity=".15" stroke="url(#lg1)" stroke-width="1.5"/>
         <polygon points="20,7 31,13 31,27 20,33 9,27 9,13" fill="url(#lg1)" opacity=".2"/>
-        <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-weight="900" font-size="16" fill="url(#lg1)">A</text>
+        <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-family="Space Grotesk" font-weight="900" font-size="16" fill="url(#lg1)">A</text>
       </svg>
       <span class="nav-logo-text">Auto<span>malytics</span></span>
     </a>
@@ -649,22 +654,22 @@
       <p>Tu WhatsApp Business trabajando 24/7. Responde preguntas frecuentes, captura leads y cierra ventas mientras duermes.</p>
     </div>
     <div class="service-card" data-aos="fade-up" data-aos-delay="80">
-      <div class="service-icon" style="background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.25);">📊</div>
+      <div class="service-icon" style="background:rgba(122,138,31,.12);border:1px solid rgba(122,138,31,.25);">📊</div>
       <h3>CRM Integrado</h3>
       <p>Cada conversación queda registrada automáticamente. Gestiona tus clientes, seguimientos y oportunidades en un solo panel.</p>
     </div>
     <div class="service-card" data-aos="fade-up" data-aos-delay="160">
-      <div class="service-icon" style="background:rgba(124,160,255,.12);border:1px solid rgba(124,160,255,.25);">🤖</div>
+      <div class="service-icon" style="background:rgba(215,255,63,.12);border:1px solid rgba(215,255,63,.25);">🤖</div>
       <h3>Chatbot con IA</h3>
       <p>No es un bot genérico — es un agente entrenado con el conocimiento de tu negocio que entiende el contexto de cada conversación.</p>
     </div>
     <div class="service-card" data-aos="fade-up" data-aos-delay="240">
-      <div class="service-icon" style="background:rgba(0,240,255,.1);border:1px solid rgba(0,240,255,.2);">⚡</div>
+      <div class="service-icon" style="background:rgba(215,255,63,.1);border:1px solid rgba(215,255,63,.2);">⚡</div>
       <h3>Automatizaciones</h3>
       <p>Flujos automáticos para cotizaciones, confirmaciones de citas, recordatorios y seguimientos post-venta sin intervención manual.</p>
     </div>
     <div class="service-card" data-aos="fade-up" data-aos-delay="320">
-      <div class="service-icon" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.25);">📅</div>
+      <div class="service-icon" style="background:rgba(215,255,63,.12);border:1px solid rgba(215,255,63,.25);">📅</div>
       <h3>Agenda Inteligente</h3>
       <p>El bot agenda, confirma y envía recordatorios de citas automáticamente. Reduce los no-shows hasta un 60%.</p>
     </div>
@@ -893,9 +898,9 @@
   <div class="footer-top">
     <a href="#" class="nav-logo">
       <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px">
-        <defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#00F0FF"/></linearGradient></defs>
+        <defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7A8A1F"/><stop offset="100%" stop-color="#D7FF3F"/></linearGradient></defs>
         <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill="url(#lg2)" opacity=".15" stroke="url(#lg2)" stroke-width="1.5"/>
-        <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-weight="900" font-size="16" fill="url(#lg2)">A</text>
+        <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-family="Space Grotesk" font-weight="900" font-size="16" fill="url(#lg2)">A</text>
       </svg>
       <span class="nav-logo-text" style="font-size:1.1rem">Auto<span>malytics</span></span>
     </a>
@@ -916,8 +921,9 @@
 <!-- Scripts -->
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
-  // ── AOS Init ──
-  AOS.init({ once: true, offset: 60 });
+  // ── AOS Init ── (guarded: a blocked/failed CDN load shouldn't take down
+  // every other script below — menu, FAQ, particles, lead form)
+  if (typeof AOS !== 'undefined') { AOS.init({ once: true, offset: 60 }); }
 
   // ── Chat Lead Form ──
   const WEBHOOK_URL = 'https://guacamayo1.app.n8n.cloud/webhook/automalytics-lead';
@@ -1052,7 +1058,7 @@
         if (d.y > H) d.y = 0;
         ctx.beginPath();
         ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,240,255,${d.alpha})`;
+        ctx.fillStyle = `rgba(215,255,63,${d.alpha})`;
         ctx.fill();
       });
       // Draw connecting lines
@@ -1063,7 +1069,7 @@
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(37,99,235,${.15 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `rgba(122,138,31,${.15 * (1 - dist / 120)})`;
             ctx.lineWidth = .5;
             ctx.stroke();
           }
