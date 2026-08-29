@@ -48,19 +48,23 @@
     /* ─── PARTICLES CANVAS ─── */
     #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5; }
 
-    /* ─── NAVBAR ─── */
+    /* ─── NAVBAR (floating pill) ─── */
     #navbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: rgba(10,12,7,.96);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid rgba(215,255,63,.18);
-      box-shadow: 0 1px 30px rgba(0,0,0,.5), 0 0 60px rgba(122,138,31,.06);
+      padding: 1.1rem 6% 0;
     }
 
     .nav-inner {
       display: flex; align-items: center; justify-content: space-between;
-      padding: .85rem 6%; gap: 1.5rem;
+      max-width: 1180px; margin: 0 auto;
+      padding: .7rem 1.5rem; gap: 1.5rem;
+      background: rgba(18,20,13,.8);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(215,255,63,.18);
+      border-radius: 50px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.5), 0 0 40px rgba(122,138,31,.08);
+      transition: box-shadow .3s;
     }
 
     .nav-logo { display: flex; align-items: center; gap: .65rem; text-decoration: none; flex-shrink: 0; }
@@ -107,8 +111,8 @@
     #hero {
       position: relative; z-index: 1;
       min-height: 100vh;
-      display: flex; align-items: center;
-      padding: 8rem 6% 4rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 9rem 6% 4rem;
       overflow: hidden;
     }
     .hero-glow {
@@ -117,7 +121,8 @@
     .hero-glow-1 { width: 600px; height: 600px; background: rgba(122,138,31,.18); top: -100px; right: -100px; }
     .hero-glow-2 { width: 400px; height: 400px; background: rgba(215,255,63,.1); bottom: 0; left: -100px; }
 
-    .hero-content { max-width: 620px; position: relative; z-index: 2; }
+    .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 2; }
+    .hero-content { text-align: center; }
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: .5rem;
@@ -136,16 +141,34 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
-    .hero-sub { color: var(--gray); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem; max-width: 500px; }
+    .hero-sub { color: var(--gray); font-size: 1.05rem; line-height: 1.7; margin: 0 auto 2rem; max-width: 540px; }
 
-    .hero-pills { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 2.5rem; }
+    .hero-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-bottom: 2.5rem; }
     .pill {
       background: rgba(255,255,255,.05); border: 1px solid var(--card-bdr);
       border-radius: 50px; padding: .35rem .9rem; font-size: .8rem; color: var(--gray);
     }
     .pill span { color: var(--cyan); margin-right: .35rem; }
 
-    .hero-buttons { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .hero-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+
+    .hero-scarcity {
+      color: var(--gray); font-size: .82rem; margin-top: 1.5rem;
+      display: flex; align-items: center; justify-content: center; gap: .5rem;
+    }
+    .hero-scarcity .dot { width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0; }
+
+    .hero-logostrip { margin-top: 3.5rem; text-align: center; }
+    .logostrip-label {
+      display: block; font-size: .72rem; color: var(--gray); text-transform: uppercase;
+      letter-spacing: 2px; margin-bottom: 1rem;
+    }
+    .logostrip-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; }
+    .logostrip-items span {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: .92rem;
+      color: var(--gray); opacity: .7; transition: opacity .2s, color .2s;
+    }
+    .logostrip-items span:hover { opacity: 1; color: var(--cyan); }
     .btn-primary, .btn-secondary { box-sizing: border-box; }
     .btn-primary {
       background: linear-gradient(135deg, var(--blue), var(--cyan));
@@ -166,10 +189,10 @@
     }
     .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
 
-    /* Hero visual */
+    /* Hero visual — chat widget, now the large visual band below the hero copy */
     .hero-visual {
-      position: absolute; right: 6%; top: 50%; transform: translateY(-50%);
-      width: 420px; z-index: 2;
+      position: relative; width: 100%; max-width: 440px;
+      margin: 4rem auto 0; z-index: 2;
     }
     .hero-bot-card {
       background: rgba(10,12,7,.85); border: 1px solid rgba(215,255,63,.25);
@@ -399,7 +422,6 @@
 
     /* Tablet grande */
     @media (max-width: 1024px) {
-      .hero-visual { display: none; }
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .pricing-grid { grid-template-columns: 1fr 1fr; }
     }
@@ -410,7 +432,8 @@
       .nav-links-wrap { display: none; }
       .nav-cta { display: none; }
       .hamburger { display: flex; }
-      .nav-inner { padding: .75rem 5%; }
+      #navbar { padding: .85rem 4% 0; }
+      .nav-inner { padding: .6rem 1.1rem; }
 
       /* Hero */
       #hero { padding: 6.5rem 5% 3rem; min-height: auto; }
@@ -418,8 +441,11 @@
       .hero-sub { font-size: .95rem; }
       .hero-pills { gap: .5rem; }
       .pill { font-size: .75rem; padding: .28rem .75rem; }
-      .hero-buttons { flex-direction: column; }
+      .hero-buttons { flex-direction: column; align-items: stretch; }
       .btn-primary, .btn-secondary { text-align: center; justify-content: center; width: 100%; }
+      .hero-logostrip { margin-top: 2.5rem; }
+      .logostrip-items { gap: 1.25rem 1.75rem; }
+      .hero-visual { margin-top: 3rem; }
 
       /* Stats */
       .stats-bar { flex-direction: column; align-items: stretch; padding: 1.5rem 5%; }
@@ -466,7 +492,8 @@
 
     /* Móvil pequeño (iPhone SE, Galaxy A, etc.) */
     @media (max-width: 480px) {
-      .nav-inner { padding: .7rem 4%; }
+      #navbar { padding: .7rem 4% 0; }
+      .nav-inner { padding: .55rem .9rem; }
       .nav-logo-text { font-size: 1.05rem; }
 
       #hero { padding: 5.5rem 4% 2.5rem; }
@@ -559,36 +586,50 @@
   <div class="hero-glow hero-glow-1"></div>
   <div class="hero-glow hero-glow-2"></div>
 
-  <div class="hero-content" data-aos="fade-right" data-aos-duration="800">
-    <div class="hero-badge">
-      <span class="dot"></span>
-      IA Conversacional para negocios
+  <div class="hero-inner">
+    <div class="hero-content" data-aos="fade-up" data-aos-duration="800">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        IA Conversacional para negocios
+      </div>
+
+      <h1 class="hero-title">
+        Automatiza tu Negocio con<br>
+        <span class="highlight">Inteligencia Artificial</span>
+      </h1>
+
+      <p class="hero-sub">
+        Convierte tu WhatsApp en un vendedor 24/7. Capta leads, agenda reuniones y atiende clientes automáticamente — sin perder el toque humano.
+      </p>
+
+      <div class="hero-pills">
+        <div class="pill"><span>✓</span>Más Ventas</div>
+        <div class="pill"><span>✓</span>Menos Tiempo</div>
+        <div class="pill"><span>✓</span>Atención 24/7</div>
+        <div class="pill"><span>✓</span>Sin código</div>
+      </div>
+
+      <div class="hero-buttons">
+        <a href="#cta" class="btn-primary">🚀 Solicitar Demo Gratis</a>
+        <a href="#pricing" class="btn-secondary">Ver Planes →</a>
+      </div>
+
+      <p class="hero-scarcity"><span class="dot"></span>Cupos de implementación limitados este mes</p>
     </div>
 
-    <h1 class="hero-title">
-      Automatiza tu Negocio con<br>
-      <span class="highlight">Inteligencia Artificial</span>
-    </h1>
-
-    <p class="hero-sub">
-      Convierte tu WhatsApp en un vendedor 24/7. Capta leads, agenda reuniones y atiende clientes automáticamente — sin perder el toque humano.
-    </p>
-
-    <div class="hero-pills">
-      <div class="pill"><span>✓</span>Más Ventas</div>
-      <div class="pill"><span>✓</span>Menos Tiempo</div>
-      <div class="pill"><span>✓</span>Atención 24/7</div>
-      <div class="pill"><span>✓</span>Sin código</div>
-    </div>
-
-    <div class="hero-buttons">
-      <a href="#cta" class="btn-primary">🚀 Solicitar Demo Gratis</a>
-      <a href="#pricing" class="btn-secondary">Ver Planes →</a>
+    <div class="hero-logostrip" data-aos="fade-up" data-aos-delay="100">
+      <span class="logostrip-label">Se integra con</span>
+      <div class="logostrip-items">
+        <span>WhatsApp Business</span>
+        <span>n8n</span>
+        <span>Google Calendar</span>
+        <span>OpenAI</span>
+      </div>
     </div>
   </div>
 
   <!-- Hero Bot Visual — Chat funcional -->
-  <div class="hero-visual" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
+  <div class="hero-visual" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
     <div class="hero-bot-card">
       <div class="bot-header">
         <div class="bot-avatar">🤖</div>
