@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Automalytics — Automatiza · Capta · Convierte</title>
-  <meta name="description" content="Automatiza las conversaciones de tu negocio con Inteligencia Artificial. Más ventas, menos tiempo, atención 24/7." />
+  <title>Automalytics — Páginas Web + Automatización con IA</title>
+  <meta name="description" content="Diseñamos páginas web profesionales para tu negocio y las conectamos a WhatsApp con Inteligencia Artificial. Presencia digital completa, lista en días." />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -189,10 +189,58 @@
     }
     .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
 
-    /* Hero visual — chat widget, now the large visual band below the hero copy */
-    .hero-visual {
-      position: relative; width: 100%; max-width: 440px;
+    /* Hero visual — a website mockup (the new lead offering) with the
+       functional lead-capture widget layered on top like a live notification */
+    .hero-visual-wrap {
+      position: relative; width: 100%; max-width: 640px;
       margin: 4rem auto 0; z-index: 2;
+    }
+    .browser-mockup {
+      background: rgba(255,255,255,.03); border: 1px solid var(--card-bdr);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 60px rgba(215,255,63,.06);
+    }
+    .browser-bar {
+      display: flex; align-items: center; gap: .5rem;
+      padding: .7rem 1rem; background: rgba(255,255,255,.03);
+      border-bottom: 1px solid var(--card-bdr);
+    }
+    .browser-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .browser-dot:nth-child(1) { background: #ef4444; }
+    .browser-dot:nth-child(2) { background: #f59e0b; }
+    .browser-dot:nth-child(3) { background: #22c55e; }
+    .browser-url {
+      margin-left: .5rem; background: rgba(255,255,255,.05); border-radius: 50px;
+      padding: .3rem 1.2rem; font-size: .72rem; color: var(--gray);
+      flex: 1; text-align: center; max-width: 260px;
+    }
+    .browser-content { padding: 1.75rem 2rem 2.25rem; background: linear-gradient(180deg, rgba(215,255,63,.05), transparent 45%); }
+    .mock-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .mock-logo { width: 74px; height: 10px; border-radius: 4px; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
+    .mock-nav-links { display: flex; gap: .6rem; }
+    .mock-nav-links span { width: 34px; height: 8px; border-radius: 4px; background: rgba(255,255,255,.12); }
+    .mock-hero { text-align: center; padding: .5rem 0 2rem; }
+    .mock-badge { width: 130px; height: 11px; border-radius: 20px; background: rgba(215,255,63,.18); margin: 0 auto .9rem; }
+    .mock-headline-1 { width: 78%; height: 16px; border-radius: 4px; background: rgba(255,255,255,.55); margin: 0 auto .55rem; }
+    .mock-headline-2 { width: 52%; height: 16px; border-radius: 4px; background: rgba(255,255,255,.55); margin: 0 auto 1.25rem; }
+    .mock-cta { width: 140px; height: 34px; border-radius: 50px; background: linear-gradient(135deg, var(--blue), var(--cyan)); margin: 0 auto; box-shadow: 0 0 25px rgba(215,255,63,.3); }
+    .mock-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: .85rem; margin-top: 2rem; }
+    .mock-card { background: rgba(255,255,255,.04); border: 1px solid var(--card-bdr); border-radius: 10px; height: 72px; position: relative; overflow: hidden; }
+    .mock-card::after {
+      content: ""; position: absolute; inset: auto .7rem .6rem .7rem; height: 7px;
+      border-radius: 4px; background: rgba(255,255,255,.14);
+    }
+    .mockup-tag {
+      position: absolute; top: -12px; left: 1.5rem;
+      background: linear-gradient(90deg, var(--blue), var(--cyan)); color: var(--lime-ink);
+      font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: .7rem;
+      padding: .3rem 1rem; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,.3);
+    }
+
+    /* Floating lead-capture widget, layered on the mockup's bottom-right corner */
+    .hero-visual {
+      position: absolute; right: -1.5rem; bottom: -2.5rem;
+      width: 280px; z-index: 3;
     }
     .hero-bot-card {
       background: rgba(10,12,7,.85); border: 1px solid rgba(215,255,63,.25);
@@ -284,6 +332,7 @@
     }
     .service-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .65rem; }
     .service-card p { color: var(--gray); font-size: .88rem; line-height: 1.65; }
+    .service-card-wide { grid-column: span 2; }
 
     /* ─── HOW IT WORKS ─── */
     .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; position: relative; }
@@ -300,6 +349,15 @@
 
     /* ─── PRICING ─── */
     #pricing { background: var(--bg2); }
+    .pricing-groups { display: flex; flex-direction: column; gap: 4.5rem; }
+    .pricing-group-title {
+      text-align: center; font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 700;
+      margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; gap: .6rem; flex-wrap: wrap;
+    }
+    .pricing-group-title span {
+      font-family: 'Manrope', sans-serif; font-weight: 500; font-size: .78rem; color: var(--gray);
+      background: rgba(255,255,255,.05); border: 1px solid var(--card-bdr); border-radius: 50px; padding: .25rem .9rem;
+    }
     .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 960px; margin: 0 auto; }
     .pricing-card {
       background: var(--card-bg); border: 1px solid var(--card-bdr);
@@ -424,6 +482,14 @@
     @media (max-width: 1024px) {
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .pricing-grid { grid-template-columns: 1fr 1fr; }
+      .service-card-wide { grid-column: span 1; }
+
+      /* Floating widget becomes a static card stacked under the mockup —
+         avoids the absolute-offset card overhanging the viewport on narrow screens */
+      .hero-visual {
+        position: static; width: 100%; max-width: 300px;
+        margin: -2.5rem auto 0;
+      }
     }
 
     /* Tablet / móvil grande */
@@ -445,7 +511,10 @@
       .btn-primary, .btn-secondary { text-align: center; justify-content: center; width: 100%; }
       .hero-logostrip { margin-top: 2.5rem; }
       .logostrip-items { gap: 1.25rem 1.75rem; }
-      .hero-visual { margin-top: 3rem; }
+      .browser-content { padding: 1.25rem 1.25rem 1.5rem; }
+      .mock-nav-links span { width: 24px; }
+      .mock-cards { gap: .6rem; }
+      .mock-card { height: 56px; }
 
       /* Stats */
       .stats-bar { flex-direction: column; align-items: stretch; padding: 1.5rem 5%; }
@@ -466,6 +535,8 @@
       .steps-grid { grid-template-columns: 1fr; gap: 2rem; }
 
       /* Pricing */
+      .pricing-groups { gap: 3rem; }
+      .pricing-group-title { font-size: 1rem; margin-bottom: 1.5rem; }
       .pricing-grid { grid-template-columns: 1fr; max-width: 420px; }
       .pricing-card { padding: 2rem 1.5rem; }
       .featured-badge { font-size: .7rem; }
@@ -552,8 +623,8 @@
     <div class="nav-links-wrap">
       <div class="nav-links-pill">
         <ul class="nav-links">
-          <li><a href="#services">Servicios</a></li>
-          <li><a href="#how-it-works">Cómo funciona</a></li>
+          <li><a href="#web">Páginas Web</a></li>
+          <li><a href="#services">Automatización</a></li>
           <li><a href="#pricing">Precios</a></li>
           <li><a href="#about">Nosotros</a></li>
           <li><a href="#faq">FAQ</a></li>
@@ -562,7 +633,7 @@
     </div>
 
     <div class="nav-right">
-      <a href="#cta" class="nav-cta">Solicitar Demo</a>
+      <a href="#cta" class="nav-cta">Cotizar</a>
       <div class="hamburger" id="hamburger">
         <span></span><span></span><span></span>
       </div>
@@ -573,12 +644,12 @@
 <!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-menu-close" id="mobileClose">✕</button>
-  <a href="#services" onclick="closeMobile()">Servicios</a>
-  <a href="#how-it-works" onclick="closeMobile()">Cómo funciona</a>
+  <a href="#web" onclick="closeMobile()">Páginas Web</a>
+  <a href="#services" onclick="closeMobile()">Automatización</a>
   <a href="#pricing" onclick="closeMobile()">Precios</a>
   <a href="#about" onclick="closeMobile()">Nosotros</a>
   <a href="#faq" onclick="closeMobile()">FAQ</a>
-  <a href="#cta" onclick="closeMobile()" style="color:var(--cyan)">Solicitar Demo →</a>
+  <a href="#cta" onclick="closeMobile()" style="color:var(--cyan)">Cotizar →</a>
 </div>
 
 <!-- ─── HERO ─── -->
@@ -590,31 +661,31 @@
     <div class="hero-content" data-aos="fade-up" data-aos-duration="800">
       <div class="hero-badge">
         <span class="dot"></span>
-        IA Conversacional para negocios
+        Páginas Web + IA para negocios
       </div>
 
       <h1 class="hero-title">
-        Automatiza tu Negocio con<br>
-        <span class="highlight">Inteligencia Artificial</span>
+        Páginas Web que Venden,<br>
+        <span class="highlight">Automatizadas con IA</span>
       </h1>
 
       <p class="hero-sub">
-        Convierte tu WhatsApp en un vendedor 24/7. Capta leads, agenda reuniones y atiende clientes automáticamente — sin perder el toque humano.
+        Diseñamos tu sitio web profesional y lo conectamos a WhatsApp con Inteligencia Artificial — para que captes clientes 24/7 desde el primer día.
       </p>
 
       <div class="hero-pills">
-        <div class="pill"><span>✓</span>Más Ventas</div>
-        <div class="pill"><span>✓</span>Menos Tiempo</div>
-        <div class="pill"><span>✓</span>Atención 24/7</div>
-        <div class="pill"><span>✓</span>Sin código</div>
+        <div class="pill"><span>✓</span>Diseño Profesional</div>
+        <div class="pill"><span>✓</span>Automatización con IA</div>
+        <div class="pill"><span>✓</span>Hosting Incluido</div>
+        <div class="pill"><span>✓</span>Listo en días</div>
       </div>
 
       <div class="hero-buttons">
-        <a href="#cta" class="btn-primary">🚀 Solicitar Demo Gratis</a>
+        <a href="#cta" class="btn-primary">🚀 Cotizar mi Página Web</a>
         <a href="#pricing" class="btn-secondary">Ver Planes →</a>
       </div>
 
-      <p class="hero-scarcity"><span class="dot"></span>Cupos de implementación limitados este mes</p>
+      <p class="hero-scarcity"><span class="dot"></span>Cupos de diseño limitados este mes</p>
     </div>
 
     <div class="hero-logostrip" data-aos="fade-up" data-aos-delay="100">
@@ -628,33 +699,63 @@
     </div>
   </div>
 
-  <!-- Hero Bot Visual — Chat funcional -->
-  <div class="hero-visual" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
-    <div class="hero-bot-card">
-      <div class="bot-header">
-        <div class="bot-avatar">🤖</div>
-        <div>
-          <div class="bot-name">AutoBot IA</div>
-          <div class="bot-status">Activo ahora</div>
+  <!-- Hero Visual — website mockup with the functional lead-capture widget layered on top -->
+  <div class="hero-visual-wrap" data-aos="fade-up" data-aos-duration="800" data-aos-delay="150">
+    <div class="mockup-tag">Ejemplo de diseño</div>
+    <div class="browser-mockup">
+      <div class="browser-bar">
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+        <div class="browser-url">tunegocio.cl</div>
+      </div>
+      <div class="browser-content">
+        <div class="mock-nav">
+          <div class="mock-logo"></div>
+          <div class="mock-nav-links"><span></span><span></span><span></span></div>
+        </div>
+        <div class="mock-hero">
+          <div class="mock-badge"></div>
+          <div class="mock-headline-1"></div>
+          <div class="mock-headline-2"></div>
+          <div class="mock-cta"></div>
+        </div>
+        <div class="mock-cards">
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
         </div>
       </div>
+    </div>
 
-      <!-- Mensajes -->
-      <div class="chat-messages" id="chatMessages">
-        <div class="chat-bubble bot">Hola 👋 ¿Quieres automatizar tu negocio? Déjame tus datos y te contactamos.</div>
-      </div>
-
-      <!-- Formulario -->
-      <div class="chat-form" id="chatForm">
-        <div class="chat-input-row">
-          <input class="chat-input" type="text" id="chatName" placeholder="Tu nombre" maxlength="60" />
-          <input class="chat-input" type="tel" id="chatPhone" placeholder="WhatsApp" maxlength="20" />
+    <!-- Chat funcional -->
+    <div class="hero-visual">
+      <div class="hero-bot-card">
+        <div class="bot-header">
+          <div class="bot-avatar">🤖</div>
+          <div>
+            <div class="bot-name">AutoBot IA</div>
+            <div class="bot-status">Activo ahora</div>
+          </div>
         </div>
-        <input class="chat-input" type="email" id="chatEmail" placeholder="Tu email" maxlength="100" />
-        <input class="chat-input" type="text" id="chatMsg" placeholder="¿Cómo podemos ayudarte?" maxlength="300" />
-        <button class="chat-send-btn" id="chatSendBtn" onclick="sendLead()">
-          <span id="chatBtnText">Enviar mensaje →</span>
-        </button>
+
+        <!-- Mensajes -->
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-bubble bot">Hola 👋 ¿Quieres tu página web o automatizar tu negocio? Déjame tus datos y te contactamos.</div>
+        </div>
+
+        <!-- Formulario -->
+        <div class="chat-form" id="chatForm">
+          <div class="chat-input-row">
+            <input class="chat-input" type="text" id="chatName" placeholder="Tu nombre" maxlength="60" />
+            <input class="chat-input" type="tel" id="chatPhone" placeholder="WhatsApp" maxlength="20" />
+          </div>
+          <input class="chat-input" type="email" id="chatEmail" placeholder="Tu email" maxlength="100" />
+          <input class="chat-input" type="text" id="chatMsg" placeholder="¿Cómo podemos ayudarte?" maxlength="300" />
+          <button class="chat-send-btn" id="chatSendBtn" onclick="sendLead()">
+            <span id="chatBtnText">Enviar mensaje →</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -680,11 +781,53 @@
   </div>
 </div>
 
+<!-- ─── PÁGINAS WEB ─── -->
+<section id="web">
+  <div class="section-header" data-aos="fade-up">
+    <p class="section-label">Diseño Web</p>
+    <h2 class="section-title">Tu página web profesional,<br><span>lista en días</span></h2>
+    <p class="section-sub">Sitios modernos, rápidos y pensados para convertir visitas en clientes — sin plantillas genéricas.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card service-card-wide" data-aos="fade-up" data-aos-delay="0">
+      <div class="service-icon" style="background:rgba(215,255,63,.12);border:1px solid rgba(215,255,63,.25);">🎨</div>
+      <h3>Diseño 100% a tu Medida</h3>
+      <p>Sin plantillas genéricas: cada sitio se diseña según tu marca, tu rubro y tus objetivos de conversión — con la misma calidad visual que ves aquí.</p>
+    </div>
+    <div class="service-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="service-icon" style="background:rgba(122,138,31,.12);border:1px solid rgba(122,138,31,.25);">💻</div>
+      <h3>Landing Pages</h3>
+      <p>Página de una sola sección, enfocada 100% en convertir. Ideal para campañas publicitarias y captación de leads.</p>
+    </div>
+    <div class="service-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="service-icon" style="background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);">🏢</div>
+      <h3>Sitios Corporativos</h3>
+      <p>Presencia profesional multi-página: servicios, equipo, testimonios y contacto — todo lo que tu negocio necesita mostrar.</p>
+    </div>
+    <div class="service-card" data-aos="fade-up" data-aos-delay="240">
+      <div class="service-icon" style="background:rgba(215,255,63,.1);border:1px solid rgba(215,255,63,.2);">🛒</div>
+      <h3>Tiendas Online</h3>
+      <p>E-commerce con catálogo de productos, carrito de compras y pagos integrados para vender directamente desde tu web.</p>
+    </div>
+    <div class="service-card" data-aos="fade-up" data-aos-delay="320">
+      <div class="service-icon" style="background:rgba(215,255,63,.12);border:1px solid rgba(215,255,63,.25);">🔍</div>
+      <h3>SEO y Velocidad</h3>
+      <p>Tu negocio visible en Google, con buenas prácticas técnicas y tiempos de carga optimizados desde el primer día.</p>
+    </div>
+    <div class="service-card" data-aos="fade-up" data-aos-delay="400">
+      <div class="service-icon" style="background:rgba(122,138,31,.1);border:1px solid rgba(122,138,31,.2);">☁️</div>
+      <h3>Hosting y Dominio Incluidos</h3>
+      <p>Nos encargamos de que tu sitio esté siempre online, rápido y seguro — sin que tengas que administrar nada técnico.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ─── SERVICES ─── -->
 <section id="services">
   <div class="section-header" data-aos="fade-up">
-    <p class="section-label">Nuestros Servicios</p>
-    <h2 class="section-title">Todo lo que necesita tu negocio<br><span>en un solo lugar</span></h2>
+    <p class="section-label">Automatización</p>
+    <h2 class="section-title">Y una vez tienes tu web,<br><span>la conectamos con IA</span></h2>
     <p class="section-sub">Integramos IA directamente en tus canales de comunicación para que nunca pierdas una oportunidad de venta.</p>
   </div>
 
@@ -722,24 +865,24 @@
   <div class="section-header" data-aos="fade-up">
     <p class="section-label">Proceso Simple</p>
     <h2 class="section-title">¿Cómo funciona <span>Automalytics</span>?</h2>
-    <p class="section-sub">Tres pasos simples para transformar la comunicación de tu negocio.</p>
+    <p class="section-sub">Tres pasos simples para llevar tu negocio a internet — con o sin automatización.</p>
   </div>
 
   <div class="steps-grid">
     <div class="step" data-aos="fade-up" data-aos-delay="0">
       <div class="step-num">1</div>
       <h3>Cuéntanos tu negocio</h3>
-      <p>Agendamos una reunión, conocemos tu operación, tus clientes y tus objetivos de automatización.</p>
+      <p>Agendamos una reunión, conocemos tu operación, tus clientes y qué necesitas: página web, automatización, o ambas.</p>
     </div>
     <div class="step" data-aos="fade-up" data-aos-delay="120">
       <div class="step-num">2</div>
-      <h3>Configuramos tu IA</h3>
-      <p>Entrenamos el agente con la información de tu negocio y configuramos los flujos automáticos a tu medida.</p>
+      <h3>Diseñamos y configuramos</h3>
+      <p>Construimos tu sitio web a tu medida y, si lo necesitas, entrenamos tu agente de IA y conectamos tus flujos automáticos.</p>
     </div>
     <div class="step" data-aos="fade-up" data-aos-delay="240">
       <div class="step-num">3</div>
       <h3>Lanzamos y escalamos</h3>
-      <p>Activamos el sistema, monitoreamos resultados y ajustamos continuamente para maximizar tus conversiones.</p>
+      <p>Publicamos tu sitio, activamos el sistema y monitoreamos resultados para maximizar tus conversiones.</p>
     </div>
   </div>
 </section>
@@ -752,60 +895,124 @@
     <p class="section-sub">Sin contratos de permanencia. Cancela cuando quieras. Todos los planes incluyen soporte.</p>
   </div>
 
-  <div class="pricing-grid">
-    <!-- Básico -->
-    <div class="pricing-card" data-aos="fade-up" data-aos-delay="0">
-      <p class="pricing-plan">Básico</p>
-      <div class="pricing-price"><sup>$</sup>49.990</div>
-      <p class="pricing-period">CLP / mes</p>
-      <p class="pricing-desc">Ideal para negocios pequeños que quieren empezar a automatizar su WhatsApp sin complejidad.</p>
-      <ul class="pricing-features">
-        <li><span class="check">✓</span> 1 línea WhatsApp Business</li>
-        <li><span class="check">✓</span> Chatbot IA básico</li>
-        <li><span class="check">✓</span> Hasta 500 conversaciones/mes</li>
-        <li><span class="check">✓</span> Respuestas automáticas 24/7</li>
-        <li><span class="check">✓</span> Soporte por email</li>
-        <li><span class="x">✕</span> <span style="opacity:.5">CRM integrado</span></li>
-        <li><span class="x">✕</span> <span style="opacity:.5">Agenda automática</span></li>
-      </ul>
-      <a href="#cta" class="btn-plan btn-plan-outline">Comenzar ahora</a>
+  <div class="pricing-groups">
+    <!-- PÁGINAS WEB -->
+    <div class="pricing-group">
+      <h3 class="pricing-group-title">💻 Páginas Web <span>Pago único</span></h3>
+      <div class="pricing-grid">
+        <!-- Landing Page -->
+        <div class="pricing-card" data-aos="fade-up" data-aos-delay="0">
+          <p class="pricing-plan">Landing Page</p>
+          <div class="pricing-price"><sup>$</sup>149.990</div>
+          <p class="pricing-period">CLP · pago único</p>
+          <p class="pricing-desc">Ideal para campañas y captación de leads: una sola página, 100% enfocada en convertir.</p>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> 1 página de alto impacto</li>
+            <li><span class="check">✓</span> Diseño responsive</li>
+            <li><span class="check">✓</span> Formulario de contacto</li>
+            <li><span class="check">✓</span> Hosting y dominio 1er año</li>
+            <li><span class="x">✕</span> <span style="opacity:.5">Múltiples páginas</span></li>
+            <li><span class="x">✕</span> <span style="opacity:.5">Tienda online</span></li>
+          </ul>
+          <a href="#cta" class="btn-plan btn-plan-outline">Cotizar ahora</a>
+        </div>
+
+        <!-- Sitio Corporativo -->
+        <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="120">
+          <div class="featured-badge">⭐ Más elegido</div>
+          <p class="pricing-plan">Sitio Corporativo</p>
+          <div class="pricing-price"><sup>$</sup>349.990</div>
+          <p class="pricing-period">CLP · pago único</p>
+          <p class="pricing-desc">Presencia profesional completa para tu negocio, con todo lo necesario para generar confianza.</p>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> Hasta 5 páginas</li>
+            <li><span class="check">✓</span> Diseño 100% a tu medida</li>
+            <li><span class="check">✓</span> SEO básico incluido</li>
+            <li><span class="check">✓</span> Botón de WhatsApp integrado</li>
+            <li><span class="check">✓</span> Hosting y dominio 1er año</li>
+            <li><span class="check">✓</span> 1 ronda de ajustes post-entrega</li>
+          </ul>
+          <a href="#cta" class="btn-plan btn-plan-primary">Cotizar ahora</a>
+        </div>
+
+        <!-- Tienda Online -->
+        <div class="pricing-card" data-aos="fade-up" data-aos-delay="240">
+          <p class="pricing-plan">Tienda Online</p>
+          <div class="pricing-price"><sup>$</sup>649.990</div>
+          <p class="pricing-period">CLP · pago único</p>
+          <p class="pricing-desc">Vende directamente desde tu web, con catálogo de productos y pagos integrados.</p>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> Catálogo de productos</li>
+            <li><span class="check">✓</span> Carrito y pagos integrados</li>
+            <li><span class="check">✓</span> Panel de administración</li>
+            <li><span class="check">✓</span> SEO y hosting incluidos</li>
+            <li><span class="check">✓</span> Integración con WhatsApp</li>
+            <li><span class="check">✓</span> 2 rondas de ajustes post-entrega</li>
+          </ul>
+          <a href="#cta" class="btn-plan btn-plan-outline">Cotizar ahora</a>
+        </div>
+      </div>
     </div>
 
-    <!-- Pro -->
-    <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="120">
-      <div class="featured-badge">⭐ Más popular</div>
-      <p class="pricing-plan">Pro</p>
-      <div class="pricing-price"><sup>$</sup>119.990</div>
-      <p class="pricing-period">CLP / mes</p>
-      <p class="pricing-desc">Para negocios en crecimiento que necesitan capturar más leads y gestionar clientes de forma eficiente.</p>
-      <ul class="pricing-features">
-        <li><span class="check">✓</span> 3 líneas WhatsApp Business</li>
-        <li><span class="check">✓</span> IA conversacional avanzada</li>
-        <li><span class="check">✓</span> Hasta 3.000 conversaciones/mes</li>
-        <li><span class="check">✓</span> CRM integrado</li>
-        <li><span class="check">✓</span> Agenda automática de citas</li>
-        <li><span class="check">✓</span> Reportes mensuales</li>
-        <li><span class="check">✓</span> Soporte prioritario WhatsApp</li>
-      </ul>
-      <a href="#cta" class="btn-plan btn-plan-primary">Comenzar ahora</a>
-    </div>
+    <!-- AUTOMATIZACIÓN -->
+    <div class="pricing-group">
+      <h3 class="pricing-group-title">🤖 Automatización con IA <span>Suscripción mensual</span></h3>
+      <div class="pricing-grid">
+        <!-- Básico -->
+        <div class="pricing-card" data-aos="fade-up" data-aos-delay="0">
+          <p class="pricing-plan">Básico</p>
+          <div class="pricing-price"><sup>$</sup>49.990</div>
+          <p class="pricing-period">CLP / mes</p>
+          <p class="pricing-desc">Ideal para negocios pequeños que quieren empezar a automatizar su WhatsApp sin complejidad.</p>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> 1 línea WhatsApp Business</li>
+            <li><span class="check">✓</span> Chatbot IA básico</li>
+            <li><span class="check">✓</span> Hasta 500 conversaciones/mes</li>
+            <li><span class="check">✓</span> Respuestas automáticas 24/7</li>
+            <li><span class="check">✓</span> Soporte por email</li>
+            <li><span class="x">✕</span> <span style="opacity:.5">CRM integrado</span></li>
+            <li><span class="x">✕</span> <span style="opacity:.5">Agenda automática</span></li>
+          </ul>
+          <a href="#cta" class="btn-plan btn-plan-outline">Comenzar ahora</a>
+        </div>
 
-    <!-- Enterprise -->
-    <div class="pricing-card" data-aos="fade-up" data-aos-delay="240">
-      <p class="pricing-plan">Enterprise</p>
-      <div class="pricing-price"><sup>$</sup>299.990</div>
-      <p class="pricing-period">CLP / mes</p>
-      <p class="pricing-desc">Para empresas que requieren una solución robusta, personalizada y escalable a nivel corporativo.</p>
-      <ul class="pricing-features">
-        <li><span class="check">✓</span> Líneas WhatsApp ilimitadas</li>
-        <li><span class="check">✓</span> IA personalizada con tu marca</li>
-        <li><span class="check">✓</span> Conversaciones ilimitadas</li>
-        <li><span class="check">✓</span> CRM + Analytics avanzado</li>
-        <li><span class="check">✓</span> Integraciones a medida</li>
-        <li><span class="check">✓</span> Gerente de cuenta dedicado</li>
-        <li><span class="check">✓</span> SLA y soporte 24/7</li>
-      </ul>
-      <a href="#cta" class="btn-plan btn-plan-outline">Hablar con ventas</a>
+        <!-- Pro -->
+        <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="120">
+          <div class="featured-badge">⭐ Más popular</div>
+          <p class="pricing-plan">Pro</p>
+          <div class="pricing-price"><sup>$</sup>119.990</div>
+          <p class="pricing-period">CLP / mes</p>
+          <p class="pricing-desc">Para negocios en crecimiento que necesitan capturar más leads y gestionar clientes de forma eficiente.</p>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> 3 líneas WhatsApp Business</li>
+            <li><span class="check">✓</span> IA conversacional avanzada</li>
+            <li><span class="check">✓</span> Hasta 3.000 conversaciones/mes</li>
+            <li><span class="check">✓</span> CRM integrado</li>
+            <li><span class="check">✓</span> Agenda automática de citas</li>
+            <li><span class="check">✓</span> Reportes mensuales</li>
+            <li><span class="check">✓</span> Soporte prioritario WhatsApp</li>
+          </ul>
+          <a href="#cta" class="btn-plan btn-plan-primary">Comenzar ahora</a>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="pricing-card" data-aos="fade-up" data-aos-delay="240">
+          <p class="pricing-plan">Enterprise</p>
+          <div class="pricing-price"><sup>$</sup>299.990</div>
+          <p class="pricing-period">CLP / mes</p>
+          <p class="pricing-desc">Para empresas que requieren una solución robusta, personalizada y escalable a nivel corporativo.</p>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> Líneas WhatsApp ilimitadas</li>
+            <li><span class="check">✓</span> IA personalizada con tu marca</li>
+            <li><span class="check">✓</span> Conversaciones ilimitadas</li>
+            <li><span class="check">✓</span> CRM + Analytics avanzado</li>
+            <li><span class="check">✓</span> Integraciones a medida</li>
+            <li><span class="check">✓</span> Gerente de cuenta dedicado</li>
+            <li><span class="check">✓</span> SLA y soporte 24/7</li>
+          </ul>
+          <a href="#cta" class="btn-plan btn-plan-outline">Hablar con ventas</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -816,7 +1023,7 @@
     <div class="about-visual" data-aos="fade-right">
       <div class="about-card-main">
         <span class="about-tag">¿Quiénes somos?</span>
-        <p>Somos una agencia especializada en automatización de conversaciones con Inteligencia Artificial. Transformamos la forma en que los negocios se comunican con sus clientes — haciendo que cada interacción sea más rápida, más efectiva y completamente automatizada.</p>
+        <p>Somos una agencia digital que combina diseño web profesional con automatización impulsada por Inteligencia Artificial. Ayudamos a negocios a tener presencia online sólida y conversaciones automatizadas que convierten visitantes en clientes.</p>
       </div>
       <div class="about-mini-cards">
         <div class="about-mini">
@@ -840,20 +1047,20 @@
 
     <div class="about-content" data-aos="fade-left">
       <p class="section-label">Nuestra misión</p>
-      <h2 class="section-title">Democratizamos la <span>IA para negocios</span> de todos los tamaños</h2>
-      <p class="section-sub">Creemos que la inteligencia artificial no debería ser exclusiva de las grandes corporaciones. Nuestro objetivo es que cualquier negocio en Chile y el mundo pueda automatizar sus conversaciones y crecer sin límites.</p>
+      <h2 class="section-title">Democratizamos la <span>presencia digital</span> para negocios de todos los tamaños</h2>
+      <p class="section-sub">Creemos que cualquier negocio merece un sitio web profesional y herramientas de IA para atender a sus clientes — sin importar su tamaño o presupuesto.</p>
       <ul class="about-features">
         <li>
-          <span class="icon">🎯</span>
-          <div><strong>Enfoque en resultados</strong> — Cada automatización está diseñada para aumentar tus ventas y reducir tu carga operativa.</div>
+          <span class="icon">🎨</span>
+          <div><strong>Diseño profesional</strong> — Sitios web modernos, rápidos y pensados para convertir visitantes en clientes.</div>
+        </li>
+        <li>
+          <span class="icon">🤖</span>
+          <div><strong>Automatización con IA</strong> — Conecta tu web a WhatsApp y atiende clientes 24/7 sin esfuerzo.</div>
         </li>
         <li>
           <span class="icon">🔧</span>
-          <div><strong>Implementación rápida</strong> — Tu sistema funcionando en días, no meses.</div>
-        </li>
-        <li>
-          <span class="icon">📈</span>
-          <div><strong>Escalabilidad garantizada</strong> — Crece sin que tus costos operativos crezcan al mismo ritmo.</div>
+          <div><strong>Implementación rápida</strong> — Tu sitio y tu sistema funcionando en días, no meses.</div>
         </li>
         <li>
           <span class="icon">🤝</span>
@@ -873,45 +1080,52 @@
   <div class="faq-list">
     <div class="faq-item" data-aos="fade-up">
       <button class="faq-q" onclick="toggleFaq(this)">
-        ¿Necesito saber de tecnología para usar Automalytics?
+        ¿Cuánto tiempo tarda en estar lista mi página web?
         <span class="arrow">▼</span>
       </button>
-      <div class="faq-a">No. Nosotros nos encargamos de toda la configuración técnica. Tú solo necesitas conocer tu negocio — el resto lo hacemos nosotros.</div>
+      <div class="faq-a">Entre 5 y 10 días hábiles dependiendo de la complejidad del sitio, contados desde que recibimos todo el contenido (textos, logo e imágenes) de tu negocio.</div>
     </div>
     <div class="faq-item" data-aos="fade-up" data-aos-delay="60">
       <button class="faq-q" onclick="toggleFaq(this)">
-        ¿Cuánto tiempo tarda en estar funcionando?
+        ¿El hosting y el dominio están incluidos?
         <span class="arrow">▼</span>
       </button>
-      <div class="faq-a">Dependiendo del plan, el tiempo de implementación es de 3 a 7 días hábiles. Los planes Básico y Pro se configuran en menos de una semana.</div>
+      <div class="faq-a">Sí, todos los planes de página web incluyen hosting y dominio durante el primer año. Después puedes renovarlos directamente o contratar nuestro mantenimiento mensual.</div>
     </div>
     <div class="faq-item" data-aos="fade-up" data-aos-delay="120">
       <button class="faq-q" onclick="toggleFaq(this)">
-        ¿El bot puede responder en lenguaje natural, como un humano?
+        ¿Puedo pedir cambios después de que la página esté lista?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-a">Sí, cada plan incluye una o más rondas de ajustes post-entrega. Luego puedes contratar un plan de mantenimiento mensual para cambios continuos.</div>
+    </div>
+    <div class="faq-item" data-aos="fade-up" data-aos-delay="180">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Necesito saber de tecnología para usar Automalytics?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-a">No. Nosotros nos encargamos de todo el diseño y la configuración técnica, tanto de tu sitio web como de la automatización. Tú solo necesitas conocer tu negocio.</div>
+    </div>
+    <div class="faq-item" data-aos="fade-up" data-aos-delay="240">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿El bot de WhatsApp puede responder en lenguaje natural, como un humano?
         <span class="arrow">▼</span>
       </button>
       <div class="faq-a">Sí. Usamos modelos de IA de última generación que comprenden el contexto, las intenciones y el lenguaje coloquial. Los clientes muchas veces no notan que están hablando con un bot.</div>
     </div>
-    <div class="faq-item" data-aos="fade-up" data-aos-delay="180">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        ¿Qué pasa si el bot no sabe responder algo?
-        <span class="arrow">▼</span>
-      </button>
-      <div class="faq-a">El sistema está configurado para transferir la conversación a un agente humano cuando no puede resolver la consulta, asegurando que ningún cliente quede sin atención.</div>
-    </div>
-    <div class="faq-item" data-aos="fade-up" data-aos-delay="240">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        ¿Puedo cancelar mi plan en cualquier momento?
-        <span class="arrow">▼</span>
-      </button>
-      <div class="faq-a">Sí, sin cargos ni penalizaciones. No tenemos contratos de permanencia. Puedes cancelar o cambiar de plan cuando quieras con 30 días de aviso.</div>
-    </div>
     <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        ¿Puedo cancelar mi plan de automatización en cualquier momento?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-a">Sí, sin cargos ni penalizaciones. No tenemos contratos de permanencia. Puedes cancelar o cambiar de plan cuando quieras con 30 días de aviso. (Los planes de página web son pago único, no aplica esta cláusula.)</div>
+    </div>
+    <div class="faq-item" data-aos="fade-up" data-aos-delay="360">
       <button class="faq-q" onclick="toggleFaq(this)">
         ¿Funciona para negocios fuera de Chile?
         <span class="arrow">▼</span>
       </button>
-      <div class="faq-a">Absolutamente. Aunque nuestra base está en Chile, trabajamos con clientes en toda Latinoamérica y a nivel global. WhatsApp es la app de mensajería #1 en la región.</div>
+      <div class="faq-a">Absolutamente. Aunque nuestra base está en Chile, trabajamos con clientes en toda Latinoamérica y a nivel global.</div>
     </div>
   </div>
 </section>
@@ -919,13 +1133,13 @@
 <!-- ─── CTA ─── -->
 <section id="cta">
   <div data-aos="fade-up">
-    <p class="section-label" style="text-align:center;">¿Listo para automatizar?</p>
+    <p class="section-label" style="text-align:center;">¿Listo para tener presencia digital?</p>
     <h2 class="section-title">Transforma tu negocio<br><span>hoy mismo</span></h2>
-    <p class="section-sub">Agenda una demo gratuita y descubre cómo Automalytics puede multiplicar tus ventas en 30 días.</p>
+    <p class="section-sub">Cotiza tu página web o agenda una demo gratuita de automatización y descubre cómo Automalytics puede impulsar tus ventas.</p>
     <div class="cta-buttons">
-      <a href="https://wa.me/56900000000?text=Hola!%20Quiero%20una%20demo%20de%20Automalytics" class="btn-wa" target="_blank">
+      <a href="https://wa.me/56900000000?text=Hola!%20Quiero%20cotizar%20una%20p%C3%A1gina%20web%20con%20Automalytics" class="btn-wa" target="_blank">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Agendar Demo por WhatsApp
+        Cotizar por WhatsApp
       </a>
       <a href="mailto:contacto@automalytics.cl" class="btn-secondary">
         ✉️ Enviar un email
@@ -946,7 +1160,8 @@
       <span class="nav-logo-text" style="font-size:1.1rem">Auto<span>malytics</span></span>
     </a>
     <nav class="footer-links">
-      <a href="#services">Servicios</a>
+      <a href="#web">Páginas Web</a>
+      <a href="#services">Automatización</a>
       <a href="#pricing">Precios</a>
       <a href="#about">Nosotros</a>
       <a href="#faq">FAQ</a>
@@ -955,7 +1170,7 @@
   </div>
   <div class="footer-bottom">
     <p>© 2025 <span>Automalytics</span>. Todos los derechos reservados.</p>
-    <p style="color:var(--gray);font-size:.8rem;">Automatiza · Capta · Convierte</p>
+    <p style="color:var(--gray);font-size:.8rem;">Páginas Web · Automatización · Resultados</p>
   </div>
 </footer>
 
