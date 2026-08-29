@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Automalytics — Páginas Web + Automatización con IA</title>
   <meta name="description" content="Diseñamos páginas web profesionales para tu negocio y las conectamos a WhatsApp con Inteligencia Artificial. Presencia digital completa, lista en días." />
+  <link rel="icon" type="image/webp" href="assets/logo.webp" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -69,7 +70,7 @@
     }
 
     .nav-logo { display: flex; align-items: center; gap: .65rem; text-decoration: none; flex-shrink: 0; }
-    .nav-logo svg { width: 38px; height: 38px; }
+    .nav-logo img { width: 38px; height: 38px; object-fit: contain; }
     .nav-logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--white); letter-spacing: -.5px; }
     .nav-logo-text span { color: var(--cyan); }
 
@@ -253,8 +254,9 @@
     .bot-avatar {
       width: 44px; height: 44px; background: linear-gradient(135deg, var(--blue), var(--cyan));
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; flex-shrink: 0;
+      font-size: 1.2rem; flex-shrink: 0; overflow: hidden;
     }
+    .bot-avatar img { width: 78%; height: 78%; object-fit: contain; }
     .bot-name { font-weight: 700; font-size: .95rem; color: var(--white); }
     .bot-status { font-size: .72rem; color: #22c55e; }
     .bot-status::before { content: "● "; }
@@ -331,6 +333,7 @@
       width: 52px; height: 52px; border-radius: 12px; margin-bottom: 1.25rem;
       display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
     }
+    .service-icon img { width: 65%; height: 65%; object-fit: contain; }
     .service-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .65rem; }
     .service-card p { color: var(--gray); font-size: .88rem; line-height: 1.65; }
     .service-card-wide { grid-column: span 2; }
@@ -437,6 +440,7 @@
       text-align: center; padding: 7rem 6%;
     }
     #cta .section-title { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.25rem; }
+    .cta-mascot { position: absolute; right: 6%; bottom: 0; width: 150px; pointer-events: none; }
     #cta .section-sub { margin: 0 auto 2.5rem; font-size: 1rem; }
     .cta-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
     .btn-wa {
@@ -573,6 +577,7 @@
       #cta .section-title { font-size: 1.8rem; }
       .cta-buttons { flex-direction: column; align-items: stretch; }
       .btn-wa, .btn-secondary { text-align: center; justify-content: center; }
+      .cta-mascot { display: none; }
 
       /* Footer */
       .footer-top { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
@@ -625,17 +630,7 @@
 <nav id="navbar">
   <div class="nav-inner">
     <a href="#" class="nav-logo">
-      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#7A8A1F"/>
-            <stop offset="100%" stop-color="#D7FF3F"/>
-          </linearGradient>
-        </defs>
-        <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill="url(#lg1)" opacity=".15" stroke="url(#lg1)" stroke-width="1.5"/>
-        <polygon points="20,7 31,13 31,27 20,33 9,27 9,13" fill="url(#lg1)" opacity=".2"/>
-        <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-family="Space Grotesk" font-weight="900" font-size="16" fill="url(#lg1)">A</text>
-      </svg>
+      <img src="assets/logo.webp" alt="Automalytics" width="38" height="38" />
       <span class="nav-logo-text">Auto<span>malytics</span></span>
     </a>
 
@@ -751,7 +746,7 @@
     <div class="hero-visual">
       <div class="hero-bot-card">
         <div class="bot-header">
-          <div class="bot-avatar">🤖</div>
+          <div class="bot-avatar"><img src="assets/mascot.webp" alt="AutoBot IA" /></div>
           <div>
             <div class="bot-name">AutoBot IA</div>
             <div class="bot-status">Activo ahora</div>
@@ -815,27 +810,27 @@
       <p>Sin plantillas genéricas: cada sitio se diseña según tu marca, tu rubro y tus objetivos de conversión — con la misma calidad visual que ves aquí.</p>
     </div>
     <div class="service-card" data-aos="fade-up" data-aos-delay="80">
-      <div class="service-icon" style="background:rgba(122,138,31,.12);border:1px solid rgba(122,138,31,.25);">💻</div>
+      <div class="service-icon" style="background:rgba(122,138,31,.12);border:1px solid rgba(122,138,31,.25);"><img src="assets/icons/website.webp" alt="" /></div>
       <h3>Landing Pages</h3>
       <p>Página de una sola sección, enfocada 100% en convertir. Ideal para campañas publicitarias y captación de leads.</p>
     </div>
     <div class="service-card" data-aos="fade-up" data-aos-delay="160">
-      <div class="service-icon" style="background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);">🏢</div>
+      <div class="service-icon" style="background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);"><img src="assets/icons/building.webp" alt="" /></div>
       <h3>Sitios Corporativos</h3>
       <p>Presencia profesional multi-página: servicios, equipo, testimonios y contacto — todo lo que tu negocio necesita mostrar.</p>
     </div>
     <div class="service-card" data-aos="fade-up" data-aos-delay="240">
-      <div class="service-icon" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);">🛒</div>
+      <div class="service-icon" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);"><img src="assets/icons/cart.webp" alt="" /></div>
       <h3>Tiendas Online</h3>
       <p>E-commerce con catálogo de productos, carrito de compras y pagos integrados para vender directamente desde tu web.</p>
     </div>
     <div class="service-card" data-aos="fade-up" data-aos-delay="320">
-      <div class="service-icon" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);">🔍</div>
+      <div class="service-icon" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);"><img src="assets/icons/seo.webp" alt="" /></div>
       <h3>SEO y Velocidad</h3>
       <p>Tu negocio visible en Google, con buenas prácticas técnicas y tiempos de carga optimizados desde el primer día.</p>
     </div>
     <div class="service-card" data-aos="fade-up" data-aos-delay="400">
-      <div class="service-icon" style="background:rgba(122,138,31,.1);border:1px solid rgba(122,138,31,.2);">☁️</div>
+      <div class="service-icon" style="background:rgba(122,138,31,.1);border:1px solid rgba(122,138,31,.2);"><img src="assets/icons/cloud.webp" alt="" /></div>
       <h3>Hosting y Dominio Incluidos</h3>
       <p>Nos encargamos de que tu sitio esté siempre online, rápido y seguro — sin que tengas que administrar nada técnico.</p>
     </div>
@@ -862,7 +857,7 @@
       <p>Cada conversación queda registrada automáticamente. Gestiona tus clientes, seguimientos y oportunidades en un solo panel.</p>
     </div>
     <div class="service-card" data-aos="fade-up" data-aos-delay="160">
-      <div class="service-icon" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);">🤖</div>
+      <div class="service-icon" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);"><img src="assets/icons/chatbot.webp" alt="" /></div>
       <h3>Chatbot con IA</h3>
       <p>No es un bot genérico — es un agente entrenado con el conocimiento de tu negocio que entiende el contexto de cada conversación.</p>
     </div>
@@ -1151,6 +1146,7 @@
 
 <!-- ─── CTA ─── -->
 <section id="cta">
+  <img class="cta-mascot" src="assets/mascot.webp" alt="" data-aos="fade-up" data-aos-delay="100" />
   <div data-aos="fade-up">
     <p class="section-label" style="text-align:center;">¿Listo para tener presencia digital?</p>
     <h2 class="section-title">Transforma tu negocio<br><span>hoy mismo</span></h2>
@@ -1171,11 +1167,7 @@
 <footer>
   <div class="footer-top">
     <a href="#" class="nav-logo">
-      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px">
-        <defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7A8A1F"/><stop offset="100%" stop-color="#D7FF3F"/></linearGradient></defs>
-        <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill="url(#lg2)" opacity=".15" stroke="url(#lg2)" stroke-width="1.5"/>
-        <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-family="Space Grotesk" font-weight="900" font-size="16" fill="url(#lg2)">A</text>
-      </svg>
+      <img src="assets/logo.webp" alt="Automalytics" width="32" height="32" />
       <span class="nav-logo-text" style="font-size:1.1rem">Auto<span>malytics</span></span>
     </a>
     <nav class="footer-links">
