@@ -127,6 +127,7 @@
       white-space: nowrap; display: block;
     }
     .nav-links a:hover { color: var(--white); background: rgba(255,255,255,.07); }
+    .nav-links a.active { color: var(--cyan); }
 
     .nav-right { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
 
@@ -315,6 +316,8 @@
     }
     .chat-input::placeholder { color: rgba(255,255,255,.3); }
     .chat-input:focus { border-color: rgba(215,255,63,.4); box-shadow: 0 0 0 2px rgba(215,255,63,.25); }
+    .chat-input.input-error { border-color: #ef4444; }
+    .chat-input.input-error:focus { box-shadow: 0 0 0 2px rgba(239,68,68,.25); }
     .chat-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
     .chat-send-btn {
       background: var(--cyan);
@@ -382,6 +385,21 @@
     }
     .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: .5rem; }
     .step p { color: var(--gray); font-size: .87rem; line-height: 1.6; }
+
+    /* ─── CASOS REALES ─── */
+    .cases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+    .case-card {
+      background: var(--card-bg); border: 1px solid var(--card-bdr);
+      border-radius: 16px; overflow: hidden; transition: all .3s;
+    }
+    .case-card:hover { border-color: rgba(215,255,63,.35); transform: translateY(-4px); }
+    .case-thumb { aspect-ratio: 1120 / 820; overflow: hidden; }
+    .case-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    .case-body { padding: 1.5rem; }
+    .case-body h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; }
+    .case-body p { color: var(--gray); font-size: .88rem; line-height: 1.6; margin-bottom: 1.1rem; }
+    .case-link { color: var(--cyan); text-decoration: none; font-weight: 700; font-family: 'Sora', sans-serif; font-size: .9rem; }
+    .case-link:hover { text-decoration: underline; }
 
     /* ─── PRICING ─── */
     #pricing { background: var(--bg2); }
@@ -526,6 +544,21 @@
     @media (max-width: 480px) {
       .wa-float { right: 1rem; bottom: 1rem; width: 50px; height: 50px; }
       .wa-float svg { width: 26px; height: 26px; }
+    }
+
+    /* ─── SCROLL TO TOP ─── */
+    .scroll-top {
+      position: fixed; right: 1.5rem; bottom: 5.5rem; z-index: 899;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--card-bg); border: 1px solid var(--card-bdr); color: var(--white);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      opacity: 0; pointer-events: none; transform: translateY(10px);
+      transition: opacity .25s ease, transform .25s ease, border-color .2s, color .2s;
+    }
+    .scroll-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .scroll-top:hover { border-color: var(--cyan); color: var(--cyan); }
+    @media (max-width: 480px) {
+      .scroll-top { right: 1rem; bottom: 4.75rem; width: 40px; height: 40px; }
     }
 
     /* ─── COOKIE CONSENT BANNER ───
@@ -718,6 +751,7 @@
         <ul class="nav-links">
           <li><a href="#web">Páginas Web</a></li>
           <li><a href="#services">Automatizaciones</a></li>
+          <li><a href="#casos">Casos</a></li>
           <li><a href="#pricing">Precios</a></li>
           <li><a href="#about">Nosotros</a></li>
           <li><a href="#faq">FAQ</a></li>
@@ -739,6 +773,7 @@
   <button class="mobile-menu-close" id="mobileClose">✕</button>
   <a href="#web" onclick="closeMobile()">Páginas Web</a>
   <a href="#services" onclick="closeMobile()">Automatizaciones</a>
+  <a href="#casos" onclick="closeMobile()">Casos</a>
   <a href="#pricing" onclick="closeMobile()">Precios</a>
   <a href="#about" onclick="closeMobile()">Nosotros</a>
   <a href="#faq" onclick="closeMobile()">FAQ</a>
@@ -951,6 +986,33 @@
       <div class="step-num">3</div>
       <h3>Lanzamos y escalamos</h3>
       <p>Publicamos tu sitio, activamos el sistema y monitoreamos resultados para maximizar tus conversiones.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CASOS REALES ─── -->
+<section id="casos" style="background:var(--bg2);">
+  <div class="section-header" data-aos="fade-up">
+    <p class="section-label">Casos Reales</p>
+    <h2 class="section-title">Esto es lo que <span>realmente hacemos</span></h2>
+    <p class="section-sub">Dos ejemplos reales que diseñamos — no maquetas, sitios funcionando que puedes recorrer.</p>
+  </div>
+  <div class="cases-grid">
+    <div class="case-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="case-thumb"><img src="assets/demo-preview.webp" alt="Vista previa del sitio de Clínica Dental Raíces" loading="lazy" /></div>
+      <div class="case-body">
+        <h3>Clínica Dental Raíces</h3>
+        <p>Sitio corporativo para una clínica odontológica: convenios de salud, agenda de horas y un diseño pensado para pacientes.</p>
+        <a href="demo/dental.html" class="case-link" target="_blank" rel="noopener">Ver demo →</a>
+      </div>
+    </div>
+    <div class="case-card" data-aos="fade-up" data-aos-delay="120">
+      <div class="case-thumb"><img src="assets/demo-preview-vet.webp" alt="Vista previa del sitio de Pata Feliz" loading="lazy" /></div>
+      <div class="case-body">
+        <h3>Pata Feliz</h3>
+        <p>Sitio para una clínica veterinaria: reserva de horas, servicios y una identidad visual cercana y amigable.</p>
+        <a href="demo/veterinaria.html" class="case-link" target="_blank" rel="noopener">Ver demo →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -1214,6 +1276,7 @@
     <nav class="footer-links">
       <a href="#web">Páginas Web</a>
       <a href="#services">Automatizaciones</a>
+      <a href="#casos">Casos</a>
       <a href="#pricing">Precios</a>
       <a href="#about">Nosotros</a>
       <a href="#faq">FAQ</a>
@@ -1230,6 +1293,11 @@
 <a href="https://wa.me/56929566246?text=Hola!%20Quiero%20cotizar%20una%20p%C3%A1gina%20web%20con%20Automalytics" class="wa-float" target="_blank" aria-label="Escríbenos por WhatsApp">
   <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
+
+<!-- ─── SCROLL TO TOP ─── -->
+<button class="scroll-top" id="scrollTopBtn" aria-label="Volver arriba">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 
 <!-- ─── COOKIE CONSENT BANNER ─── -->
 <div id="cookieBanner">
@@ -1287,6 +1355,11 @@
     const message = document.getElementById('chatMsg').value.trim();
     const btn     = document.getElementById('chatSendBtn');
     const btnText = document.getElementById('chatBtnText');
+    const nameEl  = document.getElementById('chatName');
+    const msgEl   = document.getElementById('chatMsg');
+
+    nameEl.classList.toggle('input-error', !name);
+    msgEl.classList.toggle('input-error', !message);
 
     if (!name || !message) {
       addBubble('Por favor ingresa tu nombre y mensaje 😊', 'bot');
@@ -1334,6 +1407,12 @@
     document.getElementById('chatMsg')?.addEventListener('keydown', e => {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendLead(); }
     });
+    // Clear the red error border as soon as the visitor starts fixing the field
+    ['chatName', 'chatMsg'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', function() {
+        this.classList.remove('input-error');
+      });
+    });
   });
 
   // ── Navbar scroll ──
@@ -1341,6 +1420,36 @@
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 40);
   });
+
+  // ── Scroll to top ──
+  (function() {
+    const btn = document.getElementById('scrollTopBtn');
+    window.addEventListener('scroll', () => {
+      btn.classList.toggle('show', window.scrollY > 600);
+    });
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+
+  // ── Scroll-spy: highlight the current section in the nav ──
+  (function() {
+    const navLinks = document.querySelectorAll('.nav-links a');
+    if (!navLinks.length) return;
+    const map = {};
+    navLinks.forEach(a => { map[a.getAttribute('href').slice(1)] = a; });
+    const sections = Object.keys(map).map(id => document.getElementById(id)).filter(Boolean);
+    if (!sections.length || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          map[entry.target.id]?.classList.add('active');
+        }
+      });
+    }, { rootMargin: '0px 0px -70% 0px', threshold: 0 });
+    sections.forEach(s => io.observe(s));
+  })();
 
   // ── Mobile menu ──
   document.getElementById('hamburger').addEventListener('click', () => {
