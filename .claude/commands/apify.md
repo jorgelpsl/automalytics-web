@@ -20,8 +20,9 @@ Pasos:
    - `maps` → `node scrape-google-maps.js "<rubro>" "<ciudad o país>" <cantidad>`
    - `instagram` → `node scrape-instagram.js "<rubro>" "<ciudad o país>" <cantidad>`
 4. Abre el JSON generado en `resultados/` y revisa cada entrada a mano antes de cargar:
-   - `maps`: descarta lo que no sea del rubro correcto (Google a veces mezcla categorías) o sea un lugar público mal etiquetado.
+   - `maps`: descarta lo que no sea del rubro correcto (Google a veces mezcla categorías), sea un lugar público/municipal mal etiquetado (plazas, canchas, clubes municipales), o sea una cadena grande que seguro ya tiene sitio propio (ej. Smart Fit, UFC Gym, Sportlife, Vitaldent, Starbucks — cualquier marca con presencia nacional/multinacional, sin importar el rubro).
    - `instagram`: descarta perfiles que no correspondan al rubro/país, o cuentas grandes/cadenas que seguro ya tienen sitio propio. Esta búsqueda no filtra por ubicación de forma estricta — verifica que cada perfil sea realmente del país/ciudad pedido.
+   - En ambos casos, "cadena grande" es un criterio permanente, no algo que haya que pedir cada vez.
 5. Corre: `node load-to-crm.js resultados/<archivo>.json`
 6. Reporta en el mismo formato de siempre: qué se encontró, qué se excluyó y por qué, cuántos se crearon/duplicados/fallidos, y pregunta si sigue con otro rubro, ciudad o plataforma.
 
