@@ -31,23 +31,54 @@ function hasRealWebsite(place) {
   return true;
 }
 
-async function main() {
-  console.log(`Buscando "${category}" en "${location}" (máx ${maxResults})...`);
-
+async function crawlOnce(crawlSize) {
   const run = await client.actor(ACTOR_ID).call({
     searchStringsArray: [category],
     locationQuery: location,
-    maxCrawledPlacesPerSearch: maxResults,
+    maxCrawledPlacesPerSearch: crawlSize,
     language: 'es',
   });
-
   const { items } = await client.dataset(run.defaultDatasetId).listItems();
-  console.log(`Apify devolvió ${items.length} lugares.`);
+  return items;
+}
 
-  const sinWeb = items.filter((p) => !hasRealWebsite(p) && p.phone);
-  console.log(`De esos, ${sinWeb.length} no tienen sitio web propio y sí tienen teléfono.`);
+async function main() {
+  console.log(`Buscando "${category}" en "${location}" — objetivo: ${maxResults} negocios sin sitio web...`);
 
-  const prospects = sinWeb.map((p) => ({
+  // maxResults es la cantidad de negocios QUE CALIFICAN (sin sitio propio,
+  // con teléfono) que queremos, no la cantidad cruda que Maps devuelve —
+  // como la mayoría de los lugares sí tienen sitio, hay que pedirle a Maps
+  // bastantes más de los que necesitamos y, si aun así no alcanza, volver
+  // a rastrear con un radio de búsqueda más amplio (crawlSize mayor).
+  const CAP = Math.max(maxResults * 8, 100);
+  let crawlSize = maxResults * 2;
+  let items = [];
+  let qualifying = [];
+
+  while (true) {
+    console.log(`  Rastreando hasta ${crawlSize} lugares en Maps...`);
+    items = await crawlOnce(crawlSize);
+    qualifying = items.filter((p) => !hasRealWebsite(p) && p.phone);
+    console.log(`  -> ${items.length} lugares encontrados, ${qualifying.length} califican (sin sitio propio, con teléfono).`);
+
+    if (qualifying.length >= maxResults) break;
+    if (crawlSize >= CAP) break;
+    // Maps devolvió menos de lo pedido: se quedó sin lugares para esta
+    // búsqueda en esta zona, así que pedir más no va a traer más.
+    if (items.length < crawlSize) break;
+
+    crawlSize = Math.min(crawlSize * 2, CAP);
+  }
+
+  if (qualifying.length < maxResults) {
+    console.log(
+      `Aviso: solo se encontraron ${qualifying.length} de los ${maxResults} pedidos — Maps no tiene más lugares para "${category}" en "${location}".`,
+    );
+  }
+
+  const selected = qualifying.slice(0, maxResults);
+
+  const prospects = selected.map((p) => ({
     businessName: p.title,
     phone: (p.phone || '').replace(/\s+/g, ''),
     industry: category,
@@ -61,7 +92,7 @@ async function main() {
   const outPath = `resultados/${slug}.json`;
   writeFileSync(outPath, JSON.stringify(prospects, null, 2));
 
-  console.log(`Guardado: ${outPath} (${prospects.length} prospectos listos para cargar)`);
+  console.log(`Guardado: ${outPath} (${prospects.length} de ${maxResults} pedidos, listos para cargar)`);
   console.log(`Siguiente paso: node load-to-crm.js ${outPath}`);
 }
 

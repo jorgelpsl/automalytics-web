@@ -8,7 +8,7 @@ Formato: `/apify "rubro" "ciudad o país" "plataforma" "cantidad"`
 - **rubro**: categoría del negocio (ej. "peluquería", "clínica dental")
 - **ciudad o país**: ubicación (ej. "Santiago, Chile", "Chile")
 - **plataforma**: `maps` (default si se omite) o `instagram`
-- **cantidad**: máximo de resultados (default 30)
+- **cantidad**: cuántos negocios que SÍ califiquen quieres al final (default 30) — no es un tope crudo de Apify. En `maps`, el script amplía la búsqueda solo automáticamente hasta juntar esa cantidad de negocios sin sitio propio (o hasta que Maps se quede sin más lugares para esa búsqueda, en cuyo caso avisa y entrega menos).
 
 Si falta rubro o ubicación, pregunta antes de correr nada. Si falta plataforma o cantidad, usa los defaults sin preguntar.
 
