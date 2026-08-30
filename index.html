@@ -217,26 +217,19 @@
       flex: 1; text-align: center; max-width: 260px;
     }
     .browser-content { padding: 1.75rem 2rem 2.25rem; background: linear-gradient(180deg, rgba(215,255,63,.05), transparent 45%); }
-    .mock-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-    .mock-logo { width: 74px; height: 10px; border-radius: 4px; background: rgba(255,255,255,.18); }
-    .mock-nav-links { display: flex; gap: .6rem; }
-    .mock-nav-links span { width: 34px; height: 8px; border-radius: 4px; background: rgba(255,255,255,.12); }
-    .mock-hero { text-align: center; padding: .5rem 0 2rem; }
-    .mock-badge { width: 130px; height: 11px; border-radius: 20px; background: rgba(255,255,255,.12); margin: 0 auto .9rem; }
-    .mock-headline-1 { width: 78%; height: 16px; border-radius: 4px; background: rgba(255,255,255,.55); margin: 0 auto .55rem; }
-    .mock-headline-2 { width: 52%; height: 16px; border-radius: 4px; background: rgba(255,255,255,.55); margin: 0 auto 1.25rem; }
-    .mock-cta { width: 140px; height: 34px; border-radius: 50px; background: linear-gradient(135deg, var(--blue), var(--cyan)); margin: 0 auto; box-shadow: 0 0 25px rgba(215,255,63,.3); }
-    .mock-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: .85rem; margin-top: 2rem; }
-    .mock-card { background: rgba(255,255,255,.04); border: 1px solid var(--card-bdr); border-radius: 10px; height: 72px; position: relative; overflow: hidden; }
-    .mock-card::after {
-      content: ""; position: absolute; inset: auto .7rem .6rem .7rem; height: 7px;
-      border-radius: 4px; background: rgba(255,255,255,.14);
+    .mockup-caption {
+      display: block; font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      font-size: .72rem; letter-spacing: .5px; text-transform: uppercase;
+      color: var(--gray); margin: 0 0 .75rem 1.5rem; text-align: left;
     }
-    .mockup-tag {
-      position: absolute; top: -12px; left: 1.5rem;
-      background: linear-gradient(90deg, var(--blue), var(--cyan)); color: var(--lime-ink);
-      font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: .7rem;
-      padding: .3rem 1rem; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,.3);
+    .browser-content.browser-content-img { padding: 0; }
+    .browser-content-img img { display: block; width: 100%; height: 260px; object-fit: cover; object-position: top; }
+
+    /* Mascot standing beside the mockup — real brand presence instead of
+       just the tiny chat avatar */
+    .hero-mascot {
+      position: absolute; left: -6.5rem; bottom: -1.5rem; width: 130px; z-index: 3;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,.5)); pointer-events: none;
     }
 
     /* Floating lead-capture widget, layered on the mockup's bottom-right corner */
@@ -518,6 +511,8 @@
         position: static; width: 100%; max-width: 300px;
         margin: -2.5rem auto 0;
       }
+      /* No room beside a full-width mockup on tablet/mobile */
+      .hero-mascot { display: none; }
     }
 
     /* Tablet / móvil grande */
@@ -540,9 +535,6 @@
       .hero-logostrip { margin-top: 2.5rem; }
       .logostrip-items { gap: 1.25rem 1.75rem; }
       .browser-content { padding: 1.25rem 1.25rem 1.5rem; }
-      .mock-nav-links span { width: 24px; }
-      .mock-cards { gap: .6rem; }
-      .mock-card { height: 56px; }
 
       /* Stats */
       .stats-bar { flex-direction: column; align-items: stretch; padding: 1.5rem 5%; }
@@ -693,9 +685,7 @@
       </p>
 
       <div class="hero-pills">
-        <div class="pill"><span>✓</span>Diseño Profesional</div>
         <div class="pill"><span>✓</span>Conectado a WhatsApp</div>
-        <div class="pill"><span>✓</span>Mantenimiento Mensual</div>
         <div class="pill"><span>✓</span>Listo en días</div>
       </div>
 
@@ -722,30 +712,17 @@
        No scroll-reveal here: this is the real lead-capture form, so it must render
        immediately instead of waiting to scroll into view + fade in. -->
   <div class="hero-visual-wrap">
-    <div class="mockup-tag">Ejemplo de diseño</div>
+    <span class="mockup-caption">Sitio real — Clínica Dental Raíces</span>
+    <img class="hero-mascot" src="assets/mascot.webp" alt="" />
     <div class="browser-mockup">
       <div class="browser-bar">
         <div class="browser-dot"></div>
         <div class="browser-dot"></div>
         <div class="browser-dot"></div>
-        <div class="browser-url">tunegocio.cl</div>
+        <div class="browser-url">clinicaraices.cl</div>
       </div>
-      <div class="browser-content">
-        <div class="mock-nav">
-          <div class="mock-logo"></div>
-          <div class="mock-nav-links"><span></span><span></span><span></span></div>
-        </div>
-        <div class="mock-hero">
-          <div class="mock-badge"></div>
-          <div class="mock-headline-1"></div>
-          <div class="mock-headline-2"></div>
-          <div class="mock-cta"></div>
-        </div>
-        <div class="mock-cards">
-          <div class="mock-card"></div>
-          <div class="mock-card"></div>
-          <div class="mock-card"></div>
-        </div>
+      <div class="browser-content browser-content-img">
+        <img src="assets/demo-preview.webp" alt="Sitio real de Clínica Dental Raíces" />
       </div>
     </div>
 
