@@ -1,0 +1,15 @@
+{
+  "name": "clientes-apify",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Búsqueda de prospectos (negocios sin sitio web) vía Apify, para cargar a Prospectos CRM",
+  "type": "module",
+  "scripts": {
+    "buscar:maps": "node scrape-google-maps.js",
+    "cargar:crm": "node load-to-crm.js"
+  },
+  "dependencies": {
+    "apify-client": "^2.9.0",
+    "dotenv": "^16.4.5"
+  }
+}
