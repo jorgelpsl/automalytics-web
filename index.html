@@ -245,26 +245,12 @@
     }
     .browser-content { padding: 1.75rem 2rem 2.25rem; background: var(--bg2); }
     .browser-content.browser-content-img { padding: 0; }
-    /* aspect-ratio matches the source screenshots exactly (1120x820) so the
+    /* aspect-ratio matches the source screenshot exactly (1120x820) so the
        full demo — nav, badge and headline — always shows, with no crop at
        any viewport width. A fixed pixel height cropped out the headline
        entirely on wide desktop windows. */
-    .demo-slider { position: relative; aspect-ratio: 1120 / 820; overflow: hidden; }
-    .demo-slide {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; object-position: top;
-      opacity: 0; transition: opacity .5s ease;
-    }
-    .demo-slide.active { opacity: 1; }
-    .demo-dots {
-      position: absolute; bottom: .7rem; left: 50%; transform: translateX(-50%);
-      display: flex; gap: .4rem; z-index: 4;
-    }
-    .demo-dot {
-      width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.45);
-      border: none; padding: 0; cursor: pointer; transition: background .2s, transform .2s;
-    }
-    .demo-dot.active { background: var(--cyan); transform: scale(1.3); }
+    .demo-shot { aspect-ratio: 1120 / 820; overflow: hidden; }
+    .demo-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
 
     /* Mascot standing beside the mockup — real brand presence instead of
        just the tiny chat avatar */
@@ -837,13 +823,8 @@
         <div class="browser-url">tunegocio.cl</div>
       </div>
       <div class="browser-content browser-content-img">
-        <div class="demo-slider" id="demoSlider">
-          <img src="assets/demo-preview.webp" alt="Ejemplo de sitio web para clínica dental" class="demo-slide active" />
-          <img src="assets/demo-preview-vet.webp" alt="Ejemplo de sitio web para clínica veterinaria" class="demo-slide" />
-          <div class="demo-dots">
-            <button class="demo-dot active" data-slide="0" aria-label="Ver ejemplo 1"></button>
-            <button class="demo-dot" data-slide="1" aria-label="Ver ejemplo 2"></button>
-          </div>
+        <div class="demo-shot">
+          <img src="assets/demo-preview.webp" alt="Ejemplo de sitio web para clínica dental" />
         </div>
       </div>
     </div>
@@ -1539,22 +1520,6 @@
       requestAnimationFrame(draw);
     }
     draw();
-  })();
-
-  // ── Demo slider ──
-  (function() {
-    const wrap = document.getElementById('demoSlider');
-    if (!wrap) return;
-    const slides = wrap.querySelectorAll('.demo-slide');
-    const dots = wrap.querySelectorAll('.demo-dot');
-    let current = 0;
-    function show(i) {
-      slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-      dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
-      current = i;
-    }
-    dots.forEach((d, idx) => d.addEventListener('click', () => show(idx)));
-    setInterval(() => show((current + 1) % slides.length), 5000);
   })();
 
   // ── Cookie consent ──
