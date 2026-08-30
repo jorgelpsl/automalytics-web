@@ -70,28 +70,25 @@
 
     /* ─── COOKIE CONSENT BANNER ─── */
     #cookieBanner {
-      display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 950;
+      display: none; position: fixed; left: 1.25rem; bottom: 1.25rem; z-index: 950;
+      max-width: 320px;
       background: rgba(18,20,13,.97); backdrop-filter: blur(10px);
-      border-top: 1px solid var(--card-bdr); padding: 1.1rem 6%;
+      border: 1px solid var(--card-bdr); border-radius: 16px;
+      padding: 1.15rem; box-shadow: 0 15px 40px rgba(0,0,0,.5);
     }
-    #cookieBanner.show { display: flex; }
-    .cookie-inner {
-      max-width: 1180px; margin: 0 auto; width: 100%;
-      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
-    }
-    .cookie-text { color: var(--gray); font-size: .85rem; line-height: 1.6; max-width: 640px; }
+    #cookieBanner.show { display: block; }
+    .cookie-text { color: var(--gray); font-size: .82rem; line-height: 1.55; margin-bottom: 1rem; }
     .cookie-text a { color: var(--cyan); text-decoration: none; }
     .cookie-text a:hover { text-decoration: underline; }
-    .cookie-actions { display: flex; gap: .75rem; flex-shrink: 0; }
+    .cookie-actions { display: flex; gap: .6rem; }
     .cookie-btn {
-      padding: .55rem 1.3rem; border-radius: 50px; font-family: 'Sora', sans-serif;
-      font-size: .82rem; font-weight: 700; cursor: pointer; border: none; white-space: nowrap;
+      flex: 1; padding: .55rem .8rem; border-radius: 50px; font-family: 'Sora', sans-serif;
+      font-size: .78rem; font-weight: 700; cursor: pointer; border: none; white-space: nowrap;
     }
     .cookie-btn-accept { background: var(--cyan); color: var(--lime-ink); }
     .cookie-btn-reject { background: transparent; border: 1px solid rgba(255,255,255,.2); color: var(--white); }
-    @media (max-width: 640px) {
-      .cookie-inner { flex-direction: column; align-items: stretch; text-align: center; }
-      .cookie-actions { justify-content: center; }
+    @media (max-width: 480px) {
+      #cookieBanner { left: .75rem; right: .75rem; bottom: .75rem; max-width: none; }
     }
   </style>
 </head>
@@ -145,12 +142,10 @@
   </a>
 
   <div id="cookieBanner">
-    <div class="cookie-inner">
-      <p class="cookie-text">Usamos datos básicos de navegación para entender cómo llegan los visitantes al sitio. Puedes revisar el detalle en esta misma página.</p>
-      <div class="cookie-actions">
-        <button class="cookie-btn cookie-btn-reject" id="cookieReject">Rechazar</button>
-        <button class="cookie-btn cookie-btn-accept" id="cookieAccept">Aceptar</button>
-      </div>
+    <p class="cookie-text">Usamos datos básicos de navegación para entender cómo llegan los visitantes al sitio. Puedes revisar el detalle en esta misma página.</p>
+    <div class="cookie-actions">
+      <button class="cookie-btn cookie-btn-reject" id="cookieReject">Rechazar</button>
+      <button class="cookie-btn cookie-btn-accept" id="cookieAccept">Aceptar</button>
     </div>
   </div>
 
