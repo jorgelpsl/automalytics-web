@@ -31,6 +31,19 @@ async function main() {
 
   let created = 0, skipped = 0, failed = 0;
   for (const p of prospects) {
+    // The backend doesn't enforce phone uniqueness on POST /prospects (that
+    // check only runs client-side, in the CRM's own form) — without this,
+    // re-running a search that resurfaces the same business creates a
+    // second row instead of skipping it.
+    const checkRes = await fetch(`${BASE}/prospects/check-phone?phone=${encodeURIComponent(p.phone)}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    const { match } = await checkRes.json();
+    if (match) {
+      skipped++;
+      continue;
+    }
+
     const res = await fetch(`${BASE}/prospects`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
