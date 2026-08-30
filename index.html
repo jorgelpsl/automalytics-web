@@ -244,7 +244,11 @@
     }
     .browser-content { padding: 1.75rem 2rem 2.25rem; background: var(--bg2); }
     .browser-content.browser-content-img { padding: 0; }
-    .demo-slider { position: relative; height: 260px; overflow: hidden; }
+    /* aspect-ratio matches the source screenshots exactly (1120x820) so the
+       full demo — nav, badge and headline — always shows, with no crop at
+       any viewport width. A fixed pixel height cropped out the headline
+       entirely on wide desktop windows. */
+    .demo-slider { position: relative; aspect-ratio: 1120 / 820; overflow: hidden; }
     .demo-slide {
       position: absolute; inset: 0; width: 100%; height: 100%;
       object-fit: cover; object-position: top;
