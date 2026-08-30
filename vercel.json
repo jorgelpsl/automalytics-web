@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/dashboard", "destination": "https://prospectos-crm-frontend.vercel.app/dashboard" },
+    { "source": "/dashboard/(.*)", "destination": "https://prospectos-crm-frontend.vercel.app/dashboard/$1" }
+  ]
+}
