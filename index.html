@@ -837,6 +837,9 @@
           </div>
           <input class="chat-input" type="email" id="chatEmail" placeholder="Tu email" maxlength="100" />
           <input class="chat-input" type="text" id="chatMsg" placeholder="¿Cómo podemos ayudarte?" maxlength="300" />
+          <div style="position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
+            <input type="text" id="chatWebsite" name="website" tabindex="-1" autocomplete="off" />
+          </div>
           <button class="chat-send-btn" id="chatSendBtn" onclick="sendLead()">
             <span id="chatBtnText">Enviar mensaje →</span>
           </button>
@@ -1273,6 +1276,11 @@
   }
 
   async function sendLead() {
+    // Honeypot: invisible to real visitors, but bots that blindly fill every
+    // field will populate it. If it has anything in it, silently drop the
+    // submission instead of sending it to the webhook.
+    if (document.getElementById('chatWebsite').value) return;
+
     const name    = document.getElementById('chatName').value.trim();
     const phone   = document.getElementById('chatPhone').value.trim();
     const email   = document.getElementById('chatEmail').value.trim();
