@@ -951,7 +951,7 @@
         <div class="chat-form" id="chatForm">
           <div class="chat-input-row">
             <input class="chat-input" type="text" id="chatName" placeholder="Tu nombre" maxlength="60" />
-            <input class="chat-input" type="tel" id="chatPhone" placeholder="WhatsApp" maxlength="20" />
+            <input class="chat-input" type="tel" id="chatPhone" placeholder="Tu WhatsApp" maxlength="20" />
           </div>
           <input class="chat-input" type="email" id="chatEmail" placeholder="Tu email" maxlength="100" />
           <input class="chat-input" type="text" id="chatMsg" placeholder="¿Cómo podemos ayudarte?" maxlength="300" />
@@ -1423,7 +1423,9 @@
   })();
 
   // ── Chat Lead Form ──
-  const WEBHOOK_URL = 'https://guacamayo1.app.n8n.cloud/webhook/automalytics-lead';
+  // Same-origin serverless function (api/lead.js) — it holds the real CRM
+  // credential server-side and forwards the lead to Prospectos CRM.
+  const WEBHOOK_URL = '/api/lead';
 
   function addBubble(text, type) {
     const msgs = document.getElementById('chatMessages');
@@ -1447,13 +1449,15 @@
     const btn     = document.getElementById('chatSendBtn');
     const btnText = document.getElementById('chatBtnText');
     const nameEl  = document.getElementById('chatName');
+    const phoneEl = document.getElementById('chatPhone');
     const msgEl   = document.getElementById('chatMsg');
 
     nameEl.classList.toggle('input-error', !name);
+    phoneEl.classList.toggle('input-error', phone.length < 6);
     msgEl.classList.toggle('input-error', !message);
 
-    if (!name || !message) {
-      addBubble('Por favor ingresa tu nombre y mensaje 😊', 'bot');
+    if (!name || phone.length < 6 || !message) {
+      addBubble('Por favor ingresa tu nombre, WhatsApp y mensaje 😊', 'bot');
       return;
     }
 
@@ -1499,7 +1503,7 @@
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendLead(); }
     });
     // Clear the red error border as soon as the visitor starts fixing the field
-    ['chatName', 'chatMsg'].forEach(id => {
+    ['chatName', 'chatPhone', 'chatMsg'].forEach(id => {
       document.getElementById(id)?.addEventListener('input', function() {
         this.classList.remove('input-error');
       });
