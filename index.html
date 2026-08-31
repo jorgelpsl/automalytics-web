@@ -245,18 +245,41 @@
     }
     .browser-content { padding: 1.75rem 2rem 2.25rem; background: var(--bg2); }
     .browser-content.browser-content-img { padding: 0; }
-    /* aspect-ratio matches the source screenshot exactly (1120x820) so the
-       full demo — nav, badge and headline — always shows, with no crop at
-       any viewport width. A fixed pixel height cropped out the headline
-       entirely on wide desktop windows. */
-    .demo-shot { aspect-ratio: 1120 / 820; overflow: hidden; }
-    .demo-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    /* ─── HERO BUILD ANIMATION ───
+       The mascot "builds" the site inside the frame instead of showing a
+       demo screenshot — Casos Reales further down is the one place real
+       client work is shown, so the hero doesn't repeat it. Pure abstract
+       shapes, no real content, on a loop: empty → pieces stack in → holds
+       → clears → repeats. */
+    .build-canvas { position: relative; aspect-ratio: 1120 / 820; background: #EFEDE6; overflow: hidden; }
+    .build-block {
+      position: absolute; background: #fff; border-radius: 8px;
+      opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,.06);
+    }
+    .build-block.in { opacity: 1; transform: translateY(0); }
+    .bb-nav { top: 6%; left: 6%; right: 6%; height: 11%; display: flex; align-items: center; padding: 0 4%; gap: 3%; }
+    .bb-nav .dot-logo { width: 9%; aspect-ratio: 1; border-radius: 50%; background: #D7DED0; flex-shrink: 0; }
+    .bb-nav .line { height: 16%; border-radius: 3px; background: #E3E1D8; }
+    .bb-nav .line:nth-of-type(2) { width: 14%; margin-left: auto; }
+    .bb-nav .line:nth-of-type(3), .bb-nav .line:nth-of-type(4) { width: 10%; }
+    .bb-head { top: 24%; left: 6%; width: 55%; height: 9%; background: #24261C; }
+    .bb-head2 { top: 35%; left: 6%; width: 40%; height: 9%; background: #8FA83E; }
+    .bb-sub { top: 48%; left: 6%; width: 46%; height: 5%; background: #DAD8CE; }
+    .bb-sub2 { top: 55%; left: 6%; width: 36%; height: 5%; background: #DAD8CE; }
+    .bb-btn { top: 66%; left: 6%; width: 26%; height: 8%; border-radius: 50px; background: var(--cyan); }
+    .bb-img { top: 22%; right: 6%; width: 34%; height: 55%; border-radius: 10px; background: linear-gradient(135deg, #DDEAB8, #B8CB6E); }
 
-    /* Mascot standing beside the mockup — real brand presence instead of
-       just the tiny chat avatar */
-    .hero-mascot {
+    /* Mascot standing beside the mockup, "working" on it */
+    .mascot-engineer {
       position: absolute; left: -6.5rem; bottom: -1.5rem; width: 130px; z-index: 3;
       filter: drop-shadow(0 15px 25px rgba(0,0,0,.5)); pointer-events: none;
+      animation: work-wiggle 1.1s ease-in-out infinite;
+      transform-origin: 70% 85%;
+    }
+    @keyframes work-wiggle {
+      0%, 100% { transform: rotate(-3deg) translateY(0); }
+      50% { transform: rotate(4deg) translateY(-5px); }
     }
 
     /* Floating lead-capture widget, layered on the mockup's bottom-right corner */
@@ -596,6 +619,8 @@
     [data-aos="fade-left"].aos-in { transform: translateX(0); }
     @media (prefers-reduced-motion: reduce) {
       [data-aos] { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .mascot-engineer { animation: none !important; }
+      .build-block { transition: none !important; }
     }
 
     /* ─── RESPONSIVE ─── */
@@ -613,7 +638,7 @@
         margin: 1.5rem auto 0;
       }
       /* No room beside a full-width mockup on tablet/mobile */
-      .hero-mascot { display: none; }
+      .mascot-engineer { display: none; }
     }
 
     /* Tablet / móvil grande */
@@ -814,7 +839,7 @@
        No scroll-reveal here: this is the real lead-capture form, so it must render
        immediately instead of waiting to scroll into view + fade in. -->
   <div class="hero-visual-wrap">
-    <img class="hero-mascot" src="assets/mascot.webp" alt="" />
+    <img class="mascot-engineer" src="assets/mascot-engineer.webp" alt="" />
     <div class="browser-mockup">
       <div class="browser-bar">
         <div class="browser-dot"></div>
@@ -823,8 +848,17 @@
         <div class="browser-url">tunegocio.cl</div>
       </div>
       <div class="browser-content browser-content-img">
-        <div class="demo-shot">
-          <img src="assets/demo-preview.webp" alt="Ejemplo de sitio web para clínica dental" />
+        <div class="build-canvas" id="buildCanvas">
+          <div class="build-block bb-nav">
+            <div class="dot-logo"></div>
+            <div class="line"></div><div class="line"></div><div class="line"></div>
+          </div>
+          <div class="build-block bb-head"></div>
+          <div class="build-block bb-head2"></div>
+          <div class="build-block bb-sub"></div>
+          <div class="build-block bb-sub2"></div>
+          <div class="build-block bb-btn"></div>
+          <div class="build-block bb-img"></div>
         </div>
       </div>
     </div>
@@ -1456,6 +1490,25 @@
       answer.classList.add('show');
     }
   }
+
+  // ── Hero build animation ── (the mascot "building" the site in a loop)
+  (function() {
+    const canvas = document.getElementById('buildCanvas');
+    if (!canvas) return;
+    const blocks = Array.from(canvas.querySelectorAll('.build-block'));
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      blocks.forEach(b => b.classList.add('in'));
+      return;
+    }
+    function cycle() {
+      blocks.forEach(b => b.classList.remove('in'));
+      blocks.forEach((b, i) => {
+        setTimeout(() => b.classList.add('in'), 300 + i * 260);
+      });
+    }
+    cycle();
+    setInterval(cycle, 5200);
+  })();
 
   // ── Particles ── (dot count and link radius scaled down on mobile — the
   // O(n²) connecting-line pass is the expensive part of this loop and was
