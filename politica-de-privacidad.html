@@ -10,6 +10,15 @@
   <link rel="icon" type="image/webp" href="assets/logo.webp" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <meta name="theme-color" content="#0A0C07" />
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('automalytics-theme') === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,19 +36,48 @@
       --card-bdr: rgba(255,255,255,0.08);
       --lime-ink: #12140A;
       --moss: #9FB05A;
+      --accent-ink: var(--cyan);
+      --moss-ink: var(--moss);
+      --text-on-dark: #F3F5EA;
+    }
+    [data-theme="light"] {
+      --bg: #F5F6EF;
+      --bg2: #ECEEE2;
+      --white: #14160D;
+      --gray: #5B6350;
+      --card-bg: rgba(10,12,7,.035);
+      --card-bdr: rgba(10,12,7,.09);
+      --accent-ink: #4B5C0E;
+      --moss-ink: #55631F;
     }
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg); color: var(--white);
       font-family: 'Work Sans', sans-serif; line-height: 1.7;
+      transition: background-color .3s ease, color .3s ease;
     }
+    @media (prefers-reduced-motion: reduce) { body { transition: none !important; } }
     h1, h2 { font-family: 'Sora', sans-serif; }
     .wrap { max-width: 760px; margin: 0 auto; padding: 5rem 6% 6rem; }
+    .top-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2.5rem; }
     .back {
-      display: inline-flex; align-items: center; gap: .4rem; color: var(--moss);
-      text-decoration: none; font-size: .85rem; font-weight: 600; margin-bottom: 2.5rem;
+      display: inline-flex; align-items: center; gap: .4rem; color: var(--moss-ink);
+      text-decoration: none; font-size: .85rem; font-weight: 600;
     }
-    .back:hover { color: var(--cyan); }
+    .back:hover { color: var(--accent-ink); }
+    .theme-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      color: var(--text-on-dark); cursor: pointer; padding: 0;
+      transition: background .2s;
+    }
+    .theme-toggle:hover { background: rgba(255,255,255,.1); }
+    .theme-toggle svg { width: 17px; height: 17px; }
+    .theme-toggle .icon-sun { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
     h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: .5rem; }
     .updated { color: var(--gray); font-size: .85rem; margin-bottom: 2.5rem; }
     h2 {
@@ -50,7 +88,7 @@
     ul { color: var(--gray); font-size: .95rem; margin: 0 0 1rem 1.2rem; }
     li { margin-bottom: .5rem; }
     strong { color: var(--white); }
-    a.inline { color: var(--cyan); text-decoration: none; }
+    a.inline { color: var(--accent-ink); text-decoration: none; }
     a.inline:hover { text-decoration: underline; }
 
     /* ─── FLOATING WHATSAPP BUTTON ─── */
@@ -73,11 +111,11 @@
       display: none; position: fixed; left: 1.25rem; bottom: 1.25rem; z-index: 950;
       max-width: 320px;
       background: rgba(18,20,13,.97); backdrop-filter: blur(10px);
-      border: 1px solid var(--card-bdr); border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.08); border-radius: 16px;
       padding: 1.15rem; box-shadow: 0 15px 40px rgba(0,0,0,.5);
     }
     #cookieBanner.show { display: block; }
-    .cookie-text { color: var(--gray); font-size: .82rem; line-height: 1.55; margin-bottom: 1rem; }
+    .cookie-text { color: #888E78; font-size: .82rem; line-height: 1.55; margin-bottom: 1rem; }
     .cookie-text a { color: var(--cyan); text-decoration: none; }
     .cookie-text a:hover { text-decoration: underline; }
     .cookie-actions { display: flex; gap: .6rem; }
@@ -86,7 +124,7 @@
       font-size: .78rem; font-weight: 700; cursor: pointer; border: none; white-space: nowrap;
     }
     .cookie-btn-accept { background: var(--cyan); color: var(--lime-ink); }
-    .cookie-btn-reject { background: transparent; border: 1px solid rgba(255,255,255,.2); color: var(--white); }
+    .cookie-btn-reject { background: transparent; border: 1px solid rgba(255,255,255,.2); color: var(--text-on-dark); }
     @media (max-width: 480px) {
       #cookieBanner { left: .75rem; right: .75rem; bottom: .75rem; max-width: none; }
     }
@@ -94,7 +132,13 @@
 </head>
 <body>
   <div class="wrap">
-    <a href="index.html" class="back">← Volver a Automalytics</a>
+    <div class="top-row">
+      <a href="index.html" class="back">← Volver a Automalytics</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar a modo claro/oscuro" title="Cambiar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
     <h1>Política de Privacidad</h1>
     <p class="updated">Última actualización: agosto de 2026</p>
 
@@ -150,6 +194,24 @@
   </div>
 
   <script>
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+      function applyThemeColor() {
+        if (themeColorMeta) {
+          themeColorMeta.setAttribute('content', root.getAttribute('data-theme') === 'light' ? '#F5F6EF' : '#0A0C07');
+        }
+      }
+      applyThemeColor();
+      btn.addEventListener('click', () => {
+        const isLight = root.getAttribute('data-theme') === 'light';
+        if (isLight) { root.removeAttribute('data-theme'); } else { root.setAttribute('data-theme', 'light'); }
+        applyThemeColor();
+        try { localStorage.setItem('automalytics-theme', isLight ? 'dark' : 'light'); } catch (e) {}
+      });
+    })();
+
     function loadAnalytics() {
       // TODO: GA4 (gtag.js) and Meta Pixel snippets go here.
     }

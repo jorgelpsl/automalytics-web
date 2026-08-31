@@ -8,6 +8,15 @@
   <link rel="icon" type="image/webp" href="assets/logo.webp" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <meta name="theme-color" content="#0A0C07" />
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('automalytics-theme') === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,18 +30,27 @@
       --white: #F3F5EA;
       --gray: #888E78;
       --lime-ink: #12140A;
+      --accent-ink: var(--cyan);
+    }
+    [data-theme="light"] {
+      --bg: #F5F6EF;
+      --white: #14160D;
+      --gray: #5B6350;
+      --accent-ink: #4B5C0E;
     }
     body {
       background: var(--bg); color: var(--white);
       font-family: 'Work Sans', sans-serif;
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
       padding: 2rem 6%; text-align: center;
+      transition: background-color .3s ease, color .3s ease;
     }
+    @media (prefers-reduced-motion: reduce) { body { transition: none !important; } }
     .wrap { max-width: 480px; }
     img.mascot { width: 130px; margin-bottom: 1.5rem; }
     .code {
       font-family: 'Sora', sans-serif; font-weight: 900; font-size: 5rem;
-      color: var(--cyan); line-height: 1; margin-bottom: .5rem;
+      color: var(--accent-ink); line-height: 1; margin-bottom: .5rem;
     }
     h1 {
       font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.4rem;
