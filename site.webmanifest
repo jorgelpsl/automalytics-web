@@ -3,7 +3,7 @@
   "short_name": "Automalytics",
   "description": "Páginas web 100% a la medida y automatización con IA para negocios en Chile.",
   "start_url": "/",
-  "display": "standalone",
+  "display": "browser",
   "background_color": "#0A0C07",
   "theme_color": "#0A0C07",
   "icons": [
