@@ -8,6 +8,7 @@
   <link rel="canonical" href="https://www.automalytics.com/" />
   <link rel="icon" type="image/webp" href="assets/logo.webp" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
   <meta name="theme-color" content="#0A0C07" />
   <script>
     (function () {
@@ -575,9 +576,21 @@
     .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
     .footer-links a { color: var(--gray); text-decoration: none; font-size: .87rem; transition: color .2s; }
     .footer-links a:hover { color: var(--white); }
+    .footer-social { display: flex; gap: .6rem; }
+    .footer-social a {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(var(--surf-tint-rgb),.05); border: 1px solid var(--card-bdr);
+      color: var(--gray); transition: color .2s, border-color .2s;
+    }
+    .footer-social a:hover { color: var(--accent-ink); border-color: var(--cyan); }
+    .footer-social svg { width: 18px; height: 18px; }
     .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 1.5rem; border-top: 1px solid var(--card-bdr); }
     .footer-bottom p { color: var(--gray); font-size: .82rem; }
     .footer-bottom span { color: var(--accent-ink); }
+    .footer-bottom-links { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    .footer-bottom-links a { color: var(--gray); font-size: .82rem; text-decoration: none; }
+    .footer-bottom-links a:hover { text-decoration: underline; }
 
     /* ─── MOBILE NAV MENU ─── */
     .mobile-menu {
@@ -1352,10 +1365,18 @@
       <a href="#faq">FAQ</a>
       <a href="#cta">Contacto</a>
     </nav>
+    <div class="footer-social">
+      <a href="https://instagram.com/automalytics" target="_blank" rel="noopener" aria-label="Automalytics en Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg>
+      </a>
+    </div>
   </div>
   <div class="footer-bottom">
     <p>© 2025 <span>Automalytics</span>. Todos los derechos reservados.</p>
-    <a href="politica-de-privacidad.html" style="color:var(--gray);font-size:.82rem;text-decoration:none;">Política de Privacidad</a>
+    <div class="footer-bottom-links">
+      <a href="politica-de-privacidad.html">Política de Privacidad</a>
+      <a href="terminos-de-servicio.html">Términos de Servicio</a>
+    </div>
   </div>
 </footer>
 
