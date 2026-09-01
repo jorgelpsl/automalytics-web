@@ -52,7 +52,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -114,7 +114,7 @@
       transition: background-color .3s ease, color .3s ease;
     }
 
-    h1, h2, h3, h4, h5 { font-family: 'Sora', sans-serif; }
+    h1, h2, h3, h4, h5 { font-family: 'Bricolage Grotesque', sans-serif; }
 
     /* ─── PARTICLES CANVAS ─── */
     #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .3; }
@@ -140,7 +140,7 @@
 
     .nav-logo { display: flex; align-items: center; gap: .65rem; text-decoration: none; flex-shrink: 0; }
     .nav-logo img { width: 38px; height: 38px; object-fit: contain; }
-    .nav-logo-text { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--text-on-dark); letter-spacing: -.5px; }
+    .nav-logo-text { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--text-on-dark); letter-spacing: -.5px; }
     .nav-logo-text span { color: var(--cyan); }
 
     /* Pill wrapper — gradient border via outline trick */
@@ -169,7 +169,7 @@
 
     .nav-cta {
       background: var(--cyan);
-      color: var(--lime-ink); font-weight: 700; font-family: 'Sora', sans-serif;
+      color: var(--lime-ink); font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif;
       padding: .58rem 1.35rem; border-radius: 50px; text-decoration: none;
       font-size: .84rem; transition: transform .2s; white-space: nowrap;
     }
@@ -245,14 +245,14 @@
     }
     .logostrip-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; }
     .logostrip-items span {
-      font-family: 'Sora', sans-serif; font-weight: 600; font-size: .92rem;
+      font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: .92rem;
       color: var(--gray); opacity: .7; transition: opacity .2s, color .2s;
     }
     .logostrip-items span:hover { opacity: 1; color: var(--white); }
     .btn-primary, .btn-secondary { box-sizing: border-box; }
     .btn-primary {
       background: var(--cyan);
-      color: var(--lime-ink); font-weight: 700; font-family: 'Sora', sans-serif;
+      color: var(--lime-ink); font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif;
       padding: .85rem 2rem; border-radius: 50px; text-decoration: none;
       font-size: .95rem; transition: transform .25s;
       display: inline-flex; align-items: center; gap: .5rem;
@@ -261,7 +261,7 @@
 
     .btn-secondary {
       background: transparent; border: 1px solid rgba(var(--surf-tint-rgb),.2);
-      color: var(--white); font-weight: 600; font-family: 'Sora', sans-serif;
+      color: var(--white); font-weight: 600; font-family: 'Bricolage Grotesque', sans-serif;
       padding: .85rem 2rem; border-radius: 50px; text-decoration: none;
       font-size: .95rem; transition: all .25s;
       display: inline-flex; align-items: center; gap: .5rem;
@@ -380,7 +380,7 @@
     .chat-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
     .chat-send-btn {
       background: var(--cyan);
-      color: var(--lime-ink); font-weight: 700; font-family: 'Sora', sans-serif;
+      color: var(--lime-ink); font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif;
       border: none; border-radius: 10px; padding: .65rem; cursor: pointer;
       font-size: .82rem; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: .4rem;
     }
@@ -401,7 +401,7 @@
     }
     .stat-item { text-align: center; padding: 1rem 3rem; }
     .stat-item + .stat-item { border-left: 1px solid var(--card-bdr); }
-    .stat-num { font-family: 'Sora', sans-serif; font-size: 2.2rem; font-weight: 900; background: linear-gradient(90deg, var(--moss), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 2.2rem; font-weight: 900; background: linear-gradient(90deg, var(--moss), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .stat-label { font-size: .82rem; color: var(--gray); margin-top: .25rem; }
 
     /* ─── SECTIONS COMMON ─── */
@@ -422,21 +422,28 @@
     .service-card {
       position: relative; overflow: hidden; counter-increment: svc;
       background: var(--card-bg); border: 1px solid var(--card-bdr);
-      border-radius: 4px 28px 4px 4px; padding: 2rem 2rem 1.75rem;
+      border-radius: 16px; padding: 2rem 2rem 1.75rem;
       transition: border-color .3s, transform .3s; cursor: default;
     }
+    .service-card::before {
+      content: ""; position: absolute; inset: 0; z-index: 0; opacity: 0;
+      background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(215,255,63,.14), transparent 70%);
+      transition: opacity .4s ease; pointer-events: none;
+    }
+    .service-card:hover::before { opacity: 1; }
     .service-card::after {
       content: counter(svc, decimal-leading-zero);
-      position: absolute; right: 1.2rem; bottom: .6rem;
-      font-family: 'Sora', sans-serif; font-weight: 800; font-size: 3rem; line-height: 1;
+      position: absolute; right: 1.2rem; bottom: .6rem; z-index: 0;
+      font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 3rem; line-height: 1;
       color: rgba(var(--surf-tint-rgb), .06); pointer-events: none;
     }
     .service-card:hover { border-color: rgba(215,255,63,.35); transform: translateY(-4px); }
     .service-icon {
       width: 50px; height: 50px; margin-bottom: 1.5rem;
       display: flex; align-items: center; justify-content: center;
-      position: relative; z-index: 1;
+      position: relative; z-index: 1; transition: transform .35s cubic-bezier(.2,.9,.3,1.4);
     }
+    .service-card:hover .service-icon { transform: translateY(-4px) scale(1.08); }
     .service-icon img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 16px rgba(0,0,0,.3)); }
     .service-card h3 { position: relative; z-index: 1; font-size: 1.05rem; font-weight: 700; margin-bottom: .65rem; }
     .service-card p { position: relative; z-index: 1; color: var(--gray); font-size: .88rem; line-height: 1.65; max-width: 38ch; }
@@ -461,7 +468,7 @@
       width: 56px; height: 56px; border-radius: 50%;
       background: var(--moss); color: var(--lime-ink);
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Sora', sans-serif; font-weight: 900; font-size: 1.2rem;
+      font-family: 'Bricolage Grotesque', sans-serif; font-weight: 900; font-size: 1.2rem;
       margin: 0 auto 1.25rem;
     }
     .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: .5rem; }
@@ -479,14 +486,14 @@
     .case-body { padding: 1.5rem; }
     .case-body h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; }
     .case-body p { color: var(--gray); font-size: .88rem; line-height: 1.6; margin-bottom: 1.1rem; }
-    .case-link { color: var(--accent-ink); text-decoration: none; font-weight: 700; font-family: 'Sora', sans-serif; font-size: .9rem; }
+    .case-link { color: var(--accent-ink); text-decoration: none; font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif; font-size: .9rem; }
     .case-link:hover { text-decoration: underline; }
 
     /* ─── PRICING ─── */
     #pricing { background: var(--bg2); }
     .pricing-groups { display: flex; flex-direction: column; gap: 4.5rem; }
     .pricing-group-title {
-      text-align: center; font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 700;
+      text-align: center; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.15rem; font-weight: 700;
       margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; gap: .6rem; flex-wrap: wrap;
     }
     .pricing-group-title span {
@@ -505,10 +512,10 @@
       position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
       background: var(--cyan);
       color: var(--lime-ink); font-weight: 800; font-size: .75rem; padding: .3rem 1.2rem;
-      border-radius: 50px; font-family: 'Sora', sans-serif; white-space: nowrap;
+      border-radius: 50px; font-family: 'Bricolage Grotesque', sans-serif; white-space: nowrap;
     }
     .pricing-plan { font-size: .8rem; font-weight: 700; color: var(--moss-ink); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: .75rem; }
-    .pricing-price { font-family: 'Sora', sans-serif; font-size: 2.4rem; font-weight: 900; margin-bottom: .25rem; }
+    .pricing-price { font-family: 'Bricolage Grotesque', sans-serif; font-size: 2.4rem; font-weight: 900; margin-bottom: .25rem; }
     .pricing-price sup { font-size: 1rem; vertical-align: super; margin-right: .1rem; }
     .pricing-period { color: var(--gray); font-size: .82rem; margin-bottom: .6rem; }
     .pricing-maintenance {
@@ -523,7 +530,7 @@
     .pricing-features li .x { color: #ef4444; flex-shrink: 0; }
     .btn-plan {
       width: 100%; padding: .85rem; border-radius: 50px; font-weight: 700;
-      font-family: 'Sora', sans-serif; font-size: .9rem; cursor: pointer;
+      font-family: 'Bricolage Grotesque', sans-serif; font-size: .9rem; cursor: pointer;
       border: none; text-decoration: none; display: block; text-align: center; transition: all .25s;
     }
     .btn-plan-outline { background: transparent; border: 1px solid rgba(var(--surf-tint-rgb),.2); color: var(--white); }
@@ -545,7 +552,7 @@
       background: var(--card-bg); border: 1px solid var(--card-bdr);
       border-radius: 14px; padding: 1.25rem; text-align: center;
     }
-    .about-mini .num { font-family: 'Sora', sans-serif; font-size: 1.6rem; font-weight: 900; background: linear-gradient(90deg, var(--moss), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .about-mini .num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.6rem; font-weight: 900; background: linear-gradient(90deg, var(--moss), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .about-mini .label { color: var(--gray); font-size: .78rem; margin-top: .2rem; }
     .about-content .section-sub { margin-bottom: 2rem; }
     .about-features { list-style: none; }
@@ -561,7 +568,7 @@
       width: 100%; background: var(--card-bg); border: none; color: var(--white);
       padding: 1.25rem 1.5rem; text-align: left; cursor: pointer;
       display: flex; justify-content: space-between; align-items: center;
-      font-family: 'Sora', sans-serif; font-weight: 600; font-size: .92rem;
+      font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: .92rem;
       transition: background .2s;
     }
     .faq-q:hover { background: rgba(var(--surf-tint-rgb),.06); }
@@ -581,7 +588,7 @@
     .cta-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
     .btn-wa {
       background: #25D366; color: #fff;
-      font-weight: 700; font-family: 'Sora', sans-serif;
+      font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif;
       padding: .9rem 2.2rem; border-radius: 50px; text-decoration: none;
       font-size: .95rem; transition: all .25s; display: inline-flex; align-items: center; gap: .6rem;
       box-shadow: 0 0 30px rgba(37,211,102,.3);
@@ -620,7 +627,7 @@
       flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
     }
     .mobile-menu.open { display: flex; }
-    .mobile-menu a { color: var(--text-on-dark); text-decoration: none; font-family: 'Sora', sans-serif; font-size: 1.4rem; font-weight: 700; }
+    .mobile-menu a { color: var(--text-on-dark); text-decoration: none; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.4rem; font-weight: 700; }
     .mobile-menu-close { position: absolute; top: 1.5rem; right: 6%; font-size: 1.5rem; cursor: pointer; background: none; border: none; color: var(--text-on-dark); }
 
     /* ─── FLOATING WHATSAPP BUTTON ─── */
@@ -672,7 +679,7 @@
     .cookie-text a:hover { text-decoration: underline; }
     .cookie-actions { display: flex; gap: .6rem; }
     .cookie-btn {
-      flex: 1; padding: .55rem .8rem; border-radius: 50px; font-family: 'Sora', sans-serif;
+      flex: 1; padding: .55rem .8rem; border-radius: 50px; font-family: 'Bricolage Grotesque', sans-serif;
       font-size: .78rem; font-weight: 700; cursor: pointer; border: none; white-space: nowrap;
     }
     .cookie-btn-accept { background: var(--cyan); color: var(--lime-ink); }
@@ -1443,6 +1450,17 @@
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     els.forEach(el => io.observe(el));
+  })();
+
+  // ── Service card spotlight ── (cursor-tracked glow, CSS reads --mx/--my)
+  (function() {
+    document.querySelectorAll('#services .service-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
   })();
 
   // ── Chat Lead Form ──
