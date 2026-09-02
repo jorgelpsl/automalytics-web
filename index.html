@@ -477,13 +477,20 @@
     /* ─── CASOS REALES ─── */
     .cases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
     .case-card {
+      position: relative;
       background: var(--card-bg); border: 1px solid var(--card-bdr);
       border-radius: 16px; overflow: hidden; transition: all .3s;
     }
+    .case-card::before {
+      content: ""; position: absolute; inset: 0; z-index: 0; opacity: 0;
+      background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(215,255,63,.14), transparent 70%);
+      transition: opacity .4s ease; pointer-events: none;
+    }
+    .case-card:hover::before { opacity: 1; }
     .case-card:hover { border-color: rgba(215,255,63,.35); transform: translateY(-4px); }
-    .case-thumb { aspect-ratio: 1120 / 820; overflow: hidden; }
+    .case-thumb { position: relative; z-index: 1; aspect-ratio: 1120 / 820; overflow: hidden; }
     .case-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
-    .case-body { padding: 1.5rem; }
+    .case-body { position: relative; z-index: 1; padding: 1.5rem; }
     .case-body h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; }
     .case-body p { color: var(--gray); font-size: .88rem; line-height: 1.6; margin-bottom: 1.1rem; }
     .case-link { color: var(--accent-ink); text-decoration: none; font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif; font-size: .9rem; }
@@ -505,30 +512,38 @@
       background: var(--card-bg); border: 1px solid var(--card-bdr);
       border-radius: 20px; padding: 2.5rem 2rem; position: relative; transition: all .3s;
     }
+    .pricing-card::before {
+      content: ""; position: absolute; inset: 0; z-index: 0; opacity: 0;
+      background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(215,255,63,.14), transparent 70%);
+      transition: opacity .4s ease; pointer-events: none;
+    }
+    .pricing-card:hover::before { opacity: 1; }
     .pricing-card.featured {
       border-color: var(--cyan); background: rgba(215,255,63,.04);
     }
     .featured-badge {
-      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%); z-index: 2;
       background: var(--cyan);
       color: var(--lime-ink); font-weight: 800; font-size: .75rem; padding: .3rem 1.2rem;
       border-radius: 50px; font-family: 'Bricolage Grotesque', sans-serif; white-space: nowrap;
     }
-    .pricing-plan { font-size: .8rem; font-weight: 700; color: var(--moss-ink); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: .75rem; }
-    .pricing-price { font-family: 'Bricolage Grotesque', sans-serif; font-size: 2.4rem; font-weight: 900; margin-bottom: .25rem; }
+    .pricing-plan { position: relative; z-index: 1; font-size: .8rem; font-weight: 700; color: var(--moss-ink); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: .75rem; }
+    .pricing-price { position: relative; z-index: 1; font-family: 'Bricolage Grotesque', sans-serif; font-size: 2.4rem; font-weight: 900; margin-bottom: .25rem; }
     .pricing-price sup { font-size: 1rem; vertical-align: super; margin-right: .1rem; }
-    .pricing-period { color: var(--gray); font-size: .82rem; margin-bottom: .6rem; }
+    .pricing-period { position: relative; z-index: 1; color: var(--gray); font-size: .82rem; margin-bottom: .6rem; }
     .pricing-maintenance {
+      position: relative; z-index: 1;
       display: inline-block; font-size: .8rem; font-weight: 700; color: var(--moss-ink);
       background: rgba(159,176,90,.12); border: 1px solid rgba(159,176,90,.3);
       border-radius: 8px; padding: .4rem .7rem; margin-bottom: 1.5rem;
     }
-    .pricing-desc { color: var(--gray); font-size: .87rem; line-height: 1.6; margin-bottom: 1.75rem; padding-bottom: 1.75rem; border-bottom: 1px solid var(--card-bdr); }
-    .pricing-features { list-style: none; margin-bottom: 2rem; }
+    .pricing-desc { position: relative; z-index: 1; color: var(--gray); font-size: .87rem; line-height: 1.6; margin-bottom: 1.75rem; padding-bottom: 1.75rem; border-bottom: 1px solid var(--card-bdr); }
+    .pricing-features { position: relative; z-index: 1; list-style: none; margin-bottom: 2rem; }
     .pricing-features li { display: flex; align-items: flex-start; gap: .65rem; font-size: .87rem; color: var(--gray); margin-bottom: .8rem; }
     .pricing-features li .check { color: var(--moss-ink); font-size: .9rem; flex-shrink: 0; margin-top: .1rem; }
     .pricing-features li .x { color: #ef4444; flex-shrink: 0; }
     .btn-plan {
+      position: relative; z-index: 1;
       width: 100%; padding: .85rem; border-radius: 50px; font-weight: 700;
       font-family: 'Bricolage Grotesque', sans-serif; font-size: .9rem; cursor: pointer;
       border: none; text-decoration: none; display: block; text-align: center; transition: all .25s;
@@ -713,7 +728,7 @@
       .mascot-engineer { animation: none !important; }
       .build-block { transition: none !important; }
       body { transition: none !important; }
-      .service-card::before { animation: none !important; }
+      .service-card::before, .case-card::before, .pricing-card::before { animation: none !important; }
     }
 
     /* ─── RESPONSIVE ─── */
@@ -771,11 +786,14 @@
       .service-card { padding: 1.5rem; }
       /* No cursor on touch, so the spotlight can't follow a mouse — swap it
          for a slow ambient glow that breathes on its own, staggered per
-         card so the whole section doesn't pulse in unison. */
-      .service-card::before { animation: service-glow-ambient 6s ease-in-out infinite; }
-      .service-card:nth-child(1)::before { animation-delay: 0s; }
-      .service-card:nth-child(2)::before { animation-delay: 1s; }
-      .service-card:nth-child(3)::before { animation-delay: 2s; }
+         card so the section doesn't pulse in unison. Same treatment on
+         every other spotlight card (Casos Reales, Precios). */
+      .service-card::before, .case-card::before, .pricing-card::before {
+        animation: service-glow-ambient 6s ease-in-out infinite;
+      }
+      .service-card:nth-child(1)::before, .case-card:nth-child(1)::before, .pricing-card:nth-child(1)::before { animation-delay: 0s; }
+      .service-card:nth-child(2)::before, .case-card:nth-child(2)::before, .pricing-card:nth-child(2)::before { animation-delay: 1s; }
+      .service-card:nth-child(3)::before, .pricing-card:nth-child(3)::before { animation-delay: 2s; }
       .service-card:nth-child(4)::before { animation-delay: 3s; }
       .service-card:nth-child(5)::before { animation-delay: 4s; }
       .service-card:nth-child(6)::before { animation-delay: 5s; }
@@ -1467,9 +1485,9 @@
     els.forEach(el => io.observe(el));
   })();
 
-  // ── Service card spotlight ── (cursor-tracked glow, CSS reads --mx/--my)
+  // ── Card spotlight ── (cursor-tracked glow, CSS reads --mx/--my)
   (function() {
-    document.querySelectorAll('#services .service-card').forEach(card => {
+    document.querySelectorAll('#services .service-card, .case-card, .pricing-card').forEach(card => {
       card.addEventListener('mousemove', (e) => {
         const r = card.getBoundingClientRect();
         card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
