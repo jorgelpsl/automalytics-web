@@ -144,8 +144,10 @@
     .nav-logo-text span { color: var(--cyan); }
     /* Footer sits on the page background (light in light mode), unlike the
        navbar pill which always stays dark — so its logo text needs the
-       theme-adaptive color instead of the fixed --text-on-dark white. */
+       theme-adaptive colors instead of the fixed --text-on-dark white and
+       the raw --cyan, which washes out directly on a light background. */
     .footer-top .nav-logo-text { color: var(--white); }
+    .footer-top .nav-logo-text span { color: var(--accent-ink); }
 
     /* Pill wrapper — gradient border via outline trick */
     .nav-links-wrap {
