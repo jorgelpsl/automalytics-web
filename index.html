@@ -713,6 +713,7 @@
       .mascot-engineer { animation: none !important; }
       .build-block { transition: none !important; }
       body { transition: none !important; }
+      .service-card::before { animation: none !important; }
     }
 
     /* ─── RESPONSIVE ─── */
@@ -768,6 +769,20 @@
       /* Services */
       .services-grid { grid-template-columns: 1fr; gap: 1rem; }
       .service-card { padding: 1.5rem; }
+      /* No cursor on touch, so the spotlight can't follow a mouse — swap it
+         for a slow ambient glow that breathes on its own, staggered per
+         card so the whole section doesn't pulse in unison. */
+      .service-card::before { animation: service-glow-ambient 6s ease-in-out infinite; }
+      .service-card:nth-child(1)::before { animation-delay: 0s; }
+      .service-card:nth-child(2)::before { animation-delay: 1s; }
+      .service-card:nth-child(3)::before { animation-delay: 2s; }
+      .service-card:nth-child(4)::before { animation-delay: 3s; }
+      .service-card:nth-child(5)::before { animation-delay: 4s; }
+      .service-card:nth-child(6)::before { animation-delay: 5s; }
+      @keyframes service-glow-ambient {
+        0%, 100% { opacity: 0; }
+        50% { opacity: .8; }
+      }
 
       /* How it works */
       .steps-grid { grid-template-columns: 1fr; gap: 2rem; }
