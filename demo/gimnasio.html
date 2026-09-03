@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#0A0C07" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Anton&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #0A0C07; }
@@ -33,8 +33,8 @@
     --accent: #FF4A2E; --accent2: #FFB020;
     --line: rgba(245,243,236,.08);
   }
-  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--white); line-height: 1.6; }
-  h1, h2, h3, h4 { font-family: 'Bebas Neue', sans-serif; letter-spacing: .5px; line-height: 1.05; }
+  body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--white); line-height: 1.6; }
+  h1, h2, h3, h4 { font-family: 'Anton', sans-serif; letter-spacing: .5px; line-height: 1.05; }
   a { color: inherit; }
   img { max-width: 100%; display: block; }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
@@ -55,7 +55,7 @@
     border-bottom: 1px solid var(--line);
   }
   .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; max-width: 1180px; margin: 0 auto; }
-  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px; }
+  .nav-logo { font-family: 'Bungee', sans-serif; font-size: 1.2rem; letter-spacing: .5px; }
   .nav-logo span { color: var(--accent); }
   .nav-links { display: flex; gap: 2rem; list-style: none; font-size: .92rem; font-weight: 600; }
   .nav-links a:hover { color: var(--accent); }
@@ -71,14 +71,22 @@
     background: radial-gradient(60% 50% at 70% 20%, rgba(255,74,46,.18), transparent 70%);
     pointer-events: none;
   }
-  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; position: relative; }
+  .hero-deco { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .hero-deco svg { position: absolute; opacity: .16; }
+  .hero-deco .d1 { width: 220px; top: -30px; right: 6%; transform: rotate(-18deg); animation: floatA 7s ease-in-out infinite; }
+  .hero-deco .d2 { width: 150px; bottom: -10px; left: 2%; transform: rotate(22deg); animation: floatB 8.5s ease-in-out infinite; opacity: .12; }
+  .hero-deco .d3 { width: 110px; top: 42%; right: -20px; transform: rotate(-6deg); animation: floatA 6s ease-in-out infinite reverse; opacity: .1; }
+  @keyframes floatA { 0%,100% { transform: translateY(0) rotate(-18deg); } 50% { transform: translateY(-18px) rotate(-12deg); } }
+  @keyframes floatB { 0%,100% { transform: translateY(0) rotate(22deg); } 50% { transform: translateY(16px) rotate(28deg); } }
+  @media (prefers-reduced-motion: reduce) { .hero-deco svg { animation: none !important; } }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; position: relative; z-index: 1; }
   @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
-  .hero h1 { font-size: clamp(2.6rem, 6vw, 4.6rem); text-transform: uppercase; }
+  .hero h1 { font-family: 'Bungee', sans-serif; font-size: clamp(2.2rem, 5.4vw, 4rem); text-transform: uppercase; letter-spacing: 0; }
   .hero h1 em { font-style: normal; color: var(--accent); }
   .hero p.lead { color: var(--gray); font-size: 1.08rem; max-width: 46ch; margin: 1.2rem 0 2rem; }
   .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
   .hero-stats { display: flex; gap: 2.2rem; margin-top: 2.6rem; flex-wrap: wrap; }
-  .hero-stats div b { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--accent); display: block; }
+  .hero-stats div b { font-family: 'Anton', sans-serif; font-size: 2rem; color: var(--accent); display: block; }
   .hero-stats div span { color: var(--gray); font-size: .82rem; }
   .hero-visual {
     aspect-ratio: 4/5; border-radius: 20px; position: relative;
@@ -86,14 +94,25 @@
       linear-gradient(160deg, #1c1c18 0%, #0d0d0c 60%),
       repeating-linear-gradient(45deg, rgba(255,74,46,.06) 0 2px, transparent 2px 14px);
     border: 1px solid var(--line); display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
   }
+  .hero-visual .barbell { width: 78%; filter: drop-shadow(0 18px 30px rgba(0,0,0,.45)); animation: barbellFloat 5s ease-in-out infinite; }
+  @keyframes barbellFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @media (prefers-reduced-motion: reduce) { .hero-visual .barbell { animation: none !important; } }
   .hero-visual .badge {
     position: absolute; bottom: 1.4rem; left: 1.4rem; right: 1.4rem;
     background: rgba(13,13,12,.85); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.2rem;
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px); display: flex; gap: .9rem; align-items: flex-start;
   }
-  .hero-visual .badge b { font-family: 'Bebas Neue', sans-serif; color: var(--accent2); font-size: 1.3rem; }
-  .hero-visual .mark { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; color: rgba(245,243,236,.08); letter-spacing: 2px; text-align: center; }
+  .hero-visual .badge .ic {
+    flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center;
+  }
+  .hero-visual .badge b { font-family: 'Anton', sans-serif; color: var(--accent2); font-size: 1.15rem; letter-spacing: .3px; }
+  .hero-visual .badge .next {
+    display: inline-flex; align-items: center; gap: .35rem; margin-top: .5rem; font-size: .74rem; font-weight: 700;
+    color: var(--accent); background: rgba(255,74,46,.12); border-radius: 50px; padding: .25rem .6rem;
+  }
 
   /* ── generic section header ── */
   .sec-head { max-width: 640px; margin-bottom: 2.8rem; }
@@ -114,8 +133,8 @@
     font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; padding: .3rem .7rem; border-radius: 6px;
   }
   .plan-card h3 { font-size: 1.5rem; text-transform: uppercase; margin-bottom: .3rem; }
-  .plan-price { font-family: 'Bebas Neue', sans-serif; font-size: 2.6rem; color: var(--accent2); margin: .6rem 0 .2rem; }
-  .plan-price small { font-family: 'Inter', sans-serif; font-size: .95rem; color: var(--gray); font-weight: 500; }
+  .plan-price { font-family: 'Anton', sans-serif; font-size: 2.6rem; color: var(--accent2); margin: .6rem 0 .2rem; }
+  .plan-price small { font-family: 'Manrope', sans-serif; font-size: .95rem; color: var(--gray); font-weight: 500; }
   .plan-card ul { list-style: none; margin: 1.3rem 0 1.8rem; flex: 1; }
   .plan-card li { padding: .45rem 0; border-top: 1px solid var(--line); font-size: .9rem; color: var(--gray); display: flex; gap: .5rem; }
   .plan-card li:first-child { border-top: none; }
@@ -143,7 +162,7 @@
   @media (max-width: 900px) { .feat-grid { grid-template-columns: repeat(2, 1fr); } }
   .feat-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.6rem 1.3rem; text-align: center; }
   .feat-card .ic { font-size: 1.8rem; margin-bottom: .7rem; }
-  .feat-card h4 { font-family: 'Inter', sans-serif; font-weight: 700; font-size: .95rem; text-transform: none; margin-bottom: .3rem; }
+  .feat-card h4 { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: .95rem; text-transform: none; margin-bottom: .3rem; }
   .feat-card p { font-size: .82rem; color: var(--gray); }
 
   /* ── testimonios ── */
@@ -208,6 +227,25 @@
   </header>
 
   <section class="hero">
+    <div class="hero-deco" aria-hidden="true">
+      <svg class="d1" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="20" width="26" height="40" rx="6" fill="#FF4A2E"/>
+        <rect x="26" y="10" width="14" height="60" rx="5" fill="#FF4A2E"/>
+        <rect x="40" y="34" width="120" height="12" rx="6" fill="#FF4A2E"/>
+        <rect x="160" y="10" width="14" height="60" rx="5" fill="#FF4A2E"/>
+        <rect x="174" y="20" width="26" height="40" rx="6" fill="#FF4A2E"/>
+      </svg>
+      <svg class="d2" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="20" width="26" height="40" rx="6" fill="#FFB020"/>
+        <rect x="26" y="10" width="14" height="60" rx="5" fill="#FFB020"/>
+        <rect x="40" y="34" width="120" height="12" rx="6" fill="#FFB020"/>
+        <rect x="160" y="10" width="14" height="60" rx="5" fill="#FFB020"/>
+        <rect x="174" y="20" width="26" height="40" rx="6" fill="#FFB020"/>
+      </svg>
+      <svg class="d3" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="38" stroke="#FF4A2E" stroke-width="8"/>
+      </svg>
+    </div>
     <div class="wrap hero-grid">
       <div>
         <span class="eyebrow">Ñuñoa, Santiago</span>
@@ -224,10 +262,35 @@
         </div>
       </div>
       <div class="hero-visual">
-        <div class="mark">FU</div>
+        <svg class="barbell" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="plateGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#FFB020"/>
+              <stop offset="100%" stop-color="#FF4A2E"/>
+            </linearGradient>
+            <linearGradient id="barGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#3a3a34"/>
+              <stop offset="50%" stop-color="#6b6a60"/>
+              <stop offset="100%" stop-color="#3a3a34"/>
+            </linearGradient>
+          </defs>
+          <rect x="60" y="100" width="280" height="20" rx="4" fill="url(#barGrad)"/>
+          <rect x="18" y="60" width="34" height="100" rx="8" fill="url(#plateGrad)"/>
+          <rect x="54" y="75" width="18" height="70" rx="6" fill="url(#plateGrad)" opacity=".85"/>
+          <rect x="348" y="60" width="34" height="100" rx="8" fill="url(#plateGrad)"/>
+          <rect x="328" y="75" width="18" height="70" rx="6" fill="url(#plateGrad)" opacity=".85"/>
+          <rect x="90" y="94" width="10" height="32" rx="3" fill="#1a1a17"/>
+          <rect x="300" y="94" width="10" height="32" rx="3" fill="#1a1a17"/>
+        </svg>
         <div class="badge">
-          <b>Clase de prueba gratis</b>
-          <div style="color:var(--gray); font-size:.82rem; margin-top:.2rem;">Sin costo, sin compromiso — agenda por WhatsApp.</div>
+          <div class="ic">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 4 6v6c0 5 3.4 9.4 8 10 4.6-.6 8-5 8-10V6l-8-4Z" fill="#14100A"/></svg>
+          </div>
+          <div>
+            <b>Clase de prueba gratis</b>
+            <div style="color:var(--gray); font-size:.82rem; margin-top:.2rem;">Funcional, Spinning o CrossFit — tú eliges. Sin costo, sin compromiso.</div>
+            <span class="next">🗓 Próximo cupo: hoy 18:00</span>
+          </div>
         </div>
       </div>
     </div>
