@@ -122,6 +122,13 @@
     #navbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
       padding: 1.1rem 6% 0;
+      /* iOS Safari can visually detach `position: fixed` elements for a
+         frame while its address bar collapses/expands during scroll,
+         making the pill appear to lag below the top edge. Forcing its own
+         compositing layer keeps it pinned through that transition. */
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      backface-visibility: hidden;
     }
 
     .nav-inner {
