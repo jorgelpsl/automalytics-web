@@ -284,6 +284,19 @@
       background: rgba(var(--surf-tint-rgb),.03); border: 1px solid var(--card-bdr);
       border-radius: 16px; overflow: hidden;
       box-shadow: 0 30px 80px rgba(0,0,0,.55);
+      /* Flies in from 3D space on load, then settles into a slow showcase
+         tilt — the idle keyframe starts exactly where the entrance ends
+         (rotateY/rotateX at 0) so the handoff between the two is seamless. */
+      animation: heroMockEnter 1.1s cubic-bezier(.16,1,.3,1) both,
+                 heroMockIdle 6s ease-in-out infinite 1.1s;
+    }
+    @keyframes heroMockEnter {
+      0% { opacity: 0; transform: perspective(1400px) rotateY(-55deg) rotateX(18deg) translateZ(-200px); }
+      100% { opacity: 1; transform: perspective(1400px) rotateY(0deg) rotateX(0deg) translateZ(0); }
+    }
+    @keyframes heroMockIdle {
+      0%, 100% { transform: perspective(1400px) rotateY(0deg) rotateX(0deg); }
+      50% { transform: perspective(1400px) rotateY(4deg) rotateX(-2deg); }
     }
     .browser-bar {
       display: flex; align-items: center; gap: .5rem;
@@ -346,7 +359,20 @@
     .hero-bot-card {
       background: rgba(10,12,7,.85); border: 1px solid rgba(215,255,63,.25);
       border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(8px);
-      animation: float 4s ease-in-out infinite;
+      /* Mirrors the mockup's entrance from the opposite angle with a slight
+         stagger, then idles with the old float bob folded into the same
+         tilt keyframe (two animations can't both drive `transform` at
+         once without one silently overriding the other). */
+      animation: heroBotEnter 1s cubic-bezier(.16,1,.3,1) .18s both,
+                 heroBotIdle 6s ease-in-out infinite 1.28s;
+    }
+    @keyframes heroBotEnter {
+      0% { opacity: 0; transform: perspective(1400px) rotateY(50deg) rotateX(-14deg) translateZ(-160px); }
+      100% { opacity: 1; transform: perspective(1400px) rotateY(0deg) rotateX(0deg) translateZ(0); }
+    }
+    @keyframes heroBotIdle {
+      0%, 100% { transform: perspective(1400px) translateY(0) rotateY(0deg) rotateX(0deg); }
+      50% { transform: perspective(1400px) translateY(-12px) rotateY(-6deg) rotateX(3deg); }
     }
     .bot-header { display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,.07); }
     .bot-avatar {
@@ -718,6 +744,7 @@
       [data-aos] { opacity: 1 !important; transform: none !important; transition: none !important; }
       .mascot-engineer { animation: none !important; }
       .hero-bot-card { animation: none !important; }
+      .browser-mockup { animation: none !important; }
       .build-block { transition: none !important; }
       body { transition: none !important; }
       .service-card::before, .case-card::before, .pricing-card::before { animation: none !important; }
