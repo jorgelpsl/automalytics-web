@@ -282,7 +282,13 @@
     }
     .browser-mockup {
       background: rgba(var(--surf-tint-rgb),.03); border: 1px solid var(--card-bdr);
-      border-radius: 16px; overflow: hidden;
+      border-radius: 16px;
+      /* Was `overflow: hidden` — switched to visible so the build-blocks
+         are actually seen flying in from outside the card instead of
+         popping into existence at its edge. The bar and canvas below
+         round their own corners directly to fake the same clipped look
+         at rest. */
+      overflow: visible;
       box-shadow: 0 30px 80px rgba(0,0,0,.55);
       /* Flies in from 3D space on load, then settles into a slow showcase
          tilt — the idle keyframe starts exactly where the entrance ends
@@ -302,6 +308,7 @@
       display: flex; align-items: center; gap: .5rem;
       padding: .7rem 1rem; background: rgba(var(--surf-tint-rgb),.03);
       border-bottom: 1px solid var(--card-bdr);
+      border-radius: 16px 16px 0 0;
     }
     .browser-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
     .browser-dot:nth-child(1) { background: #ef4444; }
@@ -320,14 +327,17 @@
        client work is shown, so the hero doesn't repeat it. Pure abstract
        shapes, no real content, on a loop: empty → pieces stack in → holds
        → clears → repeats. */
-    .build-canvas { position: relative; aspect-ratio: 1120 / 820; background: #EFEDE6; overflow: hidden; }
+    .build-canvas { position: relative; aspect-ratio: 1120 / 820; background: #EFEDE6; overflow: visible; border-radius: 0 0 16px 16px; }
     .build-block {
       position: absolute; background: #fff; border-radius: 8px;
       opacity: 0;
       /* Slower fade + a slight overshoot on the way in so each piece feels
          like it "docks" into place rather than just sliding to a stop. */
       transition: opacity .6s ease, transform .9s cubic-bezier(.34,1.56,.64,1);
-      box-shadow: 0 2px 6px rgba(0,0,0,.06);
+      /* The dark head/head2 blocks would nearly vanish against the dark
+         hero background while mid-flight (now visible, see .build-canvas
+         above) without this faint brand-colored halo. */
+      box-shadow: 0 2px 6px rgba(0,0,0,.06), 0 0 22px rgba(215,255,63,.10);
     }
     .build-block.in { opacity: 1; transform: translate(0,0); }
     /* Each block flies in from just outside the frame in the direction
