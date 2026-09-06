@@ -1837,7 +1837,18 @@
       });
     }
 
+    // The canvas is `position: fixed`, covering the full viewport at every
+    // scroll position — but #services/#pricing/#faq etc. all paint their own
+    // opaque background over it (only #hero and #web don't), so for most of
+    // this long page the particles are fully hidden behind other sections
+    // while still computing+drawing every frame, forever. Stop the loop
+    // outright — not just skip drawing — whenever neither reveal section is
+    // in view, and whenever the tab itself isn't visible.
+    let rafId = null;
+    let inRevealZone = true;
+
     function draw() {
+      if (document.hidden || !inRevealZone) { rafId = null; return; }
       ctx.clearRect(0, 0, W, H);
       dots.forEach(d => {
         d.x += d.vx; d.y += d.vy;
@@ -1864,9 +1875,28 @@
           }
         });
       });
-      requestAnimationFrame(draw);
+      rafId = requestAnimationFrame(draw);
     }
-    draw();
+
+    function startIfNeeded() {
+      if (rafId === null && !document.hidden && inRevealZone) {
+        rafId = requestAnimationFrame(draw);
+      }
+    }
+    document.addEventListener('visibilitychange', startIfNeeded);
+
+    const revealTargets = ['hero', 'web'].map(id => document.getElementById(id)).filter(Boolean);
+    if (revealTargets.length && 'IntersectionObserver' in window) {
+      const visibleZones = new Set();
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => e.isIntersecting ? visibleZones.add(e.target) : visibleZones.delete(e.target));
+        inRevealZone = visibleZones.size > 0;
+        startIfNeeded();
+      }, { threshold: 0 });
+      revealTargets.forEach(t => io.observe(t));
+    }
+
+    startIfNeeded();
   })();
 
   // ── Cookie consent ──
