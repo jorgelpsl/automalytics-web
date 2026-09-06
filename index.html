@@ -1672,6 +1672,7 @@
       if (res.ok) {
         addBubble('✅ Mensaje recibido, ' + name + '! Te contactamos pronto.', 'success');
         document.getElementById('chatForm').style.display = 'none';
+        if (typeof gtag === 'function') gtag('event', 'generate_lead', { form: 'hero_autobot' });
       } else {
         throw new Error('Error del servidor');
       }
@@ -1869,10 +1870,20 @@
   })();
 
   // ── Cookie consent ──
-  // Loads GA4/Meta Pixel only after the visitor accepts. Currently a no-op:
-  // drop the real snippets in here once those accounts exist.
+  // Loads GA4 only after the visitor accepts. window.gtag is defined here
+  // (not just inside the injected script) so the lead-form and WhatsApp
+  // click handlers further down can call it directly.
+  const GA4_ID = 'G-0RY5TESWE4';
   function loadAnalytics() {
-    // TODO: GA4 (gtag.js) and Meta Pixel snippets go here.
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function() { dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', GA4_ID);
+
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+    document.head.appendChild(s);
   }
 
   (function() {
@@ -1896,6 +1907,14 @@
       banner.classList.remove('show');
     });
   })();
+
+  // The other real conversion on this page besides the lead form — track
+  // it the same way, guarded so a rejected/not-yet-loaded gtag is a no-op.
+  document.querySelectorAll('a[href^="https://wa.me/"]').forEach(a => {
+    a.addEventListener('click', () => {
+      if (typeof gtag === 'function') gtag('event', 'contact_whatsapp', { link_location: a.className || 'unknown' });
+    });
+  });
 </script>
 </body>
 </html>
