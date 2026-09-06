@@ -793,8 +793,18 @@
        on specificity and permanently cancel its lift. Once this animation
        ends it stops contributing anything, so hover's transform goes back
        to being the only thing setting transform at rest. */
+    /* transform-origin: top — otherwise scale()/rotateX() pivot from the
+       element's center, so as it grows from .94 to 1 its top edge visibly
+       slides upward on its own, independent of the user's scroll input.
+       Barely noticeable on a short card; on the tall pricing cards (long
+       feature lists) that self-inflicted shift is 25-30px in a single
+       frame — the "jump" reported when scrolling past the plan cards.
+       Pivoting from the top keeps the top edge fixed through the animation. */
+    .service-card[data-aos], .case-card[data-aos], .pricing-card[data-aos] {
+      transform-origin: top;
+    }
     .service-card[data-aos]:not(.aos-in), .case-card[data-aos]:not(.aos-in), .pricing-card[data-aos]:not(.aos-in) {
-      transform: perspective(1200px) rotateX(-18deg) translateY(26px) scale(.94);
+      transform: perspective(1200px) rotateX(-18deg) translateY(14px) scale(.97);
     }
     .service-card[data-aos].aos-in, .case-card[data-aos].aos-in, .pricing-card[data-aos].aos-in {
       opacity: 1;
@@ -803,7 +813,7 @@
       animation-delay: var(--aos-delay, 0ms);
     }
     @keyframes cardIn3D {
-      from { transform: perspective(1200px) rotateX(-18deg) translateY(26px) scale(.94); }
+      from { transform: perspective(1200px) rotateX(-18deg) translateY(14px) scale(.97); }
       to { transform: perspective(1200px) rotateX(0deg) translateY(0) scale(1); }
     }
     /* Pre-existing bug surfaced while wiring the above up: the generic
