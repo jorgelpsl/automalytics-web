@@ -3,14 +3,14 @@
 // (running server-side on Vercel) ever holds the real CRM credential.
 //
 // This is the site's only writable endpoint, so it is also where abuse gets
-// stopped: everything below runs before the CRM is ever contacted, because a
-// request that reaches the CRM consumes the CRM's own shared 10/min quota —
-// which is keyed on *our* egress IP, not the visitor's, so a flood here would
-// lock real leads out.
+// stopped: everything below runs before either downstream channel is ever
+// contacted, because a request that reaches the CRM consumes the CRM's own
+// shared 10/min quota — which is keyed on *our* egress IP, not the
+// visitor's, so a flood here would lock real leads out.
 const CRM_URL = 'https://prospectos-crm-backend.vercel.app/prospects/website-lead';
 
 // Generous enough for any real lead, small enough that nobody can use the
-// form to push a payload into the CRM's database or its logs.
+// form to push a payload into the CRM's database, Telegram, or our logs.
 const LIMITS = { name: 80, phone: 25, email: 120, message: 1000 };
 
 // Per-instance sliding window. Vercel may run several instances, so this is a
@@ -48,11 +48,96 @@ function rateLimited(ip) {
 }
 
 // Strips control characters (including newlines) so nothing submitted here can
-// forge extra lines in our logs or in the CRM's chat thread.
+// forge extra lines in our logs, the CRM's chat thread, or the Telegram alert.
 function clean(value, max) {
   if (typeof value !== 'string') return '';
   // eslint-disable-next-line no-control-regex
   return value.replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, max);
+}
+
+// Records the lead in Prospectos CRM (pipeline/history). Returns whether it
+// succeeded — a failure here doesn't fail the request on its own, since the
+// Telegram alert below is an independent channel that can still get the
+// message to a human.
+async function sendToCrm({ name, phone, email, message }) {
+  if (!process.env.WEB_LEAD_SECRET) {
+    console.error('WEB_LEAD_SECRET is not set');
+    return false;
+  }
+
+  try {
+    const crmRes = await fetch(CRM_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-lead-key': process.env.WEB_LEAD_SECRET,
+      },
+      body: JSON.stringify({
+        name,
+        phone,
+        email: email || undefined,
+        message: message || undefined,
+      }),
+    });
+
+    if (!crmRes.ok) {
+      const detail = await crmRes.text().catch(() => '');
+      console.error('CRM rejected lead:', crmRes.status, detail.slice(0, 300));
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error('CRM unreachable:', e);
+    return false;
+  }
+}
+
+// Posts an instant alert to a Telegram group so a human sees the message
+// right away, with a wa.me link to that exact client so replying is one tap
+// on the phone's regular WhatsApp app. Independent of the CRM: if this isn't
+// configured, or Telegram is down, it just no-ops — it never throws and
+// never blocks the CRM path.
+async function notifyTelegram({ name, phone, email, message }) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) return false;
+
+  const digits = phone.replace(/\D/g, '');
+  const lines = [
+    '🔔 Nuevo mensaje del chat web — Automalytics',
+    '',
+    `Nombre: ${name}`,
+    `Teléfono: ${phone}`,
+  ];
+  if (email) lines.push(`Email: ${email}`);
+  lines.push(`Mensaje: ${message}`);
+  if (digits) lines.push('', `Responder por WhatsApp: https://wa.me/${digits}`);
+
+  try {
+    // Deliberately no parse_mode: Telegram's Markdown/MarkdownV2 modes reject
+    // the whole message if the text contains unescaped special characters,
+    // and a client's message is free-form input we don't control. Plain text
+    // still renders the wa.me URL as a tappable link.
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: lines.join('\n'),
+        disable_web_page_preview: true,
+      }),
+    });
+
+    if (!res.ok) {
+      const detail = await res.text().catch(() => '');
+      console.error('Telegram notify rejected:', res.status, detail.slice(0, 300));
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error('Telegram notify unreachable:', e);
+    return false;
+  }
 }
 
 module.exports = async function handler(req, res) {
@@ -97,35 +182,14 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Email inválido' });
   }
 
-  if (!process.env.WEB_LEAD_SECRET) {
-    console.error('WEB_LEAD_SECRET is not set');
-    return res.status(500).json({ error: 'Server misconfigured' });
+  const lead = { name, phone, email, message };
+  const [crmOk, telegramOk] = await Promise.all([sendToCrm(lead), notifyTelegram(lead)]);
+
+  // Only fail the visitor's request if NEITHER channel got the message —
+  // either one reaching a human is enough to call this a successful send.
+  if (!crmOk && !telegramOk) {
+    return res.status(502).json({ error: 'No se pudo enviar, intenta por WhatsApp' });
   }
 
-  try {
-    const crmRes = await fetch(CRM_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-lead-key': process.env.WEB_LEAD_SECRET,
-      },
-      body: JSON.stringify({
-        name,
-        phone,
-        email: email || undefined,
-        message: message || undefined,
-      }),
-    });
-
-    if (!crmRes.ok) {
-      const detail = await crmRes.text().catch(() => '');
-      console.error('CRM rejected lead:', crmRes.status, detail.slice(0, 300));
-      return res.status(502).json({ error: 'CRM error' });
-    }
-
-    return res.status(200).json({ ok: true });
-  } catch (e) {
-    console.error('CRM unreachable:', e);
-    return res.status(502).json({ error: 'CRM unreachable' });
-  }
+  return res.status(200).json({ ok: true });
 };
