@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+# Not content: the lead endpoint and the CRM dashboard have no business in
+# search results.
+Disallow: /api/
+Disallow: /dashboard
 
 Sitemap: https://www.automalytics.com/sitemap.xml

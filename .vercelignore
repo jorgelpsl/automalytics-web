@@ -1,0 +1,11 @@
+# Everything in this repo that is NOT the public website. Vercel serves any
+# file it deploys as a static asset, so anything left out of this list ends up
+# fetchable at https://www.automalytics.com/<path> — these are internal tools
+# and configuration that leaked our CRM's API shape, an internal username and
+# the n8n/Telegram wiring until they were excluded here.
+clientes-apify/
+n8n-workflow-leads.json
+skills-lock.json
+.agents/
+.claude/
+.impeccable/
