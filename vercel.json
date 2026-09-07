@@ -5,7 +5,7 @@
     { "source": "/dashboard/(.*)", "destination": "https://prospectos-crm-frontend.vercel.app/dashboard/$1" },
     {
       "source": "/",
-      "has": [{ "type": "host", "value": "demo-gym.automalytics.com" }],
+      "has": [{ "type": "header", "key": "host", "value": "demo-gym.automalytics.com" }],
       "destination": "/demo/gimnasio.html"
     }
   ],
