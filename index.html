@@ -1794,7 +1794,9 @@
     }
   }
 
-  // ── Hero build animation ── (the mascot "building" the site in a loop)
+  // ── Hero build animation ── (the mascot "building" the site, once — the
+  // pieces fly in, couple onto the mockup, and stay put instead of clearing
+  // and re-building on a loop)
   (function() {
     const canvas = document.getElementById('buildCanvas');
     if (!canvas) return;
@@ -1803,14 +1805,9 @@
       blocks.forEach(b => b.classList.add('in'));
       return;
     }
-    function cycle() {
-      blocks.forEach(b => b.classList.remove('in'));
-      blocks.forEach((b, i) => {
-        setTimeout(() => b.classList.add('in'), 400 + i * 340);
-      });
-    }
-    cycle();
-    setInterval(cycle, 6600);
+    blocks.forEach((b, i) => {
+      setTimeout(() => b.classList.add('in'), 400 + i * 340);
+    });
   })();
 
   // ── Particles ── (dot count and link radius scaled down on mobile — the
