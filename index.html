@@ -209,7 +209,10 @@
       position: relative; z-index: 1;
       min-height: 100vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 9rem 6% 4rem;
+      /* Bottom padding bumped 4rem -> 6rem: pushing the AutoBot IA widget's
+         bottom offset down (see .hero-visual) to fix its overlap with the
+         mockup left zero clearance before the next section otherwise. */
+      padding: 9rem 6% 7rem;
       overflow: hidden;
     }
     .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 2; }
@@ -368,14 +371,20 @@
       50% { transform: rotate(4deg) translateY(-5px); }
     }
 
-    /* Floating lead-capture widget, layered on the mockup's bottom-right corner */
+    /* Floating lead-capture widget, layered on the mockup's bottom-right
+       corner. Bottom offset pushed from -2.5rem to -5rem, and the card's own
+       spacing tightened below, so it reads as a corner accent instead of
+       covering most of the mockup — the real functional form (4 fields +
+       header + a message) is taller than the original "peeking card" look
+       accounted for, and the entrance/idle motion added since only made
+       that overlap more noticeable. */
     .hero-visual {
-      position: absolute; right: -1.5rem; bottom: -2.5rem;
+      position: absolute; right: -1.5rem; bottom: -5rem;
       width: 280px; z-index: 3;
     }
     .hero-bot-card {
       background: rgba(10,12,7,.85); border: 1px solid rgba(215,255,63,.25);
-      border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(8px);
+      border-radius: 20px; padding: 1.15rem; backdrop-filter: blur(8px);
       /* Mirrors the mockup's entrance from the opposite angle with a slight
          stagger, then idles with the old float bob folded into the same
          tilt keyframe (two animations can't both drive `transform` at
@@ -391,7 +400,7 @@
       0%, 100% { transform: perspective(1400px) translateY(0) rotateY(0deg) rotateX(0deg); }
       50% { transform: perspective(1400px) translateY(-12px) rotateY(-6deg) rotateX(3deg); }
     }
-    .bot-header { display: flex; align-items: center; gap: .75rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .bot-header { display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem; padding-bottom: .75rem; border-bottom: 1px solid rgba(255,255,255,.07); }
     .bot-avatar {
       width: 44px; height: 44px; background: var(--cyan);
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
@@ -402,7 +411,7 @@
     .bot-status { font-size: .72rem; color: #22c55e; }
     .bot-status::before { content: "● "; }
 
-    .chat-messages { max-height: 160px; overflow-y: auto; margin-bottom: .75rem; }
+    .chat-messages { max-height: 90px; overflow-y: auto; margin-bottom: .5rem; }
     .chat-messages::-webkit-scrollbar { width: 3px; }
     .chat-messages::-webkit-scrollbar-thumb { background: rgba(215,255,63,.3); border-radius: 3px; }
 
@@ -415,10 +424,10 @@
     .chat-bubble.success { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.3); color: #86efac; text-align: center; max-width: 100%; }
     .chat-bubble.error-msg { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); color: #fca5a5; text-align: center; max-width: 100%; }
 
-    .chat-form { display: flex; flex-direction: column; gap: .5rem; }
+    .chat-form { display: flex; flex-direction: column; gap: .4rem; }
     .chat-input {
       background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
-      border-radius: 10px; padding: .55rem .85rem; color: var(--text-on-dark);
+      border-radius: 10px; padding: .48rem .75rem; color: var(--text-on-dark);
       font-family: 'Work Sans', sans-serif; font-size: .82rem; outline: none;
       transition: border-color .2s; width: 100%;
     }
