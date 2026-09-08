@@ -35,174 +35,169 @@
   }
   body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--white); line-height: 1.6; }
   h1, h2, h3, h4 { font-family: 'Anton', sans-serif; letter-spacing: .5px; line-height: 1.05; }
-  a { color: inherit; }
-  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  img, svg { max-width: 100%; display: block; }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
-  section { padding: 5rem 0; }
+  section { padding: 5.5rem 0; }
   .eyebrow { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: .8rem; }
-  .btn {
-    display: inline-flex; align-items: center; gap: .5rem; font-weight: 700; font-size: .95rem;
-    padding: .9rem 1.7rem; border-radius: 8px; text-decoration: none; border: 2px solid transparent; cursor: pointer;
-  }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; font-weight: 700; font-size: .95rem; padding: .95rem 1.8rem; border-radius: 50px; border: 2px solid transparent; cursor: pointer; }
   .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #14100A; }
   .btn-primary:hover { filter: brightness(1.08); }
-  .btn-ghost { border-color: var(--line); color: var(--white); }
+  .btn-ghost { border-color: var(--line); color: var(--white); background: rgba(245,243,236,.04); }
   .btn-ghost:hover { border-color: var(--accent); }
+  .btn-play { display: inline-flex; align-items: center; gap: .7rem; font-weight: 700; }
+  .btn-play .circ { width: 42px; height: 42px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
   /* ── nav ── */
-  header.site-nav {
-    position: sticky; top: 0; z-index: 40; background: rgba(13,13,12,.85); backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
+  header.site-nav { position: sticky; top: 0; z-index: 40; background: rgba(13,13,12,.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .nav-pill {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    background: var(--card); border: 1px solid var(--line); border-radius: 50px;
+    padding: .6rem .7rem .6rem 1.2rem; max-width: 1180px; margin: .9rem auto; margin-inline: 1.5rem;
   }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; max-width: 1180px; margin: 0 auto; }
-  .nav-logo { font-family: 'Bungee', sans-serif; font-size: 1.2rem; letter-spacing: .5px; }
+  @media (min-width: 1211px) { .nav-pill { margin-inline: auto; } }
+  .nav-logo { display: flex; align-items: center; gap: .55rem; font-family: 'Bungee', sans-serif; font-size: 1.05rem; }
+  .nav-logo .mark { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .nav-logo span { color: var(--accent); }
-  .nav-links { display: flex; gap: 2rem; list-style: none; font-size: .92rem; font-weight: 600; }
+  .nav-links { display: flex; gap: 1.7rem; list-style: none; font-size: .88rem; font-weight: 600; }
   .nav-links a:hover { color: var(--accent); }
-  .nav-cta { display: flex; align-items: center; gap: 1rem; }
-  @media (max-width: 860px) {
-    .nav-links { display: none; }
-  }
+  @media (max-width: 860px) { .nav-links { display: none; } }
+  .nav-pill .btn-primary { white-space: nowrap; }
+  @media (max-width: 420px) { .nav-pill .btn-primary { padding: .6rem 1rem; font-size: .78rem; } }
 
-  /* ── hero ── */
-  .hero { padding: 4.5rem 0 5rem; position: relative; overflow: hidden; }
-  .hero::before {
-    content: ""; position: absolute; inset: -20% -10% auto -10%; height: 140%;
-    background: radial-gradient(60% 50% at 70% 20%, rgba(255,74,46,.18), transparent 70%);
-    pointer-events: none;
-  }
+  /* ── hero (rounded app-frame card) ── */
+  .hero-shell { padding: 1.6rem 1.5rem 0; }
+  .hero { max-width: 1180px; margin: 0 auto; border-radius: 28px; overflow: hidden; position: relative; background: linear-gradient(150deg, #1a1a15 0%, #0d0d0c 55%); border: 1px solid var(--line); }
+  .hero::before { content: ""; position: absolute; inset: -20% -10% auto -10%; height: 140%; background: radial-gradient(60% 55% at 78% 15%, rgba(255,74,46,.22), transparent 70%); pointer-events: none; }
   .hero-deco { position: absolute; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-  .hero-deco svg { position: absolute; opacity: .16; }
-  .hero-deco .d1 { width: 220px; top: -30px; right: 6%; transform: rotate(-18deg); animation: floatA 7s ease-in-out infinite; }
-  .hero-deco .d2 { width: 150px; bottom: -10px; left: 2%; transform: rotate(22deg); animation: floatB 8.5s ease-in-out infinite; opacity: .12; }
-  .hero-deco .d3 { width: 110px; top: 42%; right: -20px; transform: rotate(-6deg); animation: floatA 6s ease-in-out infinite reverse; opacity: .1; }
-  @keyframes floatA { 0%,100% { transform: translateY(0) rotate(-18deg); } 50% { transform: translateY(-18px) rotate(-12deg); } }
-  @keyframes floatB { 0%,100% { transform: translateY(0) rotate(22deg); } 50% { transform: translateY(16px) rotate(28deg); } }
+  .hero-deco svg { position: absolute; opacity: .14; }
+  .hero-deco .d1 { width: 200px; top: -20px; right: 4%; transform: rotate(-18deg); animation: floatA 7s ease-in-out infinite; }
+  .hero-deco .d3 { width: 100px; bottom: 14%; left: 3%; transform: rotate(-6deg); animation: floatA 6s ease-in-out infinite reverse; opacity: .12; }
+  @keyframes floatA { 0%,100% { transform: translateY(0) rotate(-18deg); } 50% { transform: translateY(-16px) rotate(-12deg); } }
   @media (prefers-reduced-motion: reduce) { .hero-deco svg { animation: none !important; } }
-  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; position: relative; z-index: 1; }
+
+  .hero-grid { display: grid; grid-template-columns: 1fr .95fr; gap: 2.5rem; align-items: stretch; position: relative; z-index: 1; }
   @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
-  .hero h1 { font-family: 'Bungee', sans-serif; font-size: clamp(2.2rem, 5.4vw, 4rem); text-transform: uppercase; letter-spacing: 0; }
+  .hero-copy { padding: 3.4rem 1rem 3rem 3rem; display: flex; flex-direction: column; justify-content: center; }
+  @media (max-width: 900px) { .hero-copy { padding: 2.6rem 1.6rem 0; } }
+  .hero h1 { font-family: 'Bungee', sans-serif; font-size: clamp(2.1rem, 4.6vw, 3.6rem); text-transform: uppercase; letter-spacing: 0; }
   .hero h1 em { font-style: normal; color: var(--accent); }
-  .hero p.lead { color: var(--gray); font-size: 1.08rem; max-width: 46ch; margin: 1.2rem 0 2rem; }
-  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .hero-stats { display: flex; gap: 2.2rem; margin-top: 2.6rem; flex-wrap: wrap; }
-  .hero-stats div b { font-family: 'Anton', sans-serif; font-size: 2rem; color: var(--accent); display: block; }
-  .hero-stats div span { color: var(--gray); font-size: .82rem; }
-  .hero-visual {
-    aspect-ratio: 4/5; border-radius: 20px; position: relative;
-    background:
-      linear-gradient(160deg, #1c1c18 0%, #0d0d0c 60%),
-      repeating-linear-gradient(45deg, rgba(255,74,46,.06) 0 2px, transparent 2px 14px);
-    border: 1px solid var(--line); display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-  }
-  .hero-visual .barbell { width: 78%; filter: drop-shadow(0 18px 30px rgba(0,0,0,.45)); animation: barbellFloat 5s ease-in-out infinite; }
-  @keyframes barbellFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  @media (prefers-reduced-motion: reduce) { .hero-visual .barbell { animation: none !important; } }
-  .hero-visual .badge {
-    position: absolute; bottom: 1.4rem; left: 1.4rem; right: 1.4rem;
-    background: rgba(13,13,12,.85); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.2rem;
-    backdrop-filter: blur(6px); display: flex; gap: .9rem; align-items: flex-start;
-  }
-  .hero-visual .badge .ic {
-    flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center;
-  }
-  .hero-visual .badge b { font-family: 'Anton', sans-serif; color: var(--accent2); font-size: 1.15rem; letter-spacing: .3px; }
-  .hero-visual .badge .next {
-    display: inline-flex; align-items: center; gap: .35rem; margin-top: .5rem; font-size: .74rem; font-weight: 700;
-    color: var(--accent); background: rgba(255,74,46,.12); border-radius: 50px; padding: .25rem .6rem;
-  }
+  .hero p.lead { color: var(--gray); font-size: 1.04rem; max-width: 42ch; margin: 1.1rem 0 1.8rem; }
+  .hero-actions { display: flex; gap: 1.4rem; flex-wrap: wrap; align-items: center; }
+
+  .rating-row { display: flex; align-items: center; gap: 1rem; margin-top: 2.4rem; flex-wrap: wrap; }
+  .avatar-stack { display: flex; }
+  .avatar-stack .av { width: 40px; height: 40px; border-radius: 50%; border: 3px solid #14100f; margin-left: -12px; background: linear-gradient(135deg, var(--accent2), var(--accent)); display:flex; align-items:center; justify-content:center; font-family:'Anton',sans-serif; font-size:.85rem; color:#14100A; }
+  .avatar-stack .av:first-child { margin-left: 0; }
+  .avatar-stack .plus { background: var(--card); border: 3px solid #14100f; color: var(--gray); font-size: .95rem; font-weight: 800; }
+  .rating-meta .stars { color: var(--accent2); letter-spacing: 2px; font-size: .85rem; }
+  .rating-meta span.n { color: var(--gray); font-size: .78rem; display: block; margin-top: .1rem; }
+
+  .tag-pills { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 2.2rem; }
+  .tag-pill { border: 1px solid var(--line); background: rgba(245,243,236,.04); border-radius: 50px; padding: .5rem 1rem; font-size: .8rem; font-weight: 600; color: var(--white); }
+
+  .hero-visual { position: relative; aspect-ratio: 4/5; overflow: hidden; }
+  @media (max-width: 900px) { .hero-visual { aspect-ratio: 16/10; } }
+  .hero-visual img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
+  .hero-visual::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10,10,8,.9) 0%, rgba(10,10,8,0) 38%); pointer-events: none; }
+  .hero-visual .badge { position: absolute; bottom: 1.4rem; left: 1.4rem; right: 1.4rem; z-index: 2; background: rgba(13,13,12,.85); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.2rem; backdrop-filter: blur(6px); display: flex; gap: .9rem; align-items: flex-start; }
+  .hero-visual .badge .ic { flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; }
+  .hero-visual .badge b { font-family: 'Anton', sans-serif; color: var(--accent2); font-size: 1.1rem; letter-spacing: .3px; }
+  .hero-visual .badge .next { display: inline-flex; align-items: center; gap: .35rem; margin-top: .5rem; font-size: .74rem; font-weight: 700; color: var(--accent); background: rgba(255,74,46,.12); border-radius: 50px; padding: .25rem .6rem; }
 
   /* ── generic section header ── */
   .sec-head { max-width: 640px; margin-bottom: 2.8rem; }
-  .sec-head h2 { font-size: clamp(2rem, 4vw, 2.8rem); text-transform: uppercase; }
+  .sec-head h2 { font-size: clamp(1.9rem, 3.8vw, 2.6rem); text-transform: uppercase; }
+  .sec-head h2 em { font-style: normal; color: var(--accent); }
   .sec-head p { color: var(--gray); margin-top: .7rem; }
 
-  /* ── planes ── */
+  /* ── about ── */
+  .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.2rem; margin: 1.6rem 0 2.6rem; }
+  @media (max-width: 700px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
+  .stats-row div b { font-family: 'Anton', sans-serif; font-size: 2.1rem; color: var(--accent); display: block; }
+  .stats-row div span { color: var(--gray); font-size: .8rem; }
+  .video-block { position: relative; aspect-ratio: 21/9; border-radius: 20px; overflow: hidden; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; }
+  .video-block img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .video-block::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10,10,8,.55), rgba(10,10,8,.15)); }
+  .play-btn { position: relative; z-index: 2; width: 68px; height: 68px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(255,74,46,.35); cursor: pointer; }
+
+  /* ── services grid ── */
+  .svc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+  @media (max-width: 900px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } }
+  .svc-card { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 4/5; border: 1px solid var(--line); }
+  .svc-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .svc-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10,10,8,.85) 0%, rgba(10,10,8,.05) 55%); }
+  .svc-label { position: absolute; left: .9rem; right: .9rem; bottom: .9rem; z-index: 2; display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: .92rem; color: var(--white); }
+  .svc-arrow { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  /* ── why choose us ── */
+  .why-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 2.6rem; align-items: center; }
+  @media (max-width: 900px) { .why-grid { grid-template-columns: 1fr; } }
+  .why-img { border-radius: 18px; aspect-ratio: 3/4; border: 1px solid var(--line); position: relative; overflow: hidden; }
+  .why-img img { width: 100%; height: 100%; object-fit: cover; }
+  .accordion-item { border-top: 1px solid var(--line); padding: 1.1rem 0; cursor: pointer; }
+  .accordion-item:first-child { border-top: none; }
+  .accordion-item .head { display: flex; align-items: center; justify-content: space-between; }
+  .accordion-item h4 { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.05rem; text-transform: none; }
+  .accordion-item h4 em { font-style: normal; color: var(--accent); }
+  .accordion-item .chev { color: var(--accent); font-size: 1.1rem; transition: transform .2s; }
+  .accordion-item.open .chev { transform: rotate(45deg); }
+  .accordion-item p { color: var(--gray); font-size: .88rem; margin-top: .6rem; max-width: 46ch; display: none; }
+  .accordion-item.open p { display: block; }
+
+  /* ── plans ── */
   #planes { background: var(--bg2); }
   .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
   @media (max-width: 900px) { .plans-grid { grid-template-columns: 1fr; } }
-  .plan-card {
-    background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 2rem 1.7rem;
-    display: flex; flex-direction: column; position: relative;
-  }
-  .plan-card.featured { border-color: var(--accent); background: linear-gradient(180deg, rgba(255,74,46,.09), var(--card) 40%); }
-  .plan-card.featured .tag {
-    position: absolute; top: -12px; left: 1.7rem; background: var(--accent); color: #14100A;
-    font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; padding: .3rem .7rem; border-radius: 6px;
-  }
-  .plan-card h3 { font-size: 1.5rem; text-transform: uppercase; margin-bottom: .3rem; }
-  .plan-price { font-family: 'Anton', sans-serif; font-size: 2.6rem; color: var(--accent2); margin: .6rem 0 .2rem; }
-  .plan-price small { font-family: 'Manrope', sans-serif; font-size: .95rem; color: var(--gray); font-weight: 500; }
-  .plan-card ul { list-style: none; margin: 1.3rem 0 1.8rem; flex: 1; }
-  .plan-card li { padding: .45rem 0; border-top: 1px solid var(--line); font-size: .9rem; color: var(--gray); display: flex; gap: .5rem; }
+  .plan-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 2rem 1.7rem; display: flex; flex-direction: column; position: relative; }
+  .plan-card.featured { border-color: var(--accent); background: linear-gradient(180deg, rgba(255,74,46,.12), var(--card) 45%); }
+  .plan-card.featured .tag { position: absolute; top: -12px; left: 1.7rem; background: var(--accent); color: #14100A; font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; padding: .3rem .7rem; border-radius: 6px; }
+  .plan-card h3 { font-size: 1.4rem; text-transform: uppercase; margin-bottom: .3rem; }
+  .plan-price { font-family: 'Anton', sans-serif; font-size: 2.4rem; color: var(--accent2); margin: .6rem 0 .2rem; }
+  .plan-price small { font-family: 'Manrope', sans-serif; font-size: .9rem; color: var(--gray); font-weight: 500; }
+  .plan-card ul { list-style: none; margin: 1.2rem 0 1.6rem; flex: 1; }
+  .plan-card li { padding: .45rem 0; border-top: 1px solid var(--line); font-size: .88rem; color: var(--gray); display: flex; gap: .5rem; }
   .plan-card li:first-child { border-top: none; }
   .plan-card li::before { content: "✓"; color: var(--accent); font-weight: 800; }
+  .plan-card .btn { justify-content: center; border-radius: 12px; }
 
-  /* ── clases (schedule) ── */
+  /* ── clases ── */
   .class-tabs { display: flex; gap: .6rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
-  .class-tab {
-    background: var(--card); border: 1px solid var(--line); color: var(--gray); font-weight: 700; font-size: .85rem;
-    padding: .55rem 1.1rem; border-radius: 50px; cursor: pointer;
-  }
+  .class-tab { background: var(--card); border: 1px solid var(--line); color: var(--gray); font-weight: 700; font-size: .85rem; padding: .55rem 1.1rem; border-radius: 50px; cursor: pointer; }
   .class-tab.active { background: var(--accent); border-color: var(--accent); color: #14100A; }
-  .schedule-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 14px; overflow: hidden; }
+  .schedule-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 16px; overflow: hidden; }
   .schedule-table th { text-align: left; font-size: .74rem; text-transform: uppercase; letter-spacing: .05em; color: var(--gray); padding: 1rem 1.1rem; border-bottom: 1px solid var(--line); }
   .schedule-table td { padding: 1rem 1.1rem; border-bottom: 1px solid var(--line); font-size: .92rem; }
   .schedule-table tr:last-child td { border-bottom: none; }
   .schedule-table .time { color: var(--accent2); font-weight: 700; font-variant-numeric: tabular-nums; }
-  .table-wrap { overflow-x: auto; }
-  .table-wrap table { min-width: 560px; }
-  .day-pill { display: none; }
-  .day-pill.show { display: table-row; }
+  .table-wrap { overflow-x: auto; } .table-wrap table { min-width: 560px; }
 
-  /* ── instalaciones ── */
-  .feat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
-  @media (max-width: 900px) { .feat-grid { grid-template-columns: repeat(2, 1fr); } }
-  .feat-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.6rem 1.3rem; text-align: center; }
-  .feat-card .ic { font-size: 1.8rem; margin-bottom: .7rem; }
-  .feat-card h4 { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: .95rem; text-transform: none; margin-bottom: .3rem; }
-  .feat-card p { font-size: .82rem; color: var(--gray); }
-
-  /* ── testimonios ── */
-  #testimonios { background: var(--bg2); }
-  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
-  @media (max-width: 900px) { .testi-grid { grid-template-columns: 1fr; } }
-  .testi-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.6rem; }
-  .testi-card .stars { color: var(--accent2); letter-spacing: 2px; margin-bottom: .8rem; }
-  .testi-card p { font-size: .92rem; color: var(--white); margin-bottom: 1.1rem; }
-  .testi-who { display: flex; align-items: center; gap: .7rem; }
-  .testi-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); flex-shrink: 0; }
-  .testi-who b { font-size: .85rem; display: block; }
-  .testi-who span { font-size: .76rem; color: var(--gray); }
-
-  /* ── ubicacion / cta final ── */
-  #ubicacion .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
-  @media (max-width: 900px) { #ubicacion .wrap { grid-template-columns: 1fr; } }
-  #ubicacion h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); text-transform: uppercase; margin-bottom: 1rem; }
+  /* ── ubicacion / dot map ── */
+  #ubicacion { background: var(--bg2); }
+  .loc-stat { display:flex; align-items:baseline; gap:.6rem; margin: 1.4rem 0; }
+  .loc-stat b { font-family:'Anton',sans-serif; font-size:2.4rem; color: var(--accent); }
   .info-line { display: flex; gap: .8rem; padding: .8rem 0; border-top: 1px solid var(--line); font-size: .92rem; }
   .info-line:first-of-type { border-top: none; }
   .info-line b { color: var(--white); }
-  .map-block {
-    aspect-ratio: 4/3; border-radius: 16px; border: 1px solid var(--line);
-    background: repeating-linear-gradient(0deg, #14140f 0 1px, transparent 1px 34px),
-                repeating-linear-gradient(90deg, #14140f 0 1px, transparent 1px 34px), #191914;
-    display: flex; align-items: center; justify-content: center; color: var(--gray); font-size: .85rem; text-align: center;
-  }
+  .dot-map { position: relative; aspect-ratio: 16/11; border-radius: 20px; border: 1px solid var(--line); overflow: hidden; background: #14140f; }
+  .dot-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .dot-map .pin { position: absolute; top: 46%; left: 52%; width: 46px; height: 46px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px rgba(255,74,46,.18), 0 8px 22px rgba(255,74,46,.4); }
+  .dot-map .pin::after { content:""; position:absolute; inset:-16px; border-radius:50%; border:1px solid rgba(255,74,46,.4); animation: ping 2.4s ease-out infinite; }
+  @keyframes ping { 0% { transform: scale(.6); opacity: .8; } 100% { transform: scale(1.9); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .dot-map .pin::after { animation: none; } }
+  .dot-map .cap { position: absolute; bottom: 1rem; left: 1rem; right: 1rem; font-size: .78rem; color: var(--gray); background: rgba(10,10,8,.7); padding: .5rem .8rem; border-radius: 8px; backdrop-filter: blur(4px); }
 
-  .cta-final { text-align: center; background: linear-gradient(135deg, rgba(255,74,46,.14), rgba(255,176,32,.07)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .cta-final h2 { font-size: clamp(2rem, 5vw, 3.2rem); text-transform: uppercase; margin-bottom: 1rem; }
+  /* ── cta final ── */
+  .cta-final { text-align: center; background: linear-gradient(135deg, rgba(255,74,46,.16), rgba(255,176,32,.08)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .cta-final h2 { font-size: clamp(2rem, 5vw, 3.1rem); text-transform: uppercase; margin-bottom: 1rem; }
   .cta-final p { color: var(--gray); margin-bottom: 2rem; }
 
-  footer { padding: 2.5rem 0; text-align: center; color: var(--gray); font-size: .82rem; }
-  footer b { color: var(--white); }
+  footer { padding: 2.5rem 0; }
+  .foot-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; color: var(--gray); font-size: .85rem; }
+  .foot-grid ul { list-style: none; display: flex; gap: 1.4rem; }
+  .foot-grid ul a:hover { color: var(--accent); }
 
-  .wa-float {
-    position: fixed; bottom: 1.4rem; right: 1.4rem; width: 58px; height: 58px; border-radius: 50%;
-    background: #25D366; display: flex; align-items: center; justify-content: center; z-index: 60;
-    box-shadow: 0 6px 24px rgba(37,211,102,.4); text-decoration: none;
-  }
+  .wa-float { position: fixed; bottom: 1.4rem; right: 1.4rem; width: 58px; height: 58px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; z-index: 60; box-shadow: 0 6px 24px rgba(37,211,102,.4); }
 </style>
 </head>
 <body>
@@ -212,143 +207,118 @@
   </div>
 
   <header class="site-nav">
-    <div class="nav-inner">
-      <div class="nav-logo">FUERZA<span>URBANA</span></div>
+    <div class="nav-pill">
+      <div class="nav-logo">
+        <div class="mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-2 8 10-13h-6l1-7Z" fill="#14100A"/></svg></div>
+        FUERZA<span>URBANA</span>
+      </div>
       <ul class="nav-links">
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#servicios">Servicios</a></li>
         <li><a href="#planes">Planes</a></li>
         <li><a href="#clases">Clases</a></li>
-        <li><a href="#instalaciones">Instalaciones</a></li>
         <li><a href="#ubicacion">Ubicación</a></li>
       </ul>
-      <div class="nav-cta">
-        <a class="btn btn-primary" href="https://wa.me/56987654321" target="_blank" rel="noopener">Únete ahora</a>
-      </div>
+      <a class="btn btn-primary" style="padding:.65rem 1.3rem;font-size:.85rem;" href="https://wa.me/56987654321" target="_blank" rel="noopener">Clase gratis</a>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="hero-deco" aria-hidden="true">
-      <svg class="d1" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="0" y="20" width="26" height="40" rx="6" fill="#FF4A2E"/>
-        <rect x="26" y="10" width="14" height="60" rx="5" fill="#FF4A2E"/>
-        <rect x="40" y="34" width="120" height="12" rx="6" fill="#FF4A2E"/>
-        <rect x="160" y="10" width="14" height="60" rx="5" fill="#FF4A2E"/>
-        <rect x="174" y="20" width="26" height="40" rx="6" fill="#FF4A2E"/>
-      </svg>
-      <svg class="d2" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="0" y="20" width="26" height="40" rx="6" fill="#FFB020"/>
-        <rect x="26" y="10" width="14" height="60" rx="5" fill="#FFB020"/>
-        <rect x="40" y="34" width="120" height="12" rx="6" fill="#FFB020"/>
-        <rect x="160" y="10" width="14" height="60" rx="5" fill="#FFB020"/>
-        <rect x="174" y="20" width="26" height="40" rx="6" fill="#FFB020"/>
-      </svg>
-      <svg class="d3" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="40" cy="40" r="38" stroke="#FF4A2E" stroke-width="8"/>
-      </svg>
-    </div>
-    <div class="wrap hero-grid">
-      <div>
-        <span class="eyebrow">Ñuñoa, Santiago</span>
-        <h1>Entrena <em>fuerte</em>.<br>Vive <em>fuerte</em>.</h1>
-        <p class="lead">Sala de musculación completa, clases grupales todos los días y un equipo que te acompaña desde tu primer día. Sin letra chica, sin contratos eternos.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="https://wa.me/56987654321" target="_blank" rel="noopener">Agenda una clase gratis →</a>
-          <a class="btn btn-ghost" href="#planes">Ver planes</a>
+  <div class="hero-shell">
+    <section class="hero">
+      <div class="hero-deco" aria-hidden="true">
+        <svg class="d1" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="20" width="26" height="40" rx="6" fill="#FF4A2E"/><rect x="26" y="10" width="14" height="60" rx="5" fill="#FF4A2E"/><rect x="40" y="34" width="120" height="12" rx="6" fill="#FF4A2E"/><rect x="160" y="10" width="14" height="60" rx="5" fill="#FF4A2E"/><rect x="174" y="20" width="26" height="40" rx="6" fill="#FF4A2E"/></svg>
+        <svg class="d3" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="38" stroke="#FF4A2E" stroke-width="8"/></svg>
+      </div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Ñuñoa, Santiago</span>
+          <h1>Entrena <em>fuerte</em>.<br>Vive <em>fuerte</em>.</h1>
+          <p class="lead">Sala de musculación completa, clases grupales todos los días y un equipo que te acompaña desde tu primer día. Sin letra chica, sin contratos eternos.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://wa.me/56987654321" target="_blank" rel="noopener">Agenda una clase gratis →</a>
+            <a class="btn-play" href="#nosotros"><span class="circ"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></span>Ver el gimnasio</a>
+          </div>
+          <div class="rating-row">
+            <div class="avatar-stack"><div class="av">C</div><div class="av">M</div><div class="av">F</div><div class="av plus">+</div></div>
+            <div class="rating-meta"><div class="stars">★★★★★</div><span class="n">+850 socios · 4.9/5 en reseñas</span></div>
+          </div>
+          <div class="tag-pills">
+            <span class="tag-pill">Musculación</span><span class="tag-pill">Funcional</span><span class="tag-pill">Spinning</span><span class="tag-pill">CrossFit</span><span class="tag-pill">Yoga</span>
+          </div>
         </div>
-        <div class="hero-stats">
-          <div><b>+850</b><span>Socios activos</span></div>
-          <div><b>32</b><span>Clases grupales/semana</span></div>
-          <div><b>7</b><span>Años en Ñuñoa</span></div>
+        <div class="hero-visual">
+          <img src="/assets/demo-gym/hero.webp" alt="Socio entrenando en cinta de correr en Fuerza Urbana" loading="eager" fetchpriority="high" />
+          <div class="badge">
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 6v6c0 5 3.4 9.4 8 10 4.6-.6 8-5 8-10V6l-8-4Z" fill="#14100A"/></svg></div>
+            <div><b>Clase de prueba gratis</b><div style="color:var(--gray); font-size:.82rem; margin-top:.2rem;">Funcional, Spinning o CrossFit — tú eliges.</div><span class="next">🗓 Próximo cupo: hoy 18:00</span></div>
+          </div>
         </div>
       </div>
-      <div class="hero-visual">
-        <svg class="barbell" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="plateGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#FFB020"/>
-              <stop offset="100%" stop-color="#FF4A2E"/>
-            </linearGradient>
-            <linearGradient id="barGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#3a3a34"/>
-              <stop offset="50%" stop-color="#6b6a60"/>
-              <stop offset="100%" stop-color="#3a3a34"/>
-            </linearGradient>
-          </defs>
-          <rect x="60" y="100" width="280" height="20" rx="4" fill="url(#barGrad)"/>
-          <rect x="18" y="60" width="34" height="100" rx="8" fill="url(#plateGrad)"/>
-          <rect x="54" y="75" width="18" height="70" rx="6" fill="url(#plateGrad)" opacity=".85"/>
-          <rect x="348" y="60" width="34" height="100" rx="8" fill="url(#plateGrad)"/>
-          <rect x="328" y="75" width="18" height="70" rx="6" fill="url(#plateGrad)" opacity=".85"/>
-          <rect x="90" y="94" width="10" height="32" rx="3" fill="#1a1a17"/>
-          <rect x="300" y="94" width="10" height="32" rx="3" fill="#1a1a17"/>
-        </svg>
-        <div class="badge">
-          <div class="ic">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 4 6v6c0 5 3.4 9.4 8 10 4.6-.6 8-5 8-10V6l-8-4Z" fill="#14100A"/></svg>
-          </div>
-          <div>
-            <b>Clase de prueba gratis</b>
-            <div style="color:var(--gray); font-size:.82rem; margin-top:.2rem;">Funcional, Spinning o CrossFit — tú eliges. Sin costo, sin compromiso.</div>
-            <span class="next">🗓 Próximo cupo: hoy 18:00</span>
-          </div>
-        </div>
+    </section>
+  </div>
+
+  <section id="nosotros">
+    <div class="wrap">
+      <span class="eyebrow">Sobre nosotros</span>
+      <h2>Tu mejor <em>versión</em><br>empieza aquí</h2>
+      <p style="color:var(--gray); max-width:60ch; margin-top:.8rem;">En Fuerza Urbana creemos que el fitness no es solo levantar peso — es comunidad, constancia y profesores que te corrigen la técnica antes de que te lesiones. Por eso llevamos 7 años en Ñuñoa formando socios, no solo vendiendo membresías.</p>
+      <div class="stats-row">
+        <div><b>7</b><span>Años en Ñuñoa</span></div>
+        <div><b>+850</b><span>Socios activos</span></div>
+        <div><b>32</b><span>Clases/semana</span></div>
+        <div><b>12</b><span>Instructores certificados</span></div>
+      </div>
+      <div class="video-block">
+        <img src="/assets/demo-gym/about.webp" alt="Interior del gimnasio Fuerza Urbana" loading="lazy" />
+        <div class="play-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicios" style="background:var(--bg2);">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Servicios</span>
+        <h2>Todo lo que necesitas para <em>avanzar</em></h2>
+        <p>Sala de musculación, clases grupales y acompañamiento personalizado bajo un mismo techo.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-card"><img src="/assets/demo-gym/svc-musculacion.webp" alt="Musculación" loading="lazy" /><div class="svc-label">Musculación<span class="svc-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="#14100A"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div></div>
+        <div class="svc-card"><img src="/assets/demo-gym/svc-funcional.webp" alt="Funcional" loading="lazy" /><div class="svc-label">Funcional<span class="svc-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="#14100A"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div></div>
+        <div class="svc-card"><img src="/assets/demo-gym/svc-spinning.webp" alt="Spinning" loading="lazy" /><div class="svc-label">Spinning<span class="svc-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="#14100A"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div></div>
+        <div class="svc-card"><img src="/assets/demo-gym/svc-yoga.webp" alt="Yoga" loading="lazy" /><div class="svc-label">Yoga<span class="svc-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="#14100A"><path d="M7 17 17 7M9 7h8v8"/></svg></span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="por-que">
+    <div class="wrap why-grid">
+      <div class="why-img"><img src="/assets/demo-gym/why-choose-us.webp" alt="Entrenador guiando a un socio" loading="lazy" /></div>
+      <div>
+        <span class="eyebrow">Por qué elegirnos</span>
+        <h2 style="margin-bottom:1.2rem;">Por qué entrenar <em>con nosotros</em></h2>
+        <div class="accordion-item"><div class="head"><h4>Equipamiento <em>de última generación</em></h4><span class="chev">+</span></div></div>
+        <div class="accordion-item open"><div class="head"><h4>Entrenadores <em>certificados</em></h4><span class="chev">+</span></div><p>Nuestro equipo te guía en cada sesión con planes personalizados y corrección de técnica, para que entrenes seguro y veas resultados más rápido.</p></div>
+        <div class="accordion-item"><div class="head"><h4>Variedad de <em>clases</em></h4><span class="chev">+</span></div></div>
+        <div class="accordion-item"><div class="head"><h4>Comunidad que <em>te acompaña</em></h4><span class="chev">+</span></div></div>
       </div>
     </div>
   </section>
 
   <section id="planes">
     <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow">Membresías</span>
-        <h2>Elige tu plan</h2>
-        <p>Todos los planes incluyen acceso a sala de musculación y cardio. Sin costo de inscripción este mes.</p>
-      </div>
+      <div class="sec-head"><span class="eyebrow">Membresías</span><h2>Un plan para cada <em>objetivo</em></h2><p>Todos los planes incluyen acceso a sala de musculación y cardio. Sin costo de inscripción este mes.</p></div>
       <div class="plans-grid">
-        <div class="plan-card">
-          <h3>Básico</h3>
-          <div class="plan-price">$24.990<small> / mes</small></div>
-          <ul>
-            <li>Acceso sala de musculación</li>
-            <li>Acceso zona de cardio</li>
-            <li>1 clase grupal por semana</li>
-            <li>Casillero compartido</li>
-          </ul>
-          <a class="btn btn-ghost" href="https://wa.me/56987654321" target="_blank" rel="noopener">Quiero este plan</a>
-        </div>
-        <div class="plan-card featured">
-          <span class="tag">Más elegido</span>
-          <h3>Full</h3>
-          <div class="plan-price">$34.990<small> / mes</small></div>
-          <ul>
-            <li>Todo lo del plan Básico</li>
-            <li>Clases grupales ilimitadas</li>
-            <li>Casillero individual</li>
-            <li>1 evaluación física al mes</li>
-          </ul>
-          <a class="btn btn-primary" href="https://wa.me/56987654321" target="_blank" rel="noopener">Quiero este plan</a>
-        </div>
-        <div class="plan-card">
-          <h3>Elite</h3>
-          <div class="plan-price">$49.990<small> / mes</small></div>
-          <ul>
-            <li>Todo lo del plan Full</li>
-            <li>2 sesiones con entrenador/mes</li>
-            <li>Plan nutricional básico</li>
-            <li>Acceso preferente a clases</li>
-          </ul>
-          <a class="btn btn-ghost" href="https://wa.me/56987654321" target="_blank" rel="noopener">Quiero este plan</a>
-        </div>
+        <div class="plan-card"><h3>Básico</h3><div class="plan-price">$24.990<small> / mes</small></div><ul><li>Acceso sala de musculación</li><li>Acceso zona de cardio</li><li>1 clase grupal por semana</li><li>Casillero compartido</li></ul><a class="btn btn-ghost" href="https://wa.me/56987654321" target="_blank" rel="noopener">Quiero este plan</a></div>
+        <div class="plan-card featured"><span class="tag">Más elegido</span><h3>Full</h3><div class="plan-price">$34.990<small> / mes</small></div><ul><li>Todo lo del plan Básico</li><li>Clases grupales ilimitadas</li><li>Casillero individual</li><li>1 evaluación física al mes</li></ul><a class="btn btn-primary" href="https://wa.me/56987654321" target="_blank" rel="noopener">Quiero este plan</a></div>
+        <div class="plan-card"><h3>Elite</h3><div class="plan-price">$49.990<small> / mes</small></div><ul><li>Todo lo del plan Full</li><li>2 sesiones con entrenador/mes</li><li>Plan nutricional básico</li><li>Acceso preferente a clases</li></ul><a class="btn btn-ghost" href="https://wa.me/56987654321" target="_blank" rel="noopener">Quiero este plan</a></div>
       </div>
     </div>
   </section>
 
-  <section id="clases">
+  <section id="clases" style="background:var(--bg2);">
     <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow">Horarios</span>
-        <h2>Clases grupales</h2>
-        <p>Cupos limitados por clase — resérvalos por WhatsApp con anticipación.</p>
-      </div>
+      <div class="sec-head"><span class="eyebrow">Horarios</span><h2>Clases <em>grupales</em></h2><p>Cupos limitados por clase — resérvalos por WhatsApp con anticipación.</p></div>
       <div class="class-tabs">
         <button class="class-tab active" data-day="lunes" aria-pressed="true">Lunes</button>
         <button class="class-tab" data-day="martes" aria-pressed="false">Martes</button>
@@ -357,80 +327,39 @@
         <button class="class-tab" data-day="viernes" aria-pressed="false">Viernes</button>
         <button class="class-tab" data-day="sabado" aria-pressed="false">Sábado</button>
       </div>
-      <div class="table-wrap">
-        <table class="schedule-table">
-          <thead><tr><th>Hora</th><th>Clase</th><th>Instructor</th><th>Cupos</th></tr></thead>
-          <tbody id="scheduleBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <section id="instalaciones" style="background:var(--bg2);">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow">Instalaciones</span>
-        <h2>Todo lo que necesitas</h2>
-      </div>
-      <div class="feat-grid">
-        <div class="feat-card"><div class="ic">🏋️</div><h4>Sala de pesas</h4><p>Equipos de musculación de última generación.</p></div>
-        <div class="feat-card"><div class="ic">🚴</div><h4>Zona cardio</h4><p>Bicicletas, trotadoras y elípticas.</p></div>
-        <div class="feat-card"><div class="ic">🚿</div><h4>Camarines y duchas</h4><p>Casilleros con candado y duchas de agua caliente.</p></div>
-        <div class="feat-card"><div class="ic">🅿️</div><h4>Estacionamiento</h4><p>Estacionamiento gratuito para socios.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="testimonios">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow">Testimonios</span>
-        <h2>Lo que dicen nuestros socios</h2>
-      </div>
-      <div class="testi-grid">
-        <div class="testi-card">
-          <div class="stars">★★★★★</div>
-          <p>"Llevo 8 meses entrenando acá y el ambiente es increíble. Los profes te corrigen la técnica sin que lo pidas."</p>
-          <div class="testi-who"><div class="testi-avatar"></div><div><b>Camila R.</b><span>Socia desde 2024</span></div></div>
-        </div>
-        <div class="testi-card">
-          <div class="stars">★★★★★</div>
-          <p>"Probé varios gimnasios en Ñuñoa y este es el único donde de verdad cumplen el horario de las clases."</p>
-          <div class="testi-who"><div class="testi-avatar"></div><div><b>Matías P.</b><span>Socio desde 2023</span></div></div>
-        </div>
-        <div class="testi-card">
-          <div class="stars">★★★★★</div>
-          <p>"Agendé la clase de prueba por WhatsApp y en dos minutos ya tenía mi hora confirmada. Muy recomendado."</p>
-          <div class="testi-who"><div class="testi-avatar"></div><div><b>Fernanda O.</b><span>Socia desde 2025</span></div></div>
-        </div>
-      </div>
+      <div class="table-wrap"><table class="schedule-table"><thead><tr><th>Hora</th><th>Clase</th><th>Instructor</th><th>Cupos</th></tr></thead><tbody id="scheduleBody"></tbody></table></div>
     </div>
   </section>
 
   <section id="ubicacion">
-    <div class="wrap">
+    <div class="wrap" style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center;">
       <div>
         <span class="eyebrow">Ubicación</span>
-        <h2>Te esperamos en Ñuñoa</h2>
+        <h2>Te esperamos <em>en Ñuñoa</em></h2>
+        <div class="loc-stat"><b>7</b><span style="color:var(--gray);">años en el mismo barrio, formando parte de la comunidad</span></div>
         <div class="info-line"><b>Dirección:</b> Av. Irarrázaval 3400, Ñuñoa, Santiago</div>
         <div class="info-line"><b>Horario:</b> Lunes a viernes 6:30–22:30 · Sábado 9:00–14:00</div>
         <div class="info-line"><b>WhatsApp:</b> +56 9 8765 4321</div>
         <a class="btn btn-primary" style="margin-top:1.6rem;" href="https://wa.me/56987654321" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
       </div>
-      <div class="map-block">Mapa referencial<br>Av. Irarrázaval 3400, Ñuñoa</div>
+      <div class="dot-map">
+        <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+        <div class="pin"><svg width="18" height="18" viewBox="0 0 24 24" fill="#14100A"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 8 12 8 12s8-6.6 8-12c0-4.4-3.6-8-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg></div>
+        <div class="cap">Av. Irarrázaval 3400, Ñuñoa</div>
+      </div>
     </div>
   </section>
 
   <section class="cta-final">
-    <div class="wrap">
-      <h2>Tu primera clase es gratis</h2>
-      <p>Sin tarjeta, sin compromiso. Solo agenda y ven a conocernos.</p>
-      <a class="btn btn-primary" href="https://wa.me/56987654321" target="_blank" rel="noopener">Agendar por WhatsApp →</a>
-    </div>
+    <div class="wrap"><h2>Tu primera clase es gratis</h2><p>Sin tarjeta, sin compromiso. Solo agenda y ven a conocernos.</p><a class="btn btn-primary" href="https://wa.me/56987654321" target="_blank" rel="noopener">Agendar por WhatsApp →</a></div>
   </section>
 
   <footer>
-    <div class="wrap"><b>Fuerza Urbana</b> — Centro de Entrenamiento · Ñuñoa, Santiago · Demo creada por Automalytics</div>
+    <div class="wrap foot-grid">
+      <div class="nav-logo">FUERZA<span>URBANA</span></div>
+      <ul><li><a href="#servicios">Servicios</a></li><li><a href="#planes">Planes</a></li><li><a href="#nosotros">Nosotros</a></li></ul>
+      <div>Demo creada por Automalytics</div>
+    </div>
   </footer>
 
   <a class="wa-float" href="https://wa.me/56987654321" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
@@ -439,40 +368,12 @@
 
 <script>
   const schedules = {
-    lunes: [
-      ['07:00', 'Funcional', 'Cristóbal M.', '4/12'],
-      ['09:00', 'Spinning', 'Valentina S.', '10/16'],
-      ['18:00', 'CrossFit', 'Cristóbal M.', '12/14'],
-      ['19:30', 'Yoga', 'Antonia F.', '6/10'],
-    ],
-    martes: [
-      ['07:00', 'Spinning', 'Valentina S.', '8/16'],
-      ['12:00', 'Funcional', 'Cristóbal M.', '5/12'],
-      ['18:30', 'Box Fitness', 'Diego R.', '9/14'],
-      ['20:00', 'Yoga', 'Antonia F.', '3/10'],
-    ],
-    miercoles: [
-      ['07:00', 'Funcional', 'Cristóbal M.', '6/12'],
-      ['09:00', 'Spinning', 'Valentina S.', '11/16'],
-      ['18:00', 'CrossFit', 'Cristóbal M.', '13/14'],
-      ['19:30', 'Pilates', 'Antonia F.', '5/10'],
-    ],
-    jueves: [
-      ['07:00', 'Spinning', 'Valentina S.', '7/16'],
-      ['12:00', 'Funcional', 'Cristóbal M.', '4/12'],
-      ['18:30', 'Box Fitness', 'Diego R.', '10/14'],
-      ['20:00', 'Yoga', 'Antonia F.', '4/10'],
-    ],
-    viernes: [
-      ['07:00', 'Funcional', 'Cristóbal M.', '5/12'],
-      ['09:00', 'Spinning', 'Valentina S.', '9/16'],
-      ['18:00', 'CrossFit', 'Cristóbal M.', '14/14'],
-      ['19:00', 'Yoga', 'Antonia F.', '7/10'],
-    ],
-    sabado: [
-      ['09:30', 'Funcional', 'Diego R.', '8/12'],
-      ['11:00', 'Box Fitness', 'Diego R.', '6/14'],
-    ],
+    lunes: [['07:00','Funcional','Cristóbal M.','4/12'],['09:00','Spinning','Valentina S.','10/16'],['18:00','CrossFit','Cristóbal M.','12/14'],['19:30','Yoga','Antonia F.','6/10']],
+    martes: [['07:00','Spinning','Valentina S.','8/16'],['12:00','Funcional','Cristóbal M.','5/12'],['18:30','Box Fitness','Diego R.','9/14'],['20:00','Yoga','Antonia F.','3/10']],
+    miercoles: [['07:00','Funcional','Cristóbal M.','6/12'],['09:00','Spinning','Valentina S.','11/16'],['18:00','CrossFit','Cristóbal M.','13/14'],['19:30','Pilates','Antonia F.','5/10']],
+    jueves: [['07:00','Spinning','Valentina S.','7/16'],['12:00','Funcional','Cristóbal M.','4/12'],['18:30','Box Fitness','Diego R.','10/14'],['20:00','Yoga','Antonia F.','4/10']],
+    viernes: [['07:00','Funcional','Cristóbal M.','5/12'],['09:00','Spinning','Valentina S.','9/16'],['18:00','CrossFit','Cristóbal M.','14/14'],['19:00','Yoga','Antonia F.','7/10']],
+    sabado: [['09:30','Funcional','Diego R.','8/12'],['11:00','Box Fitness','Diego R.','6/14']],
   };
   const body = document.getElementById('scheduleBody');
   function renderDay(day) {
@@ -496,6 +397,14 @@
     });
   });
   renderDay('lunes');
+
+  document.querySelectorAll('.accordion-item').forEach(item => {
+    item.querySelector('.head').addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
 </script>
 </body>
 </html>
