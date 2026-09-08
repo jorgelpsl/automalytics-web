@@ -46,8 +46,7 @@
     "description": "Diseñamos páginas web 100% a la medida de tu negocio, y las conectamos a WhatsApp con automatización si lo necesitas.",
     "email": "contacto@automalytics.cl",
     "telephone": "+56932954075",
-    "areaServed": ["CL", "Latinoamérica"],
-    "priceRange": "$149.990 - $649.990 CLP"
+    "areaServed": ["CL", "Latinoamérica"]
   }
   </script>
 
@@ -605,16 +604,9 @@
     .pricing-plan { position: relative; z-index: 1; font-size: .8rem; font-weight: 700; color: var(--moss-ink); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: .75rem; }
     .pricing-price { position: relative; z-index: 1; font-family: 'Bricolage Grotesque', sans-serif; font-size: 2.4rem; font-weight: 900; margin-bottom: .25rem; }
     .pricing-price sup { font-size: 1rem; vertical-align: super; margin-right: .1rem; }
-    .pricing-period { position: relative; z-index: 1; color: var(--gray); font-size: .82rem; margin-bottom: .6rem; }
-    .pricing-maintenance {
-      position: relative; z-index: 1;
-      display: inline-block; font-size: .8rem; font-weight: 700; color: var(--moss-ink);
-      background: rgba(159,176,90,.12); border: 1px solid rgba(159,176,90,.3);
-      border-radius: 8px; padding: .4rem .7rem; margin-bottom: .6rem;
-    }
-    .pricing-total { position: relative; z-index: 1; color: var(--gray); font-size: .82rem; margin-bottom: .35rem; }
-    .pricing-total strong { color: var(--white); }
-    .pricing-fee-note { position: relative; z-index: 1; color: var(--gray); font-size: .74rem; margin-bottom: 1.5rem; }
+    /* Plans without a public number: same slot, a short phrase instead of a
+       shouted figure — sized down so it reads as a statement, not a price. */
+    .pricing-price-custom { font-size: 1.3rem; font-weight: 800; margin-bottom: 1.4rem; }
     .pricing-desc { position: relative; z-index: 1; color: var(--gray); font-size: .87rem; line-height: 1.6; margin-bottom: 1.75rem; padding-bottom: 1.75rem; border-bottom: 1px solid var(--card-bdr); }
     .pricing-features { position: relative; z-index: 1; list-style: none; margin-bottom: 2rem; }
     .pricing-features li { display: flex; align-items: flex-start; gap: .65rem; font-size: .87rem; color: var(--gray); margin-bottom: .8rem; }
@@ -955,6 +947,7 @@
 
       .pricing-grid { max-width: 100%; }
       .pricing-price { font-size: 2rem; }
+      .pricing-price-custom { font-size: 1.15rem; }
 
       .mobile-menu a { font-size: 1.2rem; }
 
@@ -988,7 +981,7 @@
           <li><a href="#web">Páginas Web</a></li>
           <li><a href="#services">Automatizaciones</a></li>
           <li><a href="#casos">Casos</a></li>
-          <li><a href="#pricing">Precios</a></li>
+          <li><a href="#pricing">Planes</a></li>
           <li><a href="#about">Nosotros</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
@@ -1014,7 +1007,7 @@
   <a href="#web" onclick="closeMobile()">Páginas Web</a>
   <a href="#services" onclick="closeMobile()">Automatizaciones</a>
   <a href="#casos" onclick="closeMobile()">Casos</a>
-  <a href="#pricing" onclick="closeMobile()">Precios</a>
+  <a href="#pricing" onclick="closeMobile()">Planes</a>
   <a href="#about" onclick="closeMobile()">Nosotros</a>
   <a href="#faq" onclick="closeMobile()">FAQ</a>
   <a href="#cta" onclick="closeMobile()" style="color:var(--cyan)">Cotizar →</a>
@@ -1271,9 +1264,9 @@
 <!-- ─── PRICING ─── -->
 <section id="pricing">
   <div class="section-header" data-aos="fade-up">
-    <p class="section-label">Planes y Precios</p>
+    <p class="section-label">Planes</p>
     <h2 class="section-title">Invierte en tu crecimiento,<br><span>empieza cuando quieras</span></h2>
-    <p class="section-sub">Sin contratos de permanencia. Cancela cuando quieras. Todos los planes incluyen soporte.</p>
+    <p class="section-sub">Cada propuesta se ajusta a tu negocio. Sin contratos de permanencia — cancela cuando quieras. Todos los planes incluyen soporte.</p>
   </div>
 
   <div class="pricing-groups">
@@ -1284,11 +1277,7 @@
         <!-- Landing Page -->
         <div class="pricing-card" data-aos="fade-up" data-aos-delay="0">
           <p class="pricing-plan">Landing Page</p>
-          <div class="pricing-price"><sup>$</sup>149.990</div>
-          <p class="pricing-period">CLP · pago inicial</p>
-          <p class="pricing-maintenance">+ $29.990 CLP/mes de mantenimiento</p>
-          <p class="pricing-total">Total primer año: <strong>$509.870 CLP</strong></p>
-          <p class="pricing-fee-note">Pago inicial no reembolsable (trabajo entregado).</p>
+          <p class="pricing-price pricing-price-custom">Cotización a medida</p>
           <p class="pricing-desc">Ideal para campañas y captación de leads: una sola página, 100% enfocada en convertir.</p>
           <ul class="pricing-features">
             <li><span class="check">✓</span> 1 página de alto impacto</li>
@@ -1305,11 +1294,7 @@
         <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="120">
           <div class="featured-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-1px;margin-right:.3rem;"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7L2 9.2l7.1-.6z"/></svg>Más elegido</div>
           <p class="pricing-plan">Sitio Corporativo</p>
-          <div class="pricing-price"><sup>$</sup>349.990</div>
-          <p class="pricing-period">CLP · pago inicial</p>
-          <p class="pricing-maintenance">+ $49.990 CLP/mes de mantenimiento</p>
-          <p class="pricing-total">Total primer año: <strong>$949.870 CLP</strong></p>
-          <p class="pricing-fee-note">Pago inicial no reembolsable (trabajo entregado).</p>
+          <p class="pricing-price pricing-price-custom">Cotización a medida</p>
           <p class="pricing-desc">Presencia profesional completa para tu negocio, con todo lo necesario para generar confianza.</p>
           <ul class="pricing-features">
             <li><span class="check">✓</span> Hasta 5 páginas</li>
@@ -1325,11 +1310,7 @@
         <!-- Tienda Online -->
         <div class="pricing-card" data-aos="fade-up" data-aos-delay="240">
           <p class="pricing-plan">Tienda Online</p>
-          <div class="pricing-price"><sup>$</sup>649.990</div>
-          <p class="pricing-period">CLP · pago inicial</p>
-          <p class="pricing-maintenance">+ $49.990 CLP/mes de mantenimiento</p>
-          <p class="pricing-total">Total primer año: <strong>$1.249.870 CLP</strong></p>
-          <p class="pricing-fee-note">Pago inicial no reembolsable (trabajo entregado).</p>
+          <p class="pricing-price pricing-price-custom">Cotización a medida</p>
           <p class="pricing-desc">Vende directamente desde tu web, con catálogo de productos y pagos integrados.</p>
           <ul class="pricing-features">
             <li><span class="check">✓</span> Catálogo de productos</li>
@@ -1352,8 +1333,7 @@
         <!-- Básico -->
         <div class="pricing-card" data-aos="fade-up" data-aos-delay="0">
           <p class="pricing-plan">Básico</p>
-          <div class="pricing-price"><sup>$</sup>49.990</div>
-          <p class="pricing-period">CLP / mes</p>
+          <p class="pricing-price pricing-price-custom">Cotización a medida</p>
           <p class="pricing-desc">Ideal para negocios pequeños que quieren empezar a automatizar su WhatsApp sin complejidad.</p>
           <ul class="pricing-features">
             <li><span class="check">✓</span> 1 línea WhatsApp Business</li>
@@ -1364,15 +1344,14 @@
             <li><span class="x">✕</span> <span style="opacity:.5">CRM integrado</span></li>
             <li><span class="x">✕</span> <span style="opacity:.5">Agenda automática</span></li>
           </ul>
-          <a href="#cta" class="btn-plan btn-plan-outline">Comenzar ahora</a>
+          <a href="#cta" class="btn-plan btn-plan-outline">Cotizar ahora</a>
         </div>
 
         <!-- Pro -->
         <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="120">
           <div class="featured-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-1px;margin-right:.3rem;"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.8-6.2 3.8 1.6-7L2 9.2l7.1-.6z"/></svg>Más popular</div>
           <p class="pricing-plan">Pro</p>
-          <div class="pricing-price"><sup>$</sup>119.990</div>
-          <p class="pricing-period">CLP / mes</p>
+          <p class="pricing-price pricing-price-custom">Cotización a medida</p>
           <p class="pricing-desc">Para negocios en crecimiento que necesitan capturar más leads y gestionar clientes de forma eficiente.</p>
           <ul class="pricing-features">
             <li><span class="check">✓</span> 3 líneas WhatsApp Business</li>
@@ -1383,14 +1362,13 @@
             <li><span class="check">✓</span> Reportes mensuales</li>
             <li><span class="check">✓</span> Soporte prioritario WhatsApp</li>
           </ul>
-          <a href="#cta" class="btn-plan btn-plan-primary">Comenzar ahora</a>
+          <a href="#cta" class="btn-plan btn-plan-primary">Cotizar ahora</a>
         </div>
 
         <!-- Enterprise -->
         <div class="pricing-card" data-aos="fade-up" data-aos-delay="240">
           <p class="pricing-plan">Enterprise</p>
-          <div class="pricing-price"><sup>$</sup>299.990</div>
-          <p class="pricing-period">CLP / mes</p>
+          <p class="pricing-price pricing-price-custom">Cotización a medida</p>
           <p class="pricing-desc">Para empresas que requieren una solución robusta, personalizada y escalable a nivel corporativo.</p>
           <ul class="pricing-features">
             <li><span class="check">✓</span> Líneas WhatsApp ilimitadas</li>
@@ -1534,7 +1512,7 @@
       <a href="#web">Páginas Web</a>
       <a href="#services">Automatizaciones</a>
       <a href="#casos">Casos</a>
-      <a href="#pricing">Precios</a>
+      <a href="#pricing">Planes</a>
       <a href="#about">Nosotros</a>
       <a href="#faq">FAQ</a>
       <a href="#cta">Contacto</a>
