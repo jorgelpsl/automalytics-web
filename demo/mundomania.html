@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#0A0A0A" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Bungee&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Bungee&family=Pacifico&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #0A0A0A; overflow-x: hidden; }
@@ -35,6 +35,7 @@
     --line: rgba(255,255,255,.09);
     --font-display: 'Bungee', cursive;
     --font-round: 'Baloo 2', sans-serif;
+    --font-script: 'Pacifico', cursive;
     --font-body: 'Manrope', sans-serif;
   }
   body { font-family: var(--font-body); background: var(--bg); color: var(--ink); line-height: 1.6; }
@@ -79,6 +80,25 @@
   .brand:hover svg { transform: rotate(-18deg) scale(1.08); }
   .brand-text { font-family: var(--font-round); font-weight: 800; font-size: 1.25rem; letter-spacing: -.02em; }
   .brand-text .hl { color: var(--yellow); }
+  /* Scoped to .logo-word (2 classes) rather than bare .script (1 class) so
+     it reliably beats ".footer-brand span" (a class+element selector) —
+     a bare-class rule loses that specificity fight regardless of the
+     order the two are declared in. */
+  .logo-word .script { font-family: var(--font-script); font-weight: 400; font-size: 1.28em; letter-spacing: 0; margin-left: .06em; }
+
+  /* Logo wordmark: a tiny Pac-Man travels across the name on a loop,
+     chomping (a fast squish pulse on the icon itself, independent from
+     its slower left-to-right sweep) rather than spinning or sitting
+     still — echoes the 3D hero without competing with it for attention. */
+  .logo-word { position: relative; display: inline-block; }
+  .logo-pac-travel {
+    position: absolute; top: 46%; left: -22px; width: 15px; height: 15px;
+    transform: translateY(-50%); animation: pacLogoTravel 3.6s linear infinite; pointer-events: none;
+  }
+  .logo-pac-travel svg { display: block; width: 100%; height: 100%; animation: pacLogoBite .3s ease-in-out infinite; filter: drop-shadow(0 1px 1px rgba(0,0,0,.5)); }
+  @keyframes pacLogoTravel { 0% { left: -22px; } 100% { left: calc(100% + 6px); } }
+  @keyframes pacLogoBite { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(.65); } }
+  @media (prefers-reduced-motion: reduce) { .logo-pac-travel { display: none; } }
   .nav-links { display: flex; gap: 2.2rem; list-style: none; font-size: .9rem; font-weight: 700; color: var(--gray); }
   .nav-links a { position: relative; padding: .3rem 0; }
   .nav-links a::after { content:""; position:absolute; left:0; bottom:-2px; width:0; height:2px; background:var(--yellow); transition:width .25s; }
@@ -303,6 +323,10 @@
     <symbol id="ic-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
       <path d="M12.6 3.4 20 10.8a2 2 0 0 1 0 2.8l-6.4 6.4a2 2 0 0 1-2.8 0L3.4 12.6V4a.6.6 0 0 1 .6-.6h8.6Z"/><circle cx="7.5" cy="7.5" r="1.3"/>
     </symbol>
+    <symbol id="ic-pac-mini" viewBox="0 0 200 200">
+      <path d="M 100,100 L 182.69,69.90 A 88,88 0 1 0 182.69,130.10 Z" fill="#FFD400" stroke="#141210" stroke-width="6" stroke-linejoin="round"/>
+      <circle cx="70" cy="62" r="10" fill="#141210"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -311,7 +335,10 @@
   <div class="nav-inner">
     <a class="brand" href="#top">
       <svg viewBox="0 0 200 200"><path d="M 174.91 66.65 A 82 82 0 1 0 174.91 133.35 L 145.68 120.34 A 50 50 0 1 1 145.68 79.66 Z" fill="#FFD400"/></svg>
-      <span class="brand-text">Mundo<span class="hl">Mania</span></span>
+      <span class="logo-word">
+        <span class="brand-text">Mundo<span class="hl script">Mania</span></span>
+        <span class="logo-pac-travel"><svg><use href="#ic-pac-mini"/></svg></span>
+      </span>
     </a>
     <ul class="nav-links">
       <li><a href="#catalogo">Catálogo</a></li>
@@ -534,7 +561,10 @@
       <div>
         <div class="footer-brand">
           <svg viewBox="0 0 200 200"><path d="M 174.91 66.65 A 82 82 0 1 0 174.91 133.35 L 145.68 120.34 A 50 50 0 1 1 145.68 79.66 Z" fill="#FFD400"/></svg>
-          <span>MundoMania</span>
+          <span class="logo-word">
+            <span>Mundo<span class="hl script">Mania</span></span>
+            <span class="logo-pac-travel"><svg><use href="#ic-pac-mini"/></svg></span>
+          </span>
         </div>
         <p class="desc">Tu tienda gamer en el Sambil Valencia. Consolas, juegos y accesorios originales, con la mejor atención.</p>
       </div>
