@@ -127,41 +127,45 @@
   .stat b { font-family: var(--font-display); font-size: 1.5rem; color: var(--yellow); display: block; }
   .stat span { font-size: .78rem; color: var(--gray); text-transform: uppercase; letter-spacing: .05em; }
 
-  /* width:100% is required here — the auto side-margins that center this
-     box opt it out of the grid item's default stretch-to-column sizing, so
-     without an explicit width it shrinks to fit its content instead: the
-     canvas's own default (300x150, an HTML default for a <canvas> with no
-     width/height attributes) rather than filling up to max-width. That
-     also meant this box collapsed to 0x0 whenever the canvas was hidden
-     for the no-WebGL fallback, since nothing was left to size it. */
-  .hero-3d-wrap { position: relative; width: 100%; aspect-ratio: 1/1; max-width: 480px; margin: 0 auto; }
-  /* Smaller and more inset on phones: full-column-width made it read as
-     an oversized blob crowding the screen edges instead of a contained
-     visual — a bit of surrounding breathing room reads calmer. */
-  @media (max-width: 640px) { .hero-3d-wrap { max-width: 260px; } }
-  #pacCanvas { width: 100%; height: 100%; display: block; cursor: grab; }
-  .hero-3d-fallback { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
-  .hero-3d-fallback svg { width: 55%; filter: drop-shadow(0 20px 40px rgba(255,212,0,.3)); animation: pacWobble 3.2s ease-in-out infinite; }
-  @keyframes pacWobble { 0%, 100% { transform: rotate(0deg) translateY(0); } 50% { transform: rotate(-6deg) translateY(-8px); } }
-
-  /* The real brand mark, as a small "official seal" sticker in the corner
-     of the hero — a slow constant spin reads fine here (unlike the old
-     hero pac-man), the same way a real "envío gratis" sticker spins on an
-     e-commerce banner: it's a badge, not a character. */
-  .hero-brand-badge {
-    position: absolute; top: -6%; right: -4%; width: 22%; aspect-ratio: 1;
-    filter: drop-shadow(0 8px 18px rgba(0,0,0,.5)); animation: badgeSpin 14s linear infinite;
+  /* ── HERO VISUAL ── a small layered cluster of floating cards instead
+     of one giant character filling the column: the real brand seal plus
+     a couple of catalog hints, composed with depth (shadow, glow, a
+     gentle idle float per card) and a group parallax tilt on hover
+     (reuses the .tilt mousemove handler already wired up below — this
+     container has no per-card competing animation, so nothing fights
+     over the `transform` property). */
+  .hero-visual { position: relative; width: 100%; max-width: 480px; aspect-ratio: 1/1; margin: 0 auto; perspective: 1100px; }
+  @media (max-width: 640px) { .hero-visual { max-width: 300px; } }
+  .hero-visual::before {
+    content: ""; position: absolute; inset: -12%; z-index: -1; filter: blur(18px);
+    background: radial-gradient(closest-side, rgba(255,212,0,.18), transparent 72%);
   }
-  @keyframes badgeSpin { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { .hero-brand-badge { animation: none; } }
-  @media (max-width: 640px) { .hero-brand-badge { width: 30%; top: 2%; right: 2%; } }
-
-  /* floating decorative pellets around hero */
-  .float-pellet {
-    position: absolute; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 14px rgba(255,212,0,.7);
-    animation: floaty 5s ease-in-out infinite;
+  .hv-card {
+    position: absolute; background: linear-gradient(155deg, var(--card) 0%, var(--card2) 100%);
+    border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 25px 55px rgba(0,0,0,.5);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .45rem;
+    text-align: center;
   }
-  @keyframes floaty { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-18px) } }
+  .hv-card .hv-icon { color: var(--yellow); }
+  .hv-label { font-family: var(--font-round); font-weight: 700; font-size: .8rem; }
+  .hv-price { font-family: var(--font-round); font-weight: 800; color: var(--yellow); font-size: .95rem; }
+  .hv-main {
+    width: 58%; aspect-ratio: .8; top: 6%; left: 2%; padding: 1.4rem 1rem;
+    --r: -3deg; animation: hvFloat 6s ease-in-out infinite;
+  }
+  .hv-main .hv-icon svg { width: 58px; height: 58px; }
+  .hv-second {
+    width: 40%; aspect-ratio: 1; top: 0; right: 2%; padding: 1rem;
+    border-color: rgba(255,212,0,.3); --r: 6deg; animation: hvFloat 5s ease-in-out infinite .5s;
+  }
+  .hv-second .hv-icon svg { width: 36px; height: 36px; }
+  .hv-badge-chip {
+    width: 36%; aspect-ratio: 1; bottom: 6%; left: 4%; padding: .85rem;
+    background: #0A0A0A; border-color: rgba(255,212,0,.35); --r: -8deg; animation: hvFloat 7s ease-in-out infinite 1s;
+  }
+  .hv-badge-chip img { width: 100%; height: 100%; object-fit: contain; }
+  @keyframes hvFloat { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-12px) rotate(var(--r, 0deg)); } }
+  @media (prefers-reduced-motion: reduce) { .hv-main, .hv-second, .hv-badge-chip { animation: none; transform: rotate(var(--r, 0deg)); } }
 
   /* ghosts — decorative only; on narrow screens the hero column is full
      width so they'd sit on top of the headline instead of beside it */
@@ -374,15 +378,20 @@
         <div class="stat"><b data-count="12">0</b><span>Años en el mercado</span></div>
       </div>
     </div>
-    <div class="hero-3d-wrap" data-reveal="scale">
-      <canvas id="pacCanvas"></canvas>
-      <div class="hero-3d-fallback" id="pacFallback" style="display:none;">
-        <svg viewBox="0 0 200 200">
-          <path d="M 100,100 L 182.69,69.90 A 88,88 0 1 0 182.69,130.10 Z" fill="#FFD400"/>
-          <circle cx="70" cy="65" r="9" fill="#141210"/>
-        </svg>
+    <div class="hero-visual tilt" data-reveal="scale">
+      <div class="hv-card hv-main">
+        <div class="hv-icon"><svg><use href="#ic-tv"/></svg></div>
+        <p class="hv-label">PlayStation 5 Slim</p>
+        <p class="hv-price">$549</p>
       </div>
-      <img class="hero-brand-badge" src="/assets/demo-mundomania/badge.webp" alt="" aria-hidden="true" />
+      <div class="hv-card hv-second">
+        <div class="hv-icon"><svg><use href="#ic-pad"/></svg></div>
+        <p class="hv-label">Zelda: TOTK</p>
+        <p class="hv-price">$59,99</p>
+      </div>
+      <div class="hv-card hv-badge-chip">
+        <img src="/assets/demo-mundomania/badge.webp" alt="MundoMania" />
+      </div>
     </div>
   </div>
 </section>
@@ -593,7 +602,6 @@
   <svg width="26" height="26" viewBox="0 0 448 512" fill="#fff"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
 </a>
 
-<script src="/assets/vendor/three.r128.min.js"></script>
 <script>
   // ── mobile menu ──
   const mobileMenu = document.getElementById('mobileMenu');
@@ -676,130 +684,6 @@
 
   // ── marquee: duplicate content is already in markup for seamless loop ──
 
-  // ── 3D hero Pac-Man (Three.js) ──
-  (function() {
-    const canvas = document.getElementById('pacCanvas');
-    const fallback = document.getElementById('pacFallback');
-    if (!canvas || typeof THREE === 'undefined') { if (fallback) fallback.style.display = 'flex'; return; }
-    try {
-      const wrap = canvas.parentElement;
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(38, 1, .1, 100);
-      camera.position.set(0, 0, 13);
-
-      const ambient = new THREE.AmbientLight(0xffffff, .55);
-      scene.add(ambient);
-      const key = new THREE.PointLight(0xfff2b0, 1.4, 60);
-      key.position.set(6, 8, 10);
-      scene.add(key);
-      const rim = new THREE.PointLight(0x3388ff, .6, 60);
-      rim.position.set(-8, -4, -6);
-      scene.add(rim);
-
-      // Build a solid Pac-Man disc (a full circle with a pie-slice mouth
-      // cut out) — not a ring — so it actually reads as a face, not a "C".
-      const R = 3.4;
-      function buildShape(mouthRad) {
-        const shape = new THREE.Shape();
-        shape.moveTo(0, 0);
-        shape.lineTo(Math.cos(mouthRad) * R, Math.sin(mouthRad) * R);
-        shape.absarc(0, 0, R, mouthRad, Math.PI * 2 - mouthRad, false);
-        shape.lineTo(0, 0);
-        return shape;
-      }
-      // Depth-only centering: the shape's own (0,0) — the disc's true
-      // center — is already the right XY origin. Geometry.center() instead
-      // re-centers on the (mouth-angle-dependent) bounding box, which would
-      // make the whole face visibly shift sideways every time the mouth
-      // re-cuts during the chomp animation.
-      const EXTRUDE_DEPTH = 1.6;
-      function centerDepth(geo) { geo.translate(0, 0, -EXTRUDE_DEPTH / 2); return geo; }
-      const mat = new THREE.MeshStandardMaterial({ color: 0xffd400, roughness: .38, metalness: .12, emissive: 0x352600, emissiveIntensity: .5 });
-      const pac = new THREE.Mesh(centerDepth(new THREE.ExtrudeGeometry(buildShape(THREE.MathUtils.degToRad(18)), { depth: EXTRUDE_DEPTH, bevelEnabled: true, bevelThickness: .12, bevelSize: .12, bevelSegments: 3, curveSegments: 48 })), mat);
-
-      // A small dark eye — without it a chomping wedge just reads as an
-      // abstract shape, not a face.
-      const eye = new THREE.Mesh(
-        new THREE.SphereGeometry(.28, 16, 16),
-        new THREE.MeshStandardMaterial({ color: 0x141210, roughness: .25 })
-      );
-      eye.position.set(-.55, 1.9, .95);
-
-      const group = new THREE.Group();
-      group.add(pac, eye);
-      scene.add(group);
-
-      // Re-cut the mouth wedge a few times a second (a full geometry
-      // rebuild every frame would be wasteful for a shape this simple, but
-      // once per animation frame is overkill for what the eye can register).
-      function setMouthAngle(deg) {
-        const rad = THREE.MathUtils.degToRad(deg);
-        const newGeo = centerDepth(new THREE.ExtrudeGeometry(buildShape(rad), { depth: EXTRUDE_DEPTH, bevelEnabled: true, bevelThickness: .12, bevelSize: .12, bevelSegments: 3, curveSegments: 48 }));
-        pac.geometry.dispose();
-        pac.geometry = newGeo;
-      }
-
-      // floating pellets
-      const pellets = [];
-      const pelletGeo = new THREE.SphereGeometry(.16, 16, 16);
-      const pelletMat = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffd400, emissiveIntensity: .9, roughness: .3 });
-      for (let i = 0; i < 7; i++) {
-        const m = new THREE.Mesh(pelletGeo, pelletMat);
-        const angle = (i / 7) * Math.PI * 2;
-        const radius = 5.6 + Math.random() * .6;
-        m.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius * .6, (Math.random() - .5) * 2);
-        scene.add(m);
-        pellets.push({ mesh: m, baseY: m.position.y, phase: Math.random() * Math.PI * 2 });
-      }
-
-      function resize() {
-        const w = wrap.clientWidth, h = wrap.clientHeight;
-        renderer.setSize(w, h, false);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      let mx = 0, my = 0;
-      wrap.addEventListener('mousemove', (e) => {
-        const r = wrap.getBoundingClientRect();
-        mx = ((e.clientX - r.left) / r.width - .5) * 2;
-        my = ((e.clientY - r.top) / r.height - .5) * 2;
-      });
-
-      const animOK = !reduceMotion;
-      let t = 0;
-      let lastChomp = 0;
-      function animate() {
-        requestAnimationFrame(animate);
-        t += .016;
-        if (animOK) {
-          // Chomp: throttled to ~12/sec so re-cutting the mouth geometry
-          // stays cheap, wobble side-to-side instead of spinning in a full
-          // circle (a Pac-Man spinning in place like a coin reads as an
-          // abstract logo, not a character actually doing something).
-          if (t - lastChomp > .08) {
-            lastChomp = t;
-            setMouthAngle(12 + 28 * Math.abs(Math.sin(t * 2.4)));
-          }
-          group.rotation.y = Math.sin(t * .5) * .3;
-          group.position.y = Math.sin(t * 1.3) * .12;
-        }
-        group.rotation.x += (-my * .3 - group.rotation.x) * .06;
-        group.rotation.y += mx * .25;
-        pellets.forEach(p => { p.mesh.position.y = p.baseY + Math.sin(t * 1.4 + p.phase) * .25; p.mesh.rotation.y += .01; });
-        renderer.render(scene, camera);
-      }
-      animate();
-    } catch (err) {
-      if (fallback) fallback.style.display = 'flex';
-      console.warn('MundoMania 3D hero failed, showing fallback:', err);
-    }
-  })();
 </script>
 
 </body>
