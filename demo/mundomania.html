@@ -142,30 +142,46 @@
   }
   .hv-card {
     position: absolute; background: linear-gradient(155deg, var(--card) 0%, var(--card2) 100%);
-    border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 25px 55px rgba(0,0,0,.5);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .45rem;
-    text-align: center;
+    border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 22px 45px rgba(0,0,0,.5);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem;
+    text-align: center; bottom: 30%;
   }
   .hv-card .hv-icon { color: var(--yellow); }
-  .hv-label { font-family: var(--font-round); font-weight: 700; font-size: .8rem; }
-  .hv-price { font-family: var(--font-round); font-weight: 800; color: var(--yellow); font-size: .95rem; }
-  .hv-main {
-    width: 58%; aspect-ratio: .8; top: 6%; left: 2%; padding: 1.4rem 1rem;
-    --r: -3deg; animation: hvFloat 6s ease-in-out infinite;
+  .hv-card .hv-icon svg { width: 30px; height: 30px; }
+  .hv-label { font-family: var(--font-round); font-weight: 700; font-size: .68rem; }
+  .hv-price { font-family: var(--font-round); font-weight: 800; color: var(--yellow); font-size: .78rem; }
+  .hv-c1, .hv-c3 { width: 26%; aspect-ratio: .82; padding: .8rem .5rem; }
+  .hv-c1 { left: 0; --r: -6deg; animation: hvFloat 5.5s ease-in-out infinite; }
+  .hv-c3 { right: 0; --r: 6deg; animation: hvFloat 6.5s ease-in-out infinite .6s; }
+  .hv-c2 {
+    width: 30%; aspect-ratio: .82; left: 50%; bottom: 34%; padding: 1rem .6rem; z-index: 2;
+    transform: translateX(-50%) rotate(var(--r, 0deg)); border-color: rgba(255,212,0,.3);
+    --r: 2deg; animation: hvFloatMain 6s ease-in-out infinite .2s;
   }
-  .hv-main .hv-icon svg { width: 58px; height: 58px; }
-  .hv-second {
-    width: 40%; aspect-ratio: 1; top: 0; right: 2%; padding: 1rem;
-    border-color: rgba(255,212,0,.3); --r: 6deg; animation: hvFloat 5s ease-in-out infinite .5s;
+  .hv-c2 .hv-icon svg { width: 38px; height: 38px; }
+  .hv-c2 .hv-label { font-size: .74rem; }
+  .hv-c2 .hv-price { font-size: .92rem; }
+  .hv-shelf {
+    position: absolute; left: 8%; right: 8%; bottom: 30%; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,212,0,.65), transparent);
+    box-shadow: 0 0 16px 1px rgba(255,212,0,.35);
   }
-  .hv-second .hv-icon svg { width: 36px; height: 36px; }
-  .hv-badge-chip {
-    width: 36%; aspect-ratio: 1; bottom: 6%; left: 4%; padding: .85rem;
-    background: #0A0A0A; border-color: rgba(255,212,0,.35); --r: -8deg; animation: hvFloat 7s ease-in-out infinite 1s;
+  .hv-dot {
+    position: absolute; bottom: 30%; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--yellow); transform: translateY(-50%);
   }
-  .hv-badge-chip img { width: 100%; height: 100%; object-fit: contain; }
-  @keyframes hvFloat { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-12px) rotate(var(--r, 0deg)); } }
-  @media (prefers-reduced-motion: reduce) { .hv-main, .hv-second, .hv-badge-chip { animation: none; transform: rotate(var(--r, 0deg)); } }
+  .hv-badge {
+    position: absolute; top: 0; left: 50%; width: 30%; aspect-ratio: 1; border-radius: 50%;
+    transform: translateX(-50%); background: #0A0A0A; border: 3px solid var(--yellow);
+    box-shadow: 0 14px 32px rgba(0,0,0,.5); animation: hvFloat 7s ease-in-out infinite 1s;
+  }
+  .hv-badge img { width: 100%; height: 100%; object-fit: contain; padding: 12%; }
+  @keyframes hvFloat { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-10px) rotate(var(--r, 0deg)); } }
+  @keyframes hvFloatMain { 0%, 100% { transform: translateX(-50%) translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateX(-50%) translateY(-10px) rotate(var(--r, 0deg)); } }
+  @media (prefers-reduced-motion: reduce) {
+    .hv-c1, .hv-c3, .hv-badge { animation: none; transform: rotate(var(--r, 0deg)); }
+    .hv-c2 { animation: none; transform: translateX(-50%) rotate(var(--r, 0deg)); }
+  }
 
   /* ghosts — decorative only; on narrow screens the hero column is full
      width so they'd sit on top of the headline instead of beside it */
@@ -379,18 +395,28 @@
       </div>
     </div>
     <div class="hero-visual tilt" data-reveal="scale">
-      <div class="hv-card hv-main">
-        <div class="hv-icon"><svg><use href="#ic-tv"/></svg></div>
-        <p class="hv-label">PlayStation 5 Slim</p>
-        <p class="hv-price">$549</p>
-      </div>
-      <div class="hv-card hv-second">
+      <div class="hv-badge"><img src="/assets/demo-mundomania/badge.webp" alt="MundoMania" /></div>
+      <div class="hv-shelf"></div>
+      <div class="hv-dot" style="left:14%;"></div>
+      <div class="hv-dot" style="left:27%;"></div>
+      <div class="hv-dot" style="left:40%;"></div>
+      <div class="hv-dot" style="left:60%;"></div>
+      <div class="hv-dot" style="left:73%;"></div>
+      <div class="hv-dot" style="left:86%;"></div>
+      <div class="hv-card hv-c1">
         <div class="hv-icon"><svg><use href="#ic-pad"/></svg></div>
         <p class="hv-label">Zelda: TOTK</p>
         <p class="hv-price">$59,99</p>
       </div>
-      <div class="hv-card hv-badge-chip">
-        <img src="/assets/demo-mundomania/badge.webp" alt="MundoMania" />
+      <div class="hv-card hv-c2">
+        <div class="hv-icon"><svg><use href="#ic-tv"/></svg></div>
+        <p class="hv-label">PS5 Slim</p>
+        <p class="hv-price">$549</p>
+      </div>
+      <div class="hv-card hv-c3">
+        <div class="hv-icon"><svg><use href="#ic-headset"/></svg></div>
+        <p class="hv-label">Headset Pro</p>
+        <p class="hv-price">$49,99</p>
       </div>
     </div>
   </div>
