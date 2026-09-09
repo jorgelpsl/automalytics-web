@@ -6,8 +6,8 @@
 <title>Demo: MundoMania (Tienda Gamer) — Automalytics</title>
 <meta name="description" content="Ejemplo de sitio web hecho por Automalytics para una tienda de videojuegos y consolas." />
 <meta name="robots" content="noindex, follow" />
-<link rel="icon" type="image/webp" href="/assets/logo.webp" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="icon" type="image/svg+xml" href="/assets/demo-mundomania/badge.svg" />
+<link rel="apple-touch-icon" href="/assets/demo-mundomania/apple-touch-icon.png" />
 <meta name="theme-color" content="#0A0A0A" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -112,6 +112,13 @@
     .nav-links { display: none; }
     .burger { display: flex; }
   }
+  /* The cursive "Mania" runs noticeably wider than the rounded font it
+     replaced, so the brand lockup now collides with the CTA button at
+     phone widths — the CTA is already reachable from the mobile menu, so
+     drop it here instead of shrinking the logo to make room. */
+  @media (max-width: 480px) {
+    .nav-cta { display: none; }
+  }
 
   .mobile-menu {
     position: fixed; inset: 0; z-index: 200; background: rgba(6,6,6,.98); backdrop-filter: blur(8px);
@@ -158,6 +165,18 @@
   .hero-3d-fallback { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
   .hero-3d-fallback svg { width: 55%; filter: drop-shadow(0 20px 40px rgba(255,212,0,.3)); animation: pacWobble 3.2s ease-in-out infinite; }
   @keyframes pacWobble { 0%, 100% { transform: rotate(0deg) translateY(0); } 50% { transform: rotate(-6deg) translateY(-8px); } }
+
+  /* The real brand mark, as a small "official seal" sticker in the corner
+     of the hero — a slow constant spin reads fine here (unlike the old
+     hero pac-man), the same way a real "envío gratis" sticker spins on an
+     e-commerce banner: it's a badge, not a character. */
+  .hero-brand-badge {
+    position: absolute; top: -6%; right: -4%; width: 22%; aspect-ratio: 1;
+    filter: drop-shadow(0 8px 18px rgba(0,0,0,.5)); animation: badgeSpin 14s linear infinite;
+  }
+  @keyframes badgeSpin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .hero-brand-badge { animation: none; } }
+  @media (max-width: 560px) { .hero-brand-badge { width: 26%; top: -4%; right: -2%; } }
 
   /* floating decorative pellets around hero */
   .float-pellet {
@@ -327,6 +346,13 @@
       <path d="M 100,100 L 182.69,69.90 A 88,88 0 1 0 182.69,130.10 Z" fill="#FFD400" stroke="#141210" stroke-width="6" stroke-linejoin="round"/>
       <circle cx="70" cy="62" r="10" fill="#141210"/>
     </symbol>
+    <symbol id="ic-brand-badge" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="96" fill="#0A0A0A"/>
+      <path d="M 171.42,74.01 A 76,76 0 1 0 171.42,125.99" fill="none" stroke="#FFD400" stroke-width="9" stroke-linecap="round"/>
+      <circle cx="72" cy="66" r="6" fill="#FFD400"/>
+      <text x="96" y="124" text-anchor="middle" font-family="Pacifico, cursive" font-size="46" fill="#FFD400">Mania</text>
+      <text x="159" y="106" font-family="Arial, sans-serif" font-size="10" fill="#FFD400">&#174;</text>
+    </symbol>
   </defs>
 </svg>
 
@@ -394,6 +420,7 @@
           <circle cx="70" cy="65" r="9" fill="#141210"/>
         </svg>
       </div>
+      <svg class="hero-brand-badge" viewBox="0 0 200 200" aria-hidden="true"><use href="#ic-brand-badge"/></svg>
     </div>
   </div>
 </section>

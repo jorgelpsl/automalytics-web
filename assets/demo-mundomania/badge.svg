@@ -1,0 +1,7 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="96" fill="#0A0A0A"/>
+  <path d="M 171.42,74.01 A 76,76 0 1 0 171.42,125.99" fill="none" stroke="#FFD400" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="72" cy="66" r="6" fill="#FFD400"/>
+  <text x="96" y="124" text-anchor="middle" font-family="Pacifico, cursive" font-size="46" fill="#FFD400">Mania</text>
+  <text x="159" y="106" font-family="Arial, sans-serif" font-size="10" fill="#FFD400">&#174;</text>
+</svg>
