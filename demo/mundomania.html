@@ -135,6 +135,10 @@
      also meant this box collapsed to 0x0 whenever the canvas was hidden
      for the no-WebGL fallback, since nothing was left to size it. */
   .hero-3d-wrap { position: relative; width: 100%; aspect-ratio: 1/1; max-width: 480px; margin: 0 auto; }
+  /* Smaller and more inset on phones: full-column-width made it read as
+     an oversized blob crowding the screen edges instead of a contained
+     visual — a bit of surrounding breathing room reads calmer. */
+  @media (max-width: 640px) { .hero-3d-wrap { max-width: 260px; } }
   #pacCanvas { width: 100%; height: 100%; display: block; cursor: grab; }
   .hero-3d-fallback { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
   .hero-3d-fallback svg { width: 55%; filter: drop-shadow(0 20px 40px rgba(255,212,0,.3)); animation: pacWobble 3.2s ease-in-out infinite; }
@@ -150,7 +154,7 @@
   }
   @keyframes badgeSpin { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .hero-brand-badge { animation: none; } }
-  @media (max-width: 560px) { .hero-brand-badge { width: 26%; top: -4%; right: -2%; } }
+  @media (max-width: 640px) { .hero-brand-badge { width: 30%; top: 2%; right: 2%; } }
 
   /* floating decorative pellets around hero */
   .float-pellet {
