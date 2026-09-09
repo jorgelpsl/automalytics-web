@@ -117,7 +117,7 @@
     h1, h2, h3, h4, h5 { font-family: 'Bricolage Grotesque', sans-serif; }
 
     /* ─── PARTICLES CANVAS ─── */
-    #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .3; }
+    #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .55; }
 
     /* ─── NAVBAR (floating pill) ─── */
     #navbar {
@@ -1806,8 +1806,8 @@
     const ctx = canvas.getContext('2d');
     let W, H, dots = [];
     const isMobile = window.innerWidth < 768;
-    const DOT_COUNT = isMobile ? 32 : 80;
-    const LINK_DIST = isMobile ? 90 : 120;
+    const DOT_COUNT = isMobile ? 45 : 110;
+    const LINK_DIST = isMobile ? 100 : 140;
 
     function resize() {
       W = canvas.width = window.innerWidth;
@@ -1820,10 +1820,10 @@
       dots.push({
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
-        r: Math.random() * 1.5 + .3,
+        r: Math.random() * 1.8 + .5,
         vx: (Math.random() - .5) * .3,
         vy: (Math.random() - .5) * .3,
-        alpha: Math.random() * .3 + .1
+        alpha: Math.random() * .35 + .2
       });
     }
 
@@ -1866,8 +1866,8 @@
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(${linkRGB},${.15 * (1 - dist / LINK_DIST)})`;
-            ctx.lineWidth = .5;
+            ctx.strokeStyle = `rgba(${linkRGB},${.24 * (1 - dist / LINK_DIST)})`;
+            ctx.lineWidth = .7;
             ctx.stroke();
           }
         });
