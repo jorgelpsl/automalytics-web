@@ -118,6 +118,10 @@
 
     /* ─── PARTICLES CANVAS ─── */
     #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .55; }
+    /* Light mode needs more of the canvas's own opacity too — a dark tint
+       needs a bigger push than a bright one to read at the same strength
+       against its background (see the draw() comment for why). */
+    [data-theme="light"] #particles { opacity: .8; }
 
     /* ─── NAVBAR (floating pill) ─── */
     #navbar {
@@ -1840,12 +1844,15 @@
     function draw() {
       if (document.hidden || !inRevealZone) { rafId = null; return; }
       // The raw lime (215,255,63) reads as a techy glow against the near-
-      // black default background, but washes out to a dull smudge on the
-      // light one — swap to the same darker "ink" olive tones the rest of
-      // the light theme already uses for lime-on-cream text/accents.
+      // black default background, but a dark tint at the same alpha reads
+      // as a much fainter smudge on the light one — going from near-white
+      // needs a bigger absolute jump than going from near-black to hit the
+      // same perceived contrast, so light mode gets darker ink AND a
+      // meaningfully higher alpha multiplier, not just a recolor.
       const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-      const dotRGB = isLight ? '75,92,14' : '215,255,63';
-      const linkRGB = isLight ? '85,99,31' : '122,138,31';
+      const dotRGB = isLight ? '58,71,10' : '215,255,63';
+      const linkRGB = isLight ? '66,79,20' : '122,138,31';
+      const alphaBoost = isLight ? 1.9 : 1;
       ctx.clearRect(0, 0, W, H);
       dots.forEach(d => {
         d.x += d.vx; d.y += d.vy;
@@ -1855,7 +1862,7 @@
         if (d.y > H) d.y = 0;
         ctx.beginPath();
         ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${dotRGB},${d.alpha})`;
+        ctx.fillStyle = `rgba(${dotRGB},${Math.min(d.alpha * alphaBoost, 1)})`;
         ctx.fill();
       });
       // Draw connecting lines
@@ -1866,8 +1873,8 @@
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(${linkRGB},${.24 * (1 - dist / LINK_DIST)})`;
-            ctx.lineWidth = .7;
+            ctx.strokeStyle = `rgba(${linkRGB},${Math.min(.24 * alphaBoost * (1 - dist / LINK_DIST), 1)})`;
+            ctx.lineWidth = isLight ? .85 : .7;
             ctx.stroke();
           }
         });
