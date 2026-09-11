@@ -73,9 +73,9 @@
   .bar span { color: var(--muted); font-size: .78rem; }
 
   /* ── logo mark ── */
-  .mark { width: 30px; height: 30px; flex-shrink: 0; }
-  .mark svg { width: 100%; height: 100%; transition: transform .2s ease; }
-  .nav-logo:hover .mark svg { transform: rotate(-8deg) scale(1.05); }
+  .mark { width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; overflow: hidden; }
+  .mark img { width: 100%; height: 100%; object-fit: cover; transition: transform .2s ease; }
+  .nav-logo:hover .mark img { transform: rotate(-8deg) scale(1.08); }
 
   /* ── nav ── */
   header.site-nav { position: sticky; top: 0; z-index: 40; background: rgba(15,43,34,.86); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
@@ -153,15 +153,12 @@
 
   .swatch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
   @media (max-width: 900px) { .swatch-grid { grid-template-columns: repeat(2, 1fr); } }
-  .swatch-card { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--line); aspect-ratio: 3/4; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.1rem; transition: transform .18s ease, box-shadow .18s ease; }
+  .swatch-card { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--line); aspect-ratio: 3/4; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.1rem; transition: transform .18s ease, box-shadow .18s ease; background: var(--card2); }
   .swatch-card:hover { transform: translateY(-4px) scale(1.015); box-shadow: 0 12px 28px rgba(0,0,0,.28); }
-  .swatch-card .name { font-weight: 700; font-size: .92rem; color: #201408; position: relative; z-index: 1; }
-  .swatch-card .tag { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: rgba(32,20,8,.7); position: relative; z-index: 1; }
-  .sw1 { background: linear-gradient(160deg, #f3e0c8 0%, #e8c79b 55%, #d9ac6d 100%); }
-  .sw2 { background: linear-gradient(160deg, #ffd9e6 0%, #f8b6cf 45%, #ffffff 100%); }
-  .sw3 { background: linear-gradient(160deg, #7a1f2b 0%, #5a1420 60%, #2c0a0f 100%); }
-  .sw3 .name, .sw3 .tag { color: #f6ece1; }
-  .sw4 { background: linear-gradient(160deg, #fbe6ea 0%, #eecdd6 50%, #7a1f2b 100%); }
+  .swatch-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .swatch-card.has-caption::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,18,14,0) 42%, rgba(6,14,10,.88) 100%); z-index: 0; }
+  .swatch-card .name { font-weight: 700; font-size: .92rem; color: var(--cream); position: relative; z-index: 1; }
+  .swatch-card .tag { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--gold-light); position: relative; z-index: 1; }
 
   .lifting-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.8rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem 2rem; }
   @media (max-width: 700px) { .lifting-card { grid-template-columns: 1fr; } }
@@ -169,6 +166,11 @@
   .lifting-point { display: flex; gap: .7rem; align-items: flex-start; font-size: .92rem; color: var(--muted); }
   .lifting-point b { color: var(--cream); display: block; font-size: .95rem; }
   .lifting-point .ic { color: var(--gold); flex-shrink: 0; margin-top: .15rem; }
+
+  .space-block { display: grid; grid-template-columns: .85fr 1.15fr; gap: 1.8rem; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.4rem; }
+  @media (max-width: 700px) { .space-block { grid-template-columns: 1fr; } }
+  .space-block .space-photo { border-radius: 12px; overflow: hidden; aspect-ratio: 3/4; }
+  .space-block .space-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   /* ── contacto ── */
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.6rem; align-items: start; }
@@ -278,14 +280,7 @@
   <header class="site-nav">
     <div class="nav-pill">
       <a href="#top" class="nav-logo">
-        <span class="mark" aria-hidden="true">
-          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 32 15 8l5 12 5-12 11 24" stroke="#C9A25C" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-            <circle cx="4" cy="32" r="2.2" fill="#C9A25C"/>
-            <circle cx="35" cy="32" r="2.2" fill="#C9A25C"/>
-            <circle cx="20" cy="20" r="2.2" fill="#C9A25C"/>
-          </svg>
-        </span>
+        <span class="mark" aria-hidden="true"><img src="/assets/demo-mujerbonita/logo-badge.webp" alt="" /></span>
         <span class="word">Mujer bonita<small>Espacio de belleza</small></span>
       </a>
       <ul class="nav-links">
@@ -332,10 +327,10 @@
         <div class="shelf-label"><h3>Estilos que hacemos seguido</h3><span>Catálogo completo en Instagram</span></div>
         <div class="shelf-rail" aria-hidden="true"></div>
         <div class="swatch-grid">
-          <div class="swatch-card sw1"><span class="tag">Almendra</span><span class="name">Baño de oro nude</span></div>
-          <div class="swatch-card sw2"><span class="tag">Glitter</span><span class="name">Ombré rosa + francesa blanca</span></div>
-          <div class="swatch-card sw3"><span class="tag">Marmolado</span><span class="name">Negro con gemas</span></div>
-          <div class="swatch-card sw4"><span class="tag">Cuadrada</span><span class="name">Francesa burdeos</span></div>
+          <div class="swatch-card has-caption"><img src="/assets/demo-mujerbonita/trabajo-marmolado.webp" alt="Uñas almendra en marmolado negro con gemas de cristal" loading="lazy" /><span class="tag">Marmolado</span><span class="name">Negro con gemas</span></div>
+          <div class="swatch-card has-caption"><img src="/assets/demo-mujerbonita/trabajo-floral.webp" alt="Uñas nude con diseño floral y pedrería dorada" loading="lazy" /><span class="tag">Floral</span><span class="name">Flores y pedrería</span></div>
+          <div class="swatch-card has-caption"><img src="/assets/demo-mujerbonita/trabajo-glitter.webp" alt="Uñas con glitter rosa degradado y francesa blanca" loading="lazy" /><span class="tag">Glitter</span><span class="name">Ombré + francesa blanca</span></div>
+          <div class="swatch-card"><img src="/assets/demo-mujerbonita/estilo-guia.webp" alt="Guía de formas de uña: almendra, cuadrada y redonda en distintos colores, publicada en @tuespacio_mujerbonita" loading="lazy" /></div>
         </div>
       </div>
 
@@ -352,6 +347,17 @@
           <div class="lifting-point"><span class="ic" aria-hidden="true">✓</span><div><b>No necesitas rímel</b>El efecto ya viene peinado y con color.</div></div>
           <div class="lifting-point"><span class="ic" aria-hidden="true">✓</span><div><b>Larga duración</b>El resultado se mantiene semanas, no días.</div></div>
           <div class="lifting-point"><span class="ic" aria-hidden="true">✓</span><div><b>Resultado natural</b>Nada de extensiones ni volumen artificial.</div></div>
+        </div>
+      </div>
+
+      <div class="shelf-row">
+        <div class="space-block">
+          <div class="space-photo"><img src="/assets/demo-mujerbonita/espacio.webp" alt="Mesón de Mujer Bonita con mármol y productos de regalo Vidaluz" loading="lazy" /></div>
+          <div>
+            <span class="eyebrow" style="margin-bottom:.6rem;">Nuestro espacio</span>
+            <h3 style="font-style:italic;font-size:1.3rem;margin-bottom:.6rem;">Un lugar pensado para consentirte</h3>
+            <p style="color:var(--muted);font-size:.92rem;">Mármol, buena luz y detalles Vidaluz de regalo — la espera también es parte de la experiencia.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -383,7 +389,7 @@
 
   <footer>
     <div class="wrap foot-grid">
-      <a href="#top" class="nav-logo"><span class="word">Mujer bonita<small>Espacio de belleza</small></span></a>
+      <a href="#top" class="nav-logo"><span class="mark" aria-hidden="true"><img src="/assets/demo-mujerbonita/logo-badge.webp" alt="" /></span><span class="word">Mujer bonita<small>Espacio de belleza</small></span></a>
       <ul><li><a href="#vitrina">Vitrina</a></li><li><a href="#contacto">Contacto</a></li></ul>
       <div>Demo creada por Automalytics</div>
     </div>

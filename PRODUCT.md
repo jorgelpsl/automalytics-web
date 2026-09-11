@@ -29,25 +29,24 @@ The differentiator is that the booking capability is demonstrated live in the he
 ## Capabilities and Constraints
 
 - Plain HTML/CSS/vanilla JS only, no framework, no dependencies — matches every other demo in this repo.
-- No real photo files are available yet: 6 real Instagram photos (nail art, a "LIFTING" cejas/pestañas educational graphic, logo/badge) were shown in chat but could not be saved to disk in this environment. The current build substitutes CSS/SVG color-swatch visuals instead of fabricated photos.
+- Real photo files ARE now on disk under `assets/demo-mujerbonita/` (recovered from the session transcript's base64 attachments, converted to WebP): `logo-badge.webp`, `trabajo-marmolado.webp`, `trabajo-floral.webp`, `trabajo-glitter.webp`, `estilo-guia.webp`, `espacio.webp`, `local-sign.webp` (unused so far). A middle batch of 4 photos (nude glazed nails, a pink glitter french, the real "LIFTING" graphic, a burgundy french) was shown in chat but never landed in the transcript and remains unrecoverable — the lifting section still uses the business's own quoted copy without a matching photo.
 - Prices and exact street address are explicit placeholders (`$xxxxx`, `xxxxx`) per the prospect owner's own instruction — these must stay visibly placeholder, never replaced with invented realistic-looking numbers.
 - The WhatsApp number currently wired into the demo is Automalytics' own number (a stand-in for the demo), not the prospect's real business number.
 - The real, verifiable Instagram handle (@tuespacio_mujerbonita) is used and linked as the only social proof — no fabricated ratings, review counts, or client counts.
 
 ## Brand Commitments
 
-Real brand evidence seen (not saved as files, described here for the record):
-- Deep green background with a gold/bronze geometric emblem (thin interlocking-triangle/diamond line art).
-- Italic serif script wordmark "Mujer bonita" + small-caps sans tagline "espacio de belleza".
-- A circular badge variant of the logo with a pink → orange → gold ring border.
+Real brand evidence, now backed by actual files in `assets/demo-mujerbonita/`:
+- `logo-badge.webp` is the real logo: deep green ground, a solid green interlocking-triangle/diamond emblem, italic script wordmark "Mujer bonita", small-caps "espacio de belleza", inside a circular badge with a pink → orange → gold ring border. Used as the nav/footer mark (clipped to a circle via CSS to drop the source photo's black corners).
 - Two real service categories confirmed: uñas (manicure, esculpidas, diseño/nail art) and lifting de cejas y pestañas. No other services are confirmed.
-- Real marketing copy from the business's own "LIFTING" story graphic: "Realza la mirada", "No necesitas rímel", "Larga duración", "Resultado natural" — reused verbatim in the current build since it is the business's own claim, not Automalytics' invention.
+- Real marketing copy from the business's own "LIFTING" story graphic: "Realza la mirada", "No necesitas rímel", "Larga duración", "Resultado natural" — reused verbatim since it is the business's own claim, not Automalytics' invention.
+- `espacio.webp` shows the real reception counter: marble surface, the green wall-mounted logo sign, and retail Vidaluz home-fragrance products — the business is a bit more "boutique retail" than a nails-only shop, reflected in the Vitrina section's "Nuestro espacio" block.
 
-The current implementation approximates the emblem with an original SVG monogram (not a pixel copy) and uses Playfair Display italic + Manrope on a green/gold/coral palette. Treat this as an evidence-grounded but non-final visual system — open to replacement in a redesign as long as the confirmed real facts above (colors, wordmark style, the two service categories, the real copy) are preserved or deliberately superseded with the user's approval.
+Typography (Playfair Display italic + Manrope) and the green/gold/coral palette are Automalytics' own recreation choice, grounded in but not a pixel copy of the real logo's colors — open to further refinement with the user's approval.
 
 ## Evidence on Hand
 
-- 6 real photos shown in chat (not on disk): nude glazed almond nails with a thin gold band; pink glitter ombré with white french tip; burgundy french tip with a small white dot design; a "LIFTING" educational graphic (cejas/pestañas) with the real copy quoted above; the square logo lockup; the circular badge logo.
+- Real photo files on disk (`assets/demo-mujerbonita/`): the logo badge; marmolado nails with gems; floral nail art with pearls; glitter ombré with white french tip; the "¿Qué forma de uña va mejor con vos?" guide graphic; the reception-counter/Vidaluz photo.
 - Real, verifiable Instagram: https://www.instagram.com/tuespacio_mujerbonita/
 - No testimonials, review counts, client counts, years-in-business, or awards exist for this business — none may be invented for this surface.
 
