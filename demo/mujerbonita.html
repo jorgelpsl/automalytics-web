@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Demo: Mujer Bonita — Automalytics</title>
+<meta name="description" content="Ejemplo de sitio web hecho por Automalytics para un espacio de belleza: uñas, cejas y pestañas, con agenda de horas en línea." />
+<meta name="robots" content="noindex, follow" />
+<link rel="icon" type="image/webp" href="/assets/logo.webp" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content="#0F2B22" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0F2B22;
+    --bg2: #0C231C;
+    --card: #17392C;
+    --card2: #1D4433;
+    --cream: #F6F1E6;
+    --muted: #A7BDB0;
+    --gold: #C9A25C;
+    --gold-light: #E7CE99;
+    --coral: #FF6F76;
+    --coral2: #FF9E5A;
+    --line: rgba(246,241,230,.12);
+    --ok: #7BC79A;
+    --err: #FF8A80;
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 24px;
+  }
+
+  html, body { background: var(--bg); }
+  body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--cream); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 600; line-height: 1.12; }
+  em { font-style: italic; color: var(--gold-light); font-weight: 600; }
+  a { color: inherit; text-decoration: none; }
+  img, svg { max-width: 100%; display: block; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  input { font: inherit; color: inherit; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+  section { padding: 5.5rem 0; }
+  @media (max-width: 640px) { section { padding: 3.6rem 0; } }
+  .eyebrow { display: inline-block; font-size: .76rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: .9rem; }
+  .sec-head { max-width: 620px; margin-bottom: 2.6rem; }
+  .sec-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.5rem); }
+  .sec-head p { color: var(--muted); margin-top: .7rem; font-size: 1rem; }
+
+  :focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; border-radius: 4px; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; font-weight: 700; font-size: .95rem; padding: .95rem 1.85rem; border-radius: 50px; border: 2px solid transparent; cursor: pointer; transition: transform .15s ease, filter .15s ease, opacity .15s ease; }
+  .btn-primary { background: var(--coral); color: #2A0A0C; }
+  .btn-primary:hover { filter: brightness(1.06); }
+  .btn-primary:disabled { opacity: .4; cursor: not-allowed; filter: none; }
+  .btn-ghost { border-color: var(--line); color: var(--cream); background: rgba(246,241,230,.04); }
+  .btn-ghost:hover { border-color: var(--gold); }
+
+  /* ── back bar ── */
+  .bar { display: flex; align-items: center; justify-content: space-between; padding: .7rem 1.25rem; background: var(--bg2); border-bottom: 1px solid var(--line); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; position: relative; z-index: 50; }
+  .bar a { color: var(--gold-light); text-decoration: none; font-weight: 700; font-size: .85rem; display: flex; align-items: center; gap: .4rem; }
+  .bar a:hover { text-decoration: underline; }
+  .bar span { color: var(--muted); font-size: .78rem; }
+
+  /* ── logo mark ── */
+  .mark { width: 30px; height: 30px; flex-shrink: 0; }
+  .mark svg { width: 100%; height: 100%; }
+
+  /* ── nav ── */
+  header.site-nav { position: sticky; top: 0; z-index: 40; background: rgba(15,43,34,.86); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .nav-pill { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: var(--card); border: 1px solid var(--line); border-radius: 50px; padding: .55rem .7rem .55rem 1.1rem; max-width: 1180px; margin: .9rem auto; margin-inline: 1.5rem; }
+  @media (min-width: 1211px) { .nav-pill { margin-inline: auto; } }
+  .nav-logo { display: flex; align-items: center; gap: .6rem; }
+  .nav-logo .word { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600; font-size: 1.15rem; line-height: 1; }
+  .nav-logo .word small { display: block; font-family: 'Manrope', sans-serif; font-style: normal; font-weight: 700; font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-top: .1rem; }
+  .nav-links { display: flex; gap: 1.6rem; list-style: none; font-size: .87rem; font-weight: 600; }
+  .nav-links a:hover { color: var(--gold-light); }
+  @media (max-width: 860px) { .nav-links { display: none; } }
+  .nav-pill .btn-primary { white-space: nowrap; padding: .6rem 1.25rem; font-size: .82rem; }
+  @media (max-width: 420px) {
+    .nav-pill { padding: .5rem .55rem .5rem .8rem; }
+    .nav-logo .word { font-size: .95rem; }
+    .nav-logo .word small { font-size: .52rem; }
+    .nav-pill .btn-primary { padding: .55rem .9rem; font-size: .74rem; }
+  }
+
+  /* ── hero ── */
+  .hero-shell { padding: 1.6rem 1.5rem 0; }
+  .hero { max-width: 1180px; margin: 0 auto; border-radius: var(--radius-lg); overflow: hidden; position: relative; background: linear-gradient(155deg, #163b2d 0%, #0c231c 60%); border: 1px solid var(--line); }
+  .hero::before { content: ""; position: absolute; inset: -20% -10% auto -10%; height: 130%; background: radial-gradient(55% 55% at 82% 10%, rgba(201,162,92,.16), transparent 70%); pointer-events: none; }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 2.2rem; align-items: center; position: relative; z-index: 1; }
+  @media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero-copy { padding: 3.6rem 1rem 3.2rem 3.2rem; }
+  @media (max-width: 940px) { .hero-copy { padding: 2.6rem 1.6rem 0; } }
+  .hero h1 { font-size: clamp(2.1rem, 4.4vw, 3.3rem); }
+  .hero p.lead { color: var(--muted); font-size: 1.05rem; max-width: 44ch; margin: 1.2rem 0 1.8rem; }
+  .hero-actions { display: flex; gap: 1.2rem; flex-wrap: wrap; align-items: center; }
+  .ig-row { display: flex; align-items: center; gap: .6rem; margin-top: 2.2rem; margin-bottom: 1rem; font-size: .88rem; color: var(--muted); flex-wrap: wrap; }
+  .ig-row a { color: var(--gold-light); font-weight: 700; }
+  .ig-row a:hover { text-decoration: underline; }
+  @media (max-width: 940px) { .ig-row { max-width: 78%; margin-bottom: 2.2rem; } }
+
+  /* ── mini agenda widget (hero) ── */
+  .agenda-mini { margin: 1.6rem 1.6rem 1.6rem 0; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.5rem; position: relative; z-index: 1; }
+  @media (max-width: 940px) { .agenda-mini { margin: 0 1.6rem 2.4rem; } }
+  .agenda-mini-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.1rem; }
+  .agenda-mini-head h3 { font-size: 1.05rem; font-style: italic; }
+  .agenda-mini-head .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 4px rgba(123,199,154,.18); }
+  .agenda-mini-day { border-top: 1px solid var(--line); padding: .85rem 0; }
+  .agenda-mini-day:first-of-type { border-top: none; padding-top: 0; }
+  .agenda-mini-day .d { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: .55rem; }
+  .agenda-mini-slots { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .mini-slot { border: 1px solid var(--line); background: rgba(246,241,230,.04); color: var(--cream); font-size: .82rem; font-weight: 700; padding: .4rem .8rem; border-radius: 50px; }
+  .mini-slot.full { color: var(--muted); font-weight: 500; font-style: italic; background: none; border-style: dashed; }
+  button.mini-slot { transition: border-color .15s ease, background .15s ease; }
+  button.mini-slot:hover { border-color: var(--gold); background: rgba(201,162,92,.12); }
+
+  /* ── servicios (editorial list) ── */
+  #servicios { background: var(--bg2); }
+  .svc-cat { margin-bottom: 2.4rem; }
+  .svc-cat:last-child { margin-bottom: 0; }
+  .svc-cat > h3 { font-size: 1rem; font-style: italic; color: var(--gold-light); margin-bottom: .9rem; }
+  .svc-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; padding: 1.1rem 0; border-top: 1px solid var(--line); }
+  .svc-cat > h3 + .svc-row { border-top: none; }
+  .svc-row .name { font-size: 1.15rem; font-weight: 700; }
+  .svc-row .meta { color: var(--muted); font-size: .85rem; margin-top: .25rem; }
+  .svc-row .price { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.25rem; color: var(--gold-light); white-space: nowrap; }
+  @media (max-width: 640px) { .svc-row { flex-direction: column; gap: .3rem; } .svc-row .price { order: -1; } }
+
+  /* ── trabajos (vitrina de color) ── */
+  .swatch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+  @media (max-width: 900px) { .swatch-grid { grid-template-columns: repeat(2, 1fr); } }
+  .swatch-card { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--line); aspect-ratio: 3/4; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.1rem; }
+  .swatch-card .name { font-weight: 700; font-size: .92rem; color: #201408; position: relative; z-index: 1; }
+  .swatch-card .tag { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: rgba(32,20,8,.7); position: relative; z-index: 1; }
+  .sw1 { background: linear-gradient(160deg, #f3e0c8 0%, #e8c79b 55%, #d9ac6d 100%); }
+  .sw2 { background: linear-gradient(160deg, #ffd9e6 0%, #f8b6cf 45%, #ffffff 100%); }
+  .sw3 { background: linear-gradient(160deg, #7a1f2b 0%, #5a1420 60%, #2c0a0f 100%); }
+  .sw3 .name, .sw3 .tag { color: #f6ece1; }
+  .sw4 { background: linear-gradient(160deg, #fbe6ea 0%, #eecdd6 50%, #7a1f2b 100%); }
+
+  .lifting-card { margin-top: 2.2rem; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.8rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem 2rem; }
+  @media (max-width: 700px) { .lifting-card { grid-template-columns: 1fr; } }
+  .lifting-card h3 { font-style: italic; font-size: 1.3rem; grid-column: 1 / -1; }
+  .lifting-point { display: flex; gap: .7rem; align-items: flex-start; font-size: .92rem; color: var(--muted); }
+  .lifting-point b { color: var(--cream); display: block; font-size: .95rem; }
+  .lifting-point .ic { color: var(--gold); flex-shrink: 0; margin-top: .15rem; }
+
+  /* ── agendar (booking) ── */
+  #agendar { background: var(--bg2); }
+  .booking { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 2.2rem; }
+  @media (max-width: 640px) { .booking { padding: 1.4rem; border-radius: var(--radius-md); } }
+  .step-label { display: flex; align-items: center; gap: .6rem; font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 1.7rem 0 1rem; }
+  .step-label:first-child { margin-top: 0; }
+  .step-label .n { width: 22px; height: 22px; border-radius: 50%; background: var(--gold); color: #2A1E08; display: flex; align-items: center; justify-content: center; font-size: .75rem; flex-shrink: 0; }
+
+  .pill-row { display: flex; gap: .7rem; flex-wrap: wrap; }
+  .svc-pill, .day-chip, .time-slot { border: 1px solid var(--line); background: rgba(246,241,230,.04); border-radius: 12px; padding: .8rem 1.1rem; text-align: left; transition: border-color .15s ease, background .15s ease; min-height: 44px; }
+  .svc-pill { display: flex; flex-direction: column; gap: .2rem; flex: 1 1 200px; }
+  .svc-pill b { font-size: .95rem; }
+  .svc-pill span { font-size: .8rem; color: var(--muted); }
+  .svc-pill[aria-pressed="true"] { border-color: var(--coral); background: rgba(255,111,118,.12); }
+  .svc-pill:hover { border-color: var(--gold); }
+
+  .day-scroll { display: flex; gap: .6rem; overflow-x: auto; padding-bottom: .3rem; scroll-padding-right: 4.5rem; }
+  @media (max-width: 640px) { .day-scroll { padding-right: 4.5rem; } }
+  .day-chip { flex-shrink: 0; min-width: 76px; text-align: center; border-radius: 50px; }
+  .day-chip .dow { display: block; font-size: .7rem; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+  .day-chip .num { display: block; font-size: 1.1rem; font-weight: 800; margin-top: .1rem; }
+  .day-chip[aria-pressed="true"] { border-color: var(--coral); background: rgba(255,111,118,.12); }
+  .day-chip:disabled { opacity: .35; cursor: not-allowed; }
+  .day-chip:not(:disabled):hover { border-color: var(--gold); }
+
+  .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: .6rem; }
+  .time-slot { text-align: center; font-weight: 700; }
+  .time-slot[aria-pressed="true"] { border-color: var(--coral); background: rgba(255,111,118,.12); }
+  .time-slot:disabled { opacity: .3; text-decoration: line-through; cursor: not-allowed; }
+  .time-slot:not(:disabled):hover { border-color: var(--gold); }
+  .muted-note { color: var(--muted); font-size: .85rem; }
+
+  .contact-fields { display: none; }
+  .contact-fields.visible { display: block; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.1rem; }
+  @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+  .field label { display: block; font-size: .82rem; font-weight: 700; color: var(--muted); margin-bottom: .45rem; }
+  .field input { width: 100%; background: rgba(246,241,230,.05); border: 1px solid var(--line); border-radius: 10px; padding: .8rem .95rem; font-size: .95rem; }
+  .field input:focus { border-color: var(--gold); }
+  .field input.invalid { border-color: var(--err); }
+  .field .err-msg { color: var(--err); font-size: .78rem; margin-top: .4rem; min-height: 1em; }
+
+  .booking-summary { background: rgba(201,162,92,.08); border: 1px dashed var(--gold); border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1.4rem; font-size: .9rem; color: var(--gold-light); display: none; }
+  .booking-summary.visible { display: block; }
+
+  .success-note { display: none; margin-top: 1.2rem; background: rgba(123,199,154,.1); border: 1px solid var(--ok); border-radius: 12px; padding: 1rem 1.2rem; font-size: .9rem; }
+  .success-note.visible { display: block; }
+  .success-note a { color: var(--ok); font-weight: 700; text-decoration: underline; }
+
+  /* ── contacto ── */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.6rem; align-items: start; }
+  @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
+  .info-line { display: flex; gap: .8rem; padding: .85rem 0; border-top: 1px solid var(--line); font-size: .92rem; }
+  .info-line:first-of-type { border-top: none; }
+  .info-line b { color: var(--cream); display: block; }
+  .info-line span { color: var(--muted); }
+
+  /* ── cta final ── */
+  .cta-final { text-align: center; background: linear-gradient(135deg, rgba(255,111,118,.14), rgba(201,162,92,.08)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .cta-final h2 { font-size: clamp(1.9rem, 4.6vw, 2.8rem); margin-bottom: 1rem; }
+  .cta-final p { color: var(--muted); margin-bottom: 2rem; }
+
+  footer { padding: 2.4rem 0; }
+  .foot-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; color: var(--muted); font-size: .85rem; }
+  .foot-grid ul { list-style: none; display: flex; gap: 1.3rem; }
+  .foot-grid ul a:hover { color: var(--gold-light); }
+
+  .wa-float { position: fixed; bottom: 1.4rem; right: 1.4rem; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; z-index: 60; box-shadow: 0 6px 24px rgba(37,211,102,.4); }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <a href="/">← Volver a Automalytics</a>
+    <span>Demo: Mujer Bonita</span>
+  </div>
+
+  <header class="site-nav">
+    <div class="nav-pill">
+      <a href="#top" class="nav-logo">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 32 15 8l5 12 5-12 11 24" stroke="#C9A25C" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle cx="4" cy="32" r="2.2" fill="#C9A25C"/>
+            <circle cx="35" cy="32" r="2.2" fill="#C9A25C"/>
+            <circle cx="20" cy="20" r="2.2" fill="#C9A25C"/>
+          </svg>
+        </span>
+        <span class="word">Mujer bonita<small>Espacio de belleza</small></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#trabajos">Trabajos</a></li>
+        <li><a href="#agendar">Agendar</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <a class="btn btn-primary" href="#agendar">Agendar hora</a>
+    </div>
+  </header>
+
+  <div id="top" class="hero-shell">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Uñas · Cejas · Pestañas</span>
+          <h1>Uñas y mirada que <em>se notan</em>.</h1>
+          <p class="lead">Manicure, esculpidas, diseño de uñas y lifting de cejas y pestañas. Elige tu hora en dos minutos, sin llamadas ni esperar respuesta por Instagram.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#agendar">Agendar mi hora →</a>
+            <a class="btn btn-ghost" href="#servicios">Ver servicios</a>
+          </div>
+          <div class="ig-row">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            Mira nuestros trabajos en <a href="https://www.instagram.com/tuespacio_mujerbonita/" target="_blank" rel="noopener">@tuespacio_mujerbonita</a>
+          </div>
+        </div>
+
+        <div class="agenda-mini">
+          <div class="agenda-mini-head">
+            <h3>Agenda en vivo</h3>
+            <span class="dot" aria-hidden="true"></span>
+          </div>
+          <div id="miniAgenda"><!-- generado por JS --></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section id="servicios">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Servicios</span>
+        <h2>Lo que hacemos <em>por ti</em></h2>
+        <p>Precios y disponibilidad se confirman al agendar. Todos los tratamientos incluyen preparación e higiene del área.</p>
+      </div>
+
+      <div class="svc-cat">
+        <h3>Uñas</h3>
+        <div class="svc-row"><div><div class="name">Manicure spa</div><div class="meta">45 min · limpieza, cutícula y esmaltado</div></div><div class="price">$xxxxx</div></div>
+        <div class="svc-row"><div><div class="name">Uñas esculpidas</div><div class="meta">90 min · extensión en gel o acrílico</div></div><div class="price">$xxxxx</div></div>
+        <div class="svc-row"><div><div class="name">Diseño de uñas / nail art</div><div class="meta">60 min · desde francesa hasta diseño personalizado</div></div><div class="price">$xxxxx</div></div>
+      </div>
+
+      <div class="svc-cat">
+        <h3>Mirada</h3>
+        <div class="svc-row"><div><div class="name">Lifting de cejas</div><div class="meta">45 min · realza y peina sin maquillaje</div></div><div class="price">$xxxxx</div></div>
+        <div class="svc-row"><div><div class="name">Lifting de pestañas</div><div class="meta">45 min · efecto rímel, larga duración</div></div><div class="price">$xxxxx</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trabajos" style="background:var(--bg2);">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Trabajos</span>
+        <h2>Estilos que <em>hacemos seguido</em></h2>
+        <p>Una muestra de los diseños más pedidos. El catálogo completo está en Instagram.</p>
+      </div>
+      <div class="swatch-grid">
+        <div class="swatch-card sw1"><span class="tag">Almendra</span><span class="name">Baño de oro nude</span></div>
+        <div class="swatch-card sw2"><span class="tag">Glitter</span><span class="name">Ombré rosa + francesa blanca</span></div>
+        <div class="swatch-card sw3"><span class="tag">Marmolado</span><span class="name">Negro con gemas</span></div>
+        <div class="swatch-card sw4"><span class="tag">Cuadrada</span><span class="name">Francesa burdeos</span></div>
+      </div>
+
+      <div class="lifting-card">
+        <h3>Lifting de cejas y pestañas</h3>
+        <div class="lifting-point"><span class="ic" aria-hidden="true">✓</span><div><b>Realza la mirada</b>Define la forma natural de tu ceja o pestaña.</div></div>
+        <div class="lifting-point"><span class="ic" aria-hidden="true">✓</span><div><b>No necesitas rímel</b>El efecto ya viene peinado y con color.</div></div>
+        <div class="lifting-point"><span class="ic" aria-hidden="true">✓</span><div><b>Larga duración</b>El resultado se mantiene semanas, no días.</div></div>
+        <div class="lifting-point"><span class="ic" aria-hidden="true">✓</span><div><b>Resultado natural</b>Nada de extensiones ni volumen artificial.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="agendar">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Agendar</span>
+        <h2>Reserva tu <em>hora</em></h2>
+        <p>Elige servicio, día y horario. Confirmamos por WhatsApp al tiro.</p>
+      </div>
+
+      <div class="booking">
+        <div class="step-label"><span class="n">1</span> Servicio</div>
+        <div class="pill-row" id="servicePills" role="group" aria-label="Elige un servicio"></div>
+
+        <div class="step-label"><span class="n">2</span> Día</div>
+        <div class="day-scroll" id="dayChips" role="group" aria-label="Elige un día"></div>
+
+        <div class="step-label"><span class="n">3</span> Hora</div>
+        <div class="slot-grid" id="timeSlots" role="group" aria-label="Elige un horario"></div>
+        <p class="muted-note" id="noDaySelected">Elige un día para ver los horarios disponibles.</p>
+
+        <div class="booking-summary" id="bookingSummary"></div>
+
+        <div class="contact-fields" id="contactFields">
+          <div class="step-label"><span class="n">4</span> Tus datos</div>
+          <div class="field-row">
+            <div class="field">
+              <label for="clientName">Nombre</label>
+              <input type="text" id="clientName" autocomplete="name" maxlength="80" />
+              <div class="err-msg" id="nameErr"></div>
+            </div>
+            <div class="field">
+              <label for="clientPhone">Teléfono</label>
+              <input type="tel" id="clientPhone" autocomplete="tel" inputmode="tel" maxlength="25" placeholder="+56 9 1234 5678" />
+              <div class="err-msg" id="phoneErr"></div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" id="confirmBtn" disabled>Confirmar por WhatsApp →</button>
+          <div class="success-note" id="successNote"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" style="background:var(--bg2);">
+    <div class="wrap contact-grid">
+      <div>
+        <span class="eyebrow">Contacto</span>
+        <h2>Hablemos <em>por WhatsApp</em></h2>
+        <div class="info-line"><b>Teléfono</b><span>+56 9 2956 6246</span></div>
+        <div class="info-line"><b>Dirección</b><span>xxxxx</span></div>
+        <div class="info-line"><b>Horario</b><span>Lunes a sábado, 10:00–19:00</span></div>
+        <div class="info-line"><b>Instagram</b><span><a href="https://www.instagram.com/tuespacio_mujerbonita/" target="_blank" rel="noopener" style="color:var(--gold-light);font-weight:700;">@tuespacio_mujerbonita</a></span></div>
+        <a class="btn btn-primary" id="contactWaLink" style="margin-top:1.6rem;" href="https://wa.me/56929566246" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+      </div>
+      <div class="lifting-card" style="margin-top:0;">
+        <h3>¿Por qué agendar en línea?</h3>
+        <div class="lifting-point"><span class="ic" aria-hidden="true">✓</span><div><b>Sin esperar respuesta</b>Ves los horarios libres al momento.</div></div>
+        <div class="lifting-point"><span class="ic" aria-hidden="true">✓</span><div><b>Menos ida y vuelta</b>Llegas a WhatsApp con todo ya definido.</div></div>
+        <div class="lifting-point"><span class="ic" aria-hidden="true">✓</span><div><b>Disponible 24/7</b>Agenda aunque el local esté cerrado.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <div class="wrap"><h2>Tu próxima hora, en dos minutos</h2><p>Elige servicio, día y horario — nosotras confirmamos el resto.</p><a class="btn btn-primary" href="#agendar">Agendar mi hora →</a></div>
+  </section>
+
+  <footer>
+    <div class="wrap foot-grid">
+      <a href="#top" class="nav-logo"><span class="word">Mujer bonita<small>Espacio de belleza</small></span></a>
+      <ul><li><a href="#servicios">Servicios</a></li><li><a href="#trabajos">Trabajos</a></li><li><a href="#agendar">Agendar</a></li></ul>
+      <div>Demo creada por Automalytics</div>
+    </div>
+  </footer>
+
+  <a class="wa-float" id="floatWaLink" href="https://wa.me/56929566246" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.78 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm0 18.05h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.27-4.37c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.24 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.78.97-.15.17-.29.19-.54.06-.25-.12-1.04-.38-1.99-1.22-.73-.66-1.23-1.46-1.37-1.71-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08s.9 2.41 1.02 2.58c.12.17 1.77 2.7 4.28 3.78.6.26 1.06.41 1.43.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+  </a>
+
+<script>
+(function () {
+  // Single source of truth for the business phone: the static hrefs in the
+  // markup are a plain-HTML fallback and get overwritten here so the number
+  // only has to change in one place.
+  const PHONE = '56929566246';
+  ['contactWaLink', 'floatWaLink'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.href = `https://wa.me/${PHONE}`;
+  });
+
+  const OPEN_HOUR = 10, CLOSE_HOUR = 19, SLOT_MIN = 45;
+  const CLOSED_DAYS = [0]; // domingo cerrado
+
+  const SERVICES = [
+    { id: 'manicure', nombre: 'Manicure spa', duracion: 45, precio: '$xxxxx' },
+    { id: 'esculpidas', nombre: 'Uñas esculpidas', duracion: 90, precio: '$xxxxx' },
+    { id: 'diseno', nombre: 'Diseño de uñas / nail art', duracion: 60, precio: '$xxxxx' },
+    { id: 'lifting-cejas', nombre: 'Lifting de cejas', duracion: 45, precio: '$xxxxx' },
+    { id: 'lifting-pestanas', nombre: 'Lifting de pestañas', duracion: 45, precio: '$xxxxx' },
+  ];
+
+  const DOW = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const MONTH = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+  function isoDate(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  function seedRand(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+    return (h % 100) / 100;
+  }
+
+  function buildTimes() {
+    const times = [];
+    let mins = OPEN_HOUR * 60;
+    const end = CLOSE_HOUR * 60 - SLOT_MIN;
+    while (mins <= end) {
+      const h = Math.floor(mins / 60), m = mins % 60;
+      times.push(String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0'));
+      mins += SLOT_MIN;
+    }
+    return times;
+  }
+  const TIMES = buildTimes();
+
+  function isOcupado(iso, time) {
+    return seedRand(iso + time) < 0.3;
+  }
+
+  function buildDays(n, startOffset) {
+    const days = [];
+    const now = new Date();
+    let d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + startOffset);
+    while (days.length < n) {
+      if (!CLOSED_DAYS.includes(d.getDay())) {
+        const iso = isoDate(d);
+        const free = TIMES.some((t) => !isOcupado(iso, t));
+        days.push({ date: new Date(d), iso, dow: DOW[d.getDay()], num: d.getDate(), month: MONTH[d.getMonth()], free });
+      }
+      d.setDate(d.getDate() + 1);
+    }
+    return days;
+  }
+
+  // today's slots only count if still ahead of current time
+  const now = new Date();
+  const startOffset = now.getHours() >= CLOSE_HOUR - 1 ? 1 : 0;
+
+  const state = { service: null, day: null, time: null };
+
+  // ── service pills ──
+  const svcEl = document.getElementById('servicePills');
+  svcEl.innerHTML = SERVICES.map((s) =>
+    `<button type="button" class="svc-pill" data-id="${s.id}" aria-pressed="false"><b>${s.nombre}</b><span>${s.duracion} min · ${s.precio}</span></button>`
+  ).join('');
+  svcEl.querySelectorAll('.svc-pill').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      svcEl.querySelectorAll('.svc-pill').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+      state.service = SERVICES.find((s) => s.id === btn.dataset.id);
+      updateSummary();
+    });
+  });
+
+  // ── day chips ──
+  const allDays = buildDays(12, startOffset);
+  const dayEl = document.getElementById('dayChips');
+  if (allDays.every((d) => !d.free)) {
+    dayEl.innerHTML = '';
+    document.getElementById('noDaySelected').textContent = 'No quedan horas libres en los próximos días — escríbenos por WhatsApp y buscamos un cupo.';
+  } else {
+    dayEl.innerHTML = allDays.map((d) =>
+      `<button type="button" class="day-chip" data-iso="${d.iso}" aria-pressed="false" ${d.free ? '' : 'disabled'}><span class="dow">${d.dow}</span><span class="num">${d.num}</span></button>`
+    ).join('');
+  }
+
+  function renderSlots(iso) {
+    const grid = document.getElementById('timeSlots');
+    document.getElementById('noDaySelected').style.display = 'none';
+    grid.innerHTML = TIMES.map((t) => {
+      const ocupado = isOcupado(iso, t);
+      return `<button type="button" class="time-slot" data-time="${t}" aria-pressed="false" ${ocupado ? 'disabled' : ''}>${t}</button>`;
+    }).join('');
+    grid.querySelectorAll('.time-slot:not(:disabled)').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        grid.querySelectorAll('.time-slot').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+        state.time = btn.dataset.time;
+        document.getElementById('contactFields').classList.add('visible');
+        updateSummary();
+      });
+    });
+  }
+
+  dayEl.querySelectorAll('.day-chip:not(:disabled)').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      dayEl.querySelectorAll('.day-chip').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+      state.day = allDays.find((d) => d.iso === btn.dataset.iso);
+      state.time = null;
+      renderSlots(state.day.iso);
+      updateSummary();
+    });
+  });
+
+  // Picking a slot in the hero's live-agenda preview jumps here and
+  // preselects the same day + time, so the promise made in the hero is the
+  // exact state the visitor lands on — not a reset form.
+  function applyPreset(iso, time) {
+    const chip = dayEl.querySelector(`.day-chip[data-iso="${iso}"]`);
+    if (!chip || chip.disabled) return;
+    chip.click();
+    requestAnimationFrame(() => {
+      const slot = document.getElementById('timeSlots').querySelector(`.time-slot[data-time="${time}"]:not(:disabled)`);
+      if (slot) slot.click();
+    });
+  }
+
+  // ── mini agenda (hero) ──
+  // Look further ahead than 3 days: if a nearby day happens to be closed or
+  // fully booked, the hero widget must still find 3 real open days instead
+  // of showing an empty "agenda completa" while the full widget below has
+  // plenty of availability.
+  const miniDays = buildDays(10, startOffset).filter((d) => d.free).slice(0, 3);
+  const miniEl = document.getElementById('miniAgenda');
+  if (miniDays.length === 0) {
+    miniEl.innerHTML = '<p class="muted-note">Agenda completa por ahora — escríbenos por WhatsApp.</p>';
+  } else {
+    miniEl.innerHTML = miniDays.map((day) => {
+      const freeTimes = TIMES.filter((t) => !isOcupado(day.iso, t)).slice(0, 3);
+      const slots = freeTimes.map((t) =>
+        `<button type="button" class="mini-slot" data-iso="${day.iso}" data-time="${t}">${t}</button>`
+      ).join('');
+      return `<div class="agenda-mini-day"><div class="d">${day.dow} ${day.num} ${day.month}</div><div class="agenda-mini-slots">${slots}</div></div>`;
+    }).join('');
+  }
+  miniEl.querySelectorAll('.mini-slot').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.getElementById('agendar').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('servicePills').querySelector('.svc-pill').focus();
+      applyPreset(btn.dataset.iso, btn.dataset.time);
+    });
+  });
+
+  function updateSummary() {
+    const box = document.getElementById('bookingSummary');
+    if (state.service && state.day && state.time) {
+      box.classList.add('visible');
+      box.textContent = `${state.service.nombre} · ${state.day.dow} ${state.day.num} ${state.day.month} · ${state.time} hrs`;
+    } else {
+      box.classList.remove('visible');
+    }
+    validateForm();
+  }
+
+  // ── contact form ──
+  const nameInput = document.getElementById('clientName');
+  const phoneInput = document.getElementById('clientPhone');
+  const confirmBtn = document.getElementById('confirmBtn');
+
+  function validPhone(v) {
+    return /^[\d\s+()\-.]{6,}$/.test(v) && (v.match(/\d/g) || []).length >= 6;
+  }
+
+  function validateForm() {
+    const nameOk = nameInput.value.trim().length >= 2;
+    const phoneOk = validPhone(phoneInput.value.trim());
+    confirmBtn.disabled = !(state.service && state.day && state.time && nameOk && phoneOk);
+  }
+
+  nameInput.addEventListener('input', () => {
+    document.getElementById('nameErr').textContent = '';
+    nameInput.classList.remove('invalid');
+    validateForm();
+  });
+  phoneInput.addEventListener('input', () => {
+    document.getElementById('phoneErr').textContent = '';
+    phoneInput.classList.remove('invalid');
+    validateForm();
+  });
+
+  nameInput.addEventListener('blur', () => {
+    if (nameInput.value.trim().length > 0 && nameInput.value.trim().length < 2) {
+      nameInput.classList.add('invalid');
+      document.getElementById('nameErr').textContent = 'Ingresa tu nombre completo.';
+    }
+  });
+  phoneInput.addEventListener('blur', () => {
+    if (phoneInput.value.trim().length > 0 && !validPhone(phoneInput.value.trim())) {
+      phoneInput.classList.add('invalid');
+      document.getElementById('phoneErr').textContent = 'Ingresa un teléfono válido.';
+    }
+  });
+
+  confirmBtn.addEventListener('click', () => {
+    if (confirmBtn.disabled) return;
+    const name = nameInput.value.trim();
+    const msg = `Hola, soy ${name}. Quiero agendar ${state.service.nombre} el ${state.day.dow} ${state.day.num} de ${state.day.month} a las ${state.time} hrs.`;
+    const url = `https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+    const note = document.getElementById('successNote');
+    note.classList.add('visible');
+    note.innerHTML = `Te abrimos WhatsApp para confirmar tu hora. ¿No se abrió? <a href="${url}" target="_blank" rel="noopener">Ábrelo aquí</a>.`;
+  });
+})();
+</script>
+</body>
+</html>
