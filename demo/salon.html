@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Demo: Alma Spa & Belleza — Automalytics</title>
+<meta name="description" content="Ejemplo de sitio web hecho por Automalytics para un spa y salón de belleza." />
+<meta name="robots" content="noindex, follow" />
+<link rel="icon" type="image/webp" href="/assets/logo.webp" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content="#241811" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #FBF6EE; overflow-x: hidden; }
+
+  /* ── top bar (back to Automalytics) ── */
+  .bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .7rem 1.25rem; background: #241811; border-bottom: 1px solid rgba(255,255,255,.08);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; position: relative; z-index: 100;
+  }
+  .bar a { color: #D8A85B; text-decoration: none; font-weight: 700; font-size: .85rem; display: flex; align-items: center; gap: .4rem; }
+  .bar a:hover { text-decoration: underline; }
+  .bar span { color: #A9998A; font-size: .78rem; }
+
+  /* ── tokens ── */
+  :root {
+    --bg: #FBF6EE; --bg2: #F3EAD9; --surface: #FFFEFA;
+    --dark: #241811; --dark2: #2E1F15;
+    --ink: #2B2118; --ink-soft: #746653;
+    --cream-ink: #F3EAD9; --cream-soft: #B9AB98;
+    --gold: #B98A3D; --gold-deep: #8C6526; --gold-soft: rgba(185,138,61,.14);
+    --terracotta: #B5573C;
+    --line: rgba(43,33,24,.12); --line-dark: rgba(243,234,217,.14);
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Outfit', sans-serif;
+  }
+  body { font-family: var(--font-body); background: var(--bg); color: var(--ink); line-height: 1.65; }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; line-height: 1.12; color: var(--ink); }
+  em { font-style: italic; font-weight: 400; color: var(--gold-deep); }
+  a { color: inherit; text-decoration: none; }
+  img, svg { max-width: 100%; display: block; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+  section { padding: 6rem 0; position: relative; }
+  ::selection { background: var(--gold); color: #fff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  }
+
+  [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  [data-reveal].in { opacity: 1; transform: translateY(0); }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: .5rem; font-size: .74rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 1rem; }
+  .eyebrow::before { content: ""; width: 20px; height: 1px; background: var(--gold); }
+  .eyebrow.on-dark { color: var(--gold); }
+
+  .sec-head { max-width: 640px; margin: 0 auto 3.2rem; text-align: center; }
+  .sec-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.7rem); text-wrap: balance; }
+  .sec-head p { color: var(--ink-soft); margin-top: .9rem; font-size: 1.02rem; }
+  .sec-head.left { text-align: left; margin: 0 0 2.6rem; }
+
+  .btn { display: inline-flex; align-items: center; gap: .6rem; font-weight: 600; font-size: .92rem; padding: .95rem 1.9rem; border-radius: 50px; border: 1.5px solid transparent; cursor: pointer; font-family: var(--font-body); transition: transform .25s ease, box-shadow .25s ease, background .2s ease, border-color .2s ease; }
+  .btn-primary { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%); color: #fff; box-shadow: 0 10px 28px rgba(140,101,38,.28); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(140,101,38,.38); }
+  .btn-ghost { border-color: var(--line); color: var(--ink); background: transparent; }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold-deep); }
+  .btn-ghost.on-dark { border-color: var(--line-dark); color: var(--cream-ink); }
+  .btn-ghost.on-dark:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── nav ── */
+  header.site-nav { position: sticky; top: 0; z-index: 90; background: rgba(251,246,238,.86); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; max-width: 1180px; margin: 0 auto; }
+  .brand { display: flex; align-items: baseline; gap: .5rem; font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; letter-spacing: .02em; }
+  .brand small { font-family: var(--font-body); font-size: .62rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+  .nav-links { display: flex; gap: 2.1rem; list-style: none; font-size: .9rem; font-weight: 500; color: var(--ink-soft); }
+  .nav-links a { position: relative; padding: .3rem 0; }
+  .nav-links a::after { content: ""; position: absolute; left: 0; bottom: -2px; width: 0; height: 1.5px; background: var(--gold); transition: width .25s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta { padding: .7rem 1.4rem; font-size: .84rem; }
+  @media (max-width: 900px) { .nav-links { display: none; } }
+  .hamburger { display: none; width: 42px; height: 42px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); align-items: center; justify-content: center; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 18px; height: 1.5px; background: var(--ink); }
+  @media (max-width: 900px) { .hamburger { display: flex; } }
+
+  .mobile-menu {
+    position: fixed; inset: 0; z-index: 200; background: rgba(36,24,17,.98); backdrop-filter: blur(8px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.7rem;
+    transform: translateY(-100%); transition: transform .4s cubic-bezier(.6,0,.2,1);
+  }
+  .mobile-menu.open { transform: translateY(0); }
+  .mobile-menu a { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; color: var(--cream-ink); }
+  .mobile-close { position: absolute; top: 1.2rem; right: 1.5rem; width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,.06); border: 1px solid var(--line-dark); color: var(--cream-ink); font-size: 1.3rem; }
+
+  /* ══════════════ HERO ══════════════ */
+  .hero { padding: 3.6rem 0 4.5rem; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 3rem; align-items: center; }
+  @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero h1 { font-size: clamp(2.4rem, 5.2vw, 3.9rem); text-wrap: balance; }
+  .hero p.lead { color: var(--ink-soft); font-size: 1.08rem; max-width: 44ch; margin: 1.3rem 0 1.8rem; }
+  .hero-actions { display: flex; align-items: center; gap: 1.3rem; flex-wrap: wrap; }
+  .link-arrow { display: inline-flex; align-items: center; gap: .5rem; font-weight: 600; font-size: .92rem; color: var(--ink); }
+  .link-arrow svg { transition: transform .2s; }
+  .link-arrow:hover svg { transform: translateX(4px); }
+
+  .rating-row { display: flex; align-items: center; gap: 1rem; margin-top: 2.4rem; flex-wrap: wrap; }
+  .stars { color: var(--gold); letter-spacing: 2px; font-size: .9rem; }
+  .rating-row span.n { color: var(--ink-soft); font-size: .82rem; }
+
+  .tag-pills { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1.6rem; }
+  .tag-pill { border: 1px solid var(--line); background: var(--surface); border-radius: 50px; padding: .48rem 1.05rem; font-size: .8rem; font-weight: 500; color: var(--ink-soft); }
+
+  /* ── hero visual: illustrated composition, no stock photography ── */
+  .hero-visual { position: relative; width: 100%; max-width: 460px; margin: 0 auto; aspect-ratio: 1/1.05; }
+  @media (max-width: 640px) { .hero-visual { max-width: 320px; } }
+  .hero-visual::before {
+    content: ""; position: absolute; inset: -10%; z-index: 0; filter: blur(30px);
+    background: radial-gradient(closest-side, rgba(185,138,61,.28), transparent 72%);
+  }
+  .hv-panel {
+    position: absolute; inset: 6% 8%; z-index: 1; border-radius: 45% 55% 52% 48% / 55% 48% 52% 45%;
+    background: linear-gradient(155deg, #E9D8B8 0%, #D8B77C 55%, #C89A56 100%);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    box-shadow: 0 30px 60px rgba(140,101,38,.28);
+  }
+  .hv-panel svg { width: 62%; height: 62%; }
+  .hv-card {
+    position: absolute; z-index: 2; background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+    box-shadow: 0 20px 45px rgba(43,33,24,.16); padding: .95rem 1.1rem; display: flex; gap: .75rem; align-items: center;
+    animation: hvFloat 6s ease-in-out infinite;
+  }
+  .hv-card .ic { flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; background: var(--gold-soft); display: flex; align-items: center; justify-content: center; color: var(--gold-deep); }
+  .hv-card b { display: block; font-family: var(--font-body); font-size: .86rem; font-weight: 700; color: var(--ink); }
+  .hv-card span { font-size: .74rem; color: var(--ink-soft); }
+  .hv-c1 { top: 6%; left: -6%; animation-delay: 0s; }
+  .hv-c2 { bottom: 8%; right: -8%; animation-delay: .8s; }
+  @keyframes hvFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @media (prefers-reduced-motion: reduce) { .hv-card { animation: none; } }
+  @media (max-width: 640px) { .hv-c1, .hv-c2 { position: absolute; } .hv-c1 { left: -2%; } .hv-c2 { right: -2%; } .hv-card { padding: .7rem .85rem; } .hv-card b { font-size: .76rem; } .hv-card span { font-size: .68rem; } }
+
+  /* ══════════════ PARA QUIÉN ══════════════ */
+  .whom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
+  .whom-grid .row2 { grid-column: span 3; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.3rem; }
+  @media (max-width: 860px) { .whom-grid, .whom-grid .row2 { grid-template-columns: 1fr 1fr; } .whom-grid .row2 { grid-column: span 2; } }
+  @media (max-width: 580px) { .whom-grid, .whom-grid .row2 { grid-template-columns: 1fr; } }
+  .whom-card { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 2rem 1.7rem; }
+  .whom-card .ic { width: 46px; height: 46px; border-radius: 14px; background: var(--gold-soft); display: flex; align-items: center; justify-content: center; color: var(--gold-deep); margin-bottom: 1.2rem; }
+  .whom-card h3 { font-size: 1.15rem; margin-bottom: .5rem; }
+  .whom-card p { color: var(--ink-soft); font-size: .92rem; }
+
+  /* ══════════════ LO ENTENDEMOS (dark) ══════════════ */
+  .quote-section { background: var(--dark); color: var(--cream-ink); text-align: center; }
+  .quote-section .sec-head { max-width: 720px; }
+  .quote-section h2 { color: var(--cream-ink); font-style: italic; font-weight: 400; font-size: clamp(1.7rem, 3.4vw, 2.5rem); }
+  .quote-section p { color: var(--cream-soft); max-width: 62ch; margin: 1.4rem auto 0; }
+  .quote-section .link-arrow { color: var(--gold); justify-content: center; margin-top: 1.6rem; }
+
+  /* ══════════════ SERVICIOS ══════════════ */
+  .svc-row { display: grid; grid-template-columns: .85fr 1.15fr; gap: 3rem; align-items: center; padding: 3.2rem 0; border-top: 1px solid var(--line); }
+  .svc-row:first-of-type { border-top: none; padding-top: 0; }
+  .svc-row.rev { grid-template-columns: 1.15fr .85fr; }
+  .svc-row.rev .svc-visual { order: 2; }
+  @media (max-width: 860px) { .svc-row, .svc-row.rev { grid-template-columns: 1fr; } .svc-row.rev .svc-visual { order: 0; } }
+  .svc-visual { position: relative; aspect-ratio: 4/3.3; border-radius: 26px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .svc-visual.tone-a { background: linear-gradient(150deg, #F1E2C4 0%, #DCB878 100%); }
+  .svc-visual.tone-b { background: linear-gradient(150deg, #E7D2AE 0%, #C89A56 100%); }
+  .svc-visual svg { width: 40%; height: 40%; color: var(--dark2); opacity: .82; }
+  .svc-visual .blob { position: absolute; border-radius: 50%; background: rgba(255,255,255,.22); }
+  .svc-visual .b1 { width: 90px; height: 90px; top: -20px; left: -20px; }
+  .svc-visual .b2 { width: 60px; height: 60px; bottom: -10px; right: 10%; }
+  .svc-eyebrow { font-size: .74rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: .7rem; display: block; }
+  .svc-row h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); margin-bottom: .8rem; }
+  .svc-row > div p.desc { color: var(--ink-soft); margin-bottom: 1.2rem; max-width: 48ch; }
+  .svc-list { list-style: none; margin-bottom: 1.4rem; }
+  .svc-list li { padding: .4rem 0; font-size: .92rem; display: flex; gap: .6rem; align-items: flex-start; }
+  .svc-list li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-top: .55rem; flex-shrink: 0; }
+
+  /* ══════════════ TRANSFORMACIÓN ══════════════ */
+  #transformacion { background: var(--bg2); }
+  .trans-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.4rem 2rem; max-width: 780px; margin: 0 auto; }
+  .trans-grid .row3 { grid-column: span 2; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  @media (max-width: 700px) { .trans-grid, .trans-grid .row3 { grid-template-columns: 1fr; } .trans-grid .row3 { grid-column: span 1; } }
+  .trans-item { text-align: center; }
+  .trans-item .ic { width: 54px; height: 54px; border-radius: 50%; background: var(--surface); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--gold-deep); margin: 0 auto 1rem; }
+  .trans-item h4 { font-family: var(--font-body); font-weight: 600; font-size: 1rem; margin-bottom: .4rem; }
+  .trans-item p { color: var(--ink-soft); font-size: .86rem; max-width: 26ch; margin: 0 auto; }
+
+  /* ══════════════ OFERTA (dark banner) ══════════════ */
+  .offer-section { background: var(--dark); color: var(--cream-ink); text-align: center; }
+  .offer-section h2 { color: var(--cream-ink); font-style: italic; font-weight: 400; font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
+  .offer-section .sec-head { max-width: 700px; }
+  .offer-section p.body-p { color: var(--cream-soft); max-width: 64ch; margin: 1rem auto 0; }
+  .offer-section p.body-p b { color: var(--gold); font-weight: 600; }
+  .offer-section .btn-primary { margin-top: 2.2rem; }
+
+  /* ══════════════ TESTIMONIOS ══════════════ */
+  .testi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem; }
+  @media (max-width: 780px) { .testi-grid { grid-template-columns: 1fr; } }
+  .testi-card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 1.8rem 1.7rem; }
+  .testi-card:nth-child(even) { transform: translateY(1.4rem); }
+  @media (max-width: 780px) { .testi-card:nth-child(even) { transform: none; } }
+  .testi-card .stars { display: block; margin-bottom: .9rem; }
+  .testi-card p.q { font-style: italic; color: var(--ink); margin-bottom: 1.1rem; font-size: .96rem; }
+  .testi-card .who b { display: block; font-size: .92rem; }
+  .testi-card .who span { font-size: .78rem; color: var(--ink-soft); }
+
+  /* ══════════════ POR QUÉ ELEGIRNOS ══════════════ */
+  #porque { background: var(--bg2); }
+  .porque-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  @media (max-width: 860px) { .porque-grid { grid-template-columns: 1fr; } }
+  .chip-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.6rem; }
+  .chip { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 1.1rem 1.3rem; display: flex; gap: .8rem; align-items: center; flex: 1 1 200px; }
+  .chip .ic { color: var(--gold-deep); flex-shrink: 0; }
+  .chip b { display: block; font-size: .9rem; }
+  .chip span { font-size: .78rem; color: var(--ink-soft); }
+  .check-list { list-style: none; }
+  .check-list li { display: flex; gap: .8rem; align-items: center; padding: .95rem 1.1rem; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; margin-bottom: .7rem; font-size: .9rem; }
+  .check-list li svg { flex-shrink: 0; color: var(--gold-deep); }
+
+  /* ══════════════ UBICACIÓN ══════════════ */
+  .loc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  @media (max-width: 860px) { .loc-grid { grid-template-columns: 1fr; } }
+  .info-line { display: flex; gap: .8rem; padding: .85rem 0; border-top: 1px solid var(--line); font-size: .93rem; align-items: flex-start; }
+  .info-line:first-of-type { border-top: none; }
+  .info-line svg { flex-shrink: 0; color: var(--gold-deep); margin-top: .15rem; }
+  .info-line b { display: block; color: var(--ink); }
+  .info-line span { color: var(--ink-soft); font-size: .86rem; }
+  .dot-map { position: relative; aspect-ratio: 16/12; border-radius: 24px; border: 1px solid var(--line); overflow: hidden; background: linear-gradient(150deg, #EFE3C9, #E2CFA0); }
+  .dot-map .pin { position: absolute; top: 44%; left: 50%; width: 46px; height: 46px; border-radius: 50%; background: var(--gold-deep); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px rgba(140,101,38,.16); transform: translate(-50%,-50%); }
+  .dot-map .pin::after { content: ""; position: absolute; inset: -14px; border-radius: 50%; border: 1px solid rgba(140,101,38,.4); animation: ping 2.6s ease-out infinite; }
+  @keyframes ping { 0% { transform: scale(.6); opacity: .8; } 100% { transform: scale(1.9); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .dot-map .pin::after { animation: none; } }
+  .dot-map .cap { position: absolute; bottom: 1rem; left: 1rem; right: 1rem; font-size: .78rem; color: var(--dark2); background: rgba(255,255,255,.72); padding: .55rem .85rem; border-radius: 10px; backdrop-filter: blur(4px); font-weight: 500; }
+
+  /* ══════════════ CTA FINAL ══════════════ */
+  .cta-final { background: var(--dark); color: var(--cream-ink); text-align: center; }
+  .cta-final h2 { color: var(--cream-ink); font-style: italic; font-weight: 400; font-size: clamp(2rem, 4.6vw, 3rem); }
+  .cta-final p { color: var(--cream-soft); max-width: 54ch; margin: 1.1rem auto 2.2rem; }
+  .cta-final .hero-actions { justify-content: center; }
+  .cta-final small { display: block; margin-top: 2.2rem; color: var(--cream-soft); opacity: .7; font-size: .8rem; }
+
+  footer { padding: 2.6rem 0; background: var(--bg); }
+  .foot-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; color: var(--ink-soft); font-size: .85rem; }
+  .foot-grid ul { list-style: none; display: flex; gap: 1.4rem; }
+  .foot-grid ul a:hover { color: var(--gold-deep); }
+
+  .wa-float { position: fixed; bottom: 1.4rem; right: 1.4rem; width: 58px; height: 58px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; z-index: 60; box-shadow: 0 6px 24px rgba(37,211,102,.4); }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <a href="/">← Volver a Automalytics</a>
+    <span>Demo: Alma Spa & Belleza</span>
+  </div>
+
+  <header class="site-nav">
+    <div class="nav-inner">
+      <div class="brand">ALMA <small>spa &amp; belleza</small></div>
+      <ul class="nav-links">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#transformacion">Experiencia</a></li>
+        <li><a href="#testimonios">Testimonios</a></li>
+        <li><a href="#ubicacion">Ubicación</a></li>
+      </ul>
+      <a class="btn btn-primary nav-cta" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar hora</a>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose" aria-label="Cerrar menú">✕</button>
+    <a href="#servicios">Servicios</a>
+    <a href="#transformacion">Experiencia</a>
+    <a href="#testimonios">Testimonios</a>
+    <a href="#ubicacion">Ubicación</a>
+    <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar hora</a>
+  </div>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div data-reveal>
+        <span class="eyebrow">Spa &amp; salón de belleza · Providencia, Santiago</span>
+        <h1>Tu momento de calma<br><em>empieza en Alma</em></h1>
+        <p class="lead">Masajes, ritual facial, manicura y color en un mismo espacio, pensado para que sueltes el día apenas cruzas la puerta. Reserva tu hora por WhatsApp en menos de un minuto.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar mi hora →</a>
+          <a class="link-arrow" href="#servicios">Ver nuestros servicios <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="rating-row">
+          <span class="stars">★★★★★</span>
+          <span class="n">+1.200 clientas atendidas · 4.9/5 en reseñas</span>
+        </div>
+        <div class="tag-pills">
+          <span class="tag-pill">Masajes</span><span class="tag-pill">Ritual facial</span><span class="tag-pill">Manicura</span><span class="tag-pill">Color y peinado</span><span class="tag-pill">Parejas</span>
+        </div>
+      </div>
+      <div class="hero-visual" data-reveal>
+        <div class="hv-panel">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#2E1F15" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M50 88c0-20-16-24-16-42 0-10 7-18 16-22 9 4 16 12 16 22 0 18-16 22-16 42Z"/>
+            <path d="M50 24v64M50 40c-8-6-14-4-18 2M50 55c-9-4-16 0-20 8M50 40c8-6 14-4 18 2M50 55c9-4 16 0 20 8"/>
+          </svg>
+        </div>
+        <div class="hv-card hv-c1">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div><b>Hoy 17:30</b><span>próxima hora disponible</span></div>
+        </div>
+        <div class="hv-card hv-c2">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6L22 9.3l-5 4.9 1.2 7.1L12 17.8l-6.2 3.5L7 14.2 2 9.3l7.1-.7L12 2z"/></svg></div>
+          <div><b>4.9 ★ (312)</b><span>reseñas verificadas</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="para-quien">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow">¿Para quién es Alma?</span>
+        <h2>Diseñado para quienes eligen cuidarse de verdad</h2>
+      </div>
+      <div class="whom-grid">
+        <div class="whom-card" data-reveal>
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 20c8-1 12-8 12-16-8 0-12 6-12 16Z"/><path d="M9 15c2-3 5-5 8-5"/></svg></div>
+          <h3>Para quienes necesitan desconectar</h3>
+          <p>Si el estrés se acumula y el fin de semana no alcanza para recuperarte, este es tu espacio.</p>
+        </div>
+        <div class="whom-card" data-reveal>
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C1 8 2.5 4.5 6 4c2-.3 4 .7 6 3 2-2.3 4-3.3 6-3 3.5.5 5 4 3.5 8-2.5 4.5-9.5 9-9.5 9Z"/></svg></div>
+          <h3>Para quienes cuidan su imagen</h3>
+          <p>Verte bien es sentirte bien. Un cambio de color, una manicura impecable o piel radiante cambian tu semana.</p>
+        </div>
+        <div class="whom-card" data-reveal>
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.5 2.8-6 6-6s6 2.5 6 6M15 20c0-2.6 1.8-4.6 4-5"/></svg></div>
+          <h3>Para parejas que buscan algo distinto</h3>
+          <p>Una experiencia doble, pensada para desconectar juntos sin salir de Santiago.</p>
+        </div>
+        <div class="row2">
+          <div class="whom-card" data-reveal>
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M4 13h16M12 9V6a2 2 0 0 1 4 0v3M8 9V6a2 2 0 0 1 4 0"/></svg></div>
+            <h3>Para quienes quieren regalar bienestar</h3>
+            <p>El mejor regalo no es un objeto: es una experiencia que se recuerda.</p>
+          </div>
+          <div class="whom-card" data-reveal>
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg></div>
+            <h3>Para equipos que valoran a su gente</h3>
+            <p>Programas de bienestar corporativo que se notan en el clima laboral.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote-section">
+    <div class="wrap sec-head" data-reveal>
+      <span class="eyebrow on-dark">Lo entendemos</span>
+      <h2>El ritmo de hoy pasa la cuenta.<br>Y se nota.</h2>
+      <p>Le has dado oportunidades a lugares que prometen mucho y entregan poco: atención apurada, productos genéricos, resultados que no duran. <b style="color:var(--gold); font-weight:600;">Mereces algo mejor.</b></p>
+      <a class="link-arrow" href="#servicios">Descubre nuestros servicios <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </section>
+
+  <section id="servicios">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow">Nuestros servicios</span>
+        <h2>Experiencias diseñadas para transformarte</h2>
+      </div>
+
+      <div class="svc-row" data-reveal>
+        <div class="svc-visual tone-a"><div class="blob b1"></div><div class="blob b2"></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 3v18M7 8h10M6 12h12M7 16h10"/><circle cx="12" cy="3" r="1.4" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <div>
+          <span class="svc-eyebrow">Spa &amp; masajes</span>
+          <h3>Libera la tensión. Reconecta contigo.</h3>
+          <p class="desc">Masajes relajantes, terapéuticos, con piedras calientes y bambuterapia. Cada sesión es un viaje de desconexión profunda que tu cuerpo agradecerá.</p>
+          <ul class="svc-list">
+            <li>Masajes relajantes y terapéuticos</li>
+            <li>Piedras calientes y bambuterapia</li>
+            <li>Exfoliación y envolturas corporales</li>
+            <li>Hidroterapia y rituales de bienestar</li>
+          </ul>
+          <a class="link-arrow" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar esta experiencia <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="svc-row rev" data-reveal>
+        <div class="svc-visual tone-b"><div class="blob b1"></div><div class="blob b2"></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M4 21c0-3.9 2.9-6.5 6-6.5s6 2.6 6 6.5M16 21c0-2.9 2-5 4.5-5.5"/></svg>
+        </div>
+        <div>
+          <span class="svc-eyebrow">Experiencias románticas</span>
+          <h3>El tiempo se detiene para dos.</h3>
+          <p class="desc">Planes de pareja diseñados para crear momentos inolvidables: jacuzzi privado, sauna, flores, velas, música y un brindis especial en un ambiente íntimo.</p>
+          <ul class="svc-list">
+            <li>Jacuzzi privado para dos</li>
+            <li>Sauna e hidroterapia</li>
+            <li>Ambientación con flores y velas</li>
+            <li>Copa de bienvenida</li>
+          </ul>
+          <a class="link-arrow" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar esta experiencia <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="svc-row" data-reveal>
+        <div class="svc-visual tone-a"><div class="blob b1"></div><div class="blob b2"></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 3c4 3 6 6.5 6 10a6 6 0 1 1-12 0c0-3.5 2-7 6-10Z"/><path d="M12 12v5"/></svg>
+        </div>
+        <div>
+          <span class="svc-eyebrow">Cuidado facial &amp; corporal</span>
+          <h3>Tu piel merece brillar.</h3>
+          <p class="desc">Limpiezas faciales, hidrataciones profundas y mascarillas personalizadas según tu tipo de piel. Tratamientos corporales que suavizan, exfolian y devuelven luminosidad.</p>
+          <ul class="svc-list">
+            <li>Limpiezas faciales profesionales</li>
+            <li>Hidrataciones y mascarillas</li>
+            <li>Tratamientos corporales</li>
+            <li>Técnicas avanzadas de spa</li>
+          </ul>
+          <a class="link-arrow" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar esta experiencia <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="svc-row rev" data-reveal>
+        <div class="svc-visual tone-b"><div class="blob b1"></div><div class="blob b2"></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 15c3 0 5-2.5 5-6a5 5 0 0 0-10 0c0 3.5 2 6 5 6Z"/><path d="M8 14l-2.5 5M16 14l2.5 5M9 20h6"/></svg>
+        </div>
+        <div>
+          <span class="svc-eyebrow">Uñas, pestañas &amp; cejas</span>
+          <h3>Los detalles que hacen la diferencia.</h3>
+          <p class="desc">Manicure y pedicure con acabado impecable, extensiones y lifting de pestañas, diseño y laminado de cejas. Cada detalle, cuidado con precisión profesional.</p>
+          <ul class="svc-list">
+            <li>Manicure y pedicure spa</li>
+            <li>Extensiones de pestañas</li>
+            <li>Lifting de pestañas</li>
+            <li>Diseño y laminado de cejas</li>
+          </ul>
+          <a class="link-arrow" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar esta experiencia <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="svc-row" data-reveal>
+        <div class="svc-visual tone-a"><div class="blob b1"></div><div class="blob b2"></div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6c4 0 6 2 8 2s4-2 8-2M4 12c4 0 6 2 8 2s4-2 8-2M4 18c4 0 6 2 8 2s4-2 8-2"/></svg>
+        </div>
+        <div>
+          <span class="svc-eyebrow">Color &amp; peinado</span>
+          <h3>Reinvéntate, sin salir de Providencia.</h3>
+          <p class="desc">Cortes, cepillados y peinados para eventos, coloración avanzada con balayage y babylights, asesoría de imagen personalizada para encontrar tu mejor versión.</p>
+          <ul class="svc-list">
+            <li>Cortes y tratamientos capilares</li>
+            <li>Balayage y babylights</li>
+            <li>Peinados para eventos</li>
+            <li>Asesoría de imagen</li>
+          </ul>
+          <a class="link-arrow" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar esta experiencia <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="transformacion">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow">La transformación</span>
+        <h2>Así te sientes después de vivir la experiencia</h2>
+      </div>
+      <div class="trans-grid">
+        <div class="trans-item" data-reveal>
+          <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 20c8-1 12-8 12-16-8 0-12 6-12 16Z"/></svg></div>
+          <h4>Menos estrés, más calma</h4>
+          <p>Cada sesión libera tensión acumulada y te devuelve un estado de paz que se siente desde dentro.</p>
+        </div>
+        <div class="trans-item" data-reveal>
+          <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg></div>
+          <h4>Bienestar que se nota</h4>
+          <p>No solo te ves mejor — te sientes distinta. Energía renovada, mente clara, cuerpo ligero.</p>
+        </div>
+        <div class="row3">
+          <div class="trans-item" data-reveal>
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C1 8 2.5 4.5 6 4c2-.3 4 .7 6 3 2-2.3 4-3.3 6-3 3.5.5 5 4 3.5 8-2.5 4.5-9.5 9-9.5 9Z"/></svg></div>
+            <h4>Confianza real</h4>
+            <p>Cuando te cuidas de verdad, tu autoestima se fortalece. Y eso transforma todo.</p>
+          </div>
+          <div class="trans-item" data-reveal>
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M4 21c0-3.9 2.9-6.5 6-6.5s6 2.6 6 6.5M16 21c0-2.9 2-5 4.5-5.5"/></svg></div>
+            <h4>Conexión en pareja</h4>
+            <p>Nuestras experiencias románticas crean recuerdos que fortalecen vínculos de forma única.</p>
+          </div>
+          <div class="trans-item" data-reveal>
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.6L22 9.3l-5 4.9 1.2 7.1L12 17.8l-6.2 3.5L7 14.2 2 9.3l7.1-.7L12 2z"/></svg></div>
+            <h4>Lujo que puedes vivir</h4>
+            <p>No necesitas un viaje lejano. Aquí encuentras una experiencia premium diseñada para ti.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="offer-section">
+    <div class="wrap sec-head" data-reveal>
+      <span class="eyebrow on-dark">Oferta de bienvenida</span>
+      <h2>Tu primera experiencia, diseñada a tu medida</h2>
+      <p class="body-p">Agenda tu primera visita y recibe una <b>asesoría personalizada gratuita</b>, donde nuestro equipo diseña una experiencia adaptada a tu piel, tu estilo y lo que tu cuerpo necesita.</p>
+      <p class="body-p">Además, disfruta un <b>beneficio especial de bienvenida</b> en tu primer tratamiento. Queremos que tu primera vez con nosotras sea inolvidable.</p>
+      <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Quiero mi asesoría gratuita →</a>
+    </div>
+  </section>
+
+  <section id="testimonios">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow">Testimonios</span>
+        <h2>Lo que dicen quienes ya vivieron Alma</h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card" data-reveal>
+          <span class="stars">★★★★★</span>
+          <p class="q">"Fue la experiencia más hermosa que hemos vivido en pareja. El jacuzzi, las velas, los detalles... todo fue perfecto. Salimos sintiéndonos más conectados que nunca."</p>
+          <div class="who"><b>Carolina M.</b><span>Experiencia en pareja</span></div>
+        </div>
+        <div class="testi-card" data-reveal>
+          <span class="stars">★★★★★</span>
+          <p class="q">"Llevaba meses con dolor de espalda por el estrés del trabajo. Después de la primera sesión sentí un alivio increíble. La atención es profesional y muy cálida."</p>
+          <div class="who"><b>Andrés R.</b><span>Masaje terapéutico</span></div>
+        </div>
+        <div class="testi-card" data-reveal>
+          <span class="stars">★★★★★</span>
+          <p class="q">"El acabado de las uñas es impecable y dura semanas. Las pestañas quedaron naturales y elegantes. Encontré mi lugar de confianza para siempre."</p>
+          <div class="who"><b>María José L.</b><span>Manicure &amp; pestañas</span></div>
+        </div>
+        <div class="testi-card" data-reveal>
+          <span class="stars">★★★★★</span>
+          <p class="q">"La exfoliación con café fue una experiencia sensorial increíble. Mi piel quedó suavísima. El equipo es atento y profesional. Vuelvo cada mes."</p>
+          <div class="who"><b>Laura P.</b><span>Ritual de bienestar corporal</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="porque">
+    <div class="wrap porque-grid">
+      <div data-reveal>
+        <span class="eyebrow">¿Por qué elegirnos?</span>
+        <h2 style="margin-bottom:1rem;">Profesionalismo, calidez y excelencia en cada detalle</h2>
+        <p style="color:var(--ink-soft);">En Alma no ofrecemos servicios: creamos experiencias. Cada persona de nuestro equipo está comprometida con tu bienestar, tu imagen y tu satisfacción.</p>
+        <div class="chip-row">
+          <div class="chip"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.3 6.8 19l1-5.8-4.3-4.1 5.9-.9L12 3Z"/></svg></div><div><b>Equipo profesional</b><span>Especialistas certificadas en belleza y bienestar</span></div></div>
+          <div class="chip"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M4 21c0-3.9 2.9-6.5 6-6.5s6 2.6 6 6.5M16 21c0-2.9 2-5 4.5-5.5"/></svg></div><div><b>Atención personalizada</b><span>Cada experiencia diseñada según tus necesidades</span></div></div>
+        </div>
+      </div>
+      <ul class="check-list" data-reveal>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Atención profesional con trato cercano y humano</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Espacios limpios, cómodos y diseñados para tu relajación</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Productos y técnicas de alta calidad seleccionados para ti</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Acompañamiento para elegir el servicio ideal según tus necesidades</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg> Compromiso total con tu satisfacción y bienestar</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="ubicacion">
+    <div class="wrap loc-grid">
+      <div data-reveal>
+        <span class="eyebrow">Ubicación</span>
+        <h2 style="margin-bottom:1.4rem;">Te esperamos en Providencia</h2>
+        <div class="info-line"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21c-4-4.5-7-8.3-7-12a7 7 0 0 1 14 0c0 3.7-3 7.5-7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg><div><b>Dirección</b><span>Av. Providencia 2594, Providencia, Santiago</span></div></div>
+        <div class="info-line"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><div><b>Horario</b><span>Lunes a sábado 10:00–20:00 · Domingo cerrado</span></div></div>
+        <div class="info-line"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h4l2 5-2.5 1.5a12 12 0 0 0 6 6L15 14l5 2v4a2 2 0 0 1-2 2C10 22 2 14 2 6a2 2 0 0 1 2-2Z"/></svg><div><b>WhatsApp</b><span>+56 9 2345 6789</span></div></div>
+        <a class="btn btn-primary" style="margin-top:1.6rem;" href="https://wa.me/56923456789" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+      </div>
+      <div class="dot-map" data-reveal>
+        <div class="pin"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 8 12 8 12s8-6.6 8-12c0-4.4-3.6-8-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg></div>
+        <div class="cap">Av. Providencia 2594, Providencia</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <div class="wrap" data-reveal>
+      <h2>Regálate el cuidado que mereces</h2>
+      <p>No dejes para después lo que tu cuerpo y tu mente necesitan hoy. Reserva tu experiencia y descubre por qué tantas personas confían en Alma para sentirse y verse mejor.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar por WhatsApp →</a>
+        <a class="btn btn-ghost on-dark" href="#servicios">Ver servicios</a>
+      </div>
+      <small>Alma Spa &amp; Belleza — Donde tu bienestar es nuestra pasión.</small>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot-grid">
+      <div class="brand">ALMA <small>spa &amp; belleza</small></div>
+      <ul><li><a href="#servicios">Servicios</a></li><li><a href="#testimonios">Testimonios</a></li><li><a href="#ubicacion">Ubicación</a></li></ul>
+      <div>Demo creada por Automalytics</div>
+    </div>
+  </footer>
+
+  <a class="wa-float" href="https://wa.me/56923456789" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.78 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm0 18.05h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.27-4.37c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.24 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.78.97-.15.17-.29.19-.54.06-.25-.12-1.04-.38-1.99-1.22-.73-.66-1.23-1.46-1.37-1.71-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08s.9 2.41 1.02 2.58c.12.17 1.77 2.7 4.28 3.78.6.26 1.06.41 1.43.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+  </a>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileClose = document.getElementById('mobileClose');
+  hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+  mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  const revealEls = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: .15, rootMargin: '0px 0px -60px 0px' });
+  revealEls.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
