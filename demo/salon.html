@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Demo: Mujer Bonita — espacio de belleza — Automalytics</title>
-<meta name="description" content="Ejemplo de sitio web hecho por Automalytics para un espacio de belleza." />
+<meta name="description" content="Ejemplo de sitio web hecho por Automalytics para un espacio de belleza especializado en uñas y peluquería." />
 <meta name="robots" content="noindex, follow" />
 <link rel="icon" type="image/webp" href="/assets/logo.webp" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -184,6 +184,19 @@
   .svc-list li { padding: .4rem 0; font-size: .92rem; display: flex; gap: .6rem; align-items: flex-start; }
   .svc-list li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-top: .55rem; flex-shrink: 0; }
 
+  /* ══════════════ LISTA DE PRECIOS ══════════════ */
+  .price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
+  @media (max-width: 780px) { .price-grid { grid-template-columns: 1fr; } }
+  .price-card { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 2rem 2rem 1.2rem; }
+  .price-card-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1.5px solid var(--gold); padding-bottom: .9rem; margin-bottom: .4rem; }
+  .price-card-head h3 { font-size: 1.35rem; }
+  .price-card-head span { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+  .price-list { list-style: none; }
+  .price-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: .75rem 0; border-top: 1px dashed var(--line); font-size: .92rem; }
+  .price-list li:first-child { border-top: none; }
+  .price-list li span { color: var(--ink); }
+  .price-list li b { color: var(--gold-deep); font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
   /* ══════════════ TRANSFORMACIÓN ══════════════ */
   #transformacion { background: var(--bg2); }
   .trans-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.4rem 2rem; max-width: 780px; margin: 0 auto; }
@@ -266,11 +279,11 @@
     <div class="nav-inner">
       <div class="brand">
         <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 4h16L12 12 4 4Z"/><path d="M4 20h16l-8-8-8 8Z"/></svg>
-        <span><b>Mujer bonita</b><small>espacio de belleza</small></span>
+        <span><b>Mujer bonita</b><small>un espacio para ti</small></span>
       </div>
       <ul class="nav-links">
         <li><a href="#servicios">Servicios</a></li>
-        <li><a href="#transformacion">Experiencia</a></li>
+        <li><a href="#precios">Precios</a></li>
         <li><a href="#testimonios">Testimonios</a></li>
         <li><a href="#ubicacion">Ubicación</a></li>
       </ul>
@@ -282,7 +295,7 @@
   <div class="mobile-menu" id="mobileMenu">
     <button class="mobile-close" id="mobileClose" aria-label="Cerrar menú">✕</button>
     <a href="#servicios">Servicios</a>
-    <a href="#transformacion">Experiencia</a>
+    <a href="#precios">Precios</a>
     <a href="#testimonios">Testimonios</a>
     <a href="#ubicacion">Ubicación</a>
     <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar cita</a>
@@ -291,19 +304,19 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div data-reveal>
-        <span class="eyebrow">Espacio de belleza · Providencia, Santiago</span>
+        <span class="eyebrow">Un espacio para ti · Santiago Centro</span>
         <h1>Tu belleza,<br><em>nuestro arte</em></h1>
-        <p class="lead">Manicura, ritual facial, pestañas y color en un mismo espacio, pensado para que salgas sintiéndote impecable. Reserva tu cita por WhatsApp en menos de un minuto.</p>
+        <p class="lead">Manicura, uñas y tratamientos capilares en un mismo espacio, pensado para que salgas sintiéndote impecable. Reserva tu cita por WhatsApp en menos de un minuto.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar cita →</a>
-          <a class="btn btn-secondary" href="#servicios">Ver servicios →</a>
+          <a class="btn btn-secondary" href="#precios">Ver precios →</a>
         </div>
         <div class="rating-row">
           <span class="stars">★★★★★</span>
           <span class="n">+1.200 clientas atendidas · 4.9/5 en reseñas</span>
         </div>
         <div class="tag-pills">
-          <span class="tag-pill">Masajes</span><span class="tag-pill">Ritual facial</span><span class="tag-pill">Manicura</span><span class="tag-pill">Color y peinado</span><span class="tag-pill">Parejas</span>
+          <span class="tag-pill">Esmaltado permanente</span><span class="tag-pill">Manicure y pedicure</span><span class="tag-pill">Poly gel</span><span class="tag-pill">Balayage</span><span class="tag-pill">Botox capilar</span>
         </div>
       </div>
       <div class="hero-visual" data-reveal>
@@ -342,23 +355,23 @@
         <div class="whom-card" data-reveal>
           <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C1 8 2.5 4.5 6 4c2-.3 4 .7 6 3 2-2.3 4-3.3 6-3 3.5.5 5 4 3.5 8-2.5 4.5-9.5 9-9.5 9Z"/></svg></div>
           <h3>Para quienes cuidan su imagen</h3>
-          <p>Verte bien es sentirte bien. Un cambio de color, una manicura impecable o piel radiante cambian tu semana.</p>
+          <p>Verte bien es sentirte bien. Un cambio de color, una manicura impecable o un balayage nuevo cambian tu semana.</p>
         </div>
         <div class="whom-card" data-reveal>
-          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.5 2.8-6 6-6s6 2.5 6 6M15 20c0-2.6 1.8-4.6 4-5"/></svg></div>
-          <h3>Para parejas que buscan algo distinto</h3>
-          <p>Una experiencia doble, pensada para desconectar juntos sin salir de Santiago.</p>
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M4 12h4M16 12h4M6.3 6.3l2.8 2.8M14.9 14.9l2.8 2.8M17.7 6.3l-2.8 2.8M9.1 14.9l-2.8 2.8"/></svg></div>
+          <h3>Para eventos especiales</h3>
+          <p>Bodas, fiestas o sesiones de fotos: color y peinado pensados para que luzcas impecable ese día.</p>
         </div>
         <div class="row2">
           <div class="whom-card" data-reveal>
             <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M4 13h16M12 9V6a2 2 0 0 1 4 0v3M8 9V6a2 2 0 0 1 4 0"/></svg></div>
-            <h3>Para quienes quieren regalar bienestar</h3>
+            <h3>Para quienes quieren regalar belleza</h3>
             <p>El mejor regalo no es un objeto: es una experiencia que se recuerda.</p>
           </div>
           <div class="whom-card" data-reveal>
-            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg></div>
-            <h3>Para equipos que valoran a su gente</h3>
-            <p>Programas de bienestar corporativo que se notan en el clima laboral.</p>
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M3 9l3.5-5.5h11L21 9l-9 11.5L3 9Z"/><path d="M3 9h18M9 9 12 3l3 6M8.5 9l3.5 11.3L15.5 9"/></svg></div>
+            <h3>Para quienes buscan resultados que duran</h3>
+            <p>Poly gel, acrílicas y color de larga duración, sin sacrificar el cuidado de tus uñas y tu cabello.</p>
           </div>
         </div>
       </div>
@@ -378,97 +391,86 @@
     <div class="wrap">
       <div class="sec-head" data-reveal>
         <span class="eyebrow">Nuestros servicios</span>
-        <h2>Experiencias diseñadas para transformarte</h2>
+        <h2>Uñas y peluquería, en un solo lugar</h2>
       </div>
 
       <div class="svc-row" data-reveal>
-        <div class="svc-visual tone-a"><div class="blob b1"></div><div class="blob b2"></div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 3v18M7 8h10M6 12h12M7 16h10"/><circle cx="12" cy="3" r="1.4" fill="currentColor" stroke="none"/></svg>
-        </div>
-        <div>
-          <span class="svc-eyebrow">Spa &amp; masajes</span>
-          <h3>Libera la tensión. Reconecta contigo.</h3>
-          <p class="desc">Masajes relajantes, terapéuticos, con piedras calientes y bambuterapia. Cada sesión es un viaje de desconexión profunda que tu cuerpo agradecerá.</p>
-          <ul class="svc-list">
-            <li>Masajes relajantes y terapéuticos</li>
-            <li>Piedras calientes y bambuterapia</li>
-            <li>Exfoliación y envolturas corporales</li>
-            <li>Hidroterapia y rituales de bienestar</li>
-          </ul>
-          <a class="link-arrow" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar esta experiencia <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-      </div>
-
-      <div class="svc-row rev" data-reveal>
-        <div class="svc-visual tone-b"><div class="blob b1"></div><div class="blob b2"></div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M4 21c0-3.9 2.9-6.5 6-6.5s6 2.6 6 6.5M16 21c0-2.9 2-5 4.5-5.5"/></svg>
-        </div>
-        <div>
-          <span class="svc-eyebrow">Experiencias románticas</span>
-          <h3>El tiempo se detiene para dos.</h3>
-          <p class="desc">Planes de pareja diseñados para crear momentos inolvidables: jacuzzi privado, sauna, flores, velas, música y un brindis especial en un ambiente íntimo.</p>
-          <ul class="svc-list">
-            <li>Jacuzzi privado para dos</li>
-            <li>Sauna e hidroterapia</li>
-            <li>Ambientación con flores y velas</li>
-            <li>Copa de bienvenida</li>
-          </ul>
-          <a class="link-arrow" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar esta experiencia <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-      </div>
-
-      <div class="svc-row" data-reveal>
-        <div class="svc-visual tone-a"><div class="blob b1"></div><div class="blob b2"></div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 3c4 3 6 6.5 6 10a6 6 0 1 1-12 0c0-3.5 2-7 6-10Z"/><path d="M12 12v5"/></svg>
-        </div>
-        <div>
-          <span class="svc-eyebrow">Cuidado facial &amp; corporal</span>
-          <h3>Tu piel merece brillar.</h3>
-          <p class="desc">Limpiezas faciales, hidrataciones profundas y mascarillas personalizadas según tu tipo de piel. Tratamientos corporales que suavizan, exfolian y devuelven luminosidad.</p>
-          <ul class="svc-list">
-            <li>Limpiezas faciales profesionales</li>
-            <li>Hidrataciones y mascarillas</li>
-            <li>Tratamientos corporales</li>
-            <li>Técnicas avanzadas de spa</li>
-          </ul>
-          <a class="link-arrow" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar esta experiencia <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
-      </div>
-
-      <div class="svc-row rev" data-reveal>
         <div class="svc-visual tone-b"><div class="blob b1"></div><div class="blob b2"></div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 15c3 0 5-2.5 5-6a5 5 0 0 0-10 0c0 3.5 2 6 5 6Z"/><path d="M8 14l-2.5 5M16 14l2.5 5M9 20h6"/></svg>
         </div>
         <div>
-          <span class="svc-eyebrow">Uñas, pestañas &amp; cejas</span>
-          <h3>Los detalles que hacen la diferencia.</h3>
-          <p class="desc">Manicure y pedicure con acabado impecable, extensiones y lifting de pestañas, diseño y laminado de cejas. Cada detalle, cuidado con precisión profesional.</p>
+          <span class="svc-eyebrow">Servicios de uñas</span>
+          <h3>Uñas perfectas, con acabado profesional.</h3>
+          <p class="desc">Desde un esmaltado permanente hasta acrílicas y poly gel: manicure y pedicure con un acabado impecable y duradero.</p>
           <ul class="svc-list">
-            <li>Manicure y pedicure spa</li>
-            <li>Extensiones de pestañas</li>
-            <li>Lifting de pestañas</li>
-            <li>Diseño y laminado de cejas</li>
+            <li>Esmaltado permanente — desde $15.000</li>
+            <li>Manicure y pedicure — desde $35.000</li>
+            <li>Poly gel o acrílicas — desde $25.000</li>
+            <li>Soft gel — desde $21.000</li>
           </ul>
-          <a class="link-arrow" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar esta experiencia <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="link-arrow" href="#precios">Ver lista de precios completa <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
       </div>
 
-      <div class="svc-row" data-reveal>
+      <div class="svc-row rev" data-reveal>
         <div class="svc-visual tone-a"><div class="blob b1"></div><div class="blob b2"></div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 6c4 0 6 2 8 2s4-2 8-2M4 12c4 0 6 2 8 2s4-2 8-2M4 18c4 0 6 2 8 2s4-2 8-2"/></svg>
         </div>
         <div>
-          <span class="svc-eyebrow">Color &amp; peinado</span>
-          <h3>Reinvéntate, sin salir de Providencia.</h3>
-          <p class="desc">Cortes, cepillados y peinados para eventos, coloración avanzada con balayage y babylights, asesoría de imagen personalizada para encontrar tu mejor versión.</p>
+          <span class="svc-eyebrow">Servicios de peluquería</span>
+          <h3>Tu cabello, renovado.</h3>
+          <p class="desc">Tratamientos capilares, color y alisados pensados para devolverle vida, salud y brillo a tu cabello.</p>
           <ul class="svc-list">
-            <li>Cortes y tratamientos capilares</li>
-            <li>Balayage y babylights</li>
-            <li>Peinados para eventos</li>
-            <li>Asesoría de imagen</li>
+            <li>Botox capilar — desde $37.990</li>
+            <li>Balayage — desde $75.000</li>
+            <li>Alisado — desde $29.990</li>
+            <li>Hidratación con ozono terapia — desde $25.000</li>
           </ul>
-          <a class="link-arrow" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar esta experiencia <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="link-arrow" href="#precios">Ver lista de precios completa <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="precios" style="background:var(--bg2);">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow">Lista de precios</span>
+        <h2>Precios claros, sin sorpresas</h2>
+        <p>Todos los precios son valores desde — pueden variar según el largo, grosor o estado de tu cabello o uñas.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price-card" data-reveal>
+          <div class="price-card-head"><h3>Servicios de uñas</h3><span>Desde</span></div>
+          <ul class="price-list">
+            <li><span>Esmaltado permanente</span><b>$15.000</b></li>
+            <li><span>Manicure tradicional</span><b>$12.000</b></li>
+            <li><span>Manicure y pedicure</span><b>$35.000</b></li>
+            <li><span>Manicure y pedicure exprés</span><b>$20.000</b></li>
+            <li><span>Base Rubber</span><b>$20.000</b></li>
+            <li><span>Soft gel</span><b>$21.000</b></li>
+            <li><span>Poly gel o acrílicas</span><b>$25.000</b></li>
+            <li><span>Pedicure</span><b>$19.990</b></li>
+          </ul>
+        </div>
+        <div class="price-card" data-reveal>
+          <div class="price-card-head"><h3>Servicios de peluquería</h3><span>Desde</span></div>
+          <ul class="price-list">
+            <li><span>Masaje capilar</span><b>$18.990</b></li>
+            <li><span>Secado y planchado</span><b>$15.000</b></li>
+            <li><span>Botox capilar</span><b>$37.990</b></li>
+            <li><span>Alisado</span><b>$29.990</b></li>
+            <li><span>Hidratación con ozono terapia</span><b>$25.000</b></li>
+            <li><span>Baby light</span><b>$65.990</b></li>
+            <li><span>Balayage</span><b>$75.000</b></li>
+            <li><span>Cubrimiento de canas</span><b>$24.990</b></li>
+            <li><span>Tintura completa con hidratación</span><b>$50.000</b></li>
+            <li><span>Tratamiento de plex</span><b>$39.990</b></li>
+          </ul>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:2.4rem;">
+        <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar por WhatsApp →</a>
       </div>
     </div>
   </section>
@@ -497,9 +499,9 @@
             <p>Cuando te cuidas de verdad, tu autoestima se fortalece. Y eso transforma todo.</p>
           </div>
           <div class="trans-item" data-reveal>
-            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M4 21c0-3.9 2.9-6.5 6-6.5s6 2.6 6 6.5M16 21c0-2.9 2-5 4.5-5.5"/></svg></div>
-            <h4>Conexión en pareja</h4>
-            <p>Nuestras experiencias románticas crean recuerdos que fortalecen vínculos de forma única.</p>
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+            <h4>Resultados que duran</h4>
+            <p>Con poly gel, acrílicas y botox capilar, tu color y tus uñas se mantienen impecables por más tiempo.</p>
           </div>
           <div class="trans-item" data-reveal>
             <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M3 9l3.5-5.5h11L21 9l-9 11.5L3 9Z"/><path d="M3 9h18M9 9 12 3l3 6M8.5 9l3.5 11.3L15.5 9"/></svg></div>
@@ -515,7 +517,7 @@
     <div class="wrap sec-head" data-reveal>
       <span class="eyebrow on-dark">Oferta de bienvenida</span>
       <h2>Tu primera experiencia, diseñada a tu medida</h2>
-      <p class="body-p">Agenda tu primera visita y recibe una <b>asesoría personalizada gratuita</b>, donde nuestro equipo diseña una experiencia adaptada a tu piel, tu estilo y lo que tu cuerpo necesita.</p>
+      <p class="body-p">Agenda tu primera visita y recibe una <b>asesoría personalizada gratuita</b>, donde nuestro equipo diseña el servicio ideal según tu cabello, tus uñas y tu estilo.</p>
       <p class="body-p">Además, disfruta un <b>beneficio especial de bienvenida</b> en tu primer tratamiento. Queremos que tu primera vez con nosotras sea inolvidable.</p>
       <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Quiero mi asesoría gratuita →</a>
     </div>
@@ -530,23 +532,23 @@
       <div class="testi-grid">
         <div class="testi-card" data-reveal>
           <span class="stars">★★★★★</span>
-          <p class="q">"Fue la experiencia más hermosa que hemos vivido en pareja. El jacuzzi, las velas, los detalles... todo fue perfecto. Salimos sintiéndonos más conectados que nunca."</p>
-          <div class="who"><b>Carolina M.</b><span>Experiencia en pareja</span></div>
+          <p class="q">"Mi balayage quedó exactamente como lo imaginé. El equipo se tomó el tiempo de asesorarme antes de partir. Cada detalle fue cuidado al máximo."</p>
+          <div class="who"><b>Carolina M.</b><span>Balayage</span></div>
         </div>
         <div class="testi-card" data-reveal>
           <span class="stars">★★★★★</span>
-          <p class="q">"Llevaba meses con dolor de espalda por el estrés del trabajo. Después de la primera sesión sentí un alivio increíble. La atención es profesional y muy cálida."</p>
-          <div class="who"><b>Andrés R.</b><span>Masaje terapéutico</span></div>
+          <p class="q">"Tenía el pelo muy dañado y con el botox capilar volvió a verse sano y con brillo. La atención es profesional y muy cálida."</p>
+          <div class="who"><b>Andrés R.</b><span>Botox capilar</span></div>
         </div>
         <div class="testi-card" data-reveal>
           <span class="stars">★★★★★</span>
-          <p class="q">"El acabado de las uñas es impecable y dura semanas. Las pestañas quedaron naturales y elegantes. Encontré mi lugar de confianza para siempre."</p>
-          <div class="who"><b>María José L.</b><span>Manicure &amp; pestañas</span></div>
+          <p class="q">"El acabado de mis uñas con poly gel es impecable y dura semanas sin despostillarse. Encontré mi lugar de confianza para siempre."</p>
+          <div class="who"><b>María José L.</b><span>Poly gel</span></div>
         </div>
         <div class="testi-card" data-reveal>
           <span class="stars">★★★★★</span>
-          <p class="q">"La exfoliación con café fue una experiencia sensorial increíble. Mi piel quedó suavísima. El equipo es atento y profesional. Vuelvo cada mes."</p>
-          <div class="who"><b>Laura P.</b><span>Ritual de bienestar corporal</span></div>
+          <p class="q">"El alisado me dejó el pelo increíble, sin frizz y con un brillo que no veía hace años. El equipo es atento y muy profesional. Vuelvo cada vez que lo necesito."</p>
+          <div class="who"><b>Laura P.</b><span>Alisado</span></div>
         </div>
       </div>
     </div>
@@ -577,15 +579,16 @@
     <div class="wrap loc-grid">
       <div data-reveal>
         <span class="eyebrow">Ubicación</span>
-        <h2 style="margin-bottom:1.4rem;">Te esperamos en Providencia</h2>
-        <div class="info-line"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21c-4-4.5-7-8.3-7-12a7 7 0 0 1 14 0c0 3.7-3 7.5-7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg><div><b>Dirección</b><span>Av. Providencia 2594, Providencia, Santiago</span></div></div>
+        <h2 style="margin-bottom:1.4rem;">Te esperamos en Santiago Centro</h2>
+        <div class="info-line"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21c-4-4.5-7-8.3-7-12a7 7 0 0 1 14 0c0 3.7-3 7.5-7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg><div><b>Dirección</b><span>Paseo Ahumada 312, piso 9, oficina 906, Santiago Centro</span></div></div>
         <div class="info-line"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><div><b>Horario</b><span>Lunes a sábado 10:00–20:00 · Domingo cerrado</span></div></div>
         <div class="info-line"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h4l2 5-2.5 1.5a12 12 0 0 0 6 6L15 14l5 2v4a2 2 0 0 1-2 2C10 22 2 14 2 6a2 2 0 0 1 2-2Z"/></svg><div><b>WhatsApp</b><span>+56 9 2345 6789</span></div></div>
+        <div class="info-line"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><div><b>Instagram</b><span>@tuespacio_mujerbonita</span></div></div>
         <a class="btn btn-primary" style="margin-top:1.6rem;" href="https://wa.me/56923456789" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
       </div>
       <div class="dot-map" data-reveal>
         <div class="pin"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 8 12 8 12s8-6.6 8-12c0-4.4-3.6-8-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg></div>
-        <div class="cap">Av. Providencia 2594, Providencia</div>
+        <div class="cap">Paseo Ahumada 312, Santiago Centro</div>
       </div>
     </div>
   </section>
@@ -607,9 +610,9 @@
     <div class="wrap foot-grid">
       <div class="brand">
         <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 4h16L12 12 4 4Z"/><path d="M4 20h16l-8-8-8 8Z"/></svg>
-        <span><b>Mujer bonita</b><small>espacio de belleza</small></span>
+        <span><b>Mujer bonita</b><small>un espacio para ti</small></span>
       </div>
-      <ul><li><a href="#servicios">Servicios</a></li><li><a href="#testimonios">Testimonios</a></li><li><a href="#ubicacion">Ubicación</a></li></ul>
+      <ul><li><a href="#servicios">Servicios</a></li><li><a href="#precios">Precios</a></li><li><a href="#testimonios">Testimonios</a></li><li><a href="#ubicacion">Ubicación</a></li></ul>
       <div>Demo creada por Automalytics</div>
     </div>
   </footer>
