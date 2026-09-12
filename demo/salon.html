@@ -184,6 +184,15 @@
   .svc-list li { padding: .4rem 0; font-size: .92rem; display: flex; gap: .6rem; align-items: flex-start; }
   .svc-list li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-top: .55rem; flex-shrink: 0; }
 
+  /* ══════════════ GALERÍA ══════════════ */
+  .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+  @media (max-width: 860px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .gallery-grid { grid-template-columns: 1fr; } }
+  .gallery-item { position: relative; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden; border: 1px solid var(--line); }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .gallery-item:hover img { transform: scale(1.06); }
+  .gallery-cap { position: absolute; left: .8rem; right: .8rem; bottom: .8rem; z-index: 2; background: rgba(14,46,41,.78); color: var(--cream-ink); font-size: .74rem; font-weight: 600; padding: .5rem .8rem; border-radius: 10px; backdrop-filter: blur(4px); }
+
   /* ══════════════ LISTA DE PRECIOS ══════════════ */
   .price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
   @media (max-width: 780px) { .price-grid { grid-template-columns: 1fr; } }
@@ -283,6 +292,7 @@
       </div>
       <ul class="nav-links">
         <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#galeria">Galería</a></li>
         <li><a href="#precios">Precios</a></li>
         <li><a href="#testimonios">Testimonios</a></li>
         <li><a href="#ubicacion">Ubicación</a></li>
@@ -295,6 +305,7 @@
   <div class="mobile-menu" id="mobileMenu">
     <button class="mobile-close" id="mobileClose" aria-label="Cerrar menú">✕</button>
     <a href="#servicios">Servicios</a>
+    <a href="#galeria">Galería</a>
     <a href="#precios">Precios</a>
     <a href="#testimonios">Testimonios</a>
     <a href="#ubicacion">Ubicación</a>
@@ -432,7 +443,23 @@
     </div>
   </section>
 
-  <section id="precios" style="background:var(--bg2);">
+  <section id="galeria" style="background:var(--bg2);">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow">Nuestro trabajo</span>
+        <h2>Diseños que hablan por sí solos</h2>
+        <p>Cada set es único, hecho a mano por nuestro equipo. Esto es lo que hacemos todos los días.</p>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item" data-reveal><img src="/assets/demo-salon/work-1.webp" alt="Manicure francesa negra con efecto abstracto y gemas de cristal" loading="lazy" /><span class="gallery-cap">French negro abstracto</span></div>
+        <div class="gallery-item" data-reveal><img src="/assets/demo-salon/work-2.webp" alt="Manicure con glitter rosa y punta blanca en francesa clásica" loading="lazy" /><span class="gallery-cap">Glitter rosa &amp; francesa</span></div>
+        <div class="gallery-item" data-reveal><img src="/assets/demo-salon/work-3.webp" alt="Manicure con flor 3D blanca y perlas doradas sobre base rosa degradada" loading="lazy" /><span class="gallery-cap">Flor 3D &amp; perlas doradas</span></div>
+        <div class="gallery-item" data-reveal><img src="/assets/demo-salon/work-4.webp" alt="Nail art de colores con animal print, estrellas doradas y diseños abstractos" loading="lazy" /><span class="gallery-cap">Nail art de autor</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="precios">
     <div class="wrap">
       <div class="sec-head" data-reveal>
         <span class="eyebrow">Lista de precios</span>
@@ -612,7 +639,7 @@
         <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 4h16L12 12 4 4Z"/><path d="M4 20h16l-8-8-8 8Z"/></svg>
         <span><b>Mujer bonita</b><small>un espacio para ti</small></span>
       </div>
-      <ul><li><a href="#servicios">Servicios</a></li><li><a href="#precios">Precios</a></li><li><a href="#testimonios">Testimonios</a></li><li><a href="#ubicacion">Ubicación</a></li></ul>
+      <ul><li><a href="#servicios">Servicios</a></li><li><a href="#galeria">Galería</a></li><li><a href="#precios">Precios</a></li><li><a href="#testimonios">Testimonios</a></li><li><a href="#ubicacion">Ubicación</a></li></ul>
       <div>Demo creada por Automalytics</div>
     </div>
   </footer>
