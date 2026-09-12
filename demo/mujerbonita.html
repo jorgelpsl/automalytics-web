@@ -111,19 +111,16 @@
   .mobile-panel .close-btn { position: absolute; top: 1.3rem; right: 1.3rem; width: 42px; height: 42px; border-radius: 50%; background: rgba(23,32,29,.06); display: flex; align-items: center; justify-content: center; }
 
   /* ── hero ── */
-  .hero { position: relative; background: var(--teal-dark); padding: 9rem 0 4.5rem; overflow: hidden; }
-  .hero::before { content: ""; position: absolute; inset: -20% -10% auto auto; width: 60%; height: 140%; background: radial-gradient(60% 60% at 70% 20%, rgba(216,168,62,.14), transparent 70%); pointer-events: none; }
-  .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr .85fr; gap: 3rem; align-items: center; }
-  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } .hero { padding: 7.5rem 0 3rem; } }
-  .hero-copy { max-width: 560px; animation: heroRise .7s ease both; }
+  .hero { position: relative; min-height: 88vh; display: flex; align-items: center; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; z-index: 0; }
+  .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 30% 35%; }
+  .hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(7,59,54,.92) 0%, rgba(7,59,54,.72) 40%, rgba(7,59,54,.4) 72%, rgba(7,59,54,.22) 100%); }
+  .hero-inner { position: relative; z-index: 1; padding-top: 5rem; }
+  .hero-copy { max-width: 620px; animation: heroRise .7s ease both; }
   @keyframes heroRise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-  .hero h1 { color: var(--on-dark); font-size: clamp(2.4rem, 5vw, 3.8rem); text-transform: uppercase; letter-spacing: .01em; }
+  .hero h1 { color: var(--on-dark); font-size: clamp(2.6rem, 6vw, 4.4rem); text-transform: uppercase; letter-spacing: .01em; }
   .hero p.lead { color: var(--on-dark-muted); font-size: 1.1rem; max-width: 42ch; margin: 1.4rem 0 2rem; }
   .hero-actions { display: flex; gap: 1.1rem; flex-wrap: wrap; }
-  .hero-photo { position: relative; border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 4/5; animation: heroRise .7s ease .12s both; box-shadow: 0 30px 60px rgba(0,0,0,.3); }
-  .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
-  .hero-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7,59,54,0) 65%, rgba(7,59,54,.4) 100%); pointer-events: none; }
-  @media (max-width: 900px) { .hero-photo { aspect-ratio: 16/11; max-width: 480px; margin: 0 auto; } }
 
   /* ── stats strip ── */
   .stats-strip { background: var(--teal-dark); padding: 2.6rem 0; }
@@ -351,7 +348,8 @@
   </div>
 
   <section id="top" class="hero">
-    <div class="wrap hero-grid">
+    <div class="hero-bg"><img src="/assets/demo-mujerbonita/trabajo-marmolado.webp" alt="Diseño de uñas en marmolado negro con gemas, trabajo de Mujer Bonita" /></div>
+    <div class="wrap hero-inner">
       <div class="hero-copy">
         <span class="eyebrow on-dark">Belleza que inspira</span>
         <h1>Realza tu esencia</h1>
@@ -361,7 +359,6 @@
           <a class="btn btn-outline on-dark" href="#nosotros">Conoce nuestro espacio</a>
         </div>
       </div>
-      <div class="hero-photo"><img src="/assets/demo-mujerbonita/facial-real.webp" alt="Clienta recibiendo un tratamiento facial en Mujer Bonita" /></div>
     </div>
   </section>
 
@@ -417,7 +414,7 @@
           </div>
         </div>
         <div class="svc-card">
-          <div class="svc-media"><img src="/assets/demo-mujerbonita/facial-real.webp" alt="Tratamiento facial en Mujer Bonita" loading="lazy" /></div>
+          <div class="svc-media"><img src="/assets/demo-mujerbonita/facial-promo.webp" alt="Tratamiento facial en Mujer Bonita" loading="lazy" /></div>
           <div class="svc-body">
             <h3>Faciales</h3>
             <p>Limpieza profunda y cuidado personalizado para tu piel.</p>
