@@ -1,0 +1,14 @@
+{
+  "name": "imagenes-ads",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Genera las imágenes de los creativos de ads (Meta) de Automalytics vía la API de imágenes de OpenAI",
+  "type": "module",
+  "scripts": {
+    "generar": "node generar.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "openai": "^4.0.0"
+  }
+}
