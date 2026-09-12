@@ -3,40 +3,40 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Demo: Alma Spa & Belleza — Automalytics</title>
-<meta name="description" content="Ejemplo de sitio web hecho por Automalytics para un spa y salón de belleza." />
+<title>Demo: Mujer Bonita — espacio de belleza — Automalytics</title>
+<meta name="description" content="Ejemplo de sitio web hecho por Automalytics para un espacio de belleza." />
 <meta name="robots" content="noindex, follow" />
 <link rel="icon" type="image/webp" href="/assets/logo.webp" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<meta name="theme-color" content="#241811" />
+<meta name="theme-color" content="#0E2E29" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { background: #FBF6EE; overflow-x: hidden; }
+  html, body { background: #FAF8F2; overflow-x: hidden; }
 
   /* ── top bar (back to Automalytics) ── */
   .bar {
     display: flex; align-items: center; justify-content: space-between;
-    padding: .7rem 1.25rem; background: #241811; border-bottom: 1px solid rgba(255,255,255,.08);
+    padding: .7rem 1.25rem; background: #0E2E29; border-bottom: 1px solid rgba(255,255,255,.08);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; position: relative; z-index: 100;
   }
-  .bar a { color: #D8A85B; text-decoration: none; font-weight: 700; font-size: .85rem; display: flex; align-items: center; gap: .4rem; }
+  .bar a { color: #DFAF35; text-decoration: none; font-weight: 700; font-size: .85rem; display: flex; align-items: center; gap: .4rem; }
   .bar a:hover { text-decoration: underline; }
-  .bar span { color: #A9998A; font-size: .78rem; }
+  .bar span { color: #9FB3AE; font-size: .78rem; }
 
   /* ── tokens ── */
   :root {
-    --bg: #FBF6EE; --bg2: #F3EAD9; --surface: #FFFEFA;
-    --dark: #241811; --dark2: #2E1F15;
-    --ink: #2B2118; --ink-soft: #746653;
-    --cream-ink: #F3EAD9; --cream-soft: #B9AB98;
-    --gold: #B98A3D; --gold-deep: #8C6526; --gold-soft: rgba(185,138,61,.14);
-    --terracotta: #B5573C;
-    --line: rgba(43,33,24,.12); --line-dark: rgba(243,234,217,.14);
-    --font-display: 'Fraunces', serif;
-    --font-body: 'Outfit', sans-serif;
+    --bg: #FAF8F2; --bg2: #ECF3F1; --surface: #FFFFFF;
+    --dark: #0E2E29; --dark2: #06211D;
+    --ink: #182522; --ink-soft: #5C6B67;
+    --cream-ink: #FAF8F2; --cream-soft: #A9C2BC;
+    --gold: #DFAF35; --gold-deep: #8C6526; --gold-light: #F5CE63; --gold-soft: rgba(223,175,53,.16);
+    --green: #006F68; --green2: #0B8278;
+    --line: rgba(24,37,34,.12); --line-dark: rgba(250,248,242,.16);
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'DM Sans', sans-serif;
   }
   body { font-family: var(--font-body); background: var(--bg); color: var(--ink); line-height: 1.65; }
   h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; line-height: 1.12; color: var(--ink); }
@@ -64,8 +64,10 @@
   .sec-head.left { text-align: left; margin: 0 0 2.6rem; }
 
   .btn { display: inline-flex; align-items: center; gap: .6rem; font-weight: 600; font-size: .92rem; padding: .95rem 1.9rem; border-radius: 50px; border: 1.5px solid transparent; cursor: pointer; font-family: var(--font-body); transition: transform .25s ease, box-shadow .25s ease, background .2s ease, border-color .2s ease; }
-  .btn-primary { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%); color: #fff; box-shadow: 0 10px 28px rgba(140,101,38,.28); }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(140,101,38,.38); }
+  .btn-primary { background: var(--gold); color: var(--ink); box-shadow: 0 10px 28px rgba(140,101,38,.24); }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 14px 34px rgba(140,101,38,.32); }
+  .btn-secondary { background: var(--green); color: var(--cream-ink); box-shadow: 0 10px 28px rgba(0,111,104,.22); }
+  .btn-secondary:hover { background: var(--green2); transform: translateY(-2px); box-shadow: 0 14px 34px rgba(0,111,104,.3); }
   .btn-ghost { border-color: var(--line); color: var(--ink); background: transparent; }
   .btn-ghost:hover { border-color: var(--gold); color: var(--gold-deep); }
   .btn-ghost.on-dark { border-color: var(--line-dark); color: var(--cream-ink); }
@@ -74,8 +76,11 @@
   /* ── nav ── */
   header.site-nav { position: sticky; top: 0; z-index: 90; background: rgba(251,246,238,.86); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
   .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; max-width: 1180px; margin: 0 auto; }
-  .brand { display: flex; align-items: baseline; gap: .5rem; font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; letter-spacing: .02em; }
-  .brand small { font-family: var(--font-body); font-size: .62rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+  .brand { display: flex; align-items: center; gap: .6rem; }
+  .brand .mark { width: 26px; height: 26px; color: var(--gold); flex-shrink: 0; }
+  .brand b { display: block; font-family: var(--font-display); font-style: italic; font-weight: 600; font-size: 1.45rem; line-height: 1; color: var(--ink); }
+  .brand small { display: block; font-family: var(--font-body); font-size: .56rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); margin-top: .2rem; }
+  footer .brand b { color: var(--ink); }
   .nav-links { display: flex; gap: 2.1rem; list-style: none; font-size: .9rem; font-weight: 500; color: var(--ink-soft); }
   .nav-links a { position: relative; padding: .3rem 0; }
   .nav-links a::after { content: ""; position: absolute; left: 0; bottom: -2px; width: 0; height: 1.5px; background: var(--gold); transition: width .25s; }
@@ -123,9 +128,9 @@
   }
   .hv-panel {
     position: absolute; inset: 6% 8%; z-index: 1; border-radius: 45% 55% 52% 48% / 55% 48% 52% 45%;
-    background: linear-gradient(155deg, #E9D8B8 0%, #D8B77C 55%, #C89A56 100%);
+    background: linear-gradient(155deg, #0F8A80 0%, var(--green) 55%, var(--dark) 100%);
     display: flex; align-items: center; justify-content: center; overflow: hidden;
-    box-shadow: 0 30px 60px rgba(140,101,38,.28);
+    box-shadow: 0 30px 60px rgba(6,33,29,.35);
   }
   .hv-panel svg { width: 62%; height: 62%; }
   .hv-card {
@@ -166,8 +171,8 @@
   .svc-row.rev .svc-visual { order: 2; }
   @media (max-width: 860px) { .svc-row, .svc-row.rev { grid-template-columns: 1fr; } .svc-row.rev .svc-visual { order: 0; } }
   .svc-visual { position: relative; aspect-ratio: 4/3.3; border-radius: 26px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-  .svc-visual.tone-a { background: linear-gradient(150deg, #F1E2C4 0%, #DCB878 100%); }
-  .svc-visual.tone-b { background: linear-gradient(150deg, #E7D2AE 0%, #C89A56 100%); }
+  .svc-visual.tone-a { background: linear-gradient(150deg, #E3F1EE 0%, #7FBDB1 100%); }
+  .svc-visual.tone-b { background: linear-gradient(150deg, #F7E9BC 0%, var(--gold) 100%); }
   .svc-visual svg { width: 40%; height: 40%; color: var(--dark2); opacity: .82; }
   .svc-visual .blob { position: absolute; border-radius: 50%; background: rgba(255,255,255,.22); }
   .svc-visual .b1 { width: 90px; height: 90px; top: -20px; left: -20px; }
@@ -229,9 +234,9 @@
   .info-line svg { flex-shrink: 0; color: var(--gold-deep); margin-top: .15rem; }
   .info-line b { display: block; color: var(--ink); }
   .info-line span { color: var(--ink-soft); font-size: .86rem; }
-  .dot-map { position: relative; aspect-ratio: 16/12; border-radius: 24px; border: 1px solid var(--line); overflow: hidden; background: linear-gradient(150deg, #EFE3C9, #E2CFA0); }
-  .dot-map .pin { position: absolute; top: 44%; left: 50%; width: 46px; height: 46px; border-radius: 50%; background: var(--gold-deep); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px rgba(140,101,38,.16); transform: translate(-50%,-50%); }
-  .dot-map .pin::after { content: ""; position: absolute; inset: -14px; border-radius: 50%; border: 1px solid rgba(140,101,38,.4); animation: ping 2.6s ease-out infinite; }
+  .dot-map { position: relative; aspect-ratio: 16/12; border-radius: 24px; border: 1px solid var(--line); overflow: hidden; background: linear-gradient(150deg, #E7F2EF, #BFDED7); }
+  .dot-map .pin { position: absolute; top: 44%; left: 50%; width: 46px; height: 46px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px rgba(0,111,104,.16); transform: translate(-50%,-50%); }
+  .dot-map .pin::after { content: ""; position: absolute; inset: -14px; border-radius: 50%; border: 1px solid rgba(0,111,104,.4); animation: ping 2.6s ease-out infinite; }
   @keyframes ping { 0% { transform: scale(.6); opacity: .8; } 100% { transform: scale(1.9); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .dot-map .pin::after { animation: none; } }
   .dot-map .cap { position: absolute; bottom: 1rem; left: 1rem; right: 1rem; font-size: .78rem; color: var(--dark2); background: rgba(255,255,255,.72); padding: .55rem .85rem; border-radius: 10px; backdrop-filter: blur(4px); font-weight: 500; }
@@ -254,19 +259,22 @@
 <body>
   <div class="bar">
     <a href="/">← Volver a Automalytics</a>
-    <span>Demo: Alma Spa & Belleza</span>
+    <span>Demo: Mujer Bonita</span>
   </div>
 
   <header class="site-nav">
     <div class="nav-inner">
-      <div class="brand">ALMA <small>spa &amp; belleza</small></div>
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 4h16L12 12 4 4Z"/><path d="M4 20h16l-8-8-8 8Z"/></svg>
+        <span><b>Mujer bonita</b><small>espacio de belleza</small></span>
+      </div>
       <ul class="nav-links">
         <li><a href="#servicios">Servicios</a></li>
         <li><a href="#transformacion">Experiencia</a></li>
         <li><a href="#testimonios">Testimonios</a></li>
         <li><a href="#ubicacion">Ubicación</a></li>
       </ul>
-      <a class="btn btn-primary nav-cta" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar hora</a>
+      <a class="btn btn-primary nav-cta" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar cita</a>
       <button class="hamburger" id="hamburger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
     </div>
   </header>
@@ -277,18 +285,18 @@
     <a href="#transformacion">Experiencia</a>
     <a href="#testimonios">Testimonios</a>
     <a href="#ubicacion">Ubicación</a>
-    <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar hora</a>
+    <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar cita</a>
   </div>
 
   <section class="hero">
     <div class="wrap hero-grid">
       <div data-reveal>
-        <span class="eyebrow">Spa &amp; salón de belleza · Providencia, Santiago</span>
-        <h1>Tu momento de calma<br><em>empieza en Alma</em></h1>
-        <p class="lead">Masajes, ritual facial, manicura y color en un mismo espacio, pensado para que sueltes el día apenas cruzas la puerta. Reserva tu hora por WhatsApp en menos de un minuto.</p>
+        <span class="eyebrow">Espacio de belleza · Providencia, Santiago</span>
+        <h1>Tu belleza,<br><em>nuestro arte</em></h1>
+        <p class="lead">Manicura, ritual facial, pestañas y color en un mismo espacio, pensado para que salgas sintiéndote impecable. Reserva tu cita por WhatsApp en menos de un minuto.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar mi hora →</a>
-          <a class="link-arrow" href="#servicios">Ver nuestros servicios <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar cita →</a>
+          <a class="btn btn-secondary" href="#servicios">Ver servicios →</a>
         </div>
         <div class="rating-row">
           <span class="stars">★★★★★</span>
@@ -300,9 +308,11 @@
       </div>
       <div class="hero-visual" data-reveal>
         <div class="hv-panel">
-          <svg viewBox="0 0 100 100" fill="none" stroke="#2E1F15" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M50 88c0-20-16-24-16-42 0-10 7-18 16-22 9 4 16 12 16 22 0 18-16 22-16 42Z"/>
-            <path d="M50 24v64M50 40c-8-6-14-4-18 2M50 55c-9-4-16 0-20 8M50 40c8-6 14-4 18 2M50 55c9-4 16 0 20 8"/>
+          <svg viewBox="0 0 100 100" fill="none" stroke="#DFAF35" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M50 20c-11 15-11 37 0 50c11-13 11-35 0-50Z"/>
+            <path d="M50 66c-16 4-30-4-36-18c15-5 30 2 36 18Z"/>
+            <path d="M50 66c16 4 30-4 36-18c-15-5-30 2-36 18Z"/>
+            <path d="M18 76c9 9 21 13 32 13s23-4 32-13"/>
           </svg>
         </div>
         <div class="hv-card hv-c1">
@@ -320,7 +330,7 @@
   <section id="para-quien">
     <div class="wrap">
       <div class="sec-head" data-reveal>
-        <span class="eyebrow">¿Para quién es Alma?</span>
+        <span class="eyebrow">¿Para quién es Mujer Bonita?</span>
         <h2>Diseñado para quienes eligen cuidarse de verdad</h2>
       </div>
       <div class="whom-grid">
@@ -492,7 +502,7 @@
             <p>Nuestras experiencias románticas crean recuerdos que fortalecen vínculos de forma única.</p>
           </div>
           <div class="trans-item" data-reveal>
-            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.6L22 9.3l-5 4.9 1.2 7.1L12 17.8l-6.2 3.5L7 14.2 2 9.3l7.1-.7L12 2z"/></svg></div>
+            <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M3 9l3.5-5.5h11L21 9l-9 11.5L3 9Z"/><path d="M3 9h18M9 9 12 3l3 6M8.5 9l3.5 11.3L15.5 9"/></svg></div>
             <h4>Lujo que puedes vivir</h4>
             <p>No necesitas un viaje lejano. Aquí encuentras una experiencia premium diseñada para ti.</p>
           </div>
@@ -515,7 +525,7 @@
     <div class="wrap">
       <div class="sec-head" data-reveal>
         <span class="eyebrow">Testimonios</span>
-        <h2>Lo que dicen quienes ya vivieron Alma</h2>
+        <h2>Lo que dicen quienes ya vivieron Mujer Bonita</h2>
       </div>
       <div class="testi-grid">
         <div class="testi-card" data-reveal>
@@ -547,9 +557,9 @@
       <div data-reveal>
         <span class="eyebrow">¿Por qué elegirnos?</span>
         <h2 style="margin-bottom:1rem;">Profesionalismo, calidez y excelencia en cada detalle</h2>
-        <p style="color:var(--ink-soft);">En Alma no ofrecemos servicios: creamos experiencias. Cada persona de nuestro equipo está comprometida con tu bienestar, tu imagen y tu satisfacción.</p>
+        <p style="color:var(--ink-soft);">En Mujer Bonita no ofrecemos servicios: creamos experiencias. Cada persona de nuestro equipo está comprometida con tu bienestar, tu imagen y tu satisfacción.</p>
         <div class="chip-row">
-          <div class="chip"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.3 6.8 19l1-5.8-4.3-4.1 5.9-.9L12 3Z"/></svg></div><div><b>Equipo profesional</b><span>Especialistas certificadas en belleza y bienestar</span></div></div>
+          <div class="chip"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M3 9l3.5-5.5h11L21 9l-9 11.5L3 9Z"/><path d="M3 9h18M9 9 12 3l3 6M8.5 9l3.5 11.3L15.5 9"/></svg></div><div><b>Equipo profesional</b><span>Especialistas certificadas en belleza y bienestar</span></div></div>
           <div class="chip"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M4 21c0-3.9 2.9-6.5 6-6.5s6 2.6 6 6.5M16 21c0-2.9 2-5 4.5-5.5"/></svg></div><div><b>Atención personalizada</b><span>Cada experiencia diseñada según tus necesidades</span></div></div>
         </div>
       </div>
@@ -583,18 +593,22 @@
   <section class="cta-final">
     <div class="wrap" data-reveal>
       <h2>Regálate el cuidado que mereces</h2>
-      <p>No dejes para después lo que tu cuerpo y tu mente necesitan hoy. Reserva tu experiencia y descubre por qué tantas personas confían en Alma para sentirse y verse mejor.</p>
+      <p>No dejes para después lo que tu cuerpo y tu mente necesitan hoy. Reserva tu experiencia y descubre por qué tantas personas confían en Mujer Bonita para sentirse y verse mejor.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar por WhatsApp →</a>
-        <a class="btn btn-ghost on-dark" href="#servicios">Ver servicios</a>
+        <a class="btn btn-primary" href="https://wa.me/56923456789" target="_blank" rel="noopener">Reservar cita →</a>
+        <a class="btn btn-secondary" href="#servicios">Ver servicios →</a>
+        <a class="btn btn-ghost on-dark" href="#ubicacion">Contacto →</a>
       </div>
-      <small>Alma Spa &amp; Belleza — Donde tu bienestar es nuestra pasión.</small>
+      <small>Mujer Bonita — espacio de belleza · Tu belleza, nuestro arte.</small>
     </div>
   </section>
 
   <footer>
     <div class="wrap foot-grid">
-      <div class="brand">ALMA <small>spa &amp; belleza</small></div>
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 4h16L12 12 4 4Z"/><path d="M4 20h16l-8-8-8 8Z"/></svg>
+        <span><b>Mujer bonita</b><small>espacio de belleza</small></span>
+      </div>
       <ul><li><a href="#servicios">Servicios</a></li><li><a href="#testimonios">Testimonios</a></li><li><a href="#ubicacion">Ubicación</a></li></ul>
       <div>Demo creada por Automalytics</div>
     </div>
