@@ -8,18 +8,18 @@
     "angulo": "problema-solución",
     "orientacion": "vertical",
     "overlay": "Tu estética tiene lista de espera, pero nadie nuevo la encuentra en Google",
-    "prompt": "Fotografía realista dentro de una estética/centro de belleza con clientas siendo atendidas, ambiente lleno y profesional, luz natural. Al lado, superpuesta, una captura de celular mostrando una búsqueda en Google donde el negocio no aparece. Texto superpuesto con el texto exacto: \"Tu estética tiene lista de espera, pero nadie nuevo la encuentra en Google\". Sin gradientes ni efectos artificiales de IA. Formato vertical 9:16 para reel de Instagram."
+    "prompt": "Fotografía realista dentro de una estética/centro de belleza en una calle comercial típica de una ciudad chilena, clientas siendo atendidas, ambiente lleno y profesional, luz natural. Al lado, superpuesta, una captura de celular mostrando una búsqueda en Google donde el negocio no aparece. Texto superpuesto con el texto exacto: \"Tu estética tiene lista de espera, pero nadie nuevo la encuentra en Google\". Sin gradientes ni efectos artificiales de IA, sin banderas ni símbolos patrios. Formato vertical 9:16 para reel de Instagram."
   },
   {
     "id": "c2",
     "negocio": "veterinaria",
     "dolor": "invisible-en-google",
-    "titulo": "dato-busqueda-mascotas",
+    "titulo": "buscan-antes-de-ir",
     "formato": "imagen",
     "angulo": "educativo",
     "orientacion": "cuadrado",
-    "overlay": "8 de cada 10 dueños de mascotas googlean la veterinaria antes de ir por primera vez",
-    "prompt": "Imagen tipo publicación educativa para redes, fondo limpio con paleta de marca (tonos neutros con un acento de color), con un dato estadístico grande y legible superpuesto con el texto exacto: \"8 de cada 10 dueños de mascotas googlean la veterinaria antes de ir por primera vez\". Estilo editorial simple, sin iconos genéricos ni gradientes morados. Formato cuadrado 1:1."
+    "overlay": "Antes de llevar a su mascota a una veterinaria nueva, la gente primero busca en Google",
+    "prompt": "Imagen tipo publicación educativa para redes, fondo limpio con paleta de marca (tonos neutros con un acento de color), mostrando de forma simple un celular con una búsqueda de Google junto a una mascota. Texto superpuesto con el texto exacto: \"Antes de llevar a su mascota a una veterinaria nueva, la gente primero busca en Google\". Estilo editorial simple, sin iconos genéricos ni gradientes morados, sin cifras ni porcentajes inventados. Formato cuadrado 1:1."
   },
   {
     "id": "c3",
@@ -30,7 +30,7 @@
     "angulo": "comparación",
     "orientacion": "cuadrado",
     "overlay": "Clínica dental sin web vs. con web propia",
-    "prompt": "Imagen dividida en dos mitades (split screen) comparando una clínica dental: lado izquierdo con apariencia amateur y solo un perfil básico de redes sociales, lado derecho con una página web profesional y moderna abierta en un celular junto a la misma clínica. Título superpuesto con el texto exacto: \"Clínica dental sin web vs. con web propia\". Estilo fotográfico realista, sin gradientes genéricos. Formato cuadrado 1:1."
+    "prompt": "Imagen dividida en dos mitades (split screen) comparando una clínica dental en un edificio de consultas médicas típico de una ciudad chilena: lado izquierdo con apariencia amateur y solo un perfil básico de redes sociales, lado derecho con una página web profesional y moderna abierta en un celular junto a la misma clínica. Título superpuesto con el texto exacto: \"Clínica dental sin web vs. con web propia\". Estilo fotográfico realista, sin gradientes genéricos, sin banderas ni símbolos patrios. Formato cuadrado 1:1."
   },
   {
     "id": "c4",
@@ -41,7 +41,7 @@
     "angulo": "testimonial",
     "orientacion": "vertical",
     "overlay": "Tenía clientas fieles hace años, pero alguien nuevo no tenía cómo encontrarme",
-    "prompt": "Fotografía realista estilo UGC/selfie: mujer adulta, dueña de una estética, sosteniendo el celular y hablando a cámara dentro de su local (camilla de tratamientos y productos al fondo, luz natural). Expresión cercana y auténtica, no posada. Subtítulo estilo reel superpuesto con el texto exacto: \"Tenía clientas fieles hace años, pero alguien nuevo no tenía cómo encontrarme\". Formato vertical 9:16."
+    "prompt": "Fotografía realista estilo UGC/selfie: mujer adulta, dueña de una estética en Chile, sosteniendo el celular y hablando a cámara dentro de su local (camilla de tratamientos y productos al fondo, luz natural). Expresión cercana y auténtica, no posada, acento y estilo visual latinoamericano/chileno. Subtítulo estilo reel superpuesto con el texto exacto: \"Tenía clientas fieles hace años, pero alguien nuevo no tenía cómo encontrarme\". Formato vertical 9:16."
   },
   {
     "id": "c5",
