@@ -1,6 +1,6 @@
 # imagenes-ads
 
-Genera las imágenes de los 24 creativos definidos para la campaña de Meta Ads de Automalytics (buyer personas: Fernanda, Dr. Matías, Valentina, Rodrigo), vía la API de imágenes de OpenAI.
+Genera las imágenes de los 5 creativos de la campaña de Meta Ads de Automalytics enfocada en un solo dolor: negocios pequeños que no tienen sitio web propio y no aparecen en Google, vía la API de imágenes de OpenAI.
 
 ## 1. Setup (una sola vez)
 
@@ -20,9 +20,8 @@ La `OPENAI_API_KEY` ya está configurada como variable de entorno en el proyecto
 ## 2. Generar imágenes
 
 ```
-npm run generar                # los 24 creativos
-node generar.js fernanda       # solo los 6 de esa persona
-node generar.js f2             # solo el creativo f2
+npm run generar                # los 5 creativos
+node generar.js w2              # solo el creativo w2
 ```
 
 Las imágenes quedan en `salidas/` (no se sube a git).
@@ -30,7 +29,7 @@ Las imágenes quedan en `salidas/` (no se sube a git).
 ## Qué hay en `prompts.json`
 
 Cada entrada es un creativo del plan de campaña, con:
-- `persona` / `dolor`: a quién y qué punto de dolor le habla
+- `negocio` / `dolor`: qué tipo de negocio se muestra y a qué punto de dolor le habla (todos: no tener sitio web / no aparecer en Google)
 - `formato` / `angulo`: cómo está pensado en el plan de producción original
 - `overlay`: el texto que debe aparecer renderizado en la imagen
 - `prompt`: la descripción visual completa que se le manda al modelo
