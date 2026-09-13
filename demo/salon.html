@@ -196,6 +196,25 @@
   .price-list li span { color: var(--ink); }
   .price-list li b { color: var(--gold-deep); font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
+  /* ══════════════ AGENDA ══════════════ */
+  .agenda-card { background: var(--surface); border: 1px solid var(--line); border-radius: 26px; padding: 2.2rem; max-width: 720px; margin: 0 auto; }
+  .agenda-badge { display: inline-block; font-size: .66rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--green); background: rgba(0,111,104,.1); border: 1px solid rgba(0,111,104,.25); border-radius: 50px; padding: .35rem .8rem; margin-bottom: 1.6rem; }
+  .agenda-days { display: flex; gap: .6rem; margin-bottom: 1.6rem; flex-wrap: wrap; }
+  .agenda-day { flex: 1 1 0; min-width: 58px; display: flex; flex-direction: column; align-items: center; gap: .3rem; padding: .8rem .4rem; border-radius: 14px; border: 1px solid var(--line); background: var(--bg); font-family: var(--font-body); font-size: .7rem; font-weight: 600; color: var(--ink-soft); text-transform: uppercase; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
+  .agenda-day b { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--ink); }
+  .agenda-day:hover:not(.disabled) { border-color: var(--gold); }
+  .agenda-day.active { background: var(--green); border-color: var(--green); color: var(--cream-ink); }
+  .agenda-day.active b { color: var(--cream-ink); }
+  .agenda-day.disabled { opacity: .4; cursor: not-allowed; }
+  .agenda-slots { display: grid; grid-template-columns: repeat(5, 1fr); gap: .6rem; margin-bottom: 1.8rem; }
+  @media (max-width: 560px) { .agenda-slots { grid-template-columns: repeat(3, 1fr); } }
+  .agenda-slot { padding: .7rem .5rem; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); font-family: var(--font-body); font-size: .84rem; font-weight: 600; color: var(--ink); cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
+  .agenda-slot:hover:not(:disabled) { border-color: var(--gold); }
+  .agenda-slot.active { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+  .agenda-slot:disabled { opacity: .35; text-decoration: line-through; cursor: not-allowed; }
+  .agenda-summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 1.6rem; border-top: 1px dashed var(--line); }
+  .agenda-summary b { color: var(--ink); }
+
   /* ══════════════ TRANSFORMACIÓN ══════════════ */
   #transformacion { background: var(--bg2); }
   .trans-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.4rem 2rem; max-width: 780px; margin: 0 auto; }
@@ -283,6 +302,7 @@
         <li><a href="#servicios">Servicios</a></li>
         <li><a href="#galeria">Galería</a></li>
         <li><a href="#precios">Precios</a></li>
+        <li><a href="#agenda">Agenda</a></li>
         <li><a href="#testimonios">Testimonios</a></li>
         <li><a href="#ubicacion">Ubicación</a></li>
       </ul>
@@ -296,6 +316,7 @@
     <a href="#servicios">Servicios</a>
     <a href="#galeria">Galería</a>
     <a href="#precios">Precios</a>
+    <a href="#agenda">Agenda</a>
     <a href="#testimonios">Testimonios</a>
     <a href="#ubicacion">Ubicación</a>
     <a class="btn btn-primary" href="https://wa.me/56932954075" target="_blank" rel="noopener">Reservar cita</a>
@@ -482,6 +503,44 @@
     </div>
   </section>
 
+  <section id="agenda">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow">Agenda 24/7</span>
+        <h2>Reserva tu hora en línea</h2>
+        <p>Elige el día y la hora que más te acomode, sin escribir ni esperar respuesta.</p>
+      </div>
+      <div class="agenda-card" data-reveal>
+        <span class="agenda-badge">Vista previa · Integración con AgendaPro</span>
+        <div class="agenda-days" id="agendaDays">
+          <button class="agenda-day" data-day="Lunes 14">Lun<b>14</b></button>
+          <button class="agenda-day" data-day="Martes 15">Mar<b>15</b></button>
+          <button class="agenda-day active" data-day="Miércoles 16">Mié<b>16</b></button>
+          <button class="agenda-day" data-day="Jueves 17">Jue<b>17</b></button>
+          <button class="agenda-day" data-day="Viernes 18">Vie<b>18</b></button>
+          <button class="agenda-day" data-day="Sábado 19">Sáb<b>19</b></button>
+          <button class="agenda-day disabled" data-day="Domingo 20" disabled>Dom<b>20</b></button>
+        </div>
+        <div class="agenda-slots" id="agendaSlots">
+          <button class="agenda-slot">10:00</button>
+          <button class="agenda-slot">11:00</button>
+          <button class="agenda-slot" disabled>12:00</button>
+          <button class="agenda-slot">13:00</button>
+          <button class="agenda-slot" disabled>14:00</button>
+          <button class="agenda-slot active">15:00</button>
+          <button class="agenda-slot">16:00</button>
+          <button class="agenda-slot">17:00</button>
+          <button class="agenda-slot">18:00</button>
+          <button class="agenda-slot">19:00</button>
+        </div>
+        <div class="agenda-summary">
+          <div><b>Tu selección:</b> <span id="agendaSummaryText">Miércoles 16 · 15:00</span></div>
+          <a class="btn btn-primary" id="agendaConfirmBtn" href="https://wa.me/56932954075" target="_blank" rel="noopener">Confirmar reserva →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="transformacion">
     <div class="wrap">
       <div class="sec-head" data-reveal>
@@ -618,7 +677,7 @@
       <div class="brand">
         <img class="brand-logo" src="/assets/demo-salon/logo.webp" alt="Mujer Bonita — espacio de belleza" />
       </div>
-      <ul><li><a href="#servicios">Servicios</a></li><li><a href="#galeria">Galería</a></li><li><a href="#precios">Precios</a></li><li><a href="#testimonios">Testimonios</a></li><li><a href="#ubicacion">Ubicación</a></li></ul>
+      <ul><li><a href="#servicios">Servicios</a></li><li><a href="#galeria">Galería</a></li><li><a href="#precios">Precios</a></li><li><a href="#agenda">Agenda</a></li><li><a href="#testimonios">Testimonios</a></li><li><a href="#ubicacion">Ubicación</a></li></ul>
       <div>Demo creada por Automalytics</div>
     </div>
   </footer>
@@ -634,6 +693,39 @@
   hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
   mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
   mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  const agendaDays = document.querySelectorAll('.agenda-day');
+  const agendaSlots = document.querySelectorAll('.agenda-slot');
+  const agendaSummaryText = document.getElementById('agendaSummaryText');
+  const agendaConfirmBtn = document.getElementById('agendaConfirmBtn');
+
+  function updateAgendaSummary() {
+    const activeDay = document.querySelector('.agenda-day.active');
+    const activeSlot = document.querySelector('.agenda-slot.active');
+    const dayLabel = activeDay ? activeDay.dataset.day : '';
+    const timeLabel = activeSlot ? activeSlot.textContent : '';
+    agendaSummaryText.textContent = dayLabel && timeLabel ? `${dayLabel} · ${timeLabel}` : 'Elige un día y una hora';
+    const msg = encodeURIComponent(`Hola! Quiero reservar para el ${dayLabel} a las ${timeLabel}`);
+    agendaConfirmBtn.href = dayLabel && timeLabel ? `https://wa.me/56932954075?text=${msg}` : 'https://wa.me/56932954075';
+  }
+
+  agendaDays.forEach(day => {
+    day.addEventListener('click', () => {
+      if (day.classList.contains('disabled')) return;
+      agendaDays.forEach(d => d.classList.remove('active'));
+      day.classList.add('active');
+      updateAgendaSummary();
+    });
+  });
+  agendaSlots.forEach(slot => {
+    slot.addEventListener('click', () => {
+      if (slot.disabled) return;
+      agendaSlots.forEach(s => s.classList.remove('active'));
+      slot.classList.add('active');
+      updateAgendaSummary();
+    });
+  });
+  updateAgendaSummary();
 
   const revealEls = document.querySelectorAll('[data-reveal]');
   const io = new IntersectionObserver((entries) => {
