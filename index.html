@@ -1968,7 +1968,11 @@
   // it the same way, guarded so a rejected/not-yet-loaded gtag is a no-op.
   document.querySelectorAll('a[href^="https://wa.me/"]').forEach(a => {
     a.addEventListener('click', () => {
-      if (typeof gtag === 'function') gtag('event', 'contact_whatsapp', { link_location: a.className || 'unknown' });
+      if (typeof gtag !== 'function') return;
+      gtag('event', 'contact_whatsapp', { link_location: a.className || 'unknown' });
+      // Native Google Ads conversion action (separate from the GA4 event above).
+      // No navigation-delay wrapper needed: these links open in a new tab.
+      gtag('event', 'conversion_event_contact');
     });
   });
 </script>
