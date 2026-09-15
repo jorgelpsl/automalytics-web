@@ -8,155 +8,173 @@
 <meta name="robots" content="noindex, follow" />
 <link rel="icon" type="image/webp" href="/assets/logo.webp" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-<meta name="theme-color" content="#0A1F38" />
+<meta name="theme-color" content="#FAF6F0" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,450;9..144,560;9..144,650;9..144,760&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { background: #0A1F38; }
+  html, body { background: #FAF6F0; }
 
   /* ── top bar (back to Automalytics) ── */
   .bar {
     display: flex; align-items: center; justify-content: space-between;
-    padding: .7rem 1.25rem; background: #081A2E; border-bottom: 1px solid rgba(255,255,255,.08);
+    padding: .7rem 1.25rem; background: #14140F; border-bottom: 1px solid rgba(255,255,255,.08);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; position: relative; z-index: 50;
   }
-  .bar a { color: #5B8CDB; text-decoration: none; font-weight: 700; font-size: .85rem; display: flex; align-items: center; gap: .4rem; }
+  .bar a { color: #FAF6F0; text-decoration: none; font-weight: 700; font-size: .85rem; display: flex; align-items: center; gap: .4rem; }
   .bar a:hover { text-decoration: underline; }
-  .bar span { color: #7C8FB3; font-size: .78rem; }
+  .bar span { color: #948F86; font-size: .78rem; }
 
   /* ── site tokens ── */
   :root {
-    --bg: #0A1F38; --bg2: #0F3460; --card: #123A63;
-    --white: #EEF2FF; --gray: #9FAFCB;
-    --accent: #5B8CDB; --accent2: #EEF2FF; --electric: #5B8CDB;
-    --line: rgba(238,242,255,.12);
+    --bg: #FAF6F0; --bg2: #F1EAE0; --dark: #14140F; --dark2: #1D1C17;
+    --ink: #17171A; --ink-soft: #68655F;
+    --white: #FFFFFF; --line: rgba(23,23,22,.12);
   }
-  body { font-family: 'Work Sans', sans-serif; background: var(--bg); color: var(--white); line-height: 1.65; }
-  h1, h2, h3, h4 { font-family: 'Fraunces', serif; font-weight: 650; line-height: 1.02; letter-spacing: -.01em; }
-  h1 em, h2 em, h4 em { font-style: italic; font-weight: 450; color: var(--accent); }
+  body { font-family: 'Hanken Grotesk', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.65; }
+  h1, h2, h3, h4 { font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; line-height: 1.06; letter-spacing: -.02em; }
   a { color: inherit; text-decoration: none; }
   img, svg { max-width: 100%; display: block; }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
   section { padding: 5.5rem 0; }
-  .eyebrow { display: inline-block; font-size: .76rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: .8rem; }
-  .btn { display: inline-flex; align-items: center; gap: .5rem; font-weight: 600; font-size: .95rem; padding: .95rem 1.8rem; border-radius: 10px; border: 1px solid transparent; cursor: pointer; }
-  .btn-primary { background: var(--accent); color: #0A1F38; }
-  .btn-primary:hover { filter: brightness(1.08); }
-  .btn-ghost { border-color: var(--line); color: var(--white); background: rgba(238,242,255,.04); }
-  .btn-ghost:hover { border-color: var(--accent); }
+  .eyebrow { display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: .9rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; font-weight: 600; font-size: .95rem; padding: .95rem 1.7rem; border-radius: 50px; border: 1px solid transparent; cursor: pointer; }
+  .btn-primary { background: var(--ink); color: var(--white); }
+  .btn-primary:hover { filter: brightness(1.2); }
+  .btn-light { background: var(--white); color: var(--dark); }
+  .btn-light:hover { filter: brightness(.96); }
+  .btn-ghost { border-color: var(--line); color: var(--ink); background: transparent; }
+  .btn-ghost:hover { border-color: var(--ink); }
 
   /* ── nav ── */
-  header.site-nav { position: sticky; top: 0; z-index: 40; background: rgba(10,31,56,.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-  .nav-pill {
-    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    max-width: 1180px; margin: 0 auto; padding: .9rem 1.5rem;
-  }
-  .nav-logo { display: flex; align-items: center; gap: .65rem; font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 560; }
-  .nav-logo .mark { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'Fraunces', serif; font-weight: 650; font-size: .82rem; color: #0A1F38; }
-  .nav-logo .name small { display: block; font-family: 'Work Sans', sans-serif; font-size: .62rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--gray); margin-top: .1rem; }
+  header.site-nav { position: sticky; top: 0; z-index: 40; background: rgba(250,246,240,.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .nav-pill { display: flex; align-items: center; justify-content: space-between; gap: 1rem; max-width: 1180px; margin: 0 auto; padding: .9rem 1.5rem; }
+  .nav-logo { display: flex; align-items: center; gap: .65rem; font-weight: 700; font-size: 1.02rem; }
+  .nav-logo .mark { width: 32px; height: 32px; border-radius: 50%; background: var(--ink); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 800; font-size: .78rem; color: var(--white); }
+  .nav-logo .name small { display: block; font-weight: 500; font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin-top: .1rem; }
   .nav-links { display: flex; gap: 1.8rem; list-style: none; font-size: .87rem; font-weight: 500; }
-  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover { color: var(--ink-soft); }
   @media (max-width: 860px) { .nav-links { display: none; } }
   @media (max-width: 460px) { .nav-pill .btn-primary { padding: .65rem 1.1rem; font-size: .8rem; } }
 
   /* ── hero ── */
-  .hero { position: relative; overflow: hidden; padding: 0; min-height: 92vh; display: flex; align-items: center; }
-  .hero-bg { position: absolute; inset: 0; z-index: 0; }
-  .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; filter: saturate(1.15) contrast(1.05) brightness(.82); }
-  .hero-bg::after { content: ""; position: absolute; inset: 0; background:
-      linear-gradient(100deg, rgba(10,31,56,.95) 0%, rgba(10,31,56,.55) 38%, rgba(15,52,96,.25) 68%, rgba(10,31,56,.55) 100%),
-      linear-gradient(0deg, rgba(10,31,56,.9) 0%, rgba(10,31,56,0) 40%); }
-  .hero-wrap { position: relative; z-index: 1; width: 100%; padding: 7rem 1.5rem 5rem; }
-  .hero-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr .9fr; gap: 2.5rem; align-items: end; }
-  @media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; } }
-  .hero h1 { font-size: clamp(2.5rem, 6vw, 4.6rem); }
-  .hero p.lead { color: var(--white); opacity: .82; font-size: 1.08rem; max-width: 44ch; margin: 1.3rem 0 2rem; }
-  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
-  .swatches { display: flex; gap: 5px; margin-bottom: 1.4rem; }
-  .swatches span { width: 13px; height: 13px; border-radius: 3px; }
-  .swatches span:nth-child(1) { background: var(--accent2); margin-top: 9px; }
-  .swatches span:nth-child(2) { background: var(--accent); }
+  .hero { padding: 3rem 0 0; }
+  .hero-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.6rem; }
+  .hero-script { font-family: 'Caveat', cursive; font-size: 1.7rem; color: var(--ink); text-align: right; }
+  .hero-script .rule { width: 64px; height: 2px; background: var(--ink); margin: .3rem 0 0 auto; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: 2.5rem; align-items: center; }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero h1 { font-size: clamp(2.3rem, 5vw, 3.5rem); max-width: 11ch; }
+  .hero p.lead { color: var(--ink-soft); font-size: 1.05rem; max-width: 38ch; margin: 1.3rem 0 1.9rem; }
+  .hero-actions { display: flex; gap: .9rem; flex-wrap: wrap; align-items: center; margin-bottom: 2.2rem; }
+  .trust-row { display: flex; gap: 1.8rem; flex-wrap: wrap; }
+  .trust-row div { display: flex; align-items: center; gap: .55rem; font-size: .82rem; font-weight: 600; }
+  .trust-row .ic { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-  .hero-card { position: relative; background: var(--accent2); color: #0A1F38; border-radius: 18px; padding: 1.8rem 1.9rem; max-width: 340px; margin-left: auto; box-shadow: 0 30px 60px -20px rgba(0,0,0,.6); transform: rotate(-1.2deg); }
-  .hero-card b { font-family: 'Fraunces', serif; font-weight: 650; font-size: 1.15rem; display: block; margin-bottom: .5rem; }
-  .hero-card p { font-size: .88rem; opacity: .85; }
-  .hero-card2 { background: var(--card); color: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 1.4rem 1.6rem; max-width: 300px; margin: -1.6rem 1.5rem 0 auto; position: relative; box-shadow: 0 24px 50px -18px rgba(0,0,0,.55); transform: rotate(1deg); display: flex; gap: .7rem; align-items: flex-start; }
-  .hero-card2 .ic { flex-shrink: 0; width: 30px; height: 30px; border-radius: 8px; background: rgba(91,140,219,.16); border: 1px solid rgba(91,140,219,.35); display: flex; align-items: center; justify-content: center; }
-  .hero-card2 b { font-size: .86rem; display: block; }
-  .hero-card2 span { color: var(--gray); font-size: .78rem; }
+  .hero-photo { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 4/5; }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 30%); mask-image: linear-gradient(90deg, transparent 0%, black 30%); }
+  @media (max-width: 900px) { .hero-photo img { -webkit-mask-image: none; mask-image: none; } .hero-photo { aspect-ratio: 4/3; } }
+  .hero-photo .cap { position: absolute; right: 1.4rem; bottom: 1.4rem; text-align: right; font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--white); line-height: 1.6; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
 
   /* ── generic section header ── */
-  .sec-head { max-width: 620px; margin-bottom: 2.6rem; }
+  .sec-head { max-width: 640px; margin-bottom: 2.8rem; }
   .sec-head h2 { font-size: clamp(1.85rem, 3.6vw, 2.5rem); }
-  .sec-head p { color: var(--gray); margin-top: .7rem; }
+  .sec-head p { color: var(--ink-soft); margin-top: .8rem; }
+  .sec-head-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2.8rem; }
+  .sec-head-row .sec-head { margin-bottom: 0; }
+  .sec-link { font-weight: 700; font-size: .9rem; display: inline-flex; gap: .4rem; align-items: center; flex-shrink: 0; }
+
+  /* ── servicios ── */
+  #servicios { background: var(--bg2); }
+  .servicios-top { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: end; margin-bottom: 3rem; }
+  @media (max-width: 780px) { .servicios-top { grid-template-columns: 1fr; } }
+  .servicios-top p { color: var(--ink-soft); }
+  .svc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; }
+  @media (max-width: 900px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .svc-grid { grid-template-columns: 1fr; } }
+  .svc-item { border-top: 1px solid var(--line); padding-top: 1.4rem; }
+  .svc-item .ic { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; margin-bottom: 1.1rem; }
+  .svc-item h4 { font-size: 1.02rem; margin-bottom: .35rem; }
+  .svc-item span { color: var(--ink-soft); font-size: .85rem; }
 
   /* ── vehicle stats ── */
   .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.2rem; margin: 0 0 2.8rem; }
   @media (max-width: 700px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
   .stats-row div { border-top: 1px solid var(--line); padding-top: .9rem; }
-  .stats-row div b { font-family: 'Fraunces', serif; font-weight: 560; font-size: 1.9rem; color: var(--accent); display: block; }
-  .stats-row div span { color: var(--gray); font-size: .8rem; }
+  .stats-row div b { font-size: 1.9rem; font-weight: 800; display: block; }
+  .stats-row div span { color: var(--ink-soft); font-size: .8rem; }
 
   /* ── vehicle gallery ── */
   .veh-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
   @media (max-width: 860px) { .veh-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 560px) { .veh-grid { grid-template-columns: 1fr; } }
-  .veh-card { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/3; border: 1px solid var(--line); background: var(--card); }
+  .veh-card { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/3; border: 1px solid var(--line); background: var(--white); }
   .veh-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .veh-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10,31,56,.82) 0%, rgba(10,31,56,0) 48%); }
-  .veh-label { position: absolute; left: .9rem; bottom: .8rem; z-index: 2; font-weight: 600; font-size: .88rem; }
+  .veh-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(20,20,15,.78) 0%, rgba(20,20,15,0) 46%); }
+  .veh-label { position: absolute; left: .9rem; bottom: .8rem; z-index: 2; font-weight: 700; font-size: .88rem; color: var(--white); }
 
-  /* ── rutas / dos columnas ── */
-  #rutas { background: var(--bg2); }
-  .rutas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
-  @media (max-width: 780px) { .rutas-grid { grid-template-columns: 1fr; } }
-  .ruta-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 2rem; }
-  .ruta-card .tag { display: inline-block; font-size: .74rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--electric); background: rgba(91,140,219,.1); border: 1px solid rgba(91,140,219,.28); border-radius: 50px; padding: .3rem .75rem; margin-bottom: 1rem; }
-  .ruta-card h3 { font-size: 1.35rem; margin-bottom: .9rem; }
-  .ruta-card ul { list-style: none; }
-  .ruta-card li { padding: .55rem 0; border-top: 1px solid var(--line); font-size: .92rem; color: var(--gray); display: flex; gap: .6rem; }
-  .ruta-card li:first-child { border-top: none; }
-  .ruta-card li::before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  /* ── rutas (illustrated cards, no stock photos) ── */
+  .rutas-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
+  @media (max-width: 900px) { .rutas-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .rutas-grid { grid-template-columns: 1fr; } }
+  .ruta-card { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 3/4; background: linear-gradient(160deg, var(--dark2), var(--dark)); padding: 1.3rem; display: flex; flex-direction: column; justify-content: space-between; }
+  .ruta-card:nth-child(1) { background: linear-gradient(160deg, #26241E, #14140F); }
+  .ruta-card:nth-child(2) { background: linear-gradient(160deg, #1B2126, #14140F); }
+  .ruta-card:nth-child(3) { background: linear-gradient(160deg, #23201A, #14140F); }
+  .ruta-card:nth-child(4) { background: linear-gradient(160deg, #201E24, #14140F); }
+  .ruta-card .ic { width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); display: flex; align-items: center; justify-content: center; }
+  .ruta-card h4 { color: var(--white); font-size: 1.05rem; }
+  .ruta-card span { color: rgba(255,255,255,.6); font-size: .8rem; }
 
-  /* ── por qué (accordion) ── */
+  /* ── por qué (quote) ── */
+  #por-que { background: var(--bg2); }
   .why-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 2.8rem; align-items: center; }
   @media (max-width: 900px) { .why-grid { grid-template-columns: 1fr; } }
   .quote-card { position: relative; border-radius: 18px; aspect-ratio: 4/5; overflow: hidden; }
-  .quote-card img { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.1) brightness(.6); }
-  .quote-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(200deg, rgba(15,52,96,.5), rgba(10,31,56,.92)); }
+  .quote-card img { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.05) brightness(.55); }
+  .quote-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(200deg, rgba(29,28,23,.4), rgba(20,20,15,.94)); }
   .quote-overlay { position: absolute; inset: 0; z-index: 1; padding: 2.2rem; display: flex; flex-direction: column; justify-content: flex-end; }
-  .quote-mark { font-family: 'Fraunces', serif; font-size: 3.5rem; color: var(--accent2); line-height: .6; margin-bottom: .4rem; }
-  .quote-overlay p { font-family: 'Fraunces', serif; font-style: italic; font-weight: 450; font-size: 1.3rem; line-height: 1.32; }
-  .quote-by { display: block; margin-top: 1.1rem; font-family: 'Work Sans', sans-serif; font-style: normal; font-size: .82rem; color: var(--gray); }
+  .quote-mark { font-family: 'Caveat', cursive; font-size: 3.2rem; color: var(--white); line-height: .5; margin-bottom: .5rem; }
+  .quote-overlay p { color: var(--white); font-size: 1.2rem; font-weight: 600; line-height: 1.35; letter-spacing: -.01em; }
+  .quote-by { display: block; margin-top: 1.1rem; font-size: .82rem; color: rgba(255,255,255,.6); }
   .accordion-item { border-top: 1px solid var(--line); padding: 1.15rem 0; cursor: pointer; }
   .accordion-item:first-child { border-top: none; }
   .accordion-item .head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-  .accordion-item h4 { font-family: 'Work Sans', sans-serif; font-weight: 700; font-size: 1.02rem; }
-  .accordion-item .chev { color: var(--accent); font-size: 1.1rem; transition: transform .2s; flex-shrink: 0; }
+  .accordion-item h4 { font-weight: 700; font-size: 1.02rem; }
+  .accordion-item .chev { color: var(--ink-soft); font-size: 1.1rem; transition: transform .2s; flex-shrink: 0; }
   .accordion-item.open .chev { transform: rotate(45deg); }
-  .accordion-item p { color: var(--gray); font-size: .88rem; margin-top: .6rem; max-width: 46ch; display: none; }
+  .accordion-item p { color: var(--ink-soft); font-size: .88rem; margin-top: .6rem; max-width: 46ch; display: none; }
   .accordion-item.open p { display: block; }
 
   /* ── cómo reservar ── */
-  #reservar { background: var(--bg2); }
   .steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
   @media (max-width: 780px) { .steps-row { grid-template-columns: 1fr; } }
-  .step-card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1.8rem; }
-  .step-card .n { font-family: 'Fraunces', serif; font-weight: 560; font-size: 1.6rem; color: var(--accent); display: block; margin-bottom: .8rem; }
+  .step-card { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 1.8rem; }
+  .step-card .n { font-size: 1.6rem; font-weight: 800; display: block; margin-bottom: .8rem; }
   .step-card h4 { font-size: 1.05rem; margin-bottom: .5rem; }
-  .step-card p { color: var(--gray); font-size: .88rem; }
+  .step-card p { color: var(--ink-soft); font-size: .88rem; }
 
-  /* ── cta final ── */
-  .cta-final { text-align: center; }
-  .cta-final h2 { font-size: clamp(1.9rem, 4.6vw, 2.7rem); margin-bottom: 1rem; }
-  .cta-final p { color: var(--gray); margin-bottom: 2rem; max-width: 46ch; margin-inline: auto; }
+  /* ── cta final (dark) ── */
+  .cta-final { position: relative; background: var(--dark); color: var(--white); overflow: hidden; }
+  .cta-final-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; position: relative; z-index: 1; }
+  @media (max-width: 860px) { .cta-final-grid { grid-template-columns: 1fr; } }
+  .cta-final h2 { font-size: clamp(2rem, 4.6vw, 2.9rem); margin-bottom: 1rem; }
+  .cta-final p { color: rgba(255,255,255,.65); margin-bottom: 2rem; max-width: 40ch; }
+  .cta-photo { border-radius: 18px; overflow: hidden; aspect-ratio: 4/3; }
+  .cta-photo img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.85); }
 
   footer { padding: 2.5rem 0; border-top: 1px solid var(--line); }
-  .foot-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; color: var(--gray); font-size: .85rem; }
+  .foot-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; color: var(--ink-soft); font-size: .85rem; }
   .foot-grid ul { list-style: none; display: flex; gap: 1.4rem; }
-  .foot-grid ul a:hover { color: var(--accent); }
+  .foot-grid ul a:hover { color: var(--ink); }
+
+  /* ── trust footer row ── */
+  .trust-final { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4rem; text-align: center; }
+  @media (max-width: 700px) { .trust-final { grid-template-columns: repeat(2, 1fr); } }
+  .trust-final .ic { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; margin: 0 auto .8rem; }
+  .trust-final h4 { font-size: .98rem; margin-bottom: .25rem; }
+  .trust-final span { color: var(--ink-soft); font-size: .82rem; }
 
   .wa-float { position: fixed; bottom: 1.4rem; right: 1.4rem; width: 58px; height: 58px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; z-index: 60; box-shadow: 0 6px 24px rgba(37,211,102,.4); }
 </style>
@@ -174,8 +192,8 @@
         <div class="name">Daniel Vega<small>Traslados privados</small></div>
       </div>
       <ul class="nav-links">
+        <li><a href="#servicios">Servicios</a></li>
         <li><a href="#vehiculo">El vehículo</a></li>
-        <li><a href="#rutas">Rutas</a></li>
         <li><a href="#reservar">Cómo reservar</a></li>
       </ul>
       <a class="btn btn-primary" style="padding:.7rem 1.3rem;font-size:.85rem;" href="https://wa.me/56932954075" target="_blank" rel="noopener">Reservar</a>
@@ -183,30 +201,62 @@
   </header>
 
   <section class="hero">
-    <div class="hero-bg">
-      <img src="/assets/demo-danielvega/exterior-side.webp" alt="Changan Eado Plus 2026 de Daniel Vega" loading="eager" fetchpriority="high" />
-    </div>
-    <div class="hero-wrap">
+    <div class="wrap">
+      <div class="hero-top">
+        <span class="eyebrow" style="margin-bottom:0;">Tu destino, mi compromiso</span>
+        <div class="hero-script">Viaja diferente<div class="rule"></div></div>
+      </div>
       <div class="hero-grid">
         <div>
-          <span class="eyebrow">Traslados privados · Santiago y regiones</span>
-          <h1>Silencio en la ciudad.<br><em>Sin límites</em> en la carretera.</h1>
-          <p class="lead">Te llevo dentro de Santiago o a otras ciudades en un sedán 2026 con motor híbrido enchufable: modo 100% eléctrico para el día a día, y respaldo a combustión para que un viaje largo nunca dependa de encontrar un cargador.</p>
+          <h1>Traslados privados en Santiago y más allá</h1>
+          <p class="lead">Viaja con comodidad, seguridad y estilo. Te llevo dentro y fuera de Santiago, para que solo te preocupes por disfrutar el camino.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="https://wa.me/56932954075" target="_blank" rel="noopener">Cotizar mi viaje →</a>
-            <a class="btn-ghost btn" href="#vehiculo" style="background:rgba(238,242,255,.08); border-color:rgba(238,242,255,.25);">Ver el vehículo</a>
+            <a class="btn btn-primary" href="https://wa.me/56932954075" target="_blank" rel="noopener">Reservar ahora →</a>
+            <a class="btn btn-ghost" href="#servicios">Ver servicios</a>
+          </div>
+          <div class="trust-row">
+            <div><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17171A" stroke-width="1.8"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></span>Comodidad Premium</div>
+            <div><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17171A" stroke-width="1.8"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 10 4.6-.6 8-5 8-10V5l-8-3Z"/></svg></span>Viajes Seguros</div>
+            <div><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#17171A" stroke-width="1.8"><path d="M13 2 4 14h6l-2 8 10-13h-6l1-7Z"/></svg></span>Híbrido Enchufable</div>
           </div>
         </div>
+        <div class="hero-photo">
+          <img src="/assets/demo-danielvega/hero.webp" alt="Changan Eado Plus 2026 de Daniel Vega" loading="eager" fetchpriority="high" />
+          <div class="cap">Moderno<br>Silencioso<br>Sustentable</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicios">
+    <div class="wrap">
+      <div class="servicios-top">
         <div>
-          <div class="swatches"><span></span><span></span></div>
-          <div class="hero-card">
-            <b>Sabes quién te lleva</b>
-            <p>Un solo conductor en cada viaje: yo. Coordinamos todo directo por WhatsApp, sin intermediarios.</p>
-          </div>
-          <div class="hero-card2">
-            <div class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-2 8 10-13h-6l1-7Z" fill="#5B8CDB"/></svg></div>
-            <div><b>Híbrido enchufable 2026</b><span>1.042 km de autonomía combinada</span></div>
-          </div>
+          <span class="eyebrow">Nuestros servicios</span>
+          <h2>Soluciones de transporte a tu medida</h2>
+        </div>
+        <p>Traslados privados, viajes ejecutivos, salidas a regiones y más. Tú eliges el destino, yo te llevo.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-item">
+          <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17171A" stroke-width="1.6"><path d="M2 16 22 8l-6 14-3-7-7-3Z"/></svg></span>
+          <h4>Traslados al Aeropuerto</h4>
+          <span>Puntualidad garantizada</span>
+        </div>
+        <div class="svc-item">
+          <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17171A" stroke-width="1.6"><path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 8 12 8 12s8-6.6 8-12c0-4.4-3.6-8-8-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg></span>
+          <h4>Viajes Dentro de Santiago</h4>
+          <span>Reuniones, eventos, ciudad</span>
+        </div>
+        <div class="svc-item">
+          <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17171A" stroke-width="1.6"><path d="M4 18h16M4 18l3-9h10l3 9M9 9V5h6v4"/></svg></span>
+          <h4>Viajes a Regiones</h4>
+          <span>Valparaíso, Viña, Rancagua</span>
+        </div>
+        <div class="svc-item">
+          <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17171A" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15.5 14.2c2.6.3 4.5 2.5 4.5 5.1"/></svg></span>
+          <h4>Transporte Ejecutivo</h4>
+          <span>Empresas y particulares</span>
         </div>
       </div>
     </div>
@@ -216,7 +266,7 @@
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">El vehículo</span>
-        <h2>Un sedán <em>2026</em>, cuidado y cómodo</h2>
+        <h2>Un sedán 2026, cuidado y cómodo</h2>
         <p>Mismo auto, mismo conductor, en cada viaje. Estas son las fotos reales del vehículo en el que viajarás.</p>
       </div>
       <div class="stats-row">
@@ -235,33 +285,31 @@
     </div>
   </section>
 
-  <section id="rutas">
+  <section id="rutas" style="background:var(--bg2);">
     <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow">Rutas y servicios</span>
-        <h2>Dentro o fuera de <em>Santiago</em></h2>
-        <p>Coordinamos el viaje directamente por WhatsApp: fecha, origen, destino y hora de encuentro.</p>
+      <div class="sec-head-row">
+        <div class="sec-head">
+          <span class="eyebrow">Rutas frecuentes</span>
+          <h2>Dentro o fuera de Santiago</h2>
+        </div>
+        <a class="sec-link" href="https://wa.me/56932954075" target="_blank" rel="noopener">Coordinar un viaje →</a>
       </div>
       <div class="rutas-grid">
         <div class="ruta-card">
-          <span class="tag">Dentro de Santiago</span>
-          <h3>Traslados en la ciudad</h3>
-          <ul>
-            <li>Traslados al aeropuerto</li>
-            <li>Movilización para reuniones o eventos</li>
-            <li>Traslados ejecutivos punto a punto</li>
-            <li>Viajes nocturnos, en modo eléctrico y silencioso</li>
-          </ul>
+          <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M4 21V10h4v11M10 21V6h4v15M16 21v-8h4v8M3 21h18"/></svg></span>
+          <div><h4>Santiago</h4><span>Traslados en la ciudad</span></div>
         </div>
         <div class="ruta-card">
-          <span class="tag">Fuera de Santiago</span>
-          <h3>Viajes a otras ciudades</h3>
-          <ul>
-            <li>Valparaíso y Viña del Mar</li>
-            <li>Rancagua y alrededores</li>
-            <li>Ida y vuelta el mismo día</li>
-            <li>Viajes con estadía, coordinados contigo</li>
-          </ul>
+          <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M2 18c2-3 4-3 6 0s4 3 6 0 4-3 6 0M3 12l5-8 4 6 3-4 6 6"/></svg></span>
+          <div><h4>Valparaíso &amp; Viña</h4><span>Ida y vuelta el mismo día</span></div>
+        </div>
+        <div class="ruta-card">
+          <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M3 20h18M5 20V10l7-6 7 6v10"/></svg></span>
+          <div><h4>Rancagua</h4><span>Y alrededores</span></div>
+        </div>
+        <div class="ruta-card">
+          <span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38c1.4.77 3 1.2 4.79 1.2 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Z"/></svg></span>
+          <div><h4>¿Otro destino?</h4><span>Coordinamos por WhatsApp</span></div>
         </div>
       </div>
     </div>
@@ -279,11 +327,11 @@
       </div>
       <div>
         <span class="eyebrow">Por qué viajar conmigo</span>
-        <h2 style="margin-bottom:1.2rem;">Sabes quién te <em>lleva</em></h2>
-        <div class="accordion-item open"><div class="head"><h4>Un solo conductor, <em>siempre yo</em></h4><span class="chev">+</span></div><p>No es una app con conductores distintos cada vez. Coordinas conmigo directamente y soy yo quien te lleva, de punto a punto.</p></div>
-        <div class="accordion-item"><div class="head"><h4>Vehículo <em>2026 con garantía vigente</em></h4><span class="chev">+</span></div><p>Garantía de fábrica de 5 años en el vehículo y 8 años en la batería híbrida — un auto cuidado, no un vehículo de arriendo genérico.</p></div>
-        <div class="accordion-item"><div class="head"><h4>Espacio real <em>para tu equipaje</em></h4><span class="chev">+</span></div><p>Maletero amplio, útil para viajes de varios días, no solo para una maleta de mano.</p></div>
-        <div class="accordion-item"><div class="head"><h4>Coordinación <em>directa por WhatsApp</em></h4><span class="chev">+</span></div><p>Sin centrales de reserva ni esperas — me escribes, confirmamos el viaje y listo.</p></div>
+        <h2 style="margin-bottom:1.2rem;">Sabes quién te lleva</h2>
+        <div class="accordion-item open"><div class="head"><h4>Un solo conductor, siempre yo</h4><span class="chev">+</span></div><p>No es una app con conductores distintos cada vez. Coordinas conmigo directamente y soy yo quien te lleva, de punto a punto.</p></div>
+        <div class="accordion-item"><div class="head"><h4>Vehículo 2026 con garantía vigente</h4><span class="chev">+</span></div><p>Garantía de fábrica de 5 años en el vehículo y 8 años en la batería híbrida — un auto cuidado, no un vehículo de arriendo genérico.</p></div>
+        <div class="accordion-item"><div class="head"><h4>Espacio real para tu equipaje</h4><span class="chev">+</span></div><p>Maletero amplio, útil para viajes de varios días, no solo para una maleta de mano.</p></div>
+        <div class="accordion-item"><div class="head"><h4>Coordinación directa por WhatsApp</h4><span class="chev">+</span></div><p>Sin centrales de reserva ni esperas — me escribes, confirmamos el viaje y listo.</p></div>
       </div>
     </div>
   </section>
@@ -292,7 +340,7 @@
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">Cómo reservar</span>
-        <h2>Tres pasos, <em>por WhatsApp</em></h2>
+        <h2>Tres pasos, por WhatsApp</h2>
       </div>
       <div class="steps-row">
         <div class="step-card"><span class="n">01</span><h4>Escríbeme</h4><p>Cuéntame fecha, origen, destino y cuántas personas viajan.</p></div>
@@ -303,13 +351,30 @@
   </section>
 
   <section class="cta-final">
-    <div class="wrap"><h2>¿Necesitas un traslado?</h2><p>Escríbeme por WhatsApp y coordinamos tu viaje dentro o fuera de Santiago.</p><a class="btn btn-primary" href="https://wa.me/56932954075" target="_blank" rel="noopener">Escribir por WhatsApp →</a></div>
+    <div class="wrap cta-final-grid">
+      <div>
+        <span class="eyebrow" style="color:rgba(255,255,255,.55);">Haz tu reserva</span>
+        <h2>Tu próximo viaje comienza aquí</h2>
+        <p>Escríbeme por WhatsApp y te respondo con la cotización de tu viaje en minutos.</p>
+        <a class="btn btn-light" href="https://wa.me/56932954075" target="_blank" rel="noopener">Reservar ahora →</a>
+      </div>
+      <div class="cta-photo"><img src="/assets/demo-danielvega/exterior-rear.webp" alt="Changan Eado Plus 2026, vista trasera de noche" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap trust-final">
+      <div><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17171A" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><h4>Puntualidad</h4><span>Tu tiempo es importante</span></div>
+      <div><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17171A" stroke-width="1.6"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 10 4.6-.6 8-5 8-10V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><h4>Seguridad</h4><span>Viajes con tranquilidad</span></div>
+      <div><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17171A" stroke-width="1.6"><path d="m12 2 3 6.5 7 1-5 5 1.5 7L12 18l-6.5 3.5L7 14.5l-5-5 7-1Z"/></svg></span><h4>Atención directa</h4><span>Coordinación personalizada</span></div>
+      <div><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17171A" stroke-width="1.6"><path d="M13 2 4 14h6l-2 8 10-13h-6l1-7Z"/></svg></span><h4>Sustentable</h4><span>Movilidad más limpia</span></div>
+    </div>
   </section>
 
   <footer>
     <div class="wrap foot-grid">
       <div class="nav-logo"><div class="mark" style="width:28px;height:28px;font-size:.7rem;">DV</div>Daniel Vega</div>
-      <ul><li><a href="#vehiculo">El vehículo</a></li><li><a href="#rutas">Rutas</a></li><li><a href="#reservar">Cómo reservar</a></li></ul>
+      <ul><li><a href="#servicios">Servicios</a></li><li><a href="#vehiculo">El vehículo</a></li><li><a href="#reservar">Cómo reservar</a></li></ul>
       <div>Demo creada por Automalytics</div>
     </div>
   </footer>
