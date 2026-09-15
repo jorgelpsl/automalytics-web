@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Demo: Daniel Vega Melillan — Automalytics</title>
+<meta name="description" content="Ejemplo de sitio web hecho por Automalytics para un servicio de traslados privados con conductor." />
+<meta name="robots" content="noindex, follow" />
+<link rel="icon" type="image/webp" href="/assets/logo.webp" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content="#0B0C0E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,450;9..144,560;9..144,650&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0B0C0E; }
+
+  /* ── top bar (back to Automalytics) ── */
+  .bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .7rem 1.25rem; background: #131519; border-bottom: 1px solid rgba(255,255,255,.08);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; position: relative; z-index: 50;
+  }
+  .bar a { color: #C08A52; text-decoration: none; font-weight: 700; font-size: .85rem; display: flex; align-items: center; gap: .4rem; }
+  .bar a:hover { text-decoration: underline; }
+  .bar span { color: #7D808A; font-size: .78rem; }
+
+  /* ── site tokens ── */
+  :root {
+    --bg: #0B0C0E; --bg2: #14161A; --card: #1B1E23;
+    --white: #F3F1EC; --gray: #9A9CA6;
+    --accent: #C08A52; --electric: #5FBFB3;
+    --line: rgba(243,241,236,.09);
+  }
+  body { font-family: 'Work Sans', sans-serif; background: var(--bg); color: var(--white); line-height: 1.65; }
+  h1, h2, h3, h4 { font-family: 'Fraunces', serif; font-weight: 560; line-height: 1.08; letter-spacing: -.01em; }
+  h1 em, h2 em, h4 em { font-style: italic; font-weight: 450; color: var(--accent); }
+  a { color: inherit; text-decoration: none; }
+  img, svg { max-width: 100%; display: block; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+  section { padding: 5.5rem 0; }
+  .eyebrow { display: inline-block; font-size: .76rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: .8rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; font-weight: 600; font-size: .95rem; padding: .95rem 1.8rem; border-radius: 10px; border: 1px solid transparent; cursor: pointer; }
+  .btn-primary { background: var(--accent); color: #14100A; }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-ghost { border-color: var(--line); color: var(--white); background: rgba(243,241,236,.04); }
+  .btn-ghost:hover { border-color: var(--accent); }
+
+  /* ── nav ── */
+  header.site-nav { position: sticky; top: 0; z-index: 40; background: rgba(11,12,14,.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .nav-pill {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    max-width: 1180px; margin: 0 auto; padding: .9rem 1.5rem;
+  }
+  .nav-logo { display: flex; align-items: center; gap: .65rem; font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 560; }
+  .nav-logo .mark { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'Fraunces', serif; font-weight: 650; font-size: .82rem; color: #14100A; }
+  .nav-logo .name small { display: block; font-family: 'Work Sans', sans-serif; font-size: .62rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--gray); margin-top: .1rem; }
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; font-size: .87rem; font-weight: 500; }
+  .nav-links a:hover { color: var(--accent); }
+  @media (max-width: 860px) { .nav-links { display: none; } }
+  @media (max-width: 460px) { .nav-pill .btn-primary { padding: .65rem 1.1rem; font-size: .8rem; } }
+
+  /* ── hero ── */
+  .hero { padding: 3.4rem 0 4.2rem; position: relative; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; inset: -10% -10% auto -10%; height: 70%; background: radial-gradient(50% 60% at 20% 0%, rgba(192,138,82,.14), transparent 70%); pointer-events: none; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.2rem; align-items: center; position: relative; z-index: 1; }
+  @media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero h1 { font-size: clamp(2.1rem, 4.4vw, 3.4rem); }
+  .hero p.lead { color: var(--gray); font-size: 1.05rem; max-width: 46ch; margin: 1.2rem 0 1.9rem; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  .route-line { display: flex; align-items: center; gap: .6rem; margin-top: 2.4rem; font-size: .84rem; color: var(--gray); }
+  .route-line .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .route-line .trail { flex: 1; height: 1px; background: repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 11px); min-width: 40px; max-width: 90px; }
+
+  .hero-visual { position: relative; background: linear-gradient(155deg, #17191d, #0e0f11); border: 1px solid var(--line); border-radius: 22px; padding: 1.6rem; }
+  .hero-visual img { width: 100%; border-radius: 14px; }
+  .hero-visual .badge { display: flex; gap: .8rem; align-items: flex-start; margin-top: 1.3rem; padding: 0 .3rem; }
+  .hero-visual .badge .ic { flex-shrink: 0; width: 34px; height: 34px; border-radius: 9px; background: rgba(95,191,179,.14); border: 1px solid rgba(95,191,179,.3); display: flex; align-items: center; justify-content: center; }
+  .hero-visual .badge b { font-family: 'Fraunces', serif; font-weight: 560; font-size: .98rem; }
+  .hero-visual .badge p { color: var(--gray); font-size: .82rem; margin-top: .15rem; max-width: 32ch; }
+
+  /* ── generic section header ── */
+  .sec-head { max-width: 620px; margin-bottom: 2.6rem; }
+  .sec-head h2 { font-size: clamp(1.85rem, 3.6vw, 2.5rem); }
+  .sec-head p { color: var(--gray); margin-top: .7rem; }
+
+  /* ── vehicle stats ── */
+  .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.2rem; margin: 0 0 2.8rem; }
+  @media (max-width: 700px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
+  .stats-row div { border-top: 1px solid var(--line); padding-top: .9rem; }
+  .stats-row div b { font-family: 'Fraunces', serif; font-weight: 560; font-size: 1.9rem; color: var(--accent); display: block; }
+  .stats-row div span { color: var(--gray); font-size: .8rem; }
+
+  /* ── vehicle gallery ── */
+  .veh-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  @media (max-width: 860px) { .veh-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .veh-grid { grid-template-columns: 1fr; } }
+  .veh-card { position: relative; border-radius: 14px; overflow: hidden; aspect-ratio: 4/3; border: 1px solid var(--line); background: var(--card); }
+  .veh-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .veh-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(11,12,14,.82) 0%, rgba(11,12,14,0) 48%); }
+  .veh-label { position: absolute; left: .9rem; bottom: .8rem; z-index: 2; font-weight: 600; font-size: .88rem; }
+
+  /* ── rutas / dos columnas ── */
+  #rutas { background: var(--bg2); }
+  .rutas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+  @media (max-width: 780px) { .rutas-grid { grid-template-columns: 1fr; } }
+  .ruta-card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 2rem; }
+  .ruta-card .tag { display: inline-block; font-size: .74rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--electric); background: rgba(95,191,179,.1); border: 1px solid rgba(95,191,179,.28); border-radius: 50px; padding: .3rem .75rem; margin-bottom: 1rem; }
+  .ruta-card h3 { font-size: 1.35rem; margin-bottom: .9rem; }
+  .ruta-card ul { list-style: none; }
+  .ruta-card li { padding: .55rem 0; border-top: 1px solid var(--line); font-size: .92rem; color: var(--gray); display: flex; gap: .6rem; }
+  .ruta-card li:first-child { border-top: none; }
+  .ruta-card li::before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+  /* ── por qué (accordion) ── */
+  .why-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 2.8rem; align-items: center; }
+  @media (max-width: 900px) { .why-grid { grid-template-columns: 1fr; } }
+  .why-img { border-radius: 16px; aspect-ratio: 4/3; border: 1px solid var(--line); overflow: hidden; }
+  .why-img img { width: 100%; height: 100%; object-fit: cover; }
+  .accordion-item { border-top: 1px solid var(--line); padding: 1.15rem 0; cursor: pointer; }
+  .accordion-item:first-child { border-top: none; }
+  .accordion-item .head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .accordion-item h4 { font-family: 'Work Sans', sans-serif; font-weight: 700; font-size: 1.02rem; }
+  .accordion-item .chev { color: var(--accent); font-size: 1.1rem; transition: transform .2s; flex-shrink: 0; }
+  .accordion-item.open .chev { transform: rotate(45deg); }
+  .accordion-item p { color: var(--gray); font-size: .88rem; margin-top: .6rem; max-width: 46ch; display: none; }
+  .accordion-item.open p { display: block; }
+
+  /* ── cómo reservar ── */
+  #reservar { background: var(--bg2); }
+  .steps-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  @media (max-width: 780px) { .steps-row { grid-template-columns: 1fr; } }
+  .step-card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1.8rem; }
+  .step-card .n { font-family: 'Fraunces', serif; font-weight: 560; font-size: 1.6rem; color: var(--accent); display: block; margin-bottom: .8rem; }
+  .step-card h4 { font-size: 1.05rem; margin-bottom: .5rem; }
+  .step-card p { color: var(--gray); font-size: .88rem; }
+
+  /* ── cta final ── */
+  .cta-final { text-align: center; }
+  .cta-final h2 { font-size: clamp(1.9rem, 4.6vw, 2.7rem); margin-bottom: 1rem; }
+  .cta-final p { color: var(--gray); margin-bottom: 2rem; max-width: 46ch; margin-inline: auto; }
+
+  footer { padding: 2.5rem 0; border-top: 1px solid var(--line); }
+  .foot-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; color: var(--gray); font-size: .85rem; }
+  .foot-grid ul { list-style: none; display: flex; gap: 1.4rem; }
+  .foot-grid ul a:hover { color: var(--accent); }
+
+  .wa-float { position: fixed; bottom: 1.4rem; right: 1.4rem; width: 58px; height: 58px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; z-index: 60; box-shadow: 0 6px 24px rgba(37,211,102,.4); }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <a href="/">← Volver a Automalytics</a>
+    <span>Demo: Daniel Vega Melillan</span>
+  </div>
+
+  <header class="site-nav">
+    <div class="nav-pill">
+      <div class="nav-logo">
+        <div class="mark">DV</div>
+        <div class="name">Daniel Vega<small>Traslados privados</small></div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#vehiculo">El vehículo</a></li>
+        <li><a href="#rutas">Rutas</a></li>
+        <li><a href="#reservar">Cómo reservar</a></li>
+      </ul>
+      <a class="btn btn-primary" style="padding:.7rem 1.3rem;font-size:.85rem;" href="https://wa.me/56945671234" target="_blank" rel="noopener">Reservar</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Traslados privados · Santiago y regiones</span>
+        <h1>Silencio en la ciudad.<br><em>Sin límites</em> en la carretera.</h1>
+        <p class="lead">Te llevo dentro de Santiago o a otras ciudades en un sedán 2026 con motor híbrido enchufable: modo 100% eléctrico para el día a día, y respaldo a combustión para que un viaje largo nunca dependa de encontrar un cargador.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://wa.me/56945671234" target="_blank" rel="noopener">Cotizar mi viaje →</a>
+          <a class="btn-ghost btn" href="#vehiculo">Ver el vehículo</a>
+        </div>
+        <div class="route-line">
+          <span class="dot"></span><span class="trail"></span>
+          <span>Santiago</span>
+          <span class="trail"></span>
+          <span>Cualquier destino, dentro o fuera de la ciudad</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="/assets/demo-danielvega/hero.webp" alt="Changan Eado Plus 2026, sedán híbrido enchufable" loading="eager" fetchpriority="high" />
+        <div class="badge">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-2 8 10-13h-6l1-7Z" fill="#5FBFB3"/></svg></div>
+          <div>
+            <b>Changan Eado Plus 2026 · Híbrido enchufable</b>
+            <p>Conductor: Daniel Vega Melillan</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="vehiculo">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">El vehículo</span>
+        <h2>Un sedán <em>2026</em>, cuidado y cómodo</h2>
+        <p>Mismo auto, mismo conductor, en cada viaje. Estas son las fotos reales del vehículo en el que viajarás.</p>
+      </div>
+      <div class="stats-row">
+        <div><b>266 hp</b><span>Potencia combinada</span></div>
+        <div><b>120 km</b><span>Autonomía en modo eléctrico</span></div>
+        <div><b>1.042 km</b><span>Autonomía total combinada</span></div>
+        <div><b>2026</b><span>Año del vehículo</span></div>
+      </div>
+      <div class="veh-grid">
+        <div class="veh-card"><img src="/assets/demo-danielvega/exterior-side.webp" alt="Vista lateral del vehículo" loading="lazy" /><div class="veh-label">Exterior</div></div>
+        <div class="veh-card"><img src="/assets/demo-danielvega/exterior-rear.webp" alt="Vista trasera del vehículo" loading="lazy" /><div class="veh-label">Diseño 2026</div></div>
+        <div class="veh-card"><img src="/assets/demo-danielvega/interior.webp" alt="Interior y consola central" loading="lazy" /><div class="veh-label">Interior</div></div>
+        <div class="veh-card"><img src="/assets/demo-danielvega/seats-front.webp" alt="Asientos de cuero" loading="lazy" /><div class="veh-label">Asientos de cuero</div></div>
+        <div class="veh-card"><img src="/assets/demo-danielvega/trunk.webp" alt="Maletero amplio para equipaje" loading="lazy" /><div class="veh-label">Maletero amplio</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rutas">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Rutas y servicios</span>
+        <h2>Dentro o fuera de <em>Santiago</em></h2>
+        <p>Coordinamos el viaje directamente por WhatsApp: fecha, origen, destino y hora de encuentro.</p>
+      </div>
+      <div class="rutas-grid">
+        <div class="ruta-card">
+          <span class="tag">Dentro de Santiago</span>
+          <h3>Traslados en la ciudad</h3>
+          <ul>
+            <li>Traslados al aeropuerto</li>
+            <li>Movilización para reuniones o eventos</li>
+            <li>Traslados ejecutivos punto a punto</li>
+            <li>Viajes nocturnos, en modo eléctrico y silencioso</li>
+          </ul>
+        </div>
+        <div class="ruta-card">
+          <span class="tag">Fuera de Santiago</span>
+          <h3>Viajes a otras ciudades</h3>
+          <ul>
+            <li>Valparaíso y Viña del Mar</li>
+            <li>Rancagua y alrededores</li>
+            <li>Ida y vuelta el mismo día</li>
+            <li>Viajes con estadía, coordinados contigo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="por-que">
+    <div class="wrap why-grid">
+      <div class="why-img"><img src="/assets/demo-danielvega/exterior-rear.webp" alt="Changan Eado Plus 2026 desde atrás" loading="lazy" /></div>
+      <div>
+        <span class="eyebrow">Por qué viajar conmigo</span>
+        <h2 style="margin-bottom:1.2rem;">Sabes quién te <em>lleva</em></h2>
+        <div class="accordion-item open"><div class="head"><h4>Un solo conductor, <em>siempre yo</em></h4><span class="chev">+</span></div><p>No es una app con conductores distintos cada vez. Coordinas conmigo directamente y soy yo quien te lleva, de punto a punto.</p></div>
+        <div class="accordion-item"><div class="head"><h4>Vehículo <em>2026 con garantía vigente</em></h4><span class="chev">+</span></div><p>Garantía de fábrica de 5 años en el vehículo y 8 años en la batería híbrida — un auto cuidado, no un vehículo de arriendo genérico.</p></div>
+        <div class="accordion-item"><div class="head"><h4>Espacio real <em>para tu equipaje</em></h4><span class="chev">+</span></div><p>Maletero amplio, útil para viajes de varios días, no solo para una maleta de mano.</p></div>
+        <div class="accordion-item"><div class="head"><h4>Coordinación <em>directa por WhatsApp</em></h4><span class="chev">+</span></div><p>Sin centrales de reserva ni esperas — me escribes, confirmamos el viaje y listo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reservar">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Cómo reservar</span>
+        <h2>Tres pasos, <em>por WhatsApp</em></h2>
+      </div>
+      <div class="steps-row">
+        <div class="step-card"><span class="n">01</span><h4>Escríbeme</h4><p>Cuéntame fecha, origen, destino y cuántas personas viajan.</p></div>
+        <div class="step-card"><span class="n">02</span><h4>Confirmamos</h4><p>Te paso el valor del viaje y acordamos el punto de encuentro.</p></div>
+        <div class="step-card"><span class="n">03</span><h4>Te espero puntual</h4><p>El día del viaje, llego a la hora acordada — sin sorpresas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <div class="wrap"><h2>¿Necesitas un traslado?</h2><p>Escríbeme por WhatsApp y coordinamos tu viaje dentro o fuera de Santiago.</p><a class="btn btn-primary" href="https://wa.me/56945671234" target="_blank" rel="noopener">Escribir por WhatsApp →</a></div>
+  </section>
+
+  <footer>
+    <div class="wrap foot-grid">
+      <div class="nav-logo"><div class="mark" style="width:28px;height:28px;font-size:.7rem;">DV</div>Daniel Vega</div>
+      <ul><li><a href="#vehiculo">El vehículo</a></li><li><a href="#rutas">Rutas</a></li><li><a href="#reservar">Cómo reservar</a></li></ul>
+      <div>Demo creada por Automalytics</div>
+    </div>
+  </footer>
+
+  <a class="wa-float" href="https://wa.me/56945671234" target="_blank" rel="noopener" aria-label="Escríbeme por WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.78 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm0 18.05h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.27-4.37c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.24 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.78.97-.15.17-.29.19-.54.06-.25-.12-1.04-.38-1.99-1.22-.73-.66-1.23-1.46-1.37-1.71-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08s.9 2.41 1.02 2.58c.12.17 1.77 2.7 4.28 3.78.6.26 1.06.41 1.43.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+  </a>
+
+<script>
+  document.querySelectorAll('.accordion-item').forEach(item => {
+    item.querySelector('.head').addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
