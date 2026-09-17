@@ -8,13 +8,11 @@ Uso:
 Ej:
   python scrape-instagram.py "peluqueria" "peluqueria_temuco,estudio_capilar_cl"
 
-A diferencia de scrape-google-maps.py, este script NO busca por categoría/
-ciudad directamente — Instagram no expone una búsqueda pública fácil de
-scrapear de forma confiable (su buscador real vive detrás de sesión
-iniciada). Así que el descubrimiento de cuentas (buscar en Instagram a
-mano, revisar hashtags, etc.) lo haces tú, y este script se encarga de
-visitar cada perfil y sacarle los datos (bio, teléfono si está en la bio,
-seguidores) para cargarlos al CRM.
+Este script asume que ya tienes la lista de cuentas (buscando en Instagram a
+mano, hashtags del rubro, etc.) y solo visita cada perfil para sacarle los
+datos. Si en vez de eso quieres que Dani busque las cuentas por ti, usa
+discover-instagram.py — hace lo mismo pero partiendo de un rubro/ciudad en
+vez de una lista de usuarios.
 
 Requiere navegador real (Scrapling StealthyFetcher) — correr en tu propia
 máquina, no en una sesión cloud de Claude. Ver dani/README.md.
@@ -30,54 +28,9 @@ import re
 import sys
 from pathlib import Path
 
-from scrapling.fetchers import StealthyFetcher
+from instagram_common import ACTION_NOTE, fetch_profile
 
 RESULTADOS_DIR = Path(__file__).parent / "resultados"
-
-PHONE_REGEX = re.compile(r"(?:\+?56\s?)?9\s?\d{4}\s?\d{4}|\+\d{9,14}")
-
-ACTION_NOTE = (
-    "Contactar por mensaje directo de Instagram si no hay teléfono. Verificar si tienen "
-    "WhatsApp para contactar por ahí también. Revisar la bio: si tienen link a página web, "
-    'evaluar si es básica/gratuita y "upgradeable" (Linktree, plantilla gratuita, etc.) o si '
-    "ya tienen un sitio propio bien armado."
-)
-
-# Instagram inyecta seguidores/bio en el meta og:description de la página
-# ("N Followers, M Following, K Posts - ... bio real acá") cuando el perfil
-# es público y se visita con un navegador de verdad — se cae si Instagram
-# cambia ese formato o empieza a exigir sesión iniciada para verlo.
-def fetch_profile(username: str) -> dict | None:
-    url = f"https://www.instagram.com/{username}/"
-    page = StealthyFetcher.fetch(url, headless=True, network_idle=True, timeout=30000)
-
-    og_desc = page.css('meta[property="og:description"]::attr(content)').get()
-    title = page.css("title::text").get()
-
-    if not og_desc:
-        return None
-
-    # El og:description de Instagram trae el formato:
-    # "N Followers, M Following, K Posts - See Instagram photos and videos from NAME (@user)"
-    # seguido a veces de la bio real. Se guarda tal cual en notes si no calza
-    # el patrón, para no perder información.
-    followers_match = re.search(r"([\d.,]+)\s*Followers", og_desc)
-    followers = followers_match.group(1) if followers_match else None
-
-    full_name = None
-    if title:
-        full_name = title.split(" (@")[0].strip()
-
-    phone_match = PHONE_REGEX.search(og_desc)
-    real_phone = phone_match.group(0).replace(" ", "") if phone_match else None
-
-    return {
-        "username": username,
-        "fullName": full_name or username,
-        "bio": og_desc,
-        "followers": followers,
-        "phone": real_phone,
-    }
 
 
 def main():

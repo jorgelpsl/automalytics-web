@@ -31,12 +31,16 @@ Si no tiene Scrapling instalado todavía: `cd dani && pip install -r requirement
    pregunta antes de correr nada.
 2. Según la plataforma:
    - **Google Maps**: `cd dani && python scrape-google-maps.py "<rubro>" "<ciudad o país>" <cantidad>`
-   - **Instagram**: si el usuario no trae ya una lista de usuarios de
-     Instagram del rubro, dile que Dani no busca cuentas automáticamente
-     ahí (Instagram no tiene una búsqueda pública scrapeable) — necesitas
-     que él las descubra a mano primero (buscando en la app, hashtags del
-     rubro, etc.) y te pase la lista. Luego:
-     `cd dani && python scrape-instagram.py "<rubro>" "<usuario1,usuario2,...>"`
+   - **Instagram**: pregunta si quiere que Dani busque las cuentas
+     automáticamente o si ya trae una lista propia.
+     - Automático (por defecto si no tiene lista):
+       `cd dani && python discover-instagram.py "<rubro>" "<ciudad, país>" <cantidad>`
+       — busca en DuckDuckGo (no en Instagram) links a instagram.com que
+       mencionen el rubro/ciudad, y enriquece cada cuenta candidata igual
+       que el modo manual. Menos preciso que traer la lista a mano — deja
+       explícito al usuario que la relevancia no está garantizada.
+     - Manual (si el usuario ya tiene usuarios de Instagram del rubro):
+       `cd dani && python scrape-instagram.py "<rubro>" "<usuario1,usuario2,...>"`
 3. Abre el JSON generado en `dani/resultados/` y revisa cada entrada a
    mano antes de cargar — mismos criterios que el flujo de Apify:
    - Descarta lo que no sea del rubro correcto.
@@ -48,6 +52,9 @@ Si no tiene Scrapling instalado todavía: `cd dani && pip install -r requirement
      criterio permanente, no algo que haya que preguntar cada vez.
    - Instagram además: verifica que cada perfil sea realmente del
      país/ciudad pedido — la extracción no filtra eso automáticamente.
+     Con `discover-instagram.py` sé más estricto todavía: la búsqueda por
+     palabras clave trae más ruido (cuentas personales, otra ciudad, otro
+     rubro) que una lista armada a mano.
 4. Carga lo que quede: `cd ../clientes-apify && node load-to-crm.js ../dani/resultados/<archivo>.json`
    (usa el `.env` de `clientes-apify`, con las credenciales del CRM ya
    configuradas ahí — si falta, avisa en vez de adivinar).
