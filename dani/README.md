@@ -81,7 +81,14 @@ node load-to-crm.js ../dani/resultados/<archivo>.json
 - `resultados/` no se sube a git (ver `.gitignore`).
 - Instagram: los perfiles sin `og:description` visible (privados, o
   Instagram bloqueando el request) se omiten — revisa el aviso en consola.
-- Estos scripts no se han probado contra Google/Instagram en vivo desde
-  Claude (esta sesión no tiene el acceso de red necesario) — están escritos
-  a partir de la estructura conocida de esas páginas. Prueba con una
-  búsqueda chica primero y avísame si algún selector no encuentra nada.
+- La API de Scrapling que usan los scripts (`StealthyFetcher.fetch(...)` con
+  sus argumentos, y los selectores CSS `.css()`/`.attrib`) está verificada
+  contra la versión instalable actual (0.4.15) — no es solo una suposición
+  de cómo debería funcionar. Lo que NO se pudo probar desde Claude es el
+  fetch real contra Google Maps/Instagram: el proxy de seguridad de Claude
+  Code Cloud bloquea ese tráfico (confirmado al intentarlo — el fetch se
+  cuelga y no responde), así que el HTML real de esas páginas solo se puede
+  validar corriendo el script en tu compu. Prueba primero con una búsqueda
+  chica (5-10 resultados) y avísame si algún selector no encuentra nada —
+  lo más probable es que Google/Instagram haya cambiado una clase CSS, no
+  un problema de la librería.
