@@ -109,7 +109,14 @@ def main():
     location = sys.argv[2]
     max_candidates = int(sys.argv[3]) if len(sys.argv) > 3 else 15
 
-    query = f'site:instagram.com "{category}" "{location}"'
+    # Sin comillas: entre comillas exigiría que ese texto EXACTO aparezca en
+    # la página indexada — "Temuco, Chile" con coma y todo casi nunca va a
+    # estar escrito así en una bio, así que eso descartaba casi cualquier
+    # resultado real. Solo se usa la ciudad (lo que va antes de la coma en
+    # location, si la trae) — el país agrega ruido sin ayudar a encontrar
+    # más cuentas.
+    city = location.split(",")[0].strip() if "," in location else location
+    query = f"site:instagram.com {category} {city}"
     print(f'Buscando cuentas de Instagram para "{category}" en "{location}"...')
     print(f"  Consultando DuckDuckGo: {query}")
 
