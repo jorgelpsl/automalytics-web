@@ -27,37 +27,70 @@ const ACTOR_ID = 'apify/instagram-search-scraper';
 const ACTION_NOTE =
   'Contactar por mensaje directo de Instagram si no hay teléfono. Verificar si tienen WhatsApp para contactar por ahí también. Revisar la bio: si tienen link a página web, evaluar si es básica/gratuita y "upgradeable" (Linktree, plantilla gratuita, etc.) o si ya tienen un sitio propio bien armado.';
 
+const phoneRegex = /(?:\+?56\s?)?9\s?\d{4}\s?\d{4}|\+\d{9,14}/;
+
+// El actor devuelve dos formas de item distintas según qué tan directo fue
+// el match (probado en vivo, no documentado por Apify):
+// - "lugar": { name, category, phone, location_address, ig_business: { profile: { username } } }
+// - "perfil directo": { username, fullName, biography, followersCount, isBusinessAccount }
+// (a veces resuelve directo a la cuenta de negocio en vez de a una ficha de lugar).
+// Esta función soporta ambas formas para no perder resultados.
+function extractProspect(item, category) {
+  const isProfileShaped = typeof item.username === 'string' && typeof item.biography !== 'undefined';
+  const username = isProfileShaped ? item.username : item.ig_business?.profile?.username;
+  if (!username) return null;
+
+  const businessName = isProfileShaped ? item.fullName || username : item.name || username;
+  const bio = (isProfileShaped ? item.biography : '') || '';
+  const rawPhone = item.phone || '';
+  const phoneMatch = bio.match(phoneRegex) || String(rawPhone).match(phoneRegex);
+  const realPhone = phoneMatch ? phoneMatch[0].replace(/\s+/g, '') : null;
+
+  const extraBits = [];
+  if (!isProfileShaped && item.category) extraBits.push(`Categoría en Instagram: ${item.category}.`);
+  if (!isProfileShaped && item.location_address) extraBits.push(`Dirección: ${item.location_address}.`);
+  if (!isProfileShaped && (item.lat || item.lng)) {
+    extraBits.push(`Coordenadas: ${item.lat}, ${item.lng} — verificar que correspondan a la ciudad pedida (la búsqueda no descarta lugares con el mismo nombre en otro país).`);
+  }
+
+  const notesParts = [];
+  if (bio) notesParts.push(bio.replace(/\n+/g, ' ') + '.');
+  notesParts.push(`Instagram: instagram.com/${username}${item.followersCount ? ` (~${item.followersCount} seguidores)` : ''}.`);
+  if (realPhone) notesParts.push('Tiene teléfono en la bio/ficha — priorizar llamada directa.');
+  notesParts.push(...extraBits);
+  notesParts.push(ACTION_NOTE);
+
+  return {
+    businessName,
+    phone: realPhone || `IG: @${username}`,
+    industry: category,
+    notes: notesParts.join(' '),
+    source: 'Apify - Instagram',
+  };
+}
+
 async function main() {
-  const searchTerm = `${category} ${location}`;
-  console.log(`Buscando perfiles de Instagram para "${searchTerm}" (máx ${maxResults})...`);
+  // Términos cortos separados por coma en vez de una frase larga — el
+  // actor hace mejor matching con keywords (como lo que escribirías en un
+  // buscador) que con una oración completa armada por concatenación.
+  // searchType 'place' busca negocios/lugares reales con ubicación
+  // etiquetada (probado en vivo: encuentra negocios reales), muy distinto
+  // de 'user' — que termina buscando en el autocompletado de intereses de
+  // Facebook Ads y en usuarios de Threads, y trae celebridades sin
+  // ninguna relación con el rubro o la ciudad.
+  const searchTerms = [`${category} ${location}`, category].join(', ');
+  console.log(`Buscando lugares de Instagram para "${searchTerms}" (máx ${maxResults})...`);
 
   const run = await client.actor(ACTOR_ID).call({
-    search: searchTerm,
-    searchType: 'user',
+    search: searchTerms,
+    searchType: 'place',
     searchLimit: maxResults,
   });
 
   const { items } = await client.dataset(run.defaultDatasetId).listItems();
-  console.log(`Apify devolvió ${items.length} perfiles.`);
+  console.log(`Apify devolvió ${items.length} resultados.`);
 
-  // Solo perfiles con handle real; el resto de la calificación (¿es del rubro?, ¿país correcto?,
-  // ¿ya tiene sitio propio en la bio?) se revisa a mano antes de cargar al CRM.
-  const phoneRegex = /(?:\+?56\s?)?9\s?\d{4}\s?\d{4}|\+\d{9,14}/;
-
-  const prospects = items
-    .filter((u) => u.username)
-    .map((u) => {
-      const bio = u.biography || '';
-      const phoneMatch = bio.match(phoneRegex);
-      const realPhone = phoneMatch ? phoneMatch[0].replace(/\s+/g, '') : null;
-      return {
-        businessName: u.fullName || u.username,
-        phone: realPhone || `IG: @${u.username}`,
-        industry: category,
-        notes: `${bio ? bio.replace(/\n+/g, ' ') + '. ' : ''}Instagram: instagram.com/${u.username}${u.followersCount ? ` (~${u.followersCount} seguidores)` : ''}.${realPhone ? ' Tiene teléfono en la bio — priorizar llamada directa.' : ''} ${ACTION_NOTE}`,
-        source: 'Apify - Instagram',
-      };
-    });
+  const prospects = items.map((item) => extractProspect(item, category)).filter(Boolean);
 
   mkdirSync('resultados', { recursive: true });
   const slug = `ig-${category}-${location}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
