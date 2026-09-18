@@ -74,16 +74,22 @@ def unwrap_duckduckgo_redirect(href: str) -> str:
 
 
 def search_duckduckgo(query: str, limit: int) -> list[str]:
+    # lite.duckduckgo.com en vez de html.duckduckgo.com — probado en vivo:
+    # el endpoint "html" devuelve el body vacío (parece armar los
+    # resultados con JavaScript ahora), mientras que "lite" sigue siendo
+    # una página vieja de solo-HTML con tablas, que sí trae los resultados
+    # ya armados.
     resp = Fetcher.get(
-        "https://html.duckduckgo.com/html/",
+        "https://lite.duckduckgo.com/lite/",
         params={"q": query},
         stealthy_headers=True,
         timeout=20,
     )
     # DuckDuckGo cambia de tanto en tanto la clase de sus links de
-    # resultado — a.result__a es la actual, con un selector genérico de
-    # respaldo (cualquier link que apunte a instagram.com) por si cambia.
-    links = resp.css("a.result__a::attr(href)").getall()
+    # resultado — a.result-link es la actual (confirmada en vivo), con un
+    # selector genérico de respaldo (cualquier link que apunte a
+    # instagram.com) por si cambia de nuevo.
+    links = resp.css("a.result-link::attr(href)").getall()
     if not links:
         links = resp.css("a[href*='instagram.com']::attr(href)").getall()
 
