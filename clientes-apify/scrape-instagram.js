@@ -29,6 +29,27 @@ const ACTION_NOTE =
 
 const phoneRegex = /(?:\+?56\s?)?9\s?\d{4}\s?\d{4}|\+\d{9,14}/;
 
+// Cajas geográficas aproximadas para descartar automáticamente resultados
+// que claramente no son del país pedido — probado en vivo: el buscador de
+// "place" no filtra por país, solo por relevancia de texto, y nombres
+// como "Talleres X" o "Mecánica Y" se repiten en todo el mundo
+// hispanohablante (encontró coincidencias reales en España, Argentina,
+// Costa Rica, El Salvador y Honduras buscando "Santiago, Chile"). Amplía
+// esta lista si algún día hace falta buscar en otro país.
+const COUNTRY_BOUNDS = {
+  chile: { minLat: -56, maxLat: -17, minLng: -76, maxLng: -66 },
+};
+
+function findCountryBounds(location) {
+  const loc = location.toLowerCase();
+  return Object.entries(COUNTRY_BOUNDS).find(([country]) => loc.includes(country))?.[1] ?? null;
+}
+
+function isOutsideCountry(item, bounds) {
+  if (!bounds || item.lat == null || item.lng == null) return false;
+  return item.lat < bounds.minLat || item.lat > bounds.maxLat || item.lng < bounds.minLng || item.lng > bounds.maxLng;
+}
+
 // El actor devuelve dos formas de item distintas según qué tan directo fue
 // el match (probado en vivo, no documentado por Apify):
 // - "lugar": { name, category, phone, location_address, ig_business: { profile: { username } } }
@@ -50,7 +71,7 @@ function extractProspect(item, category) {
   if (!isProfileShaped && item.category) extraBits.push(`Categoría en Instagram: ${item.category}.`);
   if (!isProfileShaped && item.location_address) extraBits.push(`Dirección: ${item.location_address}.`);
   if (!isProfileShaped && (item.lat || item.lng)) {
-    extraBits.push(`Coordenadas: ${item.lat}, ${item.lng} — verificar que correspondan a la ciudad pedida (la búsqueda no descarta lugares con el mismo nombre en otro país).`);
+    extraBits.push(`Coordenadas: ${item.lat}, ${item.lng} — el país ya se verificó automáticamente, pero confirma que sea la ciudad/comuna exacta pedida.`);
   }
 
   const notesParts = [];
@@ -90,7 +111,14 @@ async function main() {
   const { items } = await client.dataset(run.defaultDatasetId).listItems();
   console.log(`Apify devolvió ${items.length} resultados.`);
 
-  const prospects = items.map((item) => extractProspect(item, category)).filter(Boolean);
+  const countryBounds = findCountryBounds(location);
+  const inCountry = countryBounds ? items.filter((item) => !isOutsideCountry(item, countryBounds)) : items;
+  const discarded = items.length - inCountry.length;
+  if (discarded > 0) {
+    console.log(`Descartados automáticamente ${discarded} por coordenadas fuera del país pedido (mismo nombre de negocio en otro país).`);
+  }
+
+  const prospects = inCountry.map((item) => extractProspect(item, category)).filter(Boolean);
 
   mkdirSync('resultados', { recursive: true });
   const slug = `ig-${category}-${location}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
