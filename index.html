@@ -1926,15 +1926,21 @@
   })();
 
   // ── Cookie consent ──
-  // Loads GA4 only after the visitor accepts. window.gtag is defined here
-  // (not just inside the injected script) so the lead-form and WhatsApp
-  // click handlers further down can call it directly.
+  // Loads GA4 + the Google Ads tag only after the visitor accepts. window.gtag
+  // is defined here (not just inside the injected script) so the lead-form
+  // and WhatsApp click handlers further down can call it directly.
+  // AW_ID was missing entirely before — the Google Ads tag never loaded on
+  // this site, so Ads had no way to see any conversion regardless of what
+  // events fired below (confirmed in Ads' own tag diagnostics: "Tag stopped
+  // sending data — not detected in the last 48 hours").
   const GA4_ID = 'G-0RY5TESWE4';
+  const AW_ID = 'AW-18434952088';
   function loadAnalytics() {
     window.dataLayer = window.dataLayer || [];
     window.gtag = function() { dataLayer.push(arguments); };
     gtag('js', new Date());
     gtag('config', GA4_ID);
+    gtag('config', AW_ID);
 
     const s = document.createElement('script');
     s.async = true;
@@ -1970,8 +1976,10 @@
     a.addEventListener('click', () => {
       if (typeof gtag !== 'function') return;
       gtag('event', 'contact_whatsapp', { link_location: a.className || 'unknown' });
-      // Native Google Ads conversion action (separate from the GA4 event above).
-      // No navigation-delay wrapper needed: these links open in a new tab.
+      // Broadcasts to both GA4 and the Google Ads tag configured above (no
+      // send_to needed — gtag.js sends untargeted events to every configured
+      // destination). No navigation-delay wrapper needed: these links open
+      // in a new tab.
       gtag('event', 'conversion_event_contact');
     });
   });
