@@ -67,7 +67,7 @@ def main():
     RESULTADOS_DIR.mkdir(exist_ok=True)
     slug = re.sub(r"(^-|-$)", "", re.sub(r"[^a-z0-9]+", "-", f"ig-{category}".lower()))
     out_path = RESULTADOS_DIR / f"{slug}.json"
-    out_path.write_text(json.dumps(prospects, indent=2, ensure_ascii=False))
+    out_path.write_text(json.dumps(prospects, indent=2, ensure_ascii=False), encoding="utf-8")
 
     print(f"Guardado: {out_path} — revísalos a mano antes de cargar (rubro/país no se filtran automáticamente)")
     print(f"Siguiente paso: cd ../clientes-apify && node load-to-crm.js ../dani/{out_path.relative_to(RESULTADOS_DIR.parent)}")

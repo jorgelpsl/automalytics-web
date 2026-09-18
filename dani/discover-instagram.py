@@ -173,7 +173,7 @@ def main():
     RESULTADOS_DIR.mkdir(exist_ok=True)
     slug = re.sub(r"(^-|-$)", "", re.sub(r"[^a-z0-9]+", "-", f"ig-discover-{category}-{location}".lower()))
     out_path = RESULTADOS_DIR / f"{slug}.json"
-    out_path.write_text(json.dumps(prospects, indent=2, ensure_ascii=False))
+    out_path.write_text(json.dumps(prospects, indent=2, ensure_ascii=False), encoding="utf-8")
 
     print(f"Guardado: {out_path}")
     print(
