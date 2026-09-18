@@ -69,25 +69,26 @@ otra ciudad, una cuenta personal, o no tener nada que ver. Por eso cada
 entrada queda con una nota pidiendo verificar rubro/ciudad a mano — revisa
 igual de estricto que con una lista armada por ti.
 
-**Verificación de sitio web y ciudad (sin login):** antes de abrir el
-perfil con navegador, Dani intenta el endpoint JSON público que usa el
-propio instagram.com (`web_profile_info`) — sin sesión iniciada, solo una
-llamada HTTP normal. Cuando responde, trae datos más confiables que
-adivinar del texto de la bio:
+**Verificación de sitio web y ciudad (sin login) — hoy casi nunca
+disponible:** antes de abrir el perfil con navegador, Dani intenta el
+endpoint JSON público que usa el propio instagram.com (`web_profile_info`),
+que en teoría no necesita sesión iniciada para cuentas públicas y trae
+datos más confiables que adivinar del texto de la bio: `externalUrl` (el
+link real del botón "Sitio web", carga `website`/`hasNoWebsite` en el
+prospecto), `cityHint` (ciudad declarada, si el negocio la cargó) y
+`categoryName`.
 
-- `externalUrl` — el link real del botón "Sitio web" del perfil (no un
-  link mencionado de pasada en el texto). Si existe, el prospecto se carga
-  con `website` ya lleno; si no existe, con `hasNoWebsite: true`.
-- `cityHint` — la ciudad declarada en la dirección del perfil (solo si el
-  negocio la cargó — no todos lo hacen).
-- `categoryName` — la categoría que Instagram le asignó al negocio.
-
-Si el endpoint no responde (Instagram lo bloqueó, cambió el formato, o
-exige sesión), Dani cae automáticamente al método anterior (abrir el
-perfil con navegador y leer el `og:description`) — sigue funcionando, solo
-que sin esos tres campos extra (quedan en blanco/`None`, el prospecto se
-carga igual que antes). No hace falta elegir un método — Dani decide solo
-cuál usar en cada perfil.
+**Probado en vivo (17-18 sept 2026):** Instagram le está respondiendo
+`401 require_login: true` a este endpoint incluso en una sola consulta
+aislada contra una cuenta grande — no es rate-limiting por pedir varios
+perfiles seguidos, es que ahora lo exige en general. En la práctica esto
+va a fallar casi siempre y Dani cae directo al método por navegador
+(`og:description`), que sigue funcionando normal, solo que sin esos tres
+campos extra (quedan en blanco/`None`). Se dejó el intento en el código de
+todos modos — es una sola llamada HTTP rápida antes de caer al navegador,
+no rompe nada si falla, y si Instagram lo reabre en algún momento (para
+otra IP, otra región, etc.) los campos extra van a empezar a aparecer
+solos sin tocar nada.
 
 ### 3b. Manual — tú ya tienes la lista de cuentas
 
@@ -120,22 +121,23 @@ node load-to-crm.js ../dani/resultados/<archivo>.json
 - `resultados/` no se sube a git (ver `.gitignore`).
 - Instagram: los perfiles sin `og:description` visible (privados, o
   Instagram bloqueando el request) se omiten — revisa el aviso en consola.
+- **`discover-instagram.py` está confirmado funcionando de punta a punta**
+  (probado en vivo el 17-18 sept 2026, Windows, IP residencial chilena):
+  búsqueda en `lite.duckduckgo.com`, extracción de `@usuario`, visita a
+  cada perfil (cae directo al método por navegador, ver punto anterior) y
+  guardado del JSON. `scrape-instagram.py` (modo manual) usa exactamente
+  las mismas funciones, así que queda cubierto también. `scrape-
+  google-maps.py` todavía no se ha corrido en vivo — probarlo es el
+  siguiente pendiente.
 - La API de Scrapling que usan los scripts (`StealthyFetcher.fetch(...)` /
   `Fetcher.get(...)` con sus argumentos, y los selectores CSS
   `.css()`/`.attrib`/`.getall()`) está verificada contra la versión
-  instalable actual (0.4.15) — no es solo una suposición de cómo debería
-  funcionar. La lógica de `discover-instagram.py` que extrae el `@usuario`
-  de un link y desenvuelve el redirect de DuckDuckGo, y el parseo del JSON
-  de `fetch_profile_api` (incluyendo el caso 401/bloqueado y el caso sin
-  dirección declarada) también están probados con datos simulados. Lo que
-  NO se pudo probar desde Claude es el fetch real contra Google Maps/
-  Instagram/DuckDuckGo: el proxy de seguridad de Claude Code Cloud bloquea
-  ese tráfico (confirmado al intentarlo — el fetch se cuelga y no
-  responde), así que el comportamiento real de esas páginas solo se puede
-  validar corriendo el script en tu compu — en particular, si el endpoint
-  JSON de Instagram sigue respondiendo sin sesión iniciada o si ya lo
-  cerraron (en ese caso Dani cae solo al método por navegador, sin que
-  tengas que hacer nada). Prueba primero con una búsqueda chica (5-10
-  resultados) y avísame si algún selector no encuentra nada — lo más
-  probable es que Google/Instagram/DuckDuckGo haya cambiado algo, no un
-  problema de la librería.
+  instalable actual (0.4.15). Ojo con un detalle que costó una vuelta en
+  vivo: `.text` en un `Response` de Scrapling NO es el HTML de la página
+  (es el texto de nodo, casi siempre vacío para la respuesta completa) —
+  el HTML real está en `.html_content` (o los bytes crudos en `.body`).
+- En Windows, `Path.write_text(...)` sin `encoding="utf-8"` explícito usa
+  cp1252 por defecto y revienta si el contenido tiene emojis u otros
+  caracteres fuera de ese charset (pasó de verdad con una bio real) — los
+  tres scripts ya lo especifican explícito, pero si agregas un `write_text`
+  nuevo en algún lado, no te olvides del `encoding="utf-8"`.

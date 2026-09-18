@@ -40,11 +40,22 @@ def _extract_city_hint(business_address_json: str | None) -> str | None:
 
 
 # Endpoint JSON público que usa el propio frontend de instagram.com para
-# pintar el perfil — no necesita sesión iniciada para cuentas públicas (al
-# menos hasta ahora; Instagram lo ha ido restringiendo con el tiempo). Trae
-# campos que el og:description no separa: el link real del botón "Sitio
-# web" (externalUrl, distinto de un link mencionado en el texto de la bio),
-# la categoría del negocio, y la dirección declarada (si la cargaron).
+# pintar el perfil. En teoría no necesita sesión iniciada para cuentas
+# públicas, pero probado en vivo (17-18 sept 2026, IP residencial chilena)
+# Instagram está devolviendo 401 "require_login": true incluso para una
+# sola consulta aislada contra una cuenta grande (@natgeo) — no era solo
+# rate-limiting por pedir varios perfiles seguidos. O sea: hoy en día esto
+# casi siempre va a fallar y caer al método por navegador. Se deja el
+# intento igual porque es una sola llamada HTTP rápida antes de caer al
+# navegador (no rompe nada si falla) y porque Instagram podría reabrirlo
+# para otras IPs/regiones o más adelante — si eso pasa, los campos extra
+# (externalUrl, cityHint, categoryName) van a empezar a aparecer solos, sin
+# tocar código.
+#
+# Cuando SÍ responde, trae campos que el og:description no separa: el link
+# real del botón "Sitio web" (externalUrl, distinto de un link mencionado
+# en el texto de la bio), la categoría del negocio, y la dirección
+# declarada (si la cargaron).
 #
 # Devuelve None si el endpoint no responde como se espera (401, formato
 # cambiado, etc.) — en ese caso el caller (fetch_profile) cae a
