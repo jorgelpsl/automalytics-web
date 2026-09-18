@@ -50,9 +50,14 @@ Si no tiene Scrapling instalado todavía: `cd dani && pip install -r requirement
      Fit, UFC Gym, Sportlife, Vitaldent, Starbucks — cualquier marca con
      presencia nacional/multinacional, sin importar el rubro). Esto es un
      criterio permanente, no algo que haya que preguntar cada vez.
-   - Instagram además: verifica que cada perfil sea realmente del
-     país/ciudad pedido — la extracción no filtra eso automáticamente.
-     Con `discover-instagram.py` sé más estricto todavía: la búsqueda por
+   - Instagram además: cuando Dani pudo confirmar `website`/`hasNoWebsite`
+     y una ciudad declarada (vía el endpoint JSON de Instagram, sin login —
+     queda en las notas de cada entrada), úsalo como señal fuerte pero no
+     como verdad absoluta: muchas cuentas no cargan su dirección, así que
+     "sin cityHint" no significa "no es de Chile". Cuando ese endpoint no
+     respondió (fallback al navegador), no hay señal automática de
+     rubro/ciudad y hay que confiar en la bio + la búsqueda. Con
+     `discover-instagram.py` sé más estricto todavía: la búsqueda por
      palabras clave trae más ruido (cuentas personales, otra ciudad, otro
      rubro) que una lista armada a mano.
 4. Carga lo que quede: `cd ../clientes-apify && node load-to-crm.js ../dani/resultados/<archivo>.json`

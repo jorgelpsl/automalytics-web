@@ -38,7 +38,7 @@ from pathlib import Path
 
 from scrapling.fetchers import Fetcher
 
-from instagram_common import fetch_profile
+from instagram_common import build_prospect, fetch_profile
 
 RESULTADOS_DIR = Path(__file__).parent / "resultados"
 
@@ -143,24 +143,16 @@ def main():
             print("    (perfil no encontrado, privado, o Instagram bloqueó el request — se omite)")
             continue
 
-        notes = f"{profile['bio']} Instagram: instagram.com/{username}"
-        if profile["followers"]:
-            notes += f" (~{profile['followers']} seguidores)"
-        notes += (
-            f'. Encontrado por búsqueda automática para "{category}" en "{location}" — '
+        extra_note = (
+            f'Encontrado por búsqueda automática para "{category}" en "{location}" — '
             "VERIFICAR manualmente que sea del rubro y ciudad correctos antes de cargar."
         )
-        if profile["phone"]:
-            notes += " Tiene teléfono en la bio — priorizar llamada directa."
-
         prospects.append(
-            {
-                "businessName": profile["fullName"],
-                "phone": profile["phone"] or f"IG: @{username}",
-                "industry": category,
-                "notes": notes,
-                "source": "Dani - Instagram (búsqueda automática)",
-            }
+            build_prospect(
+                profile, username, category,
+                source="Dani - Instagram (búsqueda automática)",
+                extra_note=extra_note,
+            )
         )
 
     print(f"-> {len(prospects)} de {len(candidates)} perfiles procesados correctamente.")

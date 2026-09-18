@@ -69,6 +69,26 @@ otra ciudad, una cuenta personal, o no tener nada que ver. Por eso cada
 entrada queda con una nota pidiendo verificar rubro/ciudad a mano — revisa
 igual de estricto que con una lista armada por ti.
 
+**Verificación de sitio web y ciudad (sin login):** antes de abrir el
+perfil con navegador, Dani intenta el endpoint JSON público que usa el
+propio instagram.com (`web_profile_info`) — sin sesión iniciada, solo una
+llamada HTTP normal. Cuando responde, trae datos más confiables que
+adivinar del texto de la bio:
+
+- `externalUrl` — el link real del botón "Sitio web" del perfil (no un
+  link mencionado de pasada en el texto). Si existe, el prospecto se carga
+  con `website` ya lleno; si no existe, con `hasNoWebsite: true`.
+- `cityHint` — la ciudad declarada en la dirección del perfil (solo si el
+  negocio la cargó — no todos lo hacen).
+- `categoryName` — la categoría que Instagram le asignó al negocio.
+
+Si el endpoint no responde (Instagram lo bloqueó, cambió el formato, o
+exige sesión), Dani cae automáticamente al método anterior (abrir el
+perfil con navegador y leer el `og:description`) — sigue funcionando, solo
+que sin esos tres campos extra (quedan en blanco/`None`, el prospecto se
+carga igual que antes). No hace falta elegir un método — Dani decide solo
+cuál usar en cada perfil.
+
 ### 3b. Manual — tú ya tienes la lista de cuentas
 
 Si prefieres descubrir las cuentas a mano (buscando en la app, revisando
@@ -105,12 +125,17 @@ node load-to-crm.js ../dani/resultados/<archivo>.json
   `.css()`/`.attrib`/`.getall()`) está verificada contra la versión
   instalable actual (0.4.15) — no es solo una suposición de cómo debería
   funcionar. La lógica de `discover-instagram.py` que extrae el `@usuario`
-  de un link y desenvuelve el redirect de DuckDuckGo también está probada
-  con datos simulados. Lo que NO se pudo probar desde Claude es el fetch
-  real contra Google Maps/Instagram/DuckDuckGo: el proxy de seguridad de
-  Claude Code Cloud bloquea ese tráfico (confirmado al intentarlo — el
-  fetch se cuelga y no responde), así que el HTML real de esas páginas solo
-  se puede validar corriendo el script en tu compu. Prueba primero con una
-  búsqueda chica (5-10 resultados) y avísame si algún selector no encuentra
-  nada — lo más probable es que Google/Instagram/DuckDuckGo haya cambiado
-  una clase CSS, no un problema de la librería.
+  de un link y desenvuelve el redirect de DuckDuckGo, y el parseo del JSON
+  de `fetch_profile_api` (incluyendo el caso 401/bloqueado y el caso sin
+  dirección declarada) también están probados con datos simulados. Lo que
+  NO se pudo probar desde Claude es el fetch real contra Google Maps/
+  Instagram/DuckDuckGo: el proxy de seguridad de Claude Code Cloud bloquea
+  ese tráfico (confirmado al intentarlo — el fetch se cuelga y no
+  responde), así que el comportamiento real de esas páginas solo se puede
+  validar corriendo el script en tu compu — en particular, si el endpoint
+  JSON de Instagram sigue respondiendo sin sesión iniciada o si ya lo
+  cerraron (en ese caso Dani cae solo al método por navegador, sin que
+  tengas que hacer nada). Prueba primero con una búsqueda chica (5-10
+  resultados) y avísame si algún selector no encuentra nada — lo más
+  probable es que Google/Instagram/DuckDuckGo haya cambiado algo, no un
+  problema de la librería.
