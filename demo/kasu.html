@@ -175,6 +175,18 @@
   @media (max-width: 900px) { .variety-photo { max-width: 320px; } }
   .variety-photo img { width: 100%; height: 100%; object-fit: cover; }
 
+  /* ══════════════ INFO PRÁCTICA ══════════════ */
+  #info-practica { background: var(--dark); }
+  #info-practica .sec-head h2 { color: var(--cream-ink); }
+  .info-strip { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line-dark); margin-top: 2.6rem; }
+  .info-item { padding: 2.1rem 1.7rem; border-right: 1px solid var(--line-dark); }
+  .info-item:last-child { border-right: none; }
+  .info-item .ic { width: 42px; height: 42px; border-radius: 12px; background: rgba(255,255,255,.07); display: flex; align-items: center; justify-content: center; color: var(--gold); margin-bottom: 1.1rem; }
+  .info-item h3 { color: var(--cream-ink); font-size: 1.02rem; margin-bottom: .5rem; }
+  .info-item p { color: var(--cream-soft); font-size: .87rem; }
+  @media (max-width: 860px) { .info-strip { grid-template-columns: repeat(2, 1fr); } .info-item:nth-child(2n) { border-right: none; } .info-item:nth-child(n+3) { border-top: 1px solid var(--line-dark); } }
+  @media (max-width: 560px) { .info-strip { grid-template-columns: 1fr; } .info-item { border-right: none !important; border-top: 1px solid var(--line-dark); } .info-item:first-child { border-top: none; } }
+
   /* ══════════════ POR QUÉ KASU ══════════════ */
   .why-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 3rem; align-items: center; }
   @media (max-width: 900px) { .why-grid { grid-template-columns: 1fr; } }
@@ -417,6 +429,37 @@
           <div class="num">03</div>
           <h3>Coordinamos la entrega</h3>
           <p>Confirmamos contigo el lugar y la hora para que la sorpresa llegue en el momento justo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="info-practica">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow on-dark">Información práctica</span>
+        <h2>Todo lo que necesitas saber antes de pedir</h2>
+      </div>
+      <div class="info-strip">
+        <div class="info-item" data-reveal>
+          <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-6.5-5.6-6.5-11A6.5 6.5 0 0 1 12 3.5 6.5 6.5 0 0 1 18.5 10c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></svg></div>
+          <h3>Ubicación</h3>
+          <p>Santiago Centro, calle Agustinas. Puedes retirar tu pedido directamente en el local.</p>
+        </div>
+        <div class="info-item" data-reveal>
+          <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7.5" cy="18" r="1.6"/><circle cx="17.5" cy="18" r="1.6"/></svg></div>
+          <h3>Envíos</h3>
+          <p>También hacemos despacho a domicilio — coordinamos el lugar y la hora por WhatsApp.</p>
+        </div>
+        <div class="info-item" data-reveal>
+          <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l4-1 11.5-11.5a2 2 0 0 0 0-2.8l-1.2-1.2a2 2 0 0 0-2.8 0L3 16l-.3 4.3a.7.7 0 0 0 .7.7Z"/><path d="M13.5 6.5l4 4"/></svg></div>
+          <h3>Personalización</h3>
+          <p>Colores, mensaje de dedicatoria y contenido de cada caja se pueden ajustar a tu gusto.</p>
+        </div>
+        <div class="info-item" data-reveal>
+          <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19"/></svg></div>
+          <h3>Forma de pago</h3>
+          <p>Abono del 50% al encargar y el 50% restante al retirar. Aceptamos efectivo y transferencia bancaria.</p>
         </div>
       </div>
     </div>
