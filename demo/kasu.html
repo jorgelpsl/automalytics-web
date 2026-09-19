@@ -170,12 +170,14 @@
   .step-card h3 { font-size: 1.1rem; margin-bottom: .5rem; }
   .step-card p { color: var(--ink-soft); font-size: .9rem; }
 
-  /* ══════════════ VARIEDAD ══════════════ */
-  .variety-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 3rem; align-items: center; }
-  @media (max-width: 900px) { .variety-grid { grid-template-columns: 1fr; } }
-  .variety-photo { position: relative; border-radius: 24px; overflow: hidden; aspect-ratio: 1088/1446; box-shadow: 0 30px 60px rgba(46,33,26,.2); max-width: 380px; margin: 0 auto; }
-  @media (max-width: 900px) { .variety-photo { max-width: 320px; } }
-  .variety-photo img { width: 100%; height: 100%; object-fit: cover; }
+  /* ══════════════ VARIEDAD (full-bleed banner) ══════════════ */
+  .variety-banner { position: relative; padding: 0; min-height: 460px; display: flex; align-items: center; overflow: hidden; }
+  .variety-banner > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; z-index: 0; }
+  .variety-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(100deg, rgba(33,23,15,.92) 0%, rgba(33,23,15,.72) 42%, rgba(33,23,15,.32) 100%); }
+  .variety-banner-content { position: relative; z-index: 2; max-width: 560px; }
+  .variety-banner-content h2 { color: var(--cream-ink); margin-bottom: 1rem; }
+  .variety-banner-content p { color: var(--cream-soft); margin-bottom: 1.8rem; max-width: 46ch; }
+  @media (max-width: 640px) { .variety-banner { min-height: 560px; } .variety-overlay { background: linear-gradient(180deg, rgba(33,23,15,.5) 0%, rgba(33,23,15,.94) 68%); } .variety-banner-content { padding-top: 8rem; } }
 
   /* ══════════════ POR QUÉ KASU ══════════════ */
   .why-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 3rem; align-items: center; }
@@ -382,17 +384,14 @@
     </div>
   </section>
 
-  <section id="variedad">
-    <div class="wrap variety-grid">
-      <div class="variety-photo" data-reveal>
-        <img src="/assets/demo-kasu/variedad-productos.webp" alt="Distintos ramos y arreglos de Kasu envueltos en papel de regalo, en varios estilos y colores" loading="lazy" />
-      </div>
-      <div data-reveal>
-        <span class="eyebrow">Y esto es solo una muestra</span>
-        <h2 style="margin-bottom:1rem;">Tenemos muchas más combinaciones</h2>
-        <p style="color:var(--ink-soft); margin-bottom:1.8rem; max-width:44ch;">Colores, envolturas y flores distintas para cada gusto — si no encuentras exactamente lo que imaginas en el catálogo, cuéntanos y lo armamos juntos.</p>
-        <a class="btn btn-primary" href="https://wa.me/56932954075?text=Hola!%20Quiero%20ver%20m%C3%A1s%20opciones%20de%20ramos%20de%20Kasu" target="_blank" rel="noopener">Cuéntanos qué imaginas →</a>
-      </div>
+  <section class="variety-banner">
+    <img src="/assets/demo-kasu/variedad-productos.webp" alt="Distintos ramos y arreglos de Kasu envueltos en papel de regalo, en varios estilos y colores" loading="lazy" />
+    <div class="variety-overlay"></div>
+    <div class="wrap variety-banner-content" data-reveal>
+      <span class="eyebrow on-dark">Y esto es solo una muestra</span>
+      <h2>Tenemos muchas más combinaciones</h2>
+      <p>Colores, envolturas y flores distintas para cada gusto — si no encuentras exactamente lo que imaginas en el catálogo, cuéntanos y lo armamos juntos.</p>
+      <a class="btn btn-light" href="https://wa.me/56932954075?text=Hola!%20Quiero%20ver%20m%C3%A1s%20opciones%20de%20ramos%20de%20Kasu" target="_blank" rel="noopener">Cuéntanos qué imaginas →</a>
     </div>
   </section>
 
