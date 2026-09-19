@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Demo: Kasu — Arreglos y Desayunos Sorpresa — Automalytics</title>
+<meta name="description" content="Ejemplo de sitio web hecho por Automalytics para Kasu, arreglos florales, cajas personalizadas y desayunos sorpresa a domicilio." />
+<meta name="robots" content="noindex, follow" />
+<link rel="icon" type="image/webp" href="/assets/logo.webp" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<meta name="theme-color" content="#FBF3EE" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Nunito+Sans:wght@400;500;600;700;800&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #FBF3EE; overflow-x: hidden; }
+
+  /* ── top bar (back to Automalytics) ── */
+  .bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .7rem 1.25rem; background: #2E211A; border-bottom: 1px solid rgba(255,255,255,.08);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; position: relative; z-index: 100;
+  }
+  .bar a { color: #F3D8CE; text-decoration: none; font-weight: 700; font-size: .85rem; display: flex; align-items: center; gap: .4rem; }
+  .bar a:hover { text-decoration: underline; }
+  .bar span { color: #B7A398; font-size: .78rem; }
+
+  /* ── tokens ── */
+  :root {
+    --bg: #FBF3EE; --bg2: #F5E3DC; --surface: #FFFFFF;
+    --dark: #2E211A; --dark2: #21170F;
+    --ink: #3B2A22; --ink-soft: #8C7A70;
+    --cream-ink: #FBF3EE; --cream-soft: #CBB6AC;
+    --rose: #B85C6B; --rose-deep: #8F4351; --rose-soft: #F3DCDD;
+    --gold: #C9A05C; --gold-deep: #96773C; --gold-soft: rgba(201,160,92,.16);
+    --line: rgba(59,42,34,.13); --line-dark: rgba(251,243,238,.14);
+    --font-display: 'Fraunces', serif;
+    --font-body: 'Nunito Sans', sans-serif;
+    --font-script: 'Caveat', cursive;
+  }
+  body { font-family: var(--font-body); background: var(--bg); color: var(--ink); line-height: 1.65; }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.14; color: var(--ink); }
+  a { color: inherit; text-decoration: none; }
+  img, svg { max-width: 100%; display: block; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+  section { padding: 6rem 0; position: relative; }
+  ::selection { background: var(--rose); color: #fff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  }
+
+  [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+  [data-reveal].in { opacity: 1; transform: translateY(0); }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: .5rem; font-size: .74rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--rose-deep); margin-bottom: 1rem; }
+  .eyebrow::before { content: ""; width: 20px; height: 1px; background: var(--rose); }
+  .eyebrow.on-dark { color: var(--gold); }
+  .eyebrow.on-dark::before { background: var(--gold); }
+
+  .sec-head { max-width: 620px; margin: 0 auto 3rem; text-align: center; }
+  .sec-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.6rem); text-wrap: balance; }
+  .sec-head p { color: var(--ink-soft); margin-top: .9rem; font-size: 1.02rem; }
+  .sec-head.left { text-align: left; margin: 0 0 2.6rem; }
+  .sec-head-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2.8rem; }
+  .sec-head-row .sec-head { margin-bottom: 0; text-align: left; }
+  .sec-link { font-weight: 700; font-size: .9rem; display: inline-flex; gap: .4rem; align-items: center; flex-shrink: 0; color: var(--rose-deep); }
+  .sec-link svg { transition: transform .2s; }
+  .sec-link:hover svg { transform: translateX(4px); }
+
+  .btn { display: inline-flex; align-items: center; gap: .6rem; font-weight: 700; font-size: .92rem; padding: .95rem 1.9rem; border-radius: 50px; border: 1.5px solid transparent; cursor: pointer; font-family: var(--font-body); transition: transform .25s ease, box-shadow .25s ease, background .2s ease, border-color .2s ease; }
+  .btn-primary { background: var(--rose); color: #fff; box-shadow: 0 10px 28px rgba(143,67,81,.28); }
+  .btn-primary:hover { background: var(--rose-deep); transform: translateY(-2px); box-shadow: 0 14px 34px rgba(143,67,81,.36); }
+  .btn-light { background: #fff; color: var(--dark); box-shadow: 0 10px 28px rgba(0,0,0,.18); }
+  .btn-light:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(0,0,0,.24); }
+  .btn-ghost { border-color: var(--line); color: var(--ink); background: transparent; }
+  .btn-ghost:hover { border-color: var(--rose); color: var(--rose-deep); }
+  .btn-ghost.on-dark { border-color: var(--line-dark); color: var(--cream-ink); }
+  .btn-ghost.on-dark:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-sm { padding: .6rem 1.2rem; font-size: .8rem; }
+
+  /* ── nav ── */
+  header.site-nav { position: sticky; top: 0; z-index: 90; background: rgba(251,243,238,.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .8rem 1.5rem; max-width: 1180px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: .7rem; }
+  .brand-logo { width: 46px; height: 46px; object-fit: contain; flex-shrink: 0; }
+  .brand-name { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; line-height: 1.1; }
+  .brand-name small { display: block; font-family: var(--font-body); font-weight: 600; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); margin-top: .15rem; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; font-size: .88rem; font-weight: 600; color: var(--ink-soft); }
+  .nav-links a { position: relative; padding: .3rem 0; }
+  .nav-links a::after { content: ""; position: absolute; left: 0; bottom: -2px; width: 0; height: 1.5px; background: var(--rose); transition: width .25s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover::after { width: 100%; }
+  @media (max-width: 900px) { .nav-links { display: none; } }
+  .hamburger { display: none; width: 42px; height: 42px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); align-items: center; justify-content: center; flex-direction: column; gap: 5px; cursor: pointer; flex-shrink: 0; }
+  .hamburger span { width: 18px; height: 1.5px; background: var(--ink); }
+  @media (max-width: 900px) { .hamburger { display: flex; } }
+  @media (max-width: 480px) { .brand-name small { display: none; } .nav-cta { padding: .55rem .9rem; font-size: .74rem; white-space: nowrap; } }
+
+  .mobile-menu {
+    position: fixed; inset: 0; z-index: 200; background: rgba(46,33,26,.98); backdrop-filter: blur(8px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.7rem;
+    transform: translateY(-100%); transition: transform .4s cubic-bezier(.6,0,.2,1);
+  }
+  .mobile-menu.open { transform: translateY(0); }
+  .mobile-menu a { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--cream-ink); }
+  .mobile-close { position: absolute; top: 1.2rem; right: 1.5rem; width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,.06); border: 1px solid var(--line-dark); color: var(--cream-ink); font-size: 1.3rem; }
+
+  /* ══════════════ HERO ══════════════ */
+  .hero { padding: 3.4rem 0 4.5rem; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1fr .92fr; gap: 3.2rem; align-items: center; }
+  @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero-script { font-family: var(--font-script); font-size: 1.9rem; color: var(--rose-deep); line-height: 1; margin-bottom: .4rem; }
+  .hero h1 { font-size: clamp(2.3rem, 5vw, 3.5rem); text-wrap: balance; }
+  .hero p.lead { color: var(--ink-soft); font-size: 1.06rem; max-width: 46ch; margin: 1.3rem 0 1.8rem; }
+  .hero-actions { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+
+  .tag-pills { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1.8rem; }
+  .tag-pill { border: 1px solid var(--line); background: var(--surface); border-radius: 50px; padding: .48rem 1.05rem; font-size: .8rem; font-weight: 600; color: var(--ink-soft); }
+
+  .hero-visual { position: relative; width: 100%; max-width: 440px; margin: 0 auto; }
+  .hv-panel { position: relative; z-index: 1; border-radius: 26px; overflow: hidden; aspect-ratio: 1/1.02; box-shadow: 0 30px 60px rgba(46,33,26,.24); }
+  .hv-panel img { width: 100%; height: 100%; object-fit: cover; }
+  .hv-card {
+    position: absolute; z-index: 2; background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+    box-shadow: 0 20px 45px rgba(46,33,26,.18); padding: .95rem 1.1rem; display: flex; gap: .75rem; align-items: center;
+    animation: hvFloat 6s ease-in-out infinite;
+  }
+  .hv-card .ic { flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; background: var(--rose-soft); display: flex; align-items: center; justify-content: center; color: var(--rose-deep); }
+  .hv-card b { display: block; font-family: var(--font-body); font-size: .84rem; font-weight: 800; color: var(--ink); }
+  .hv-card span { font-size: .74rem; color: var(--ink-soft); }
+  .hv-c1 { top: -6%; left: -8%; animation-delay: 0s; }
+  .hv-c2 { bottom: -6%; right: -8%; animation-delay: .8s; }
+  @keyframes hvFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+  @media (prefers-reduced-motion: reduce) { .hv-card { animation: none; } }
+  @media (max-width: 640px) { .hv-c1 { left: -2%; top: -4%; } .hv-c2 { right: -2%; bottom: -4%; } .hv-card { padding: .7rem .85rem; } .hv-card b { font-size: .76rem; } .hv-card span { font-size: .68rem; } }
+
+  /* ══════════════ OCASIONES ══════════════ */
+  #ocasiones { background: var(--bg2); }
+  .occ-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  @media (max-width: 860px) { .occ-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .occ-grid { grid-template-columns: 1fr; } }
+  .occ-card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 1.8rem 1.6rem; }
+  .occ-card .ic { width: 44px; height: 44px; border-radius: 13px; background: var(--rose-soft); display: flex; align-items: center; justify-content: center; color: var(--rose-deep); margin-bottom: 1.1rem; }
+  .occ-card h3 { font-size: 1.08rem; margin-bottom: .4rem; }
+  .occ-card p { color: var(--ink-soft); font-size: .9rem; }
+
+  /* ══════════════ CATÁLOGO ══════════════ */
+  .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  @media (max-width: 900px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .cat-grid { grid-template-columns: 1fr; } }
+  .cat-card { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; }
+  .cat-photo { aspect-ratio: 1/.92; overflow: hidden; }
+  .cat-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .cat-card:hover .cat-photo img { transform: scale(1.05); }
+  .cat-body { padding: 1.3rem 1.4rem 1.5rem; display: flex; flex-direction: column; gap: .5rem; flex: 1; }
+  .cat-body h3 { font-size: 1.08rem; }
+  .cat-body p { color: var(--ink-soft); font-size: .87rem; flex: 1; }
+  .cat-link { margin-top: .4rem; display: inline-flex; align-items: center; gap: .5rem; font-weight: 700; font-size: .85rem; color: var(--rose-deep); }
+  .cat-link svg { transition: transform .2s; }
+  .cat-link:hover svg { transform: translateX(4px); }
+
+  /* ══════════════ CÓMO FUNCIONA ══════════════ */
+  #como-funciona { background: var(--bg2); }
+  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; counter-reset: step; }
+  @media (max-width: 780px) { .steps-grid { grid-template-columns: 1fr; } }
+  .step-card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 2rem 1.7rem; }
+  .step-card .num { font-family: var(--font-display); font-size: 2.2rem; font-weight: 600; color: var(--rose-soft); -webkit-text-stroke: 1.5px var(--rose); line-height: 1; margin-bottom: 1rem; }
+  .step-card h3 { font-size: 1.1rem; margin-bottom: .5rem; }
+  .step-card p { color: var(--ink-soft); font-size: .9rem; }
+
+  /* ══════════════ POR QUÉ KASU ══════════════ */
+  .why-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 3rem; align-items: center; }
+  @media (max-width: 900px) { .why-grid { grid-template-columns: 1fr; } }
+  .why-photo { position: relative; border-radius: 24px; overflow: hidden; aspect-ratio: 4/4.6; box-shadow: 0 30px 60px rgba(46,33,26,.2); }
+  .why-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .check-list { list-style: none; }
+  .check-list li { display: flex; gap: .9rem; align-items: flex-start; padding: 1rem 1.1rem; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; margin-bottom: .8rem; font-size: .93rem; }
+  .check-list li svg { flex-shrink: 0; color: var(--rose-deep); margin-top: .15rem; }
+  .check-list b { display: block; margin-bottom: .15rem; }
+  .check-list span { color: var(--ink-soft); font-size: .86rem; }
+
+  /* ══════════════ CTA FINAL (dark) ══════════════ */
+  .cta-final { background: var(--dark); color: var(--cream-ink); text-align: center; }
+  .cta-final h2 { color: var(--cream-ink); font-size: clamp(2rem, 4.6vw, 2.9rem); }
+  .cta-final p { color: var(--cream-soft); max-width: 52ch; margin: 1.1rem auto 2.2rem; }
+  .cta-final .hero-actions { justify-content: center; }
+  .cta-final small { display: block; margin-top: 2.2rem; color: var(--cream-soft); opacity: .75; font-size: .8rem; }
+
+  footer { padding: 2.6rem 0; background: var(--bg); }
+  .foot-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; color: var(--ink-soft); font-size: .85rem; }
+  .foot-grid ul { list-style: none; display: flex; gap: 1.4rem; }
+  .foot-grid ul a:hover { color: var(--rose-deep); }
+
+  .wa-float { position: fixed; bottom: 1.4rem; right: 1.4rem; width: 58px; height: 58px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; z-index: 60; box-shadow: 0 6px 24px rgba(37,211,102,.4); }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <a href="/">← Volver a Automalytics</a>
+    <span>Demo: Kasu</span>
+  </div>
+
+  <header class="site-nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <img class="brand-logo" src="/assets/demo-kasu/logo-outline.webp" alt="Kasu — Arreglos y Desayunos Sorpresa" />
+        <div class="brand-name">Kasu<small>Arreglos y desayunos sorpresa</small></div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#ocasiones">Ocasiones</a></li>
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#como-funciona">Cómo funciona</a></li>
+      </ul>
+      <a class="btn btn-primary btn-sm nav-cta" href="https://wa.me/56932954075?text=Hola!%20Quiero%20ver%20el%20cat%C3%A1logo%20de%20Kasu" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" id="mobileClose" aria-label="Cerrar menú">✕</button>
+    <a href="#ocasiones">Ocasiones</a>
+    <a href="#catalogo">Catálogo</a>
+    <a href="#como-funciona">Cómo funciona</a>
+    <a class="btn btn-primary" href="https://wa.me/56932954075?text=Hola!%20Quiero%20ver%20el%20cat%C3%A1logo%20de%20Kasu" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+  </div>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div data-reveal>
+        <span class="eyebrow">Regalos y desayunos sorpresa a domicilio</span>
+        <h1>Detalles que<br>hacen feliz</h1>
+        <p class="lead">Arreglos con flores, chocolates, peluches y cajas personalizadas, armados a mano para sorprender a alguien especial. Eliges el detalle, nosotros lo hacemos realidad.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#catalogo">Ver catálogo →</a>
+          <a class="btn btn-ghost" href="https://wa.me/56932954075?text=Hola!%20Quiero%20hacer%20un%20pedido%20en%20Kasu" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+        </div>
+        <div class="tag-pills">
+          <span class="tag-pill">Arreglos florales</span><span class="tag-pill">Cajas personalizadas</span><span class="tag-pill">Peluches y chocolates</span><span class="tag-pill">Mensajes a tu medida</span>
+        </div>
+      </div>
+      <div class="hero-visual" data-reveal>
+        <div class="hv-panel">
+          <img src="/assets/demo-kasu/product-caja-dorada-teamo.webp" alt="Caja dorada personalizada 'Te Amo' con rosas rojas y chocolates, Kasu" />
+        </div>
+        <div class="hv-card hv-c1">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v12H8l-4 4V4Z"/></svg></div>
+          <div><b>Mensaje personalizado</b><span>en cada caja</span></div>
+        </div>
+        <div class="hv-card hv-c2">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C1 8 2.5 4.5 6 4c2-.3 4 .7 6 3 2-2.3 4-3.3 6-3 3.5.5 5 4 3.5 8-2.5 4.5-9.5 9-9.5 9Z"/></svg></div>
+          <div><b>Hecho a mano</b><span>flores, dulces y peluches</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ocasiones">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow">¿Para qué ocasión?</span>
+        <h2>Un detalle para cada momento importante</h2>
+      </div>
+      <div class="occ-grid">
+        <div class="occ-card" data-reveal>
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9C1 8 2.5 4.5 6 4c2-.3 4 .7 6 3 2-2.3 4-3.3 6-3 3.5.5 5 4 3.5 8-2.5 4.5-9.5 9-9.5 9Z"/></svg></div>
+          <h3>Declaraciones de amor</h3>
+          <p>Cajas con rosas y chocolates armadas para decir "te amo" sin necesitar palabras.</p>
+        </div>
+        <div class="occ-card" data-reveal>
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M4 13h16M12 9V6a2 2 0 0 1 4 0v3M8 9V6a2 2 0 0 1 4 0"/></svg></div>
+          <h3>Aniversarios</h3>
+          <p>Arreglos pensados para celebrar el tiempo compartido, con un detalle que se recuerda.</p>
+        </div>
+        <div class="occ-card" data-reveal>
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M6 10v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6M2 8l10-5 10 5-10 5-10-5Z"/></svg></div>
+          <h3>Graduaciones</h3>
+          <p>Bouquets con un peluche de regalo, para celebrar un logro que costó esfuerzo.</p>
+        </div>
+        <div class="occ-card" data-reveal>
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></div>
+          <h3>Cumpleaños</h3>
+          <p>Girasoles, rosas y detalles dulces para empezar un nuevo año con una sonrisa.</p>
+        </div>
+        <div class="occ-card" data-reveal>
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <h3>Pedir perdón o agradecer</h3>
+          <p>A veces el gesto correcto dice más que cualquier explicación.</p>
+        </div>
+        <div class="occ-card" data-reveal>
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h4l2 5-2.5 1.5a12 12 0 0 0 6 6L15 14l5 2v4a2 2 0 0 1-2 2C10 22 2 14 2 6a2 2 0 0 1 2-2Z"/></svg></div>
+          <h3>Sin ocasión especial</h3>
+          <p>Porque a veces las mejores sorpresas son las que no se avisan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="catalogo">
+    <div class="wrap">
+      <div class="sec-head-row" data-reveal>
+        <div class="sec-head">
+          <span class="eyebrow">Nuestro catálogo</span>
+          <h2>Cada arreglo, hecho a mano</h2>
+        </div>
+        <a class="sec-link" href="https://wa.me/56932954075?text=Hola!%20Quiero%20ver%20m%C3%A1s%20opciones%20del%20cat%C3%A1logo%20de%20Kasu" target="_blank" rel="noopener">¿No encuentras lo que buscas? Escríbenos <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-card" data-reveal>
+          <div class="cat-photo"><img src="/assets/demo-kasu/product-girasoles-rosas.webp" alt="Arreglo de girasoles y rosas rojas con follaje natural" loading="lazy" /></div>
+          <div class="cat-body">
+            <h3>Girasoles y Rosas Rojas</h3>
+            <p>Un arreglo cálido y luminoso, ideal para alegrar cualquier día.</p>
+            <a class="cat-link" href="https://wa.me/56932954075?text=Hola!%20Quiero%20pedir%20el%20arreglo%20%22Girasoles%20y%20Rosas%20Rojas%22" target="_blank" rel="noopener">Pedir por WhatsApp <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+        <div class="cat-card" data-reveal>
+          <div class="cat-photo"><img src="/assets/demo-kasu/product-caja-negra-corazon.webp" alt="Caja negra personalizada con rosas formando las letras I LOVE U y chocolates en forma de corazón" loading="lazy" /></div>
+          <div class="cat-body">
+            <h3>Caja "I Love U"</h3>
+            <p>Rosas y chocolates formando un mensaje directo, en una caja elegante con dedicatoria.</p>
+            <a class="cat-link" href="https://wa.me/56932954075?text=Hola!%20Quiero%20pedir%20la%20%22Caja%20I%20Love%20U%22" target="_blank" rel="noopener">Pedir por WhatsApp <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+        <div class="cat-card" data-reveal>
+          <div class="cat-photo"><img src="/assets/demo-kasu/product-caja-dorada-teamo.webp" alt="Caja dorada personalizada 'Te Amo' con rosas rojas y chocolates" loading="lazy" /></div>
+          <div class="cat-body">
+            <h3>Caja Dorada "Te Amo"</h3>
+            <p>Rosas rojas, chocolates surtidos y una dedicatoria grabada dentro de la caja.</p>
+            <a class="cat-link" href="https://wa.me/56932954075?text=Hola!%20Quiero%20pedir%20la%20%22Caja%20Dorada%20Te%20Amo%22" target="_blank" rel="noopener">Pedir por WhatsApp <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+        <div class="cat-card" data-reveal>
+          <div class="cat-photo"><img src="/assets/demo-kasu/product-girasoles-lirios-oso.webp" alt="Arreglo de girasoles, lirios y rosas rosadas con un peluche de graduación y chocolates" loading="lazy" /></div>
+          <div class="cat-body">
+            <h3>Girasoles y Oso de Graduación</h3>
+            <p>Girasoles, lirios y rosas junto a un peluche graduado, perfecto para celebrar un logro.</p>
+            <a class="cat-link" href="https://wa.me/56932954075?text=Hola!%20Quiero%20pedir%20el%20arreglo%20%22Girasoles%20y%20Oso%20de%20Graduaci%C3%B3n%22" target="_blank" rel="noopener">Pedir por WhatsApp <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+        <div class="cat-card" data-reveal>
+          <div class="cat-photo"><img src="/assets/demo-kasu/product-caja-rosa-oso.webp" alt="Caja sorpresa rosa y negra con flores de papel, chocolates y un peluche" loading="lazy" /></div>
+          <div class="cat-body">
+            <h3>Caja Sorpresa con Peluche</h3>
+            <p>Una caja decorada a mano con dulces y un peluche, ideal para un regalo tierno.</p>
+            <a class="cat-link" href="https://wa.me/56932954075?text=Hola!%20Quiero%20pedir%20la%20%22Caja%20Sorpresa%20con%20Peluche%22" target="_blank" rel="noopener">Pedir por WhatsApp <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+        <div class="cat-card" data-reveal>
+          <div class="cat-photo"><img src="/assets/demo-kasu/product-ramo-negro-tigger.webp" alt="Ramo de rosas de jabón negras y doradas envuelto en papel, con un peluche de Tigger" loading="lazy" /></div>
+          <div class="cat-body">
+            <h3>Ramo Negro y Dorado</h3>
+            <p>Un ramo con estilo distinto, envuelto a mano, con un peluche como sorpresa extra.</p>
+            <a class="cat-link" href="https://wa.me/56932954075?text=Hola!%20Quiero%20pedir%20el%20%22Ramo%20Negro%20y%20Dorado%22" target="_blank" rel="noopener">Pedir por WhatsApp <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="como-funciona">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <span class="eyebrow">Cómo funciona</span>
+        <h2>De la idea a la sorpresa, en 3 pasos</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card" data-reveal>
+          <div class="num">01</div>
+          <h3>Elige tu arreglo</h3>
+          <p>Recorre el catálogo y elige el que más se ajuste a la ocasión — o cuéntanos qué tienes en mente.</p>
+        </div>
+        <div class="step-card" data-reveal>
+          <div class="num">02</div>
+          <h3>Cuéntanos el mensaje</h3>
+          <p>Escríbenos por WhatsApp con el nombre de quien lo recibe y la dedicatoria que quieres incluir.</p>
+        </div>
+        <div class="step-card" data-reveal>
+          <div class="num">03</div>
+          <h3>Coordinamos la entrega</h3>
+          <p>Confirmamos contigo el lugar y la hora para que la sorpresa llegue en el momento justo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="por-que">
+    <div class="wrap why-grid">
+      <div class="why-photo" data-reveal>
+        <img src="/assets/demo-kasu/product-caja-negra-corazon.webp" alt="Caja personalizada 'I Love U' de Kasu, con rosas y chocolates" loading="lazy" />
+      </div>
+      <div data-reveal>
+        <span class="eyebrow">Por qué elegir Kasu</span>
+        <h2 style="margin-bottom:1.4rem;">Cada detalle, pensado para emocionar</h2>
+        <ul class="check-list">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg><div><b>Mensajes y cajas personalizadas</b><span>Cada arreglo puede llevar el nombre y la dedicatoria que tú elijas.</span></div></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg><div><b>Más que flores</b><span>Combinamos flores, chocolates y peluches para un regalo completo, no solo un ramo.</span></div></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg><div><b>Armado a mano</b><span>Cada caja se arma pieza por pieza, cuidando la presentación de principio a fin.</span></div></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg><div><b>Coordinación directa por WhatsApp</b><span>Sin formularios largos — nos escribes y coordinamos todo ahí mismo.</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <div class="wrap" data-reveal>
+      <span class="eyebrow on-dark">Hagamos una sorpresa</span>
+      <h2>¿Lista para sorprender a alguien especial?</h2>
+      <p>Escríbenos por WhatsApp, cuéntanos la ocasión y armamos juntos el detalle perfecto.</p>
+      <div class="hero-actions">
+        <a class="btn btn-light" href="https://wa.me/56932954075?text=Hola!%20Quiero%20hacer%20un%20pedido%20en%20Kasu" target="_blank" rel="noopener">Pedir por WhatsApp →</a>
+        <a class="btn btn-ghost on-dark" href="#catalogo">Ver catálogo →</a>
+      </div>
+      <small>Kasu — Arreglos y desayunos sorpresa · Detalles que hacen feliz.</small>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot-grid">
+      <div class="brand">
+        <img class="brand-logo" src="/assets/demo-kasu/logo-outline.webp" alt="Kasu — Arreglos y Desayunos Sorpresa" />
+      </div>
+      <ul><li><a href="#ocasiones">Ocasiones</a></li><li><a href="#catalogo">Catálogo</a></li><li><a href="#como-funciona">Cómo funciona</a></li></ul>
+      <div>Demo creada por Automalytics</div>
+    </div>
+  </footer>
+
+  <a class="wa-float" href="https://wa.me/56932954075?text=Hola!%20Quiero%20hacer%20un%20pedido%20en%20Kasu" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.96L2 22l5.25-1.38a9.9 9.9 0 0 0 4.78 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm0 18.05h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.27-4.37c0-4.54 3.7-8.24 8.26-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.24-8.24 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.78.97-.15.17-.29.19-.54.06-.25-.12-1.04-.38-1.99-1.22-.73-.66-1.23-1.46-1.37-1.71-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08s.9 2.41 1.02 2.58c.12.17 1.77 2.7 4.28 3.78.6.26 1.06.41 1.43.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+  </a>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileClose = document.getElementById('mobileClose');
+  hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+  mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  const revealEls = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: .15, rootMargin: '0px 0px -60px 0px' });
+  revealEls.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
