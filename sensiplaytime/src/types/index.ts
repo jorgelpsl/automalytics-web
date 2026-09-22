@@ -46,8 +46,7 @@ export interface Category {
   tagline: string;
   description: string;
   ctaLabel: string;
-  bgClass: string;
-  illustrationVariant: IllustrationVariant;
+  image: { src: string; alt: string };
 }
 
 export interface InstagramPost {
