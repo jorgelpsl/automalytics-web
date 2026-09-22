@@ -8,9 +8,10 @@ export const CATEGORIES: Category[] = [
     description:
       "Tableros, engranajes, cadenas y cubos pensados para mantener las manos ocupadas y la mente tranquila.",
     ctaLabel: "Ver productos",
+    bgClass: "bg-brand-mint",
     image: {
       src: "/category-fidgets.webp",
-      alt: "Engranajes y fidgets de colores de SensiPlayTime sobre una mesa",
+      alt: "Engranajes y fidgets de colores de SensiPlayTime",
     },
   },
   {
@@ -20,9 +21,10 @@ export const CATEGORIES: Category[] = [
     description:
       "Llaveros y accesorios grabados con el nombre, color y diseño que elijas — perfectos para regalar.",
     ctaLabel: "Personalizar",
+    bgClass: "bg-brand-lavender",
     image: {
       src: "/category-personalizados.webp",
-      alt: "Llaveros personalizados con nombres SOFIA, MATEO y EMILIA de SensiPlayTime",
+      alt: "Llaveros personalizados con nombres MATEO y EMILIA de SensiPlayTime",
     },
   },
   {
@@ -32,9 +34,10 @@ export const CATEGORIES: Category[] = [
     description:
       "Piezas diseñadas e impresas a mano en nuestro taller de Maipú, con acabados cuidados uno por uno.",
     ctaLabel: "Conoce más",
+    bgClass: "bg-sky-100",
     image: {
       src: "/category-impresion-3d.webp",
-      alt: "Impresora 3D imprimiendo una tortuga junto a otras piezas de SensiPlayTime",
+      alt: "Tortuga impresa en 3D junto a otras piezas de SensiPlayTime",
     },
   },
 ];

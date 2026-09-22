@@ -5,21 +5,12 @@ import type { Category } from "@/types";
 
 export function CategoryCard({ category }: { category: Category }) {
   return (
-    <div className="group relative flex h-72 flex-col justify-end overflow-hidden rounded-brand shadow-soft sm:h-80">
-      <Image
-        src={category.image.src}
-        alt={category.image.alt}
-        fill
-        sizes="(min-width: 1024px) 33vw, 100vw"
-        className="object-cover transition-transform duration-300 group-hover:scale-105"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-t from-brand-dark/85 via-brand-dark/10 to-transparent"
-      />
-      <div className="relative flex flex-col gap-2 p-6 sm:p-7">
-        <h3 className="font-heading text-2xl font-bold text-white">{category.name}</h3>
-        <p className="max-w-[20ch] text-sm text-white/90">{category.tagline}</p>
+    <div
+      className={`${category.bgClass} relative min-h-[220px] overflow-hidden rounded-brand p-6 sm:min-h-[240px] sm:p-7`}
+    >
+      <div className="relative z-10 flex max-w-[62%] flex-col gap-3 sm:max-w-[55%]">
+        <h3 className="font-heading text-2xl font-bold text-brand-dark">{category.name}</h3>
+        <p className="text-sm text-brand-dark/70">{category.tagline}</p>
         <a
           href={categoryWhatsAppUrl(category)}
           target="_blank"
@@ -29,6 +20,16 @@ export function CategoryCard({ category }: { category: Category }) {
           {category.ctaLabel}
           <ArrowRight size={16} aria-hidden="true" />
         </a>
+      </div>
+
+      <div className="pointer-events-none absolute -bottom-4 -right-4 h-32 w-32 sm:-bottom-5 sm:-right-5 sm:h-44 sm:w-44">
+        <Image
+          src={category.image.src}
+          alt={category.image.alt}
+          fill
+          sizes="176px"
+          className="object-contain object-bottom drop-shadow-md"
+        />
       </div>
     </div>
   );

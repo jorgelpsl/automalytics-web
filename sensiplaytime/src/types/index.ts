@@ -46,6 +46,7 @@ export interface Category {
   tagline: string;
   description: string;
   ctaLabel: string;
+  bgClass: string;
   image: { src: string; alt: string };
 }
 
