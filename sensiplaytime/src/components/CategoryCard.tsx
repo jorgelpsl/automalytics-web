@@ -6,9 +6,9 @@ import type { Category } from "@/types";
 export function CategoryCard({ category }: { category: Category }) {
   return (
     <div
-      className={`${category.bgClass} relative min-h-[220px] overflow-hidden rounded-brand p-6 sm:min-h-[240px] sm:p-7`}
+      className={`${category.bgClass} relative min-h-[260px] overflow-hidden rounded-brand p-6 sm:min-h-[300px] sm:p-7`}
     >
-      <div className="relative z-10 flex max-w-[62%] flex-col gap-3 sm:max-w-[55%]">
+      <div className="relative z-10 flex max-w-[58%] flex-col gap-3 sm:max-w-[52%]">
         <h3 className="font-heading text-2xl font-bold text-brand-dark">{category.name}</h3>
         <p className="text-sm text-brand-dark/70">{category.tagline}</p>
         <a
@@ -22,12 +22,12 @@ export function CategoryCard({ category }: { category: Category }) {
         </a>
       </div>
 
-      <div className="pointer-events-none absolute -bottom-4 -right-4 h-32 w-32 sm:-bottom-5 sm:-right-5 sm:h-44 sm:w-44">
+      <div className="pointer-events-none absolute -bottom-3 -right-3 h-52 w-52 sm:-bottom-4 sm:-right-4 sm:h-64 sm:w-64">
         <Image
           src={category.image.src}
           alt={category.image.alt}
           fill
-          sizes="176px"
+          sizes="(min-width: 640px) 256px, 208px"
           className="object-contain object-bottom drop-shadow-md"
         />
       </div>
