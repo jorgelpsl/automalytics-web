@@ -1,7 +1,6 @@
 import { ArrowRight, Brain, Heart, Sparkles } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { SensiMascot } from "@/components/SensiMascot";
-import { ToyIllustration } from "@/components/ToyIllustration";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { generalWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -39,7 +38,7 @@ export function Hero() {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/tienda"
+              href="#productos-destacados"
               className="inline-flex items-center gap-2 rounded-full bg-brand-dark px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
             >
               Explorar productos
@@ -49,43 +48,17 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative mx-auto aspect-square w-full max-w-md animate-fade-up lg:max-w-none">
-          <div className="absolute inset-0 rounded-[32px] bg-white/60" />
-          <SensiMascot className="absolute bottom-6 left-2 h-40 w-40 drop-shadow-lg sm:h-52 sm:w-52" />
-          <ToyIllustration
-            variant="tablero"
-            className="absolute right-4 top-6 h-24 w-24 drop-shadow-md sm:h-28 sm:w-28"
-          />
-          <ToyIllustration
-            variant="estrella"
-            className="absolute right-8 bottom-8 h-20 w-20 drop-shadow-md sm:h-24 sm:w-24"
-          />
-          <ToyIllustration
-            variant="llavero"
-            className="absolute left-10 top-4 h-16 w-16 drop-shadow-md sm:h-20 sm:w-20"
-          />
-          <ToyIllustration
-            variant="cadena"
-            className="absolute right-24 top-1/2 h-16 w-16 -translate-y-1/2 drop-shadow-md sm:h-20 sm:w-20"
-          />
-          <ToyIllustration
-            variant="engranajes"
-            className="absolute left-6 top-4 h-14 w-14 drop-shadow-md sm:h-16 sm:w-16"
-          />
-          <ToyIllustration
-            variant="blob"
-            className="absolute bottom-4 left-4 h-14 w-14 drop-shadow-md sm:h-16 sm:w-16"
-          />
-
-          <div className="absolute left-6 top-1/3 hidden rounded-2xl bg-white px-3 py-2 text-center text-xs font-semibold text-brand-dark shadow-soft sm:block">
-            Pequeños detalles
-            <br />
-            Grandes sonrisas
-          </div>
-          <div className="absolute right-2 top-2 hidden rounded-2xl bg-white px-3 py-2 text-center text-xs font-semibold text-brand-dark shadow-soft sm:block">
-            Hecho en
-            <br />
-            Maipú, Chile
+        <div className="relative mx-auto w-full max-w-xl animate-fade-up lg:max-w-none">
+          <div className="overflow-hidden rounded-[32px] shadow-soft-lg">
+            <Image
+              src="/hero-sensiplaytime.webp"
+              alt="Tortuga mascota Sensi junto a fidgets, llaveros y piezas impresas en 3D de SensiPlayTime sobre una mesa"
+              width={1320}
+              height={750}
+              priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="h-auto w-full"
+            />
           </div>
         </div>
       </div>

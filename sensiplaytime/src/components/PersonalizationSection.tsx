@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { Check } from "lucide-react";
+import { generalWhatsAppUrl } from "@/lib/whatsapp";
 
 const FEATURES = ["Nombres", "Colores", "Diseños únicos", "Regalos especiales"];
 
@@ -25,12 +25,14 @@ export function PersonalizationSection() {
             </li>
           ))}
         </ul>
-        <Link
-          href="/categorias/personalizados"
+        <a
+          href={generalWhatsAppUrl()}
+          target="_blank"
+          rel="noopener noreferrer"
           className="mt-5 inline-flex items-center justify-center rounded-full bg-brand-turquoise px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#38b0a9]"
         >
           Quiero personalizar
-        </Link>
+        </a>
       </div>
 
       <div className="flex flex-wrap items-end justify-center gap-3" aria-hidden="true">

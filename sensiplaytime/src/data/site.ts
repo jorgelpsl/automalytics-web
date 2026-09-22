@@ -31,24 +31,12 @@ export const TOP_BAR_MESSAGES = [
 
 export const NAV_LINKS = [
   { label: "Inicio", href: "/" },
-  { label: "Tienda", href: "/tienda" },
-  { label: "Fidgets", href: "/categorias/fidgets" },
-  { label: "Personalizados", href: "/categorias/personalizados" },
   { label: "Sobre nosotros", href: "/sobre-nosotros" },
   { label: "FAQ", href: "/faq" },
   { label: "Contacto", href: "/contacto" },
 ] as const;
 
 export const FOOTER_COLUMNS = [
-  {
-    title: "Tienda",
-    links: [
-      { label: "Fidgets", href: "/categorias/fidgets" },
-      { label: "Personalizados", href: "/categorias/personalizados" },
-      { label: "Impresión 3D", href: "/categorias/impresion-3d" },
-      { label: "Todos los productos", href: "/tienda" },
-    ],
-  },
   {
     title: "Ayuda",
     links: [

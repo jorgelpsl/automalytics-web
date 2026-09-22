@@ -97,30 +97,6 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
-export function getProduct(slug: string): Product | undefined {
-  return PRODUCTS.find((p) => p.slug === slug);
-}
-
 export function getFeaturedProducts(): Product[] {
   return PRODUCTS.filter((p) => p.featured);
-}
-
-export function getProductsByCategory(category: string): Product[] {
-  return PRODUCTS.filter((p) => p.category === category);
-}
-
-function normalize(value: string): string {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "");
-}
-
-export function searchProducts(query: string): Product[] {
-  const term = normalize(query.trim());
-  if (!term) return [];
-  return PRODUCTS.filter((p) => {
-    const haystack = normalize(`${p.name} ${p.category} ${p.shortDescription} ${p.description}`);
-    return haystack.includes(term);
-  });
 }

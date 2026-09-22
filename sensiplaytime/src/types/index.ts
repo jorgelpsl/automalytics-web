@@ -60,11 +60,6 @@ export interface InstagramPost {
   url?: string;
 }
 
-export interface CartLine {
-  productId: string;
-  quantity: number;
-}
-
 export interface FaqItem {
   question: string;
   answer: string;

@@ -2,9 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { MapPin, MessageCircle } from "lucide-react";
 import { SITE, FOOTER_COLUMNS } from "@/data/site";
-import { SensiMascot } from "@/components/SensiMascot";
 import { InstagramIcon, TikTokIcon } from "@/components/SocialIcons";
 import { generalWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -22,10 +22,10 @@ export function Footer() {
   return (
     <footer className="border-t border-slate-100 bg-white">
       <div className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2.5">
-              <SensiMascot className="h-10 w-10" />
+              <Image src="/mascot-icon.webp" alt="" width={1452} height={615} className="h-10 w-auto" />
               <span className="flex flex-col leading-tight">
                 <span className="font-heading text-lg font-bold text-brand-dark">{SITE.name}</span>
                 <span className="text-[11px] font-semibold uppercase tracking-wide text-brand-turquoise">

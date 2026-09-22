@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { Fredoka, Nunito_Sans } from "next/font/google";
 import "./globals.css";
-import { CartProvider } from "@/context/CartContext";
 import { Header } from "@/components/Header";
 import { TopBar } from "@/components/TopBar";
 import { Footer } from "@/components/Footer";
-import { CartDrawer } from "@/components/CartDrawer";
 import { SITE } from "@/data/site";
 
 const fredoka = Fredoka({
@@ -44,19 +42,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es">
       <body className={`${fredoka.variable} ${nunitoSans.variable} font-body antialiased`}>
-        <CartProvider>
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-brand-dark focus:px-4 focus:py-2 focus:text-white"
-          >
-            Saltar al contenido
-          </a>
-          <TopBar />
-          <Header />
-          <main id="main-content">{children}</main>
-          <Footer />
-          <CartDrawer />
-        </CartProvider>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-brand-dark focus:px-4 focus:py-2 focus:text-white"
+        >
+          Saltar al contenido
+        </a>
+        <TopBar />
+        <Header />
+        <main id="main-content">{children}</main>
+        <Footer />
       </body>
     </html>
   );

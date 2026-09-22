@@ -32,7 +32,3 @@ export const CATEGORIES: Category[] = [
     illustrationVariant: "estrella",
   },
 ];
-
-export function getCategory(slug: string): Category | undefined {
-  return CATEGORIES.find((c) => c.slug === slug);
-}
