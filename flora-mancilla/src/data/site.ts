@@ -1,7 +1,7 @@
 export const SITE = {
   name: "Flora Mancilla",
   role: "Psicóloga Clínica",
-  url: "https://flora-mancilla.vercel.app",
+  url: "https://demo-flora-mancilla.automalytics.com",
   description:
     "Psicoterapia individual para adultos en Santiago de Chile. Un espacio cercano, sin juicios, para conocerte mejor y poner en palabras lo que sientes.",
   city: "Santiago de Chile, Chile",
