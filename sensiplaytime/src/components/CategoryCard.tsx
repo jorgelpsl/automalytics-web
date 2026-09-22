@@ -4,6 +4,27 @@ import { categoryWhatsAppUrl } from "@/lib/whatsapp";
 import type { Category } from "@/types";
 
 export function CategoryCard({ category }: { category: Category }) {
+  if (category.banner) {
+    return (
+      <a
+        href={categoryWhatsAppUrl(category)}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={category.banner.label}
+        className="block self-start overflow-hidden rounded-brand shadow-soft transition-transform hover:-translate-y-0.5"
+      >
+        <Image
+          src={category.banner.src}
+          alt=""
+          width={category.banner.width}
+          height={category.banner.height}
+          sizes="(min-width: 1024px) 33vw, 100vw"
+          className="h-auto w-full"
+        />
+      </a>
+    );
+  }
+
   return (
     <div
       className={`${category.bgClass} relative min-h-[260px] overflow-hidden rounded-brand p-6 sm:min-h-[300px] sm:p-7`}

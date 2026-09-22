@@ -48,6 +48,9 @@ export interface Category {
   ctaLabel: string;
   bgClass: string;
   image: { src: string; alt: string };
+  // When set, the card renders as this single banner image (title/tagline
+  // already baked into the photo) instead of the flat-color + cutout layout.
+  banner?: { src: string; width: number; height: number; label: string };
 }
 
 export interface InstagramPost {

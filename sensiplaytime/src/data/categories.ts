@@ -13,6 +13,12 @@ export const CATEGORIES: Category[] = [
       src: "/category-fidgets.webp",
       alt: "Engranajes y fidgets de colores de SensiPlayTime",
     },
+    banner: {
+      src: "/category-fidgets-banner.webp",
+      width: 1620,
+      height: 971,
+      label: "Fidgets — Para mover, tocar y explorar. Ver productos por WhatsApp.",
+    },
   },
   {
     slug: "personalizados",
