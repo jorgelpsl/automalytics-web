@@ -10,10 +10,12 @@ export const SITE = {
     "Descubre fidgets, productos sensoriales, personalizados e impresión 3D de SensiPlayTime. Diseñados y creados en Maipú, Santiago de Chile.",
   city: "Maipú, Santiago de Chile",
   email: "hola@sensiplaytime.cl",
-  // Placeholder until Jorge/the client gives the real business number —
-  // every WhatsApp link is built from this single constant (see
-  // lib/whatsapp.ts), never hardcoded per-component.
-  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "56900000000",
+  // Automalytics' own WhatsApp number, same one used across the other
+  // demo pages (kasu.html, salon.html, etc.) — every WhatsApp link is
+  // built from this single constant (see lib/whatsapp.ts), never
+  // hardcoded per-component. Override via env when SensiPlayTime gets
+  // its own number.
+  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "56932954075",
   social: {
     instagram: "https://instagram.com/sensiplaytime",
     tiktok: "https://tiktok.com/@sensiplaytime",

@@ -12,15 +12,16 @@ mensaje de WhatsApp con el pedido armado.
 
 ```bash
 npm install
-cp .env.example .env.local   # y completa el número de WhatsApp real
+cp .env.example .env.local
 npm run dev
 ```
 
 ## Antes de producción
 
-1. **Número de WhatsApp**: `NEXT_PUBLIC_WHATSAPP_NUMBER` en `.env.local`
-   (o como variable de entorno en Vercel) sigue en un valor de ejemplo
-   (`56900000000`). Cámbialo por el número real del negocio.
+1. **Número de WhatsApp**: por ahora usa el número de Automalytics
+   (`56932954075`, el mismo de las otras demos) vía
+   `NEXT_PUBLIC_WHATSAPP_NUMBER`. Cuando SensiPlayTime tenga su propio
+   WhatsApp Business, cambia esa variable en `.env.local` (o en Vercel).
 2. **Imágenes de producto**: no existen fotos reales todavía, así que cada
    producto/categoría usa una ilustración vectorial propia
    (`src/components/ToyIllustration.tsx`) en vez de una foto. Para
