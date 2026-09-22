@@ -67,17 +67,15 @@ export function Hero() {
         </div>
 
         <div className="relative mx-auto w-full max-w-xl animate-fade-up lg:max-w-none">
-          <div className="overflow-hidden rounded-[32px] shadow-soft-lg sm:rounded-[40px]">
-            <Image
-              src="/hero-sensiplaytime.webp"
-              alt="Tortuga mascota Sensi junto a fidgets, llaveros y piezas impresas en 3D de SensiPlayTime sobre una mesa"
-              width={1320}
-              height={750}
-              priority
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="h-auto w-full"
-            />
-          </div>
+          <Image
+            src="/hero-sensiplaytime.webp"
+            alt="Tortuga mascota Sensi junto a fidgets, llaveros y piezas impresas en 3D de SensiPlayTime sobre una mesa"
+            width={1320}
+            height={750}
+            priority
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="h-auto w-full rounded-b-[32px] [mask-image:linear-gradient(to_bottom,transparent,black_40%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent,black_40%)] lg:rounded-b-none lg:rounded-r-[40px] lg:[mask-image:linear-gradient(to_right,transparent,black_40%)] lg:[-webkit-mask-image:linear-gradient(to_right,transparent,black_40%)]"
+          />
         </div>
       </div>
     </section>
