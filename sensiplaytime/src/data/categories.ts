@@ -32,6 +32,12 @@ export const CATEGORIES: Category[] = [
       src: "/category-personalizados.webp",
       alt: "Llaveros personalizados con nombres MATEO y EMILIA de SensiPlayTime",
     },
+    banner: {
+      src: "/category-personalizados-banner.webp",
+      width: 1619,
+      height: 971,
+      label: "Personalizados — Hazlo único con el nombre que quieras. Personalizar por WhatsApp.",
+    },
   },
   {
     slug: "impresion-3d",
@@ -44,6 +50,12 @@ export const CATEGORIES: Category[] = [
     image: {
       src: "/category-impresion-3d.webp",
       alt: "Tortuga impresa en 3D junto a otras piezas de SensiPlayTime",
+    },
+    banner: {
+      src: "/category-impresion-3d-banner.webp",
+      width: 1619,
+      height: 971,
+      label: "Impresión 3D — Diseños originales creados por nosotros. Conoce más por WhatsApp.",
     },
   },
 ];
