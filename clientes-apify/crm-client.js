@@ -24,14 +24,30 @@ export async function login() {
   return accessToken;
 }
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 // El backend no aplica unicidad de teléfono en POST /prospects (ese chequeo
 // solo corre del lado del cliente, en el formulario del CRM) — sin esto,
 // volver a correr una búsqueda que resurface el mismo negocio crea una fila
-// duplicada en vez de omitirla.
-export async function checkPhone(phone, accessToken) {
+// duplicada en vez de omitirla. Por eso un 429 acá no puede interpretarse
+// como "no hay match": eso es exactamente lo que dejó pasar duplicados
+// aunque el chequeo del lado del servidor ya estaba bien — se reintenta con
+// backoff hasta tener una respuesta real, y si nunca la hay, se corta el
+// import en vez de asumir silenciosamente que el prospecto es nuevo.
+export async function checkPhone(phone, accessToken, attempt = 1) {
   const res = await fetch(`${CRM_BASE}/prospects/check-phone?phone=${encodeURIComponent(phone)}`, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
+  if (res.status === 429) {
+    if (attempt >= 5) {
+      throw new Error(`checkPhone: demasiados 429 seguidos para "${phone}", abortando en vez de asumir que no hay duplicado`);
+    }
+    await sleep(attempt * 2000);
+    return checkPhone(phone, accessToken, attempt + 1);
+  }
+  if (!res.ok) {
+    throw new Error(`checkPhone: ${res.status} ${(await res.text()).slice(0, 200)}`);
+  }
   const { match } = await res.json();
   return Boolean(match);
 }

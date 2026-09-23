@@ -94,6 +94,10 @@ async function main() {
 
   // Antes de gastar créditos enriqueciendo, saca las que el CRM ya tiene
   // cargadas (mismo formato de teléfono IG: @usuario que usa todo lo demás).
+  // Con pausa entre cada chequeo: el backend acepta 60 requests/min por IP,
+  // y una lista de seguidos larga sin pausa termina pegándole al límite —
+  // lo que antes producía "no hay match" silencioso en vez de la respuesta
+  // real, y colaba cuentas que en realidad ya estaban cargadas.
   const accessToken = await login();
   const newUsernames = [];
   let alreadyInCrm = 0;
@@ -104,6 +108,7 @@ async function main() {
     } else {
       newUsernames.push(item.username);
     }
+    await new Promise((r) => setTimeout(r, 1100));
   }
   if (alreadyInCrm > 0) {
     console.log(`  -> ${alreadyInCrm} ya estaban en el CRM, se omiten antes de enriquecer.`);

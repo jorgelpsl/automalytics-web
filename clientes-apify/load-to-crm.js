@@ -10,6 +10,26 @@ if (!filePath) {
   process.exit(1);
 }
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// El backend acepta 60 requests/min por IP (ver AppModule en el backend) y
+// cada prospecto acá dispara dos (checkPhone + POST). Sin pausa, un lote de
+// más de ~30 prospectos empieza a pegarle al límite a mitad de camino.
+const DELAY_BETWEEN_PROSPECTS_MS = 1100;
+
+async function createProspect(p, accessToken, attempt = 1) {
+  const res = await fetch(`${CRM_BASE}/prospects`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify(p),
+  });
+  if (res.status === 429 && attempt < 5) {
+    await sleep(attempt * 2000);
+    return createProspect(p, accessToken, attempt + 1);
+  }
+  return res;
+}
+
 async function main() {
   const prospects = JSON.parse(readFileSync(filePath, 'utf8'));
   const accessToken = await login();
@@ -18,14 +38,11 @@ async function main() {
   for (const p of prospects) {
     if (await checkPhone(p.phone, accessToken)) {
       skipped++;
+      await sleep(DELAY_BETWEEN_PROSPECTS_MS);
       continue;
     }
 
-    const res = await fetch(`${CRM_BASE}/prospects`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
-      body: JSON.stringify(p),
-    });
+    const res = await createProspect(p, accessToken);
     if (res.ok) {
       created++;
     } else {
@@ -37,6 +54,7 @@ async function main() {
         console.log('FAIL:', p.businessName, res.status, body.slice(0, 200));
       }
     }
+    await sleep(DELAY_BETWEEN_PROSPECTS_MS);
   }
 
   console.log(`\nCreados: ${created} | Duplicados/omitidos: ${skipped} | Fallidos: ${failed} | Total: ${prospects.length}`);
