@@ -1,7 +1,9 @@
 import { Plus } from "lucide-react";
-import { FAQ } from "@/data/faq";
+import { FAQ, PAYMENT_FAQ } from "@/data/faq";
 
-export function Faq() {
+export function Faq({ paymentsEnabled }: { paymentsEnabled: boolean }) {
+  const items = paymentsEnabled ? [...FAQ.slice(0, -1), PAYMENT_FAQ, ...FAQ.slice(-1)] : FAQ;
+
   return (
     <section id="preguntas" className="section grid gap-12 lg:grid-cols-12 lg:gap-8">
       <div className="flex flex-col gap-4 lg:col-span-4">
@@ -10,7 +12,7 @@ export function Faq() {
       </div>
 
       <div className="border-t border-line lg:col-span-7 lg:col-start-6">
-        {FAQ.map((item) => (
+        {items.map((item) => (
           <details key={item.question} className="group border-b border-line">
             <summary className="flex min-h-[64px] cursor-pointer list-none items-center justify-between gap-6 py-4 text-lg font-medium [&::-webkit-details-marker]:hidden">
               {item.question}

@@ -5,6 +5,7 @@ import { Process } from "@/components/Process";
 import { Quote } from "@/components/Quote";
 import { Faq } from "@/components/Faq";
 import { ClosingCta } from "@/components/ClosingCta";
+import { paymentsEnabled } from "@/lib/stripe";
 
 export default function HomePage() {
   return (
@@ -13,8 +14,8 @@ export default function HomePage() {
       <Requirements />
       <Documents />
       <Process />
-      <Quote />
-      <Faq />
+      <Quote paymentsEnabled={paymentsEnabled()} />
+      <Faq paymentsEnabled={paymentsEnabled()} />
       <ClosingCta />
     </>
   );

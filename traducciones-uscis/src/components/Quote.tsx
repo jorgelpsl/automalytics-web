@@ -1,14 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Check, ChevronDown, MessageCircle } from "lucide-react";
+import { Check, ChevronDown, CreditCard, MessageCircle } from "lucide-react";
 import { SITE } from "@/data/site";
-import { DOCUMENT_GROUPS } from "@/data/documents";
+import { DOCUMENT_OPTIONS, MAX_NOTES, MAX_PAGES } from "@/lib/order";
 import { PRICE_TIERS, estimateFor, formatUsd, tierFor, tierRange } from "@/lib/pricing";
 import { quoteWhatsAppUrl } from "@/lib/whatsapp";
-
-const DOCUMENT_OPTIONS = [...DOCUMENT_GROUPS.flatMap((g) => g.items), "Otro"];
-const MAX_PAGES = 200;
 
 const INCLUDED = [
   "Traducción completa al inglés, sellos y firmas incluidos",
@@ -17,6 +14,7 @@ const INCLUDED = [
 ];
 
 type Field = "name" | "documentType" | "pages" | "deadline";
+type Action = "pay" | "whatsapp";
 type Errors = Partial<Record<Field, string>>;
 
 function todayIso(): string {
@@ -31,7 +29,7 @@ function formatDeadline(iso: string): string {
   return new Date(y, m - 1, d).toLocaleDateString("es", { day: "numeric", month: "long", year: "numeric" });
 }
 
-export function Quote() {
+export function Quote({ paymentsEnabled }: { paymentsEnabled: boolean }) {
   const [name, setName] = useState("");
   const [documentType, setDocumentType] = useState("");
   const [pages, setPages] = useState("1");
@@ -39,6 +37,8 @@ export function Quote() {
   const [notes, setNotes] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const [sentUrl, setSentUrl] = useState<string | null>(null);
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const docRef = useRef<HTMLSelectElement>(null);
   const pagesRef = useRef<HTMLInputElement>(null);
@@ -50,6 +50,16 @@ export function Quote() {
   useEffect(() => {
     if (sentUrl) successRef.current?.focus();
   }, [sentUrl]);
+
+  // Going back from Stripe restores this page from the back/forward cache
+  // with the button still saying "Abriendo el pago…".
+  useEffect(() => {
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) setPaying(false);
+    };
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
+  }, []);
 
   const pageCount = Number(pages);
   const validPages = Number.isInteger(pageCount) && pageCount >= 1 && pageCount <= MAX_PAGES;
@@ -65,8 +75,28 @@ export function Quote() {
     return next;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function startPayment() {
+    setPaying(true);
+    setPayError(null);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), documentType, pages: pageCount, deadline, notes }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { url?: string };
+      if (!res.ok || !data.url) throw new Error(`checkout ${res.status}`);
+      window.location.assign(data.url);
+    } catch {
+      setPaying(false);
+      setPayError("No pudimos abrir la página de pago. Intenta de nuevo en un momento o envíanos tu solicitud por WhatsApp.");
+    }
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const submitter = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+    const action: Action = paymentsEnabled && submitter?.value === "pay" ? "pay" : "whatsapp";
     const found = validate();
     setErrors(found);
     if (found.name) {
@@ -83,6 +113,10 @@ export function Quote() {
     }
     if (found.deadline) {
       deadlineRef.current?.focus();
+      return;
+    }
+    if (action === "pay") {
+      void startPayment();
       return;
     }
     const url = quoteWhatsAppUrl({
@@ -311,6 +345,7 @@ export function Quote() {
                   id="q-notes"
                   name="notes"
                   rows={3}
+                  maxLength={MAX_NOTES}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   className={`${inputBase} border-ink/25 py-3`}
@@ -318,13 +353,37 @@ export function Quote() {
                 />
               </div>
 
-              <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
-                <button type="submit" className="btn-primary w-full sm:w-auto">
-                  <MessageCircle size={19} aria-hidden="true" />
-                  Enviar por WhatsApp
-                </button>
-                <p className="text-sm text-ink-muted">Sin costo y sin compromiso.</p>
-              </div>
+              {paymentsEnabled ? (
+                <div className="flex flex-col gap-4 sm:col-span-2">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                    <button type="submit" name="action" value="pay" disabled={paying} className="btn-primary w-full sm:w-auto">
+                      <CreditCard size={19} aria-hidden="true" />
+                      {paying ? "Abriendo el pago…" : estimate ? `Pagar ${formatUsd(estimate)} con tarjeta` : "Pagar con tarjeta"}
+                    </button>
+                    <button type="submit" name="action" value="whatsapp" disabled={paying} className="btn-secondary w-full sm:w-auto">
+                      <MessageCircle size={19} aria-hidden="true" />
+                      Consultar por WhatsApp
+                    </button>
+                  </div>
+                  {payError && (
+                    <p role="alert" className="text-sm text-red-700">
+                      {payError}
+                    </p>
+                  )}
+                  <p className="text-sm leading-relaxed text-ink-muted">
+                    Pago seguro con Stripe: tarjeta, Apple Pay o Google Pay. Después del pago nos envías las fotos por WhatsApp.
+                    Si el documento tiene otro número de páginas, te avisamos antes de empezar.
+                  </p>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+                  <button type="submit" className="btn-primary w-full sm:w-auto">
+                    <MessageCircle size={19} aria-hidden="true" />
+                    Enviar por WhatsApp
+                  </button>
+                  <p className="text-sm text-ink-muted">Sin costo y sin compromiso.</p>
+                </div>
+              )}
             </form>
           )}
         </div>

@@ -29,3 +29,14 @@ export function quoteWhatsAppUrl(q: QuoteRequest): string {
   lines.push("Te envío las fotos del documento por aquí.");
   return buildWhatsAppUrl(lines.join("\n"));
 }
+
+export function paidOrderWhatsAppUrl(o: { code: string; name: string; documentType: string; pages: number }): string {
+  const lines = [
+    `Hola, ya pagué mi traducción. Pedido ${o.code}.`,
+    o.name && `Nombre: ${o.name}`,
+    o.documentType && `Documento: ${o.documentType}`,
+    o.pages > 0 && `Páginas: ${o.pages}`,
+    "Te envío las fotos del documento por aquí.",
+  ].filter(Boolean);
+  return buildWhatsAppUrl(lines.join("\n"));
+}

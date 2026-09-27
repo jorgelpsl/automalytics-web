@@ -40,3 +40,9 @@ export const FAQ: FaqItem[] = [
       "No. Somos un servicio privado de traducción. No estamos afiliados a USCIS ni al gobierno de Estados Unidos, y no damos asesoría legal migratoria.",
   },
 ];
+
+export const PAYMENT_FAQ: FaqItem = {
+  question: "¿Cómo pago?",
+  answer:
+    "Con tarjeta de crédito o débito, Apple Pay o Google Pay, en la página de pago de Stripe. Puedes pagar al cotizar en esta web o, si prefieres consultar antes, te enviamos el enlace de pago por WhatsApp. Si al revisar tu documento el número de páginas es distinto, te avisamos antes de empezar.",
+};

@@ -20,3 +20,9 @@ All business details live in `src/data/site.ts`: name "Certa Traducciones", volu
 - `turnaround` — `null` would make the FAQ say the turnaround is confirmed when quoting.
 
 The requirements section quotes 8 CFR § 103.2(b)(3). The footer and FAQ state the service is not affiliated with USCIS — keep that.
+
+## Card payments (Stripe)
+
+Off until `STRIPE_SECRET_KEY` is set in the Vercel project (then redeploy, since the home page is static). With it, the quote form adds "Pagar $X con tarjeta": `/api/checkout` re-validates the order and prices it server-side from `priceTiers`, then sends the client to Stripe Checkout. After paying they land on `/pago-recibido`, which confirms the session with Stripe and hands them to WhatsApp with their order code (`CT-XXXXXX`, the `client_reference_id` in Stripe) to send the document photos.
+
+Use a `sk_test_…` key first and pay with card `4242 4242 4242 4242`; switch to `sk_live_…` when it works. The key lives only in Vercel — never in the repo or client code.
