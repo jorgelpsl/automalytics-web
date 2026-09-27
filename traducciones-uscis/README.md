@@ -26,3 +26,9 @@ The requirements section quotes 8 CFR § 103.2(b)(3). The footer and FAQ state t
 Off until `STRIPE_SECRET_KEY` is set in the Vercel project (then redeploy, since the home page is static). With it, the quote form adds "Pagar $X con tarjeta": `/api/checkout` re-validates the order and prices it server-side from `priceTiers`, then sends the client to Stripe Checkout. After paying they land on `/pago-recibido`, which confirms the session with Stripe and hands them to WhatsApp with their order code (`CT-XXXXXX`, the `client_reference_id` in Stripe) to send the document photos.
 
 Use a `sk_test_…` key first and pay with card `4242 4242 4242 4242`; switch to `sk_live_…` when it works. The key lives only in Vercel — never in the repo or client code.
+
+## Document uploads and /admin
+
+- **Uploads** turn on when a private Vercel Blob store is connected to the project (`BLOB_READ_WRITE_TOKEN`) and payments are on. After paying, `/pago-recibido` becomes the upload page; `/api/documents` only issues upload tokens for a paid Stripe session and only inside `pedidos/<order code>/`. JPG, PNG, WebP, HEIC or PDF, 20 MB each, 20 files per order.
+- **/admin** turns on with `ADMIN_PASSWORD` (plus the Blob store). It lists paid orders from Stripe with the client's details and files; files are served only through `/api/admin/file` to a signed-in admin. Changing the password signs everyone out.
+- Without these variables the site falls back to sending documents over WhatsApp.
