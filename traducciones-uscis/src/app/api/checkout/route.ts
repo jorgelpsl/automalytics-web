@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { parseOrder } from "@/lib/order";
-import { createCheckoutSession, paymentsEnabled } from "@/lib/stripe";
+import { paymentsEnabled } from "@/lib/features";
+import { createCheckoutSession } from "@/lib/stripe";
 
 export async function POST(req: NextRequest) {
   if (!paymentsEnabled()) {

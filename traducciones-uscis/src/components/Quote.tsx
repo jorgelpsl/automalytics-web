@@ -29,7 +29,13 @@ function formatDeadline(iso: string): string {
   return new Date(y, m - 1, d).toLocaleDateString("es", { day: "numeric", month: "long", year: "numeric" });
 }
 
-export function Quote({ paymentsEnabled }: { paymentsEnabled: boolean }) {
+export function Quote({
+  paymentsEnabled,
+  uploadAfterPayment,
+}: {
+  paymentsEnabled: boolean;
+  uploadAfterPayment: boolean;
+}) {
   const [name, setName] = useState("");
   const [documentType, setDocumentType] = useState("");
   const [pages, setPages] = useState("1");
@@ -372,7 +378,7 @@ export function Quote({ paymentsEnabled }: { paymentsEnabled: boolean }) {
                   )}
                   <p className="text-sm leading-relaxed text-ink-muted">
                     Pago seguro con Stripe: tarjeta, Apple Pay o Google Pay. Cobramos según las páginas que indicas y, después
-                    del pago, nos envías las fotos por WhatsApp.
+                    del pago, {uploadAfterPayment ? "subes tu documento aquí mismo." : "nos envías las fotos por WhatsApp."}
                   </p>
                 </div>
               ) : (

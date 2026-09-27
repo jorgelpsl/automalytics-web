@@ -1,9 +1,9 @@
 import { Plus } from "lucide-react";
-import { FAQ, PAYMENT_FAQ } from "@/data/faq";
+import { getFaq } from "@/data/faq";
+import { onlineOrdersEnabled, paymentsEnabled } from "@/lib/features";
 
-export function Faq({ paymentsEnabled }: { paymentsEnabled: boolean }) {
-  const items = paymentsEnabled ? [...FAQ.slice(0, -1), PAYMENT_FAQ, ...FAQ.slice(-1)] : FAQ;
-
+export function Faq() {
+  const items = getFaq({ payments: paymentsEnabled(), online: onlineOrdersEnabled() });
   return (
     <section id="preguntas" className="section grid gap-12 lg:grid-cols-12 lg:gap-8">
       <div className="flex flex-col gap-4 lg:col-span-4">

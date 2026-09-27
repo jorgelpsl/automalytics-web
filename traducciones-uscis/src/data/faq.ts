@@ -6,7 +6,7 @@ export interface FaqItem {
   answer: string;
 }
 
-export const FAQ: FaqItem[] = [
+const BASE_FAQ: FaqItem[] = [
   {
     question: "¿La traducción tiene que estar notarizada?",
     answer:
@@ -41,8 +41,19 @@ export const FAQ: FaqItem[] = [
   },
 ];
 
-export const PAYMENT_FAQ: FaqItem = {
+const PAYMENT_FAQ: FaqItem = {
   question: "¿Cómo pago?",
   answer:
     "Con tarjeta de crédito o débito, Apple Pay o Google Pay, en la página de pago de Stripe. Puedes pagar al cotizar en esta web o, si prefieres consultar antes, te enviamos el enlace de pago por WhatsApp. El cobro se calcula con el número de páginas que indicas.",
 };
+
+const ONLINE_UPLOAD_ANSWER =
+  "Después de pagar, los subes en la misma página: fotos o PDF, desde el celular o el computador. Basta con que se lea todo el documento: con buena luz, sin cortes y sin reflejos sobre los sellos.";
+
+export function getFaq({ payments, online }: { payments: boolean; online: boolean }): FaqItem[] {
+  const items = BASE_FAQ.map((item) =>
+    online && item.question === "¿Cómo envío mis documentos?" ? { ...item, answer: ONLINE_UPLOAD_ANSWER } : item,
+  );
+  // Payment sits just before the closing "not affiliated with USCIS" answer.
+  return payments ? [...items.slice(0, -1), PAYMENT_FAQ, ...items.slice(-1)] : items;
+}

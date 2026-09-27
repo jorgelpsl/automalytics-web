@@ -2,21 +2,51 @@
 // calls doesn't justify the SDK. Never import this from a client component.
 import { SITE } from "@/data/site";
 import type { Order } from "@/lib/order";
+import { paymentsEnabled } from "@/lib/features";
 import { tierFor } from "@/lib/pricing";
 
 const API = "https://api.stripe.com/v1";
 
-export function paymentsEnabled(): boolean {
-  return Boolean(process.env.STRIPE_SECRET_KEY);
-}
-
 export interface PaidOrder {
+  sessionId: string;
   code: string;
   paid: boolean;
+  createdAt: Date;
   amountTotal: number;
   name: string;
   documentType: string;
   pages: number;
+  deadline: string;
+  notes: string;
+  email: string;
+  phone: string;
+}
+
+interface StripeSession {
+  id: string;
+  created: number;
+  payment_status: string;
+  amount_total: number | null;
+  client_reference_id: string | null;
+  metadata: Record<string, string>;
+  customer_details: { email: string | null; phone: string | null } | null;
+}
+
+function toOrder(s: StripeSession): PaidOrder {
+  return {
+    sessionId: s.id,
+    code: s.client_reference_id ?? "",
+    paid: s.payment_status === "paid",
+    createdAt: new Date(s.created * 1000),
+    amountTotal: (s.amount_total ?? 0) / 100,
+    name: s.metadata.name ?? "",
+    documentType: s.metadata.documentType ?? "",
+    pages: Number(s.metadata.pages ?? 0),
+    deadline: s.metadata.deadline ?? "",
+    notes: s.metadata.notes ?? "",
+    email: s.customer_details?.email ?? "",
+    phone: s.customer_details?.phone ?? "",
+  };
 }
 
 async function stripeRequest<T>(path: string, body?: URLSearchParams): Promise<T> {
@@ -81,22 +111,15 @@ export async function createCheckoutSession(order: Order, origin: string): Promi
 export async function getPaidOrder(sessionId: string): Promise<PaidOrder | null> {
   if (!paymentsEnabled() || !/^cs_(test|live)_[A-Za-z0-9]+$/.test(sessionId)) return null;
   try {
-    const s = await stripeRequest<{
-      payment_status: string;
-      amount_total: number | null;
-      client_reference_id: string | null;
-      metadata: Record<string, string>;
-    }>(`/checkout/sessions/${sessionId}`);
-    return {
-      code: s.client_reference_id ?? "",
-      paid: s.payment_status === "paid",
-      amountTotal: (s.amount_total ?? 0) / 100,
-      name: s.metadata.name ?? "",
-      documentType: s.metadata.documentType ?? "",
-      pages: Number(s.metadata.pages ?? 0),
-    };
+    return toOrder(await stripeRequest<StripeSession>(`/checkout/sessions/${sessionId}`));
   } catch (err) {
     console.error(err);
     return null;
   }
+}
+
+/** Most recent completed checkouts, newest first. */
+export async function listPaidOrders(limit = 50): Promise<PaidOrder[]> {
+  const res = await stripeRequest<{ data: StripeSession[] }>(`/checkout/sessions?status=complete&limit=${limit}`);
+  return res.data.map(toOrder).filter((o) => o.paid && o.code);
 }

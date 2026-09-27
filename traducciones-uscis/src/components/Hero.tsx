@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import { DocumentPair } from "@/components/DocumentPair";
 import { SITE } from "@/data/site";
+import { onlineOrdersEnabled } from "@/lib/features";
 import { PRICE_TIERS, formatUsd } from "@/lib/pricing";
 
 const [baseTier, firstDiscount] = PRICE_TIERS;
@@ -25,8 +26,10 @@ export function Hero() {
           Traducciones <span className="marker">certificadas</span> para USCIS, listas para presentar.
         </h1>
         <p className="max-w-[34rem] text-lg leading-relaxed text-ink-soft">
-          Traducimos tus documentos al inglés con la certificación que USCIS exige. Nos mandas una foto por WhatsApp y te
-          devolvemos el PDF firmado.
+          Traducimos tus documentos al inglés con la certificación que USCIS exige.{" "}
+          {onlineOrdersEnabled()
+            ? "Pagas en línea, subes una foto del documento y te devolvemos el PDF firmado."
+            : "Nos mandas una foto por WhatsApp y te devolvemos el PDF firmado."}
         </p>
         <div className="flex flex-col gap-3 sm:flex-row">
           <a href="#cotizar" className="btn-primary">

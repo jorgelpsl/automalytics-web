@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Check, MessageCircle } from "lucide-react";
+import { DocumentUpload } from "@/components/DocumentUpload";
 import { SITE } from "@/data/site";
+import { listOrderFiles } from "@/lib/documents";
+import { uploadsEnabled } from "@/lib/features";
 import { formatUsd } from "@/lib/pricing";
 import { getPaidOrder } from "@/lib/stripe";
 import { generalWhatsAppUrl, paidOrderWhatsAppUrl } from "@/lib/whatsapp";
@@ -19,6 +22,8 @@ export default async function PaymentReceivedPage({
 }) {
   const { session_id } = await searchParams;
   const order = session_id ? await getPaidOrder(session_id) : null;
+  const canUpload = Boolean(order?.paid) && uploadsEnabled();
+  const storedFiles = canUpload ? await listOrderFiles(order!.code).catch(() => []) : [];
 
   return (
     <section className="section">
@@ -39,15 +44,27 @@ export default async function PaymentReceivedPage({
               <dt className="text-ink-muted">Total pagado</dt>
               <dd className="font-medium">{formatUsd(order.amountTotal)}</dd>
             </dl>
-            <p className="leading-relaxed text-ink-soft">
-              Falta un paso: envíanos por WhatsApp una foto clara de cada página del documento. Empezamos a traducir apenas
-              la recibamos{SITE.turnaround ? ` y te entregamos el PDF en ${SITE.turnaround}` : ""}.
-            </p>
-            <a href={paidOrderWhatsAppUrl(order)} target="_blank" rel="noopener noreferrer" className="btn-primary self-start">
-              <MessageCircle size={19} aria-hidden="true" />
-              Enviar mi documento por WhatsApp
-            </a>
-            <p className="text-sm text-ink-muted">Stripe te envió el recibo del pago a tu correo.</p>
+            {canUpload ? (
+              <DocumentUpload
+                sessionId={order.sessionId}
+                orderCode={order.code}
+                initialFiles={storedFiles.map((f) => ({ name: f.name, size: f.size }))}
+                turnaround={SITE.turnaround}
+                whatsappUrl={paidOrderWhatsAppUrl(order)}
+              />
+            ) : (
+              <>
+                <p className="leading-relaxed text-ink-soft">
+                  Falta un paso: envíanos por WhatsApp una foto clara de cada página del documento. Empezamos a traducir
+                  apenas la recibamos{SITE.turnaround ? ` y te entregamos el PDF en ${SITE.turnaround}` : ""}.
+                </p>
+                <a href={paidOrderWhatsAppUrl(order)} target="_blank" rel="noopener noreferrer" className="btn-primary self-start">
+                  <MessageCircle size={19} aria-hidden="true" />
+                  Enviar mi documento por WhatsApp
+                </a>
+              </>
+            )}
+            <p className="text-sm text-ink-muted">Stripe te envía el recibo del pago a tu correo.</p>
           </>
         ) : (
           <>
