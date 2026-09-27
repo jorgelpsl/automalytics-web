@@ -12,9 +12,8 @@ npm run build
 
 ## Before publishing
 
-All business details live in `src/data/site.ts`. The current values are provisional:
+All business details live in `src/data/site.ts`. The name is final ("Certa Traducciones"); these are still provisional:
 
-- `name` / `shortName` — "Certa Traducciones" is a placeholder name.
 - `whatsappNumber` — defaults to Automalytics' number; set `NEXT_PUBLIC_WHATSAPP_NUMBER`.
 - `url` — set `NEXT_PUBLIC_SITE_URL` to the real domain (used for canonical, OG and sitemap).
 - `email` — `null` hides it.
