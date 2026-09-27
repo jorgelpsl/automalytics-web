@@ -11,7 +11,7 @@ export const DOCUMENT_GROUPS: DocumentGroup[] = [
       "Acta de matrimonio",
       "Sentencia o acta de divorcio",
       "Certificado de defunción",
-      "Libreta de familia",
+      "Fe o acta de bautismo",
     ],
   },
   {
@@ -29,13 +29,13 @@ export const DOCUMENT_GROUPS: DocumentGroup[] = [
       "Títulos y diplomas",
       "Certificados de notas",
       "Cartas de empleo",
-      "Certificados de cotizaciones",
+      "Constancias de sueldo o ingresos",
     ],
   },
   {
     title: "Identidad y otros",
     items: [
-      "Cédula de identidad",
+      "Cédula o documento de identidad",
       "Licencia de conducir",
       "Registros de vacunación",
       "Certificados médicos",

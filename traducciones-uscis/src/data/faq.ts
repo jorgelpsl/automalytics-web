@@ -1,5 +1,5 @@
 import { SITE } from "@/data/site";
-import { PRICE_TIERS, tierRange } from "@/lib/pricing";
+import { PRICE_TIERS, formatUsd, tierRange } from "@/lib/pricing";
 
 export interface FaqItem {
   question: string;
@@ -31,7 +31,7 @@ export const FAQ: FaqItem[] = [
   {
     question: "¿Cuánto cuesta?",
     answer: PRICE_TIERS.length
-      ? `${PRICE_TIERS.map((t) => `${tierRange(t)}: USD ${t.perPage} por página`).join(". ")}. La tarifa depende del total de páginas del pedido y se aplica a todas. Te confirmamos el total antes de empezar.`
+      ? `Precios en dólares. ${PRICE_TIERS.map((t) => `${tierRange(t)}: ${formatUsd(t.perPage)} por página`).join(". ")}. La tarifa depende del total de páginas del pedido y se aplica a todas. Te confirmamos el total antes de empezar.`
       : "Depende del documento y del número de páginas. La cotización no tiene costo y te llega antes de que empecemos a traducir.",
   },
   {

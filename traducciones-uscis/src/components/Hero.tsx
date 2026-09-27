@@ -1,11 +1,11 @@
 import { Check } from "lucide-react";
 import { DocumentPair } from "@/components/DocumentPair";
 import { SITE } from "@/data/site";
-import { PRICE_TIERS } from "@/lib/pricing";
+import { PRICE_TIERS, formatUsd } from "@/lib/pricing";
 
 const [baseTier, firstDiscount] = PRICE_TIERS;
 const priceFact = baseTier
-  ? `USD ${baseTier.perPage} por página${firstDiscount ? ` (menos desde ${firstDiscount.minPages} páginas)` : ""}`
+  ? `${formatUsd(baseTier.perPage)} por página${firstDiscount ? ` (menos desde ${firstDiscount.minPages} páginas)` : ""}`
   : null;
 
 const FACTS = [

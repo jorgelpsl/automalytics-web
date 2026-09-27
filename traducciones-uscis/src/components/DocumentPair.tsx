@@ -32,7 +32,7 @@ export function DocumentPair() {
           <span className="flex h-[5.2em] w-[5.2em] items-center justify-center rounded-full border-2 border-dashed border-ink/35 text-center text-[0.8em] text-ink-muted">
             Sello
           </span>
-          <span className="w-[45%] border-t border-ink/40 pt-[0.3em] text-center text-ink-muted">Oficial civil</span>
+          <span className="w-[45%] border-t border-ink/40 pt-[0.3em] text-center text-ink-muted">Registrador civil</span>
         </div>
         <span className="absolute -top-[1.1em] left-[5%] rounded-soft bg-ink px-[0.8em] py-[0.25em] text-[0.95em] font-medium text-paper">
           Original · Español

@@ -1,5 +1,10 @@
 import { SITE, type PriceTier } from "@/data/site";
 
+// US-style amounts ("$30"): the audience pays in dollars from the US.
+export function formatUsd(amount: number): string {
+  return `$${amount.toLocaleString("en-US")}`;
+}
+
 export const PRICE_TIERS = [...SITE.priceTiers].sort((a, b) => a.minPages - b.minPages);
 
 export function tierFor(pages: number): PriceTier | null {

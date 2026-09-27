@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, MessageCircle } from "lucide-react";
 import { SITE } from "@/data/site";
 import { DOCUMENT_GROUPS } from "@/data/documents";
-import { PRICE_TIERS, estimateFor, tierFor, tierRange } from "@/lib/pricing";
+import { PRICE_TIERS, estimateFor, formatUsd, tierFor, tierRange } from "@/lib/pricing";
 import { quoteWhatsAppUrl } from "@/lib/whatsapp";
 
 const DOCUMENT_OPTIONS = [...DOCUMENT_GROUPS.flatMap((g) => g.items), "Otro"];
@@ -124,11 +124,11 @@ export function Quote() {
           <div className="rounded-card border border-line bg-paper-sheet p-6">
             <p className="text-sm font-medium text-ink-muted">{estimate ? "Precio estimado" : "Precio"}</p>
             <p className="mt-1 font-display text-3xl font-medium" aria-live="polite">
-              {estimate ? `USD ${estimate}` : "Cotización sin costo"}
+              {estimate ? formatUsd(estimate) : "Cotización sin costo"}
             </p>
             {estimate ? (
               <p className="mt-1 text-sm text-ink-muted">
-                {pageCount} {pageCount === 1 ? "página" : "páginas"} × USD {activeTier?.perPage}. Te confirmamos el total antes de empezar.
+                {pageCount} {pageCount === 1 ? "página" : "páginas"} × {activeTier && formatUsd(activeTier.perPage)}. Te confirmamos el total antes de empezar.
               </p>
             ) : (
               <p className="mt-1 text-sm text-ink-muted">Te confirmamos precio y plazo antes de empezar.</p>
@@ -145,7 +145,7 @@ export function Quote() {
                       }`}
                     >
                       <dt className={active ? "font-medium" : ""}>{tierRange(tier)}</dt>
-                      <dd className={active ? "font-medium" : ""}>USD {tier.perPage} / página</dd>
+                      <dd className={active ? "font-medium" : ""}>{formatUsd(tier.perPage)} / página</dd>
                     </div>
                   );
                 })}
