@@ -1,4 +1,5 @@
 import { SITE } from "@/data/site";
+import { PRICE_TIERS, tierRange } from "@/lib/pricing";
 
 export interface FaqItem {
   question: string;
@@ -29,8 +30,8 @@ export const FAQ: FaqItem[] = [
   },
   {
     question: "¿Cuánto cuesta?",
-    answer: SITE.pricePerPage
-      ? `El precio es de USD ${SITE.pricePerPage} por página. Te confirmamos el total antes de empezar.`
+    answer: PRICE_TIERS.length
+      ? `${PRICE_TIERS.map((t) => `${tierRange(t)}: USD ${t.perPage} por página`).join(". ")}. La tarifa depende del total de páginas del pedido y se aplica a todas. Te confirmamos el total antes de empezar.`
       : "Depende del documento y del número de páginas. La cotización no tiene costo y te llega antes de que empecemos a traducir.",
   },
   {

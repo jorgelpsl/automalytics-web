@@ -1,16 +1,16 @@
 import { Check } from "lucide-react";
 import { DocumentPair } from "@/components/DocumentPair";
 import { SITE } from "@/data/site";
+import { PRICE_TIERS } from "@/lib/pricing";
 
-const offer = [
-  SITE.pricePerPage ? `USD ${SITE.pricePerPage} por página` : null,
-  SITE.turnaround ? `entrega en ${SITE.turnaround}` : null,
-]
-  .filter(Boolean)
-  .join(" · ");
+const [baseTier, firstDiscount] = PRICE_TIERS;
+const priceFact = baseTier
+  ? `USD ${baseTier.perPage} por página${firstDiscount ? ` (menos desde ${firstDiscount.minPages} páginas)` : ""}`
+  : null;
 
 const FACTS = [
-  ...(offer ? [offer.charAt(0).toUpperCase() + offer.slice(1)] : []),
+  ...(priceFact ? [priceFact] : []),
+  ...(SITE.turnaround ? [`Entrega en ${SITE.turnaround}`] : []),
   "Traducción completa, sellos y firmas incluidos",
   "Certificación del traductor, firmada",
   "Sin notario: USCIS no lo exige",

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, MessageCircle } from "lucide-react";
 import { SITE } from "@/data/site";
 import { DOCUMENT_GROUPS } from "@/data/documents";
+import { PRICE_TIERS, estimateFor, tierFor, tierRange } from "@/lib/pricing";
 import { quoteWhatsAppUrl } from "@/lib/whatsapp";
 
 const DOCUMENT_OPTIONS = [...DOCUMENT_GROUPS.flatMap((g) => g.items), "Otro"];
@@ -52,7 +53,8 @@ export function Quote() {
 
   const pageCount = Number(pages);
   const validPages = Number.isInteger(pageCount) && pageCount >= 1 && pageCount <= MAX_PAGES;
-  const estimate = SITE.pricePerPage && validPages ? SITE.pricePerPage * pageCount : null;
+  const activeTier = validPages ? tierFor(pageCount) : null;
+  const estimate = validPages ? estimateFor(pageCount) : null;
 
   function validate(): Errors {
     const next: Errors = {};
@@ -126,10 +128,28 @@ export function Quote() {
             </p>
             {estimate ? (
               <p className="mt-1 text-sm text-ink-muted">
-                {pageCount} {pageCount === 1 ? "página" : "páginas"} × USD {SITE.pricePerPage}. Te confirmamos el total antes de empezar.
+                {pageCount} {pageCount === 1 ? "página" : "páginas"} × USD {activeTier?.perPage}. Te confirmamos el total antes de empezar.
               </p>
             ) : (
               <p className="mt-1 text-sm text-ink-muted">Te confirmamos precio y plazo antes de empezar.</p>
+            )}
+            {PRICE_TIERS.length > 1 && (
+              <dl className="mt-5 flex flex-col border-t border-line pt-4 text-[15px]">
+                {PRICE_TIERS.map((tier) => {
+                  const active = tier === activeTier;
+                  return (
+                    <div
+                      key={tier.minPages}
+                      className={`flex items-baseline justify-between gap-4 rounded-soft px-2 py-1.5 tabular-nums ${
+                        active ? "bg-marker/45 text-ink" : "text-ink-soft"
+                      }`}
+                    >
+                      <dt className={active ? "font-medium" : ""}>{tierRange(tier)}</dt>
+                      <dd className={active ? "font-medium" : ""}>USD {tier.perPage} / página</dd>
+                    </div>
+                  );
+                })}
+              </dl>
             )}
             <ul className="mt-5 flex flex-col gap-2.5 border-t border-line pt-5 text-[15px] text-ink-soft">
               {INCLUDED.map((item) => (

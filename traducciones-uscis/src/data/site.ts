@@ -3,6 +3,11 @@
 // are facts the business hasn't confirmed yet — the UI hides or softens
 // whatever depends on them instead of showing an invented value.
 
+export interface PriceTier {
+  minPages: number;
+  perPage: number;
+}
+
 export const SITE = {
   name: "Certa Traducciones",
   shortName: "Certa",
@@ -12,8 +17,13 @@ export const SITE = {
   // Automalytics' own WhatsApp number, same default the other demos use.
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "56932954075",
   email: null as string | null,
-  // USD per page. null → the site offers a free quote instead of a price.
-  pricePerPage: 30 as number | null,
+  // USD per page by order size. The tier the whole order falls in sets the
+  // rate for every page. Empty → the site offers a free quote instead.
+  priceTiers: [
+    { minPages: 1, perPage: 30 },
+    { minPages: 5, perPage: 25 },
+    { minPages: 10, perPage: 22 },
+  ] as readonly PriceTier[],
   // null → turnaround is confirmed when quoting.
   turnaround: "24 a 48 horas" as string | null,
 } as const;

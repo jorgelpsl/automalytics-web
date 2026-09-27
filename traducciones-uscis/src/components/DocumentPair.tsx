@@ -25,7 +25,7 @@ export function DocumentPair() {
         <p className="mb-[1em] mt-[0.2em] text-center font-display text-[1.6em] italic text-ink">Certificado de nacimiento</p>
         <Field label="Nombre inscrito" value="Camila Andrea Rojas Soto" />
         <Field label="Fecha de nacimiento" value="14 de marzo de 1994" />
-        <Field label="Lugar" value="Valparaíso" />
+        <Field label="Lugar" value="Venezuela" />
         <Field label="Padre" value="Luis Rojas M." />
         <Field label="Madre" value="Paula Soto V." />
         <div className="mt-[1.4em] flex items-end justify-between">
@@ -44,7 +44,7 @@ export function DocumentPair() {
         <p className="mb-[1em] mt-[0.2em] text-center font-display text-[1.6em] italic text-ink">Birth Certificate</p>
         <Field label="Registered name" value="Camila Andrea Rojas Soto" marked />
         <Field label="Date of birth" value="March 14, 1994" marked />
-        <Field label="Place of birth" value="Valparaíso" marked />
+        <Field label="Place of birth" value="Venezuela" marked />
         <Field label="Father" value="Luis Rojas M." marked />
         <Field label="Mother" value="Paula Soto V." marked />
         <p className="mt-[0.7em] text-ink-muted">[Seal: Civil Registry] [Signature: Civil Registrar]</p>
