@@ -31,7 +31,7 @@ export const FAQ: FaqItem[] = [
   {
     question: "¿Cuánto cuesta?",
     answer: PRICE_TIERS.length
-      ? `Precios en dólares. ${PRICE_TIERS.map((t) => `${tierRange(t)}: ${formatUsd(t.perPage)} por página`).join(". ")}. La tarifa depende del total de páginas del pedido y se aplica a todas. Te confirmamos el total antes de empezar.`
+      ? `Precios en dólares. ${PRICE_TIERS.map((t) => `${tierRange(t)}: ${formatUsd(t.perPage)} por página`).join(". ")}. La tarifa depende del total de páginas del pedido y se aplica a todas. Cada cara con texto cuenta como una página.`
       : "Depende del documento y del número de páginas. La cotización no tiene costo y te llega antes de que empecemos a traducir.",
   },
   {
@@ -44,5 +44,5 @@ export const FAQ: FaqItem[] = [
 export const PAYMENT_FAQ: FaqItem = {
   question: "¿Cómo pago?",
   answer:
-    "Con tarjeta de crédito o débito, Apple Pay o Google Pay, en la página de pago de Stripe. Puedes pagar al cotizar en esta web o, si prefieres consultar antes, te enviamos el enlace de pago por WhatsApp. Si al revisar tu documento el número de páginas es distinto, te avisamos antes de empezar.",
+    "Con tarjeta de crédito o débito, Apple Pay o Google Pay, en la página de pago de Stripe. Puedes pagar al cotizar en esta web o, si prefieres consultar antes, te enviamos el enlace de pago por WhatsApp. El cobro se calcula con el número de páginas que indicas.",
 };

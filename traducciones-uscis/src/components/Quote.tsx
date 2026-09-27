@@ -162,7 +162,7 @@ export function Quote({ paymentsEnabled }: { paymentsEnabled: boolean }) {
             </p>
             {estimate ? (
               <p className="mt-1 text-sm text-ink-muted">
-                {pageCount} {pageCount === 1 ? "página" : "páginas"} × {activeTier && formatUsd(activeTier.perPage)}. Te confirmamos el total antes de empezar.
+                {pageCount} {pageCount === 1 ? "página" : "páginas"} × {activeTier && formatUsd(activeTier.perPage)}.
               </p>
             ) : (
               <p className="mt-1 text-sm text-ink-muted">Te confirmamos precio y plazo antes de empezar.</p>
@@ -371,8 +371,8 @@ export function Quote({ paymentsEnabled }: { paymentsEnabled: boolean }) {
                     </p>
                   )}
                   <p className="text-sm leading-relaxed text-ink-muted">
-                    Pago seguro con Stripe: tarjeta, Apple Pay o Google Pay. Después del pago nos envías las fotos por WhatsApp.
-                    Si el documento tiene otro número de páginas, te avisamos antes de empezar.
+                    Pago seguro con Stripe: tarjeta, Apple Pay o Google Pay. Cobramos según las páginas que indicas y, después
+                    del pago, nos envías las fotos por WhatsApp.
                   </p>
                 </div>
               ) : (
