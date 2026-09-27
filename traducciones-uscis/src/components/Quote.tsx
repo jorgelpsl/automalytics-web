@@ -12,7 +12,7 @@ const MAX_PAGES = 200;
 const INCLUDED = [
   "Traducción completa al inglés, sellos y firmas incluidos",
   "Certificación del traductor firmada y fechada",
-  "Entrega en PDF, lista para subir o imprimir",
+  SITE.turnaround ? `PDF listo en ${SITE.turnaround}` : "Entrega en PDF, lista para subir o imprimir",
 ];
 
 type Field = "name" | "documentType" | "pages" | "deadline";

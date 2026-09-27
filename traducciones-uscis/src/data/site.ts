@@ -8,14 +8,14 @@ export const SITE = {
   shortName: "Certa",
   description:
     "Traducciones certificadas del español al inglés para trámites de USCIS: actas, certificados, diplomas y antecedentes, con la declaración del traductor que exige la norma.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://demo-traducciones.automalytics.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://certa.automalytics.com",
   // Automalytics' own WhatsApp number, same default the other demos use.
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "56932954075",
   email: null as string | null,
   // USD per page. null → the site offers a free quote instead of a price.
-  pricePerPage: null as number | null,
-  // e.g. "24 a 48 horas hábiles". null → turnaround is confirmed when quoting.
-  turnaround: null as string | null,
+  pricePerPage: 30 as number | null,
+  // null → turnaround is confirmed when quoting.
+  turnaround: "24 a 48 horas" as string | null,
 } as const;
 
 export const NAV_LINKS = [
