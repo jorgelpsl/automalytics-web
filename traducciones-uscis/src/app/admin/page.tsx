@@ -4,6 +4,7 @@ import { FileText, MessageCircle } from "lucide-react";
 import { isAdmin } from "@/lib/admin-auth";
 import { listOrderFiles, pagesUploaded, type StoredFile } from "@/lib/documents";
 import { adminEnabled } from "@/lib/features";
+import { formatDeadline } from "@/lib/order";
 import { formatUsd } from "@/lib/pricing";
 import { listPaidOrders, type PaidOrder } from "@/lib/stripe";
 import { login, logout } from "./actions";
@@ -135,7 +136,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                 {order.deadline && (
                   <>
                     <dt className="text-ink-muted">Para el</dt>
-                    <dd>{order.deadline}</dd>
+                    <dd>{formatDeadline(order.deadline)}</dd>
                   </>
                 )}
                 {order.notes && (

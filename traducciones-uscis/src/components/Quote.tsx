@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, CreditCard, MessageCircle } from "lucide-react";
 import { SITE } from "@/data/site";
-import { DOCUMENT_OPTIONS, MAX_NOTES, MAX_PAGES } from "@/lib/order";
+import { DOCUMENT_OPTIONS, MAX_NOTES, MAX_PAGES, formatDeadline } from "@/lib/order";
 import { PRICE_TIERS, estimateFor, formatUsd, tierFor, tierRange } from "@/lib/pricing";
 import { quoteWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -21,12 +21,6 @@ function todayIso(): string {
   const d = new Date();
   d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
   return d.toISOString().slice(0, 10);
-}
-
-function formatDeadline(iso: string): string {
-  if (!iso) return "";
-  const [y, m, d] = iso.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("es", { day: "numeric", month: "long", year: "numeric" });
 }
 
 export function Quote({

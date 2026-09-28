@@ -5,6 +5,7 @@
 import { head, put } from "@vercel/blob";
 import { SITE } from "@/data/site";
 import { uploadsEnabled } from "@/lib/features";
+import { formatDeadline } from "@/lib/order";
 import { formatUsd } from "@/lib/pricing";
 import type { PaidOrder } from "@/lib/stripe";
 
@@ -26,7 +27,7 @@ function orderTable(order: PaidOrder, extra: [string, string][] = []): string {
     ...extra,
     ["Correo", order.email],
     ["Teléfono", order.phone],
-    ["Para el", order.deadline],
+    ["Para el", formatDeadline(order.deadline)],
     ["Comentarios", order.notes],
   ];
   return `<table cellpadding="6" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:15px">${rows

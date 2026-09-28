@@ -31,3 +31,10 @@ export function parseOrder(raw: unknown): Order | null {
   if (notes.length > MAX_NOTES) return null;
   return { name, documentType, pages, deadline, notes };
 }
+
+/** "2026-10-02" → "2 de octubre de 2026"; read as a calendar date, no time zone shift. */
+export function formatDeadline(iso: string): string {
+  if (!iso) return "";
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("es", { day: "numeric", month: "long", year: "numeric" });
+}
