@@ -1,13 +1,14 @@
 import { issueSignedToken } from "@vercel/blob";
 import { handleUploadPresigned, type HandleUploadPresignedBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
-import { listOrderFiles } from "@/lib/documents";
+import { listOrderFiles, pagesUploaded } from "@/lib/documents";
 import { uploadsEnabled } from "@/lib/features";
 import { getPaidOrder } from "@/lib/stripe";
-import { ALLOWED_UPLOAD_TYPES, MAX_FILES_PER_ORDER, MAX_UPLOAD_BYTES, orderFolder } from "@/lib/upload-rules";
+import { ALLOWED_UPLOAD_TYPES, MAX_UPLOAD_BYTES, orderFolder, pagesFromPathname } from "@/lib/upload-rules";
 
 // Signs a short-lived URL for the browser to upload straight to the private
-// store, but only for a paid order and only inside that order's folder.
+// store, but only for a paid order, inside that order's folder, and within
+// the number of pages the client paid for.
 export async function POST(request: Request) {
   if (!uploadsEnabled()) {
     return NextResponse.json({ error: "uploads_disabled" }, { status: 503 });
@@ -24,8 +25,10 @@ export async function POST(request: Request) {
         if (!pathname.startsWith(orderFolder(order.code)) || pathname.includes("..")) {
           throw new Error("Pathname outside the order folder");
         }
-        const existing = await listOrderFiles(order.code);
-        if (existing.length >= MAX_FILES_PER_ORDER) throw new Error("Too many files");
+        const incoming = pagesFromPathname(pathname);
+        if (!incoming) throw new Error("Missing page count");
+        const used = pagesUploaded(await listOrderFiles(order.code));
+        if (used + incoming > order.pages) throw new Error("More pages than paid");
 
         const validUntil = Date.now() + 10 * 60 * 1000;
         const token = await issueSignedToken({

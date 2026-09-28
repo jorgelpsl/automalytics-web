@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import { after } from "next/server";
 import Link from "next/link";
 import { Check, MessageCircle } from "lucide-react";
 import { DocumentUpload } from "@/components/DocumentUpload";
 import { SITE } from "@/data/site";
 import { listOrderFiles } from "@/lib/documents";
 import { uploadsEnabled } from "@/lib/features";
+import { notifySale } from "@/lib/notify";
 import { formatUsd } from "@/lib/pricing";
 import { getPaidOrder } from "@/lib/stripe";
 import { generalWhatsAppUrl, paidOrderWhatsAppUrl } from "@/lib/whatsapp";
@@ -24,6 +26,9 @@ export default async function PaymentReceivedPage({
   const order = session_id ? await getPaidOrder(session_id) : null;
   const canUpload = Boolean(order?.paid) && uploadsEnabled();
   const storedFiles = canUpload ? await listOrderFiles(order!.code).catch(() => []) : [];
+  if (order?.paid) {
+    after(() => notifySale(order).catch((err) => console.error(err)));
+  }
 
   return (
     <section className="section">
@@ -48,7 +53,8 @@ export default async function PaymentReceivedPage({
               <DocumentUpload
                 sessionId={order.sessionId}
                 orderCode={order.code}
-                initialFiles={storedFiles.map((f) => ({ name: f.name, size: f.size }))}
+                pagesPaid={order.pages}
+                initialFiles={storedFiles.map((f) => ({ pathname: f.pathname, name: f.name, size: f.size, pages: f.pages }))}
                 turnaround={SITE.turnaround}
                 whatsappUrl={paidOrderWhatsAppUrl(order)}
               />

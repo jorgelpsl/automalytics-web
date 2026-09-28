@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { FileText, MessageCircle } from "lucide-react";
 import { isAdmin } from "@/lib/admin-auth";
-import { listOrderFiles, type StoredFile } from "@/lib/documents";
+import { listOrderFiles, pagesUploaded, type StoredFile } from "@/lib/documents";
 import { adminEnabled } from "@/lib/features";
 import { formatUsd } from "@/lib/pricing";
 import { listPaidOrders, type PaidOrder } from "@/lib/stripe";
@@ -71,7 +71,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
     console.error(err);
     loadError = true;
   }
-  const waiting = orders.filter((o) => o.files.length === 0).length;
+  const waiting = orders.filter((o) => pagesUploaded(o.files) < o.order.pages).length;
 
   return (
     <section className="section flex flex-col gap-8">
@@ -81,7 +81,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           {!loadError && (
             <p className="mt-2 text-ink-soft">
               {orders.length} pagados en total
-              {waiting > 0 ? ` · ${waiting} ${waiting === 1 ? "espera" : "esperan"} documentos` : ""}. Horario de Nueva York.
+              {waiting > 0 ? ` · ${waiting} con páginas pendientes` : ""}. Horario de Nueva York.
             </p>
           )}
         </div>
@@ -106,18 +106,21 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
       )}
 
       <ol className="flex flex-col gap-4">
-        {orders.map(({ order, files }) => (
+        {orders.map(({ order, files }) => {
+          const uploaded = pagesUploaded(files);
+          const complete = uploaded >= order.pages;
+          return (
           <li key={order.sessionId} className="grid gap-5 rounded-card border border-line bg-paper-sheet p-5 sm:p-6 lg:grid-cols-[1fr_1fr]">
             <div className="flex flex-col gap-3">
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <span className="font-display text-2xl font-medium">{order.code}</span>
                 <span className="text-sm text-ink-muted">{dateTime.format(order.createdAt)}</span>
                 <span
-                  className={`rounded-soft px-2 py-0.5 text-sm font-medium ${
-                    files.length ? "bg-paper-alt text-ink-soft" : "bg-marker/60 text-ink"
+                  className={`rounded-soft px-2 py-0.5 text-sm font-medium tabular-nums ${
+                    complete ? "bg-paper-alt text-ink-soft" : "bg-marker/60 text-ink"
                   }`}
                 >
-                  {files.length ? `${files.length} ${files.length === 1 ? "archivo" : "archivos"}` : "Sin documentos"}
+                  {uploaded === 0 ? "Sin documentos" : complete ? "Documentos completos" : `${uploaded} de ${order.pages} páginas`}
                 </span>
               </div>
               <dl className="grid grid-cols-[auto_1fr] gap-x-5 gap-y-1.5 text-[15px] tabular-nums">
@@ -179,7 +182,9 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                       >
                         <FileText size={18} aria-hidden="true" className="shrink-0 text-ink-muted" />
                         <span className="min-w-0 flex-1 truncate">{file.name}</span>
-                        <span className="shrink-0 text-sm text-ink-muted">{formatSize(file.size)}</span>
+                        <span className="shrink-0 text-sm tabular-nums text-ink-muted">
+                          {file.pages} pág. · {formatSize(file.size)}
+                        </span>
                       </a>
                     </li>
                   ))}
@@ -192,7 +197,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               )}
             </div>
           </li>
-        ))}
+          );
+        })}
       </ol>
     </section>
   );

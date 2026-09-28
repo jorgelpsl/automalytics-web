@@ -11,10 +11,19 @@ export const ALLOWED_UPLOAD_TYPES = [
 ];
 export const MAX_UPLOAD_MB = 20;
 export const MAX_UPLOAD_BYTES = MAX_UPLOAD_MB * 1024 * 1024;
-export const MAX_FILES_PER_ORDER = 20;
-
 export function orderFolder(code: string): string {
   return `pedidos/${code}/`;
+}
+
+// Each file's page count travels in its name ("3p-acta.pdf") so the server
+// can keep an order within the pages paid without opening the files.
+export function uploadPathname(code: string, fileName: string, pages: number): string {
+  return `${orderFolder(code)}${pages}p-${safeFileName(fileName)}`;
+}
+
+export function pagesFromPathname(pathname: string): number | null {
+  const match = /^(\d{1,3})p-/.exec(pathname.split("/").pop() ?? "");
+  return match ? Number(match[1]) : null;
 }
 
 export function safeFileName(name: string): string {

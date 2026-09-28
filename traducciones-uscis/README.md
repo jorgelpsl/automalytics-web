@@ -29,6 +29,10 @@ Use a `sk_test_…` key first and pay with card `4242 4242 4242 4242`; switch to
 
 ## Document uploads and /admin
 
-- **Uploads** turn on when a private Vercel Blob store is connected to the project (`BLOB_STORE_ID` with OIDC, or a legacy `BLOB_READ_WRITE_TOKEN`) and payments are on. After paying, `/pago-recibido` becomes the upload page; `/api/documents` only issues upload tokens for a paid Stripe session and only inside `pedidos/<order code>/`. JPG, PNG, WebP, HEIC or PDF, 20 MB each, 20 files per order.
+- **Uploads** turn on when a private Vercel Blob store is connected to the project (`BLOB_STORE_ID` with OIDC, or a legacy `BLOB_READ_WRITE_TOKEN`) and payments are on. After paying, `/pago-recibido` becomes the upload page; `/api/documents` only issues upload tokens for a paid Stripe session and only inside `pedidos/<order code>/`. JPG, PNG, WebP, HEIC or PDF, 20 MB each, up to the pages paid: each photo is one page and PDFs are counted in the browser; the count rides in the file name (`3p-acta.pdf`) and the token route enforces the total. Clients can remove their own files to fix mistakes.
 - **/admin** turns on with `ADMIN_PASSWORD` (plus the Blob store). It lists paid orders from Stripe with the client's details and files; files are served only through `/api/admin/file` to a signed-in admin. Changing the password signs everyone out.
 - Without these variables the site falls back to sending documents over WhatsApp.
+
+## Owner notifications
+
+With `RESEND_API_KEY` and `NOTIFY_EMAIL` set (and the Blob store), the owner gets an email when an order is paid (sent from `/pago-recibido`) and when a client uploads documents. Small markers under `avisos/` in the Blob store make each email go out once. Resend's shared sender (`onboarding@resend.dev`) only delivers to the Resend account's own address; set `NOTIFY_FROM` after verifying a domain to change it.
