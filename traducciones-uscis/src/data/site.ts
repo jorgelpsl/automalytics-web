@@ -26,10 +26,10 @@ export const SITE = {
   ] as readonly PriceTier[],
   // null → turnaround is confirmed when quoting.
   turnaround: "24 a 48 horas" as string | null,
-  // Google Ads tag and the "Compra" conversion. Both are public identifiers,
-  // not secrets. Without a label the tag loads but no purchase is reported.
+  // Google Ads tag and the "Purchase" conversion. Both are public identifiers,
+  // not secrets. null label → the tag loads but no purchase is reported.
   googleAdsId: process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? "AW-18480857137",
-  googleAdsPurchaseLabel: (process.env.NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_LABEL ?? null) as string | null,
+  googleAdsPurchaseLabel: (process.env.NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_LABEL ?? "N1jxCMG4t4kdELGAruxE") as string | null,
 } as const;
 
 export const NAV_LINKS = [
