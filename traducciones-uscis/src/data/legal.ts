@@ -7,4 +7,4 @@ export const LEGAL_PAGES = [
 ] as const;
 
 /** Days after delivery during which translation errors are corrected at no cost. */
-export const CORRECTION_DAYS = 30;
+export const CORRECTION_DAYS = 7;
