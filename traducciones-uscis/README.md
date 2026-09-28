@@ -12,7 +12,7 @@ npm run build
 
 ## Before publishing
 
-All business details live in `src/data/site.ts`: name "Certa Traducciones", volume pricing (1–4 pages USD 30, 5–9 USD 27, 10+ USD 25 per page — the order's tier applies to every page), delivery in 24 to 48 hours, served at `certa.automalytics.com`.
+All business details live in `src/data/site.ts`: name "Certa Traducciones", volume pricing (1–4 pages USD 30, 5–9 USD 27, 10+ USD 25 per page — the order's tier applies to every page), delivery in 24 to 48 hours, served at `certa-traducciones.com` (`www` redirects to it).
 
 - `whatsappNumber` — still defaults to Automalytics' number; set `NEXT_PUBLIC_WHATSAPP_NUMBER` once the business has its own.
 - `email` — `null` hides it.

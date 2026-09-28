@@ -13,7 +13,7 @@ export const SITE = {
   shortName: "Certa",
   description:
     "Traducciones certificadas del español al inglés para trámites de USCIS: actas, certificados, diplomas y antecedentes, con la declaración del traductor que exige la norma.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://certa.automalytics.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://certa-traducciones.com",
   // Automalytics' own WhatsApp number, same default the other demos use.
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "56932954075",
   email: null as string | null,
