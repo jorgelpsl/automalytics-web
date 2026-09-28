@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/LegalPage";
+import { DOCUMENT_RETENTION_DAYS } from "@/data/legal";
 import { SITE } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -73,9 +74,9 @@ export default function PrivacyPage() {
 
       <h2>Cuánto tiempo los guardamos</h2>
       <p>
-        Guardamos tus documentos y la traducción mientras los necesitamos para completar el pedido y atender correcciones, y
-        luego los eliminamos. Puedes pedirnos que los borremos antes. Los registros de pago los conserva Stripe según sus
-        obligaciones legales.
+        Guardamos tus documentos mientras trabajamos en tu pedido y los <strong>borramos automáticamente{" "}
+        {DOCUMENT_RETENTION_DAYS} días después de completarlo</strong>, lo que cubre el plazo para pedir correcciones.
+        Puedes pedirnos que los borremos antes. Los registros de pago los conserva Stripe según sus obligaciones legales.
       </p>
 
       <h2>Tus derechos</h2>

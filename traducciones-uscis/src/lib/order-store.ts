@@ -14,6 +14,10 @@ export type OrderEdits = Partial<Pick<PaidOrder, "name" | "email" | "phone" | "d
 
 export interface OrderRecord {
   status?: OrderStatus;
+  /** When the order was last marked completed; starts the retention clock. */
+  completedAt?: string;
+  /** When its documents were deleted automatically. */
+  purgedAt?: string;
   deleted?: boolean;
   edits?: OrderEdits;
   updatedAt?: string;
@@ -25,6 +29,8 @@ export interface Order extends PaidOrder {
   edited: boolean;
   /** Pages as the client paid them, before any correction. */
   pagesPaid: number;
+  completedAt: string | null;
+  purgedAt: string | null;
 }
 
 type Store = Record<string, OrderRecord>;
@@ -64,6 +70,25 @@ export async function updateOrderRecord(code: string, change: (current: OrderRec
   }
 }
 
+export async function removeOrderRecord(code: string): Promise<void> {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const { data, etag } = await readStore();
+    if (!(code in data) || !etag) return;
+    const { [code]: _removed, ...rest } = data;
+    try {
+      await put(STORE_PATH, JSON.stringify(rest, null, 1), {
+        access: "private",
+        contentType: "application/json",
+        addRandomSuffix: false,
+        ifMatch: etag,
+      });
+      return;
+    } catch (err) {
+      if (!(err instanceof BlobPreconditionFailedError) || attempt === 3) throw err;
+    }
+  }
+}
+
 export function applyRecord(order: PaidOrder, record: OrderRecord | undefined): Order {
   const edits = record?.edits ?? {};
   return {
@@ -71,6 +96,8 @@ export function applyRecord(order: PaidOrder, record: OrderRecord | undefined): 
     ...edits,
     pagesPaid: order.pages,
     status: record?.status ?? "en_proceso",
+    completedAt: record?.status === "completado" ? (record.completedAt ?? record.updatedAt ?? null) : null,
+    purgedAt: record?.purgedAt ?? null,
     deleted: Boolean(record?.deleted),
     edited: Object.keys(edits).length > 0,
   };

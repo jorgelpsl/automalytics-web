@@ -15,6 +15,9 @@ export interface AdminOrder {
   phone: string;
   status: OrderStatus;
   edited: boolean;
+  /** ISO dates; set while completed / once documents were auto-deleted. */
+  completedAt: string | null;
+  purgedAt: string | null;
 }
 
 export interface AdminFile {

@@ -21,7 +21,9 @@ export async function POST(request: Request) {
       getSignedToken: async (pathname, clientPayload) => {
         const { sessionId } = JSON.parse(clientPayload ?? "{}") as { sessionId?: string };
         const order = sessionId ? await loadOrder(sessionId) : null;
-        if (!order || order.deleted) throw new Error("Order not paid or deleted");
+        if (!order || order.deleted || order.status === "completado") {
+          throw new Error("Order not paid, deleted or already completed");
+        }
         if (!pathname.startsWith(orderFolder(order.code)) || pathname.includes("..")) {
           throw new Error("Pathname outside the order folder");
         }

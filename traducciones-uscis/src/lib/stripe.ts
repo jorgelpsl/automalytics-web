@@ -126,3 +126,22 @@ export async function listPaidOrders(limit = 50): Promise<PaidOrder[]> {
   const res = await stripeRequest<{ data: StripeSession[] }>(`/checkout/sessions?status=complete&limit=${limit}`);
   return res.data.map(toOrder).filter((o) => o.paid && o.code);
 }
+
+/** Whether the configured key charges real cards (as opposed to test mode). */
+export function isLiveMode(): boolean {
+  return /^(sk|rk)_live_/.test(process.env.STRIPE_SECRET_KEY ?? "");
+}
+
+/** Every paid order code in the current Stripe mode, following pagination to the end. */
+export async function listAllPaidOrderCodes(): Promise<Set<string>> {
+  const codes = new Set<string>();
+  let startingAfter: string | null = null;
+  for (let page = 0; page < 100; page++) {
+    const query: string = `/checkout/sessions?status=complete&limit=100${startingAfter ? `&starting_after=${startingAfter}` : ""}`;
+    const res: { data: StripeSession[]; has_more: boolean } = await stripeRequest(query);
+    for (const s of res.data) if (s.payment_status === "paid" && s.client_reference_id) codes.add(s.client_reference_id);
+    if (!res.has_more || res.data.length === 0) return codes;
+    startingAfter = res.data[res.data.length - 1].id;
+  }
+  throw new Error("Too many checkout sessions to verify orphans safely");
+}

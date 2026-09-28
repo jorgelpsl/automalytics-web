@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { Check, MessageCircle, Pencil, RotateCcw, Trash2 } from "lucide-react";
 import { deleteOrder, setOrderStatus } from "@/app/admin/actions";
+import { DOCUMENT_RETENTION_DAYS } from "@/data/legal";
 import { formatDeadline } from "@/lib/order";
 import { formatUsd } from "@/lib/pricing";
 import { OrderEditForm } from "./OrderEditForm";
@@ -22,6 +23,19 @@ function Detail({ label, children }: { label: string; children: React.ReactNode 
       <dd className="min-w-0 break-words">{children}</dd>
     </>
   );
+}
+
+const shortDate = new Intl.DateTimeFormat("es", { day: "numeric", month: "long", timeZone: "America/New_York" });
+
+function retentionNote(order: AdminOrder): string | null {
+  if (order.purgedAt) {
+    return `Los documentos se borraron automáticamente el ${shortDate.format(new Date(order.purgedAt))}, ${DOCUMENT_RETENTION_DAYS} días después de completar el pedido.`;
+  }
+  if (order.status === "completado" && order.completedAt) {
+    const due = new Date(new Date(order.completedAt).getTime() + DOCUMENT_RETENTION_DAYS * 24 * 60 * 60 * 1000);
+    return `Se borran automáticamente el ${shortDate.format(due)}.`;
+  }
+  return null;
 }
 
 export function OrderCard({ order, files }: { order: AdminOrder; files: AdminFile[] }) {
@@ -103,7 +117,7 @@ export function OrderCard({ order, files }: { order: AdminOrder; files: AdminFil
             )}
           </dl>
         )}
-        <OrderFiles code={order.code} files={files} />
+        <OrderFiles code={order.code} files={files} retentionNote={retentionNote(order)} />
       </div>
 
       {error && (

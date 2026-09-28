@@ -36,3 +36,7 @@ Use a `sk_test_…` key first and pay with card `4242 4242 4242 4242`; switch to
 ## Owner notifications
 
 With `RESEND_API_KEY` and `NOTIFY_EMAIL` set (and the Blob store), the owner gets an email when an order is paid (sent from `/pago-recibido`) and when a client uploads documents. Small markers under `avisos/` in the Blob store make each email go out once. Resend's shared sender (`onboarding@resend.dev`) only delivers to the Resend account's own address; set `NOTIFY_FROM` after verifying a domain to change it.
+
+## Document retention
+
+A Vercel Cron (`vercel.json`, daily at 09:00 UTC) calls `/api/cron/purge-documents` with `CRON_SECRET`. It deletes the documents of orders marked completed more than 30 days ago (`DOCUMENT_RETENTION_DAYS`, stated in the privacy policy) and records `purgedAt`, which `/admin` shows. Completed orders stop accepting uploads, so a purge can't reopen page slots. In live mode it also removes folders with no matching paid order in Stripe (Stripe test-mode leftovers) once they've been quiet for 2 days.

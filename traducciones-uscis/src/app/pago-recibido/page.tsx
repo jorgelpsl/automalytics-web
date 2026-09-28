@@ -29,7 +29,8 @@ export default async function PaymentReceivedPage({
     payment?.paid && uploadsEnabled() ? await readOrderRecords().catch(() => ({})) : {};
   const order = payment?.paid ? applyRecord(payment, records[payment.code]) : payment;
   const cancelled = Boolean(order && "deleted" in order && order.deleted);
-  const canUpload = Boolean(order?.paid) && !cancelled && uploadsEnabled();
+  const completed = Boolean(order && "status" in order && order.status === "completado");
+  const canUpload = Boolean(order?.paid) && !cancelled && !completed && uploadsEnabled();
   const storedFiles = canUpload ? await listOrderFiles(order!.code).catch(() => []) : [];
   if (order?.paid && !cancelled) {
     after(() => notifySale(order).catch((err) => console.error(err)));
@@ -71,7 +72,21 @@ export default async function PaymentReceivedPage({
               <dt className="text-ink-muted">Total pagado</dt>
               <dd className="font-medium">{formatUsd(order.amountTotal)}</dd>
             </dl>
-            {canUpload ? (
+            {completed ? (
+              <p className="leading-relaxed text-ink-soft">
+                Este pedido ya está completado y entregado. Si necesitas una corrección o traducir otro documento,
+                escríbenos por{" "}
+                <a
+                  href={generalWhatsAppUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-ink underline underline-offset-4"
+                >
+                  WhatsApp
+                </a>{" "}
+                con el número de pedido.
+              </p>
+            ) : canUpload ? (
               <DocumentUpload
                 sessionId={order.sessionId}
                 orderCode={order.code}

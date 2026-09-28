@@ -9,7 +9,7 @@ import { countPdfPages } from "@/lib/pdf-pages";
 import { MAX_UPLOAD_BYTES, MAX_UPLOAD_MB, contentTypeOf, formatFileSize, uploadPathname } from "@/lib/upload-rules";
 import type { AdminFile } from "./types";
 
-export function OrderFiles({ code, files }: { code: string; files: AdminFile[] }) {
+export function OrderFiles({ code, files, retentionNote }: { code: string; files: AdminFile[]; retentionNote: string | null }) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [confirming, setConfirming] = useState<string | null>(null);
@@ -140,12 +140,14 @@ export function OrderFiles({ code, files }: { code: string; files: AdminFile[] }
             </li>
           ))}
         </ul>
-      ) : (
+      ) : retentionNote && !files.length ? null : (
         <p className="text-[15px] leading-relaxed text-ink-soft">
           El cliente todavía no sube nada. Puede hacerlo desde el enlace de su confirmación de pago, o agrégalos tú si te
           los mandó por WhatsApp.
         </p>
       )}
+
+      {retentionNote && <p className="text-sm text-ink-muted">{retentionNote}</p>}
 
       {progress && (
         <p className="flex items-center gap-2 text-sm text-ink-soft" aria-live="polite">

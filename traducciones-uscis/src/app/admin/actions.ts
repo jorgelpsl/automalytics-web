@@ -50,7 +50,11 @@ export async function setOrderStatus(code: string, status: OrderStatus): Promise
   if (denied) return denied;
   if (status !== "en_proceso" && status !== "completado") return { ok: false, error: "Estado no válido." };
   try {
-    await updateOrderRecord(code, (r) => ({ ...r, status }));
+    await updateOrderRecord(code, (r) => ({
+      ...r,
+      status,
+      completedAt: status === "completado" ? new Date().toISOString() : undefined,
+    }));
   } catch (err) {
     console.error(err);
     return FAILED;

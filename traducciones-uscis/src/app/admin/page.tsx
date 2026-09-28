@@ -79,6 +79,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           phone: o.phone,
           status: o.status,
           edited: o.edited,
+          completedAt: o.completedAt,
+          purgedAt: o.purgedAt,
         },
         files: (await listOrderFiles(o.code)).map(({ pathname, name, size, pages }) => ({ pathname, name, size, pages })),
       })),

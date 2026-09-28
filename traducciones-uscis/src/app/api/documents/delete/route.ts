@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   if (!uploadsEnabled()) return NextResponse.json({ error: "uploads_disabled" }, { status: 503 });
   const { sessionId, pathname } = (await request.json().catch(() => ({}))) as { sessionId?: string; pathname?: string };
   const order = sessionId ? await loadOrder(sessionId) : null;
-  if (!order || order.deleted || !pathname || !pathname.startsWith(orderFolder(order.code)) || pathname.includes("..")) {
+  if (!order || order.deleted || order.status === "completado" || !pathname || !pathname.startsWith(orderFolder(order.code)) || pathname.includes("..")) {
     return NextResponse.json({ error: "not_allowed" }, { status: 403 });
   }
   try {
