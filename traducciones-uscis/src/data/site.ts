@@ -21,8 +21,8 @@ export const SITE = {
   // rate for every page. Empty → the site offers a free quote instead.
   priceTiers: [
     { minPages: 1, perPage: 30 },
-    { minPages: 5, perPage: 25 },
-    { minPages: 10, perPage: 22 },
+    { minPages: 5, perPage: 27 },
+    { minPages: 10, perPage: 25 },
   ] as readonly PriceTier[],
   // null → turnaround is confirmed when quoting.
   turnaround: "24 a 48 horas" as string | null,
