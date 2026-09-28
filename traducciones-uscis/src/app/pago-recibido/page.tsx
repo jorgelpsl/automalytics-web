@@ -102,7 +102,7 @@ export default async function PaymentReceivedPage({
             <p className="leading-relaxed text-ink-soft">
               {order
                 ? "Tu pago todavía está en proceso. Si ya se descontó de tu tarjeta, escríbenos con el número de pedido y lo revisamos."
-                : "No encontramos un pago asociado a esta página. Si pagaste, escríbenos por WhatsApp y lo revisamos. Si no, puedes volver a cotizar."}
+                : "No encontramos un pago asociado a esta página. Si pagaste, escríbenos por WhatsApp y lo revisamos. Si no, puedes hacer un pedido nuevo."}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <a href={generalWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="btn-primary">
@@ -110,7 +110,7 @@ export default async function PaymentReceivedPage({
                 Escribir por WhatsApp
               </a>
               <Link href="/#cotizar" className="btn-secondary">
-                Volver a cotizar
+                Hacer un pedido
               </Link>
             </div>
           </>

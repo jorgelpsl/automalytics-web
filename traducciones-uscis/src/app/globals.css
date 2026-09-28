@@ -65,3 +65,27 @@
     @apply text-sm font-medium text-ink-muted;
   }
 }
+
+@layer components {
+  /* Long-form legal text: one readable column, the display face for section
+     headings, body copy at the soft ink used elsewhere for secondary text. */
+  .legal {
+    @apply max-w-[68ch] text-[17px] leading-relaxed text-ink-soft;
+  }
+  .legal h2 {
+    @apply mt-12 font-display text-2xl font-medium text-ink first:mt-0 sm:text-[1.7rem];
+  }
+  .legal p,
+  .legal ul {
+    @apply mt-4;
+  }
+  .legal ul {
+    @apply flex list-disc flex-col gap-2 pl-5 marker:text-ink-muted;
+  }
+  .legal strong {
+    @apply font-medium text-ink;
+  }
+  .legal a {
+    @apply font-medium text-ink underline underline-offset-4 hover:no-underline;
+  }
+}

@@ -33,7 +33,7 @@ export function Hero() {
         </p>
         <div className="flex flex-col gap-3 sm:flex-row">
           <a href="#cotizar" className="btn-primary">
-            Cotizar mi traducción
+            Comprar mi traducción
           </a>
           <a href="#documentos" className="btn-secondary">
             Ver qué documentos traducimos

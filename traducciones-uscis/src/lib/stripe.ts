@@ -89,6 +89,9 @@ export async function createCheckoutSession(order: Order, origin: string): Promi
     success_url: `${origin}/pago-recibido?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/#cotizar`,
     "phone_number_collection[enabled]": "true",
+    // Shown above Stripe's Pay button: a clear final-sale notice at the
+    // moment of payment is what card networks look at in a dispute.
+    "custom_text[submit][message]": `Todas las compras son finales y no tienen reembolso. Al pagar aceptas los Términos del servicio: ${SITE.url}/terminos`,
     "line_items[0][quantity]": String(order.pages),
     "line_items[0][price_data][currency]": "usd",
     "line_items[0][price_data][unit_amount]": String(tier.perPage * 100),

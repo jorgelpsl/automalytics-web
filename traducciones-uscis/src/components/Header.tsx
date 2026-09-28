@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { NAV_LINKS, SITE } from "@/data/site";
@@ -12,9 +13,9 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper">
       <div className="mx-auto flex h-16 w-full max-w-content items-center justify-between gap-6 px-4 sm:px-6 lg:h-[72px] lg:px-8">
-        <a href="#" aria-label={`${SITE.name}, inicio`} className="rounded-soft">
+        <Link href="/" aria-label={`${SITE.name}, inicio`} className="rounded-soft">
           <Logo />
-        </a>
+        </Link>
 
         <nav aria-label="Navegación principal" className="hidden items-center gap-8 lg:flex">
           {NAV_LINKS.map((link) => (
@@ -25,9 +26,9 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <a href="#cotizar" className="btn-primary hidden min-h-[44px] px-5 text-[15px] sm:inline-flex">
-            Cotizar traducción
-          </a>
+          <Link href="/#cotizar" className="btn-primary hidden min-h-[44px] px-5 text-[15px] sm:inline-flex">
+            Comprar traducción
+          </Link>
           <button
             type="button"
             onClick={() => setOpen(true)}

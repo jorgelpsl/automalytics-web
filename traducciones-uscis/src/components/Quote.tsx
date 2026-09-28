@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Check, ChevronDown, CreditCard, MessageCircle } from "lucide-react";
 import { SITE } from "@/data/site";
 import { DOCUMENT_OPTIONS, MAX_NOTES, MAX_PAGES, formatDeadline } from "@/lib/order";
@@ -148,15 +149,19 @@ export function Quote({
     <section id="cotizar" className="border-t border-line bg-paper-alt">
       <div className="section grid gap-12 lg:grid-cols-12 lg:gap-8">
         <div className="flex flex-col gap-6 lg:col-span-4">
-          <p className="eyebrow">Cotización</p>
+          <p className="eyebrow">{paymentsEnabled ? "Tu pedido" : "Cotización"}</p>
           <h2 className="font-display text-4xl font-medium leading-[1.1] tracking-tight sm:text-5xl">
             Cuéntanos qué necesitas traducir.
           </h2>
           <p className="leading-relaxed text-ink-soft">
-            Completas esto, se abre WhatsApp con tu solicitud escrita y ahí nos mandas las fotos del documento.
+            {uploadAfterPayment
+              ? "Eliges el documento y las páginas, pagas en línea y, en la misma página, subes las fotos."
+              : paymentsEnabled
+                ? "Eliges el documento y las páginas, pagas en línea y nos mandas las fotos por WhatsApp."
+                : "Completas esto, se abre WhatsApp con tu solicitud escrita y ahí nos mandas las fotos del documento."}
           </p>
           <div className="rounded-card border border-line bg-paper-sheet p-6">
-            <p className="text-sm font-medium text-ink-muted">{estimate ? "Precio estimado" : "Precio"}</p>
+            <p className="text-sm font-medium text-ink-muted">{estimate ? (paymentsEnabled ? "Total a pagar" : "Precio estimado") : "Precio"}</p>
             <p className="mt-1 font-display text-3xl font-medium" aria-live="polite">
               {estimate ? formatUsd(estimate) : "Cotización sin costo"}
             </p>
@@ -358,7 +363,7 @@ export function Quote({
                   <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                     <button type="submit" name="action" value="pay" disabled={paying} className="btn-primary w-full sm:w-auto">
                       <CreditCard size={19} aria-hidden="true" />
-                      {paying ? "Abriendo el pago…" : estimate ? `Pagar ${formatUsd(estimate)} con tarjeta` : "Pagar con tarjeta"}
+                      {paying ? "Abriendo el pago…" : estimate ? `Pagar ${formatUsd(estimate)} ahora` : "Pagar ahora"}
                     </button>
                     <button type="submit" name="action" value="whatsapp" disabled={paying} className="btn-secondary w-full sm:w-auto">
                       <MessageCircle size={19} aria-hidden="true" />
@@ -372,7 +377,16 @@ export function Quote({
                   )}
                   <p className="text-sm leading-relaxed text-ink-muted">
                     Pago seguro con Stripe: tarjeta, Apple Pay o Google Pay. Cobramos según las páginas que indicas y, después
-                    del pago, {uploadAfterPayment ? "subes tu documento aquí mismo." : "nos envías las fotos por WhatsApp."}
+                    del pago, {uploadAfterPayment ? "subes tu documento aquí mismo." : "nos envías las fotos por WhatsApp."}  <strong className="font-medium text-ink">Todas las compras son finales</strong>{" "}
+                    (
+                    <Link href="/reembolsos" className="underline underline-offset-4 hover:text-ink">
+                      sin reembolsos
+                    </Link>
+                    ). Al pagar aceptas los{" "}
+                    <Link href="/terminos" className="underline underline-offset-4 hover:text-ink">
+                      Términos del servicio
+                    </Link>
+                    .
                   </p>
                 </div>
               ) : (

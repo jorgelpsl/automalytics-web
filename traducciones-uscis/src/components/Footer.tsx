@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { LEGAL_PAGES } from "@/data/legal";
 import { SITE, NAV_LINKS } from "@/data/site";
 import { Logo } from "@/components/Logo";
 import { generalWhatsAppUrl } from "@/lib/whatsapp";
@@ -37,9 +39,18 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-paper/15">
-        <p className="mx-auto w-full max-w-content px-4 py-6 text-xs text-paper/60 sm:px-6 lg:px-8">
-          © {new Date().getFullYear()} {SITE.name}
-        </p>
+        <div className="mx-auto flex w-full max-w-content flex-col gap-3 px-4 py-6 text-xs text-paper/60 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <p>
+            © {new Date().getFullYear()} {SITE.name}
+          </p>
+          <nav aria-label="Legal" className="flex flex-wrap gap-x-5 gap-y-1">
+            {LEGAL_PAGES.map((page) => (
+              <Link key={page.href} href={page.href} className="inline-flex min-h-[32px] items-center hover:text-paper">
+                {page.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </div>
     </footer>
   );

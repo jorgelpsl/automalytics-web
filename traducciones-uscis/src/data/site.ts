@@ -29,8 +29,8 @@ export const SITE = {
 } as const;
 
 export const NAV_LINKS = [
-  { label: "Qué exige USCIS", href: "#requisitos" },
-  { label: "Documentos", href: "#documentos" },
-  { label: "Cómo funciona", href: "#proceso" },
-  { label: "Preguntas", href: "#preguntas" },
+  { label: "Qué exige USCIS", href: "/#requisitos" },
+  { label: "Documentos", href: "/#documentos" },
+  { label: "Cómo funciona", href: "/#proceso" },
+  { label: "Preguntas", href: "/#preguntas" },
 ] as const;

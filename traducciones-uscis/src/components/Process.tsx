@@ -19,7 +19,7 @@ const WHATSAPP_STEPS = [
 
 const ONLINE_STEPS = [
   {
-    title: "Cotizas y pagas",
+    title: "Eliges y pagas",
     body: "Eliges el documento y el número de páginas, y pagas con tarjeta, Apple Pay o Google Pay.",
   },
   {

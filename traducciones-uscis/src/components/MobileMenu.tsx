@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { NAV_LINKS } from "@/data/site";
@@ -50,9 +51,9 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
             </a>
           ))}
         </nav>
-        <a href="#cotizar" onClick={onClose} className="btn-primary w-full">
-          Cotizar traducción
-        </a>
+        <Link href="/#cotizar" onClick={onClose} className="btn-primary w-full">
+          Comprar traducción
+        </Link>
       </div>
     </div>
   );

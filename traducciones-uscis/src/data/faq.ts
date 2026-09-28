@@ -25,7 +25,7 @@ const BASE_FAQ: FaqItem[] = [
   {
     question: "¿Cuánto se demora?",
     answer: SITE.turnaround
-      ? `El plazo habitual es de ${SITE.turnaround}. Si lo necesitas antes, dinos la fecha al cotizar.`
+      ? `El plazo habitual es de ${SITE.turnaround}. Si lo necesitas antes, indica la fecha al hacer tu pedido.`
       : "Te confirmamos el plazo exacto al cotizar, según el tipo de documento y la cantidad de páginas. Si tienes una fecha límite, indícala en el formulario.",
   },
   {
@@ -44,7 +44,7 @@ const BASE_FAQ: FaqItem[] = [
 const PAYMENT_FAQ: FaqItem = {
   question: "¿Cómo pago?",
   answer:
-    "Con tarjeta de crédito o débito, Apple Pay o Google Pay, en la página de pago de Stripe. Puedes pagar al cotizar en esta web o, si prefieres consultar antes, te enviamos el enlace de pago por WhatsApp. El cobro se calcula con el número de páginas que indicas.",
+    "Con tarjeta de crédito o débito, Apple Pay o Google Pay, en la página de pago de Stripe, al hacer tu pedido en esta web. El cobro se calcula con el número de páginas que indicas. Todas las compras son finales y no tienen reembolso.",
 };
 
 const ONLINE_UPLOAD_ANSWER =
