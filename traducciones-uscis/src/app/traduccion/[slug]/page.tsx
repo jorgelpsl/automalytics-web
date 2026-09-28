@@ -1,0 +1,225 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ArrowRight, Check, MessageCircle, Plus } from "lucide-react";
+import { DOCUMENT_PAGES, findDocumentPage } from "@/data/document-pages";
+import { SITE } from "@/data/site";
+import { PRICE_TIERS, estimateFor, formatUsd, tierFor, tierRange } from "@/lib/pricing";
+import { generalWhatsAppUrl } from "@/lib/whatsapp";
+
+export function generateStaticParams() {
+  return DOCUMENT_PAGES.map((page) => ({ slug: page.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const page = findDocumentPage((await params).slug);
+  if (!page) return {};
+  const title = `${page.title} | ${SITE.name}`;
+  return {
+    title,
+    description: page.metaDescription,
+    alternates: { canonical: `/traduccion/${page.slug}` },
+    openGraph: { title, description: page.metaDescription, url: `${SITE.url}/traduccion/${page.slug}`, type: "website" },
+  };
+}
+
+const pagesLabel = (n: number) => `${n} ${n === 1 ? "página" : "páginas"}`;
+
+export default async function DocumentLandingPage({ params }: { params: Promise<{ slug: string }> }) {
+  const page = findDocumentPage((await params).slug);
+  if (!page) notFound();
+
+  const buyHref = `/?documento=${encodeURIComponent(page.documentType)}#cotizar`;
+  const example = page.typicalPages.example;
+  const exampleTier = tierFor(example);
+  const related = DOCUMENT_PAGES.filter((p) => p.slug !== page.slug);
+  const url = `${SITE.url}/traduccion/${page.slug}`;
+
+  // Only facts shown on the page: the service, who provides it and the real per-page prices.
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Inicio", item: SITE.url },
+        { "@type": "ListItem", position: 2, name: page.title, item: url },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: page.title,
+      serviceType: "Traducción certificada",
+      url,
+      areaServed: { "@type": "Country", name: "United States" },
+      provider: { "@type": "Organization", name: SITE.name, url: SITE.url },
+      offers: PRICE_TIERS.map((tier) => ({
+        "@type": "Offer",
+        priceCurrency: "USD",
+        price: tier.perPage,
+        description: `${tierRange(tier)}, precio por página`,
+      })),
+    },
+  ];
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      <section className="mx-auto grid w-full max-w-content gap-12 px-4 pb-16 pt-10 sm:px-6 md:pt-14 lg:grid-cols-12 lg:gap-8 lg:px-8 lg:pb-20 lg:pt-16">
+        <div className="flex flex-col gap-6 lg:col-span-7">
+          <nav aria-label="Ruta" className="text-sm text-ink-muted">
+            <Link href="/" className="hover:text-ink">
+              Inicio
+            </Link>
+            <span aria-hidden="true"> / </span>
+            <Link href="/#documentos" className="hover:text-ink">
+              Documentos
+            </Link>
+          </nav>
+          <h1 className="font-display text-[2.4rem] font-medium leading-[1.06] tracking-tight sm:text-5xl lg:text-[3.6rem]">
+            {page.title}
+          </h1>
+          <p className="max-w-[36rem] text-lg leading-relaxed text-ink-soft">{page.intro}</p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Link href={buyHref} className="btn-primary">
+              Comprar la traducción
+            </Link>
+            <a href={generalWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="btn-secondary">
+              <MessageCircle size={19} aria-hidden="true" />
+              Preguntar por WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <aside className="self-start rounded-card border border-line bg-paper-sheet p-6 lg:col-span-4 lg:col-start-9">
+          <p className="text-sm font-medium text-ink-muted">Ejemplo de precio</p>
+          <p className="mt-1 font-display text-3xl font-medium">{formatUsd(estimateFor(example) ?? 0)}</p>
+          <p className="mt-1 text-sm text-ink-muted">
+            {page.name.charAt(0).toUpperCase() + page.name.slice(1)} de {pagesLabel(example)}
+            {exampleTier ? ` × ${formatUsd(exampleTier.perPage)}` : ""}.
+          </p>
+          <dl className="mt-5 flex flex-col gap-1.5 border-t border-line pt-4 text-[15px] tabular-nums text-ink-soft">
+            {PRICE_TIERS.map((tier) => (
+              <div key={tier.minPages} className="flex justify-between gap-4">
+                <dt>{tierRange(tier)}</dt>
+                <dd>{formatUsd(tier.perPage)} / página</dd>
+              </div>
+            ))}
+          </dl>
+          <ul className="mt-5 flex flex-col gap-2 border-t border-line pt-4 text-[15px] text-ink-soft">
+            {[`Entrega en ${SITE.turnaround}`, "Certificación del traductor incluida", "Sin notario: USCIS no lo exige"].map((f) => (
+              <li key={f} className="flex items-start gap-2">
+                <Check size={17} strokeWidth={2.4} className="mt-0.5 shrink-0 text-ink" aria-hidden="true" />
+                {f}
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </section>
+
+      <section className="border-t border-line bg-paper-alt">
+        <div className="mx-auto grid w-full max-w-content gap-x-8 gap-y-12 px-4 py-16 sm:px-6 md:grid-cols-2 lg:px-8 lg:py-20">
+          <div className="border-t-2 border-ink pt-5">
+            <h2 className="font-display text-2xl font-medium">Cuándo la pide USCIS</h2>
+            <ul className="mt-4 flex flex-col gap-3 leading-relaxed text-ink-soft">
+              {page.whenNeeded.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <span aria-hidden="true" className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-ink" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="border-t-2 border-ink pt-5">
+            <h2 className="font-display text-2xl font-medium">Qué incluye la traducción</h2>
+            <ul className="mt-4 flex flex-col gap-3 leading-relaxed text-ink-soft">
+              {page.whatWeTranslate.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <Check size={18} strokeWidth={2.4} className="mt-1 shrink-0 text-ink" aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="border-t-2 border-ink pt-5">
+            <h2 className="font-display text-2xl font-medium">Cuántas páginas suele tener</h2>
+            <p className="mt-4 leading-relaxed text-ink-soft">{page.typicalPages.text}</p>
+            <p className="mt-3 leading-relaxed text-ink-soft">
+              Cada cara con texto, sellos o firmas cuenta como una página, y pagas según las páginas que indicas.
+            </p>
+          </div>
+          <div className="border-t-2 border-ink pt-5">
+            <h2 className="font-display text-2xl font-medium">Antes de tomar las fotos</h2>
+            <ul className="mt-4 flex flex-col gap-3 leading-relaxed text-ink-soft">
+              {page.tips.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <span aria-hidden="true" className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-marker" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="section grid gap-12 lg:grid-cols-12 lg:gap-8">
+        <div className="lg:col-span-4">
+          <h2 className="font-display text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl">Preguntas sobre este documento</h2>
+        </div>
+        <div className="border-t border-line lg:col-span-7 lg:col-start-6">
+          {page.faq.map((item) => (
+            <details key={item.question} className="group border-b border-line">
+              <summary className="flex min-h-[64px] cursor-pointer list-none items-center justify-between gap-6 py-4 text-lg font-medium [&::-webkit-details-marker]:hidden">
+                {item.question}
+                <Plus
+                  size={20}
+                  aria-hidden="true"
+                  className="shrink-0 text-ink-muted transition-transform duration-200 group-open:rotate-45 motion-reduce:transition-none"
+                />
+              </summary>
+              <p className="max-w-2xl pb-6 leading-relaxed text-ink-soft">{item.answer}</p>
+            </details>
+          ))}
+          <p className="mt-6 text-ink-soft">
+            Más respuestas en las{" "}
+            <Link href="/#preguntas" className="font-medium text-ink underline underline-offset-4">
+              preguntas frecuentes
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+
+      <section className="border-t border-line bg-paper-alt">
+        <div className="section flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-xl">
+            <h2 className="font-display text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl">
+              Tu {page.name} traducida en {SITE.turnaround}.
+            </h2>
+            <p className="mt-4 text-lg text-ink-soft">Pagas en línea y subes las fotos desde el celular.</p>
+          </div>
+          <Link href={buyHref} className="btn-primary w-full shrink-0 md:w-auto">
+            Comprar la traducción
+          </Link>
+        </div>
+        <nav aria-label="Otros documentos" className="mx-auto w-full max-w-content px-4 pb-16 sm:px-6 lg:px-8">
+          <p className="text-sm font-medium text-ink-muted">También traducimos</p>
+          <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+            {related.map((p) => (
+              <li key={p.slug}>
+                <Link
+                  href={`/traduccion/${p.slug}`}
+                  className="inline-flex min-h-[44px] items-center gap-1.5 font-medium text-ink underline decoration-marker decoration-[3px] underline-offset-4 hover:decoration-ink"
+                >
+                  {p.name.charAt(0).toUpperCase() + p.name.slice(1)}
+                  <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </section>
+    </>
+  );
+}

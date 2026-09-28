@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { documentPageFor } from "@/data/document-pages";
 import { DOCUMENT_GROUPS } from "@/data/documents";
 import { generalWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -17,11 +19,23 @@ export function Documents() {
           <div key={group.title} className="border-t-2 border-ink pt-5">
             <h3 className="text-[15px] font-semibold">{group.title}</h3>
             <ul className="mt-4 flex flex-col gap-3">
-              {group.items.map((item) => (
-                <li key={item} className="text-ink-soft">
-                  {item}
-                </li>
-              ))}
+              {group.items.map((item) => {
+                const page = documentPageFor(item);
+                return (
+                  <li key={item} className="text-ink-soft">
+                    {page ? (
+                      <Link
+                        href={`/traduccion/${page.slug}`}
+                        className="text-ink underline decoration-ink/25 underline-offset-4 hover:decoration-ink"
+                      >
+                        {item}
+                      </Link>
+                    ) : (
+                      item
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ))}

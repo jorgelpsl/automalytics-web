@@ -52,6 +52,15 @@ export function Quote({
     if (sentUrl) successRef.current?.focus();
   }, [sentUrl]);
 
+  // Arriving from a document page (/?documento=…#cotizar) preselects it. The
+  // query only exists in the browser, so it's applied after hydration.
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("documento");
+    if (!requested || !DOCUMENT_OPTIONS.includes(requested)) return;
+    const frame = requestAnimationFrame(() => setDocumentType(requested));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
   // Going back from Stripe restores this page from the back/forward cache
   // with the button still saying "Abriendo el pago…".
   useEffect(() => {
