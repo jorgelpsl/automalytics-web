@@ -5,7 +5,7 @@ import Link from "next/link";
 import { uploadPresigned } from "@vercel/blob/client";
 import { AlertCircle, Check, Copy, FileText, LoaderCircle, RotateCcw, Upload, X } from "lucide-react";
 import { countPdfPages } from "@/lib/pdf-pages";
-import { ALLOWED_UPLOAD_TYPES, MAX_UPLOAD_BYTES, MAX_UPLOAD_MB, uploadPathname } from "@/lib/upload-rules";
+import { MAX_UPLOAD_BYTES, MAX_UPLOAD_MB, contentTypeOf, formatFileSize as formatSize, uploadPathname } from "@/lib/upload-rules";
 
 interface Item {
   id: string;
@@ -17,27 +17,6 @@ interface Item {
   pathname?: string;
   error?: string;
   file?: File;
-}
-
-// Some browsers report HEIC photos from iPhones with an empty type.
-const TYPE_BY_EXTENSION: Record<string, string> = {
-  jpg: "image/jpeg",
-  jpeg: "image/jpeg",
-  png: "image/png",
-  webp: "image/webp",
-  heic: "image/heic",
-  heif: "image/heif",
-  pdf: "application/pdf",
-};
-
-function contentTypeOf(file: File): string | null {
-  if (ALLOWED_UPLOAD_TYPES.includes(file.type)) return file.type;
-  const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
-  return TYPE_BY_EXTENSION[ext] ?? null;
-}
-
-function formatSize(bytes: number): string {
-  return bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
 }
 
 const pagesLabel = (n: number) => `${n} ${n === 1 ? "página" : "páginas"}`;

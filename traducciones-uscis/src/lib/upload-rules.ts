@@ -35,3 +35,24 @@ export function safeFileName(name: string): string {
     .slice(-80);
   return cleaned || "documento";
 }
+
+// Some browsers report HEIC photos from iPhones with an empty type.
+const TYPE_BY_EXTENSION: Record<string, string> = {
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  png: "image/png",
+  webp: "image/webp",
+  heic: "image/heic",
+  heif: "image/heif",
+  pdf: "application/pdf",
+};
+
+export function contentTypeOf(file: File): string | null {
+  if (ALLOWED_UPLOAD_TYPES.includes(file.type)) return file.type;
+  const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
+  return TYPE_BY_EXTENSION[ext] ?? null;
+}
+
+export function formatFileSize(bytes: number): string {
+  return bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
+}

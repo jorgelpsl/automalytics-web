@@ -50,11 +50,11 @@
   }
 
   .btn-primary {
-    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-soft bg-ink px-6 text-base font-medium text-paper transition-colors hover:bg-ink-soft active:bg-ink;
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-soft bg-ink px-6 text-base font-medium text-paper transition-colors hover:bg-ink-soft active:bg-ink disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .btn-secondary {
-    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-soft border border-ink/25 px-6 text-base font-medium text-ink transition-colors hover:border-ink hover:bg-ink/[0.04];
+    @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-soft border border-ink/25 px-6 text-base font-medium text-ink transition-colors hover:border-ink hover:bg-ink/[0.04] disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .section {

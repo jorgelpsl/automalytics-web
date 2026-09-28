@@ -3,7 +3,7 @@ import { handleUploadPresigned, type HandleUploadPresignedBody } from "@vercel/b
 import { NextResponse } from "next/server";
 import { listOrderFiles, pagesUploaded } from "@/lib/documents";
 import { uploadsEnabled } from "@/lib/features";
-import { getPaidOrder } from "@/lib/stripe";
+import { loadOrder } from "@/lib/order-store";
 import { ALLOWED_UPLOAD_TYPES, MAX_UPLOAD_BYTES, orderFolder, pagesFromPathname } from "@/lib/upload-rules";
 
 // Signs a short-lived URL for the browser to upload straight to the private
@@ -20,8 +20,8 @@ export async function POST(request: Request) {
       request,
       getSignedToken: async (pathname, clientPayload) => {
         const { sessionId } = JSON.parse(clientPayload ?? "{}") as { sessionId?: string };
-        const order = sessionId ? await getPaidOrder(sessionId) : null;
-        if (!order?.paid) throw new Error("Order not paid");
+        const order = sessionId ? await loadOrder(sessionId) : null;
+        if (!order || order.deleted) throw new Error("Order not paid or deleted");
         if (!pathname.startsWith(orderFolder(order.code)) || pathname.includes("..")) {
           throw new Error("Pathname outside the order folder");
         }

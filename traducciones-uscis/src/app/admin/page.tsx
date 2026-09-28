@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FileText, MessageCircle } from "lucide-react";
+import { OrderCard } from "@/components/admin/OrderCard";
+import type { AdminFile, AdminOrder } from "@/components/admin/types";
 import { isAdmin } from "@/lib/admin-auth";
-import { listOrderFiles, pagesUploaded, type StoredFile } from "@/lib/documents";
+import { listOrderFiles } from "@/lib/documents";
 import { adminEnabled } from "@/lib/features";
-import { formatDeadline } from "@/lib/order";
-import { formatUsd } from "@/lib/pricing";
-import { listPaidOrders, type PaidOrder } from "@/lib/stripe";
+import { applyRecord, readOrderRecords } from "@/lib/order-store";
+import { listPaidOrders } from "@/lib/stripe";
 import { login, logout } from "./actions";
 
 export const metadata: Metadata = {
@@ -14,23 +15,17 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const dateTime = new Intl.DateTimeFormat("es", {
-  dateStyle: "medium",
-  timeStyle: "short",
-  timeZone: "America/New_York",
-});
+type Filter = "en_proceso" | "completado" | "todos";
 
-function formatSize(bytes: number): string {
-  return bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;
-}
+const FILTERS: { key: Filter; label: string }[] = [
+  { key: "en_proceso", label: "En proceso" },
+  { key: "completado", label: "Completados" },
+  { key: "todos", label: "Todos" },
+];
 
-function whatsappLink(phone: string): string {
-  return `https://wa.me/${phone.replace(/\D/g, "")}`;
-}
-
-export default async function AdminPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+export default async function AdminPage({ searchParams }: { searchParams: Promise<{ error?: string; ver?: string }> }) {
   if (!adminEnabled()) notFound();
-  const { error } = await searchParams;
+  const { error, ver } = await searchParams;
 
   if (!(await isAdmin())) {
     return (
@@ -63,16 +58,44 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
     );
   }
 
-  let orders: { order: PaidOrder; files: StoredFile[] }[] = [];
+  let orders: { order: AdminOrder; files: AdminFile[] }[] = [];
   let loadError = false;
   try {
-    const paid = await listPaidOrders(50);
-    orders = await Promise.all(paid.map(async (order) => ({ order, files: await listOrderFiles(order.code) })));
+    const [paid, records] = await Promise.all([listPaidOrders(100), readOrderRecords()]);
+    const visible = paid.map((p) => applyRecord(p, records[p.code])).filter((o) => !o.deleted);
+    orders = await Promise.all(
+      visible.map(async (o) => ({
+        order: {
+          code: o.code,
+          createdAt: o.createdAt.toISOString(),
+          amountTotal: o.amountTotal,
+          name: o.name,
+          documentType: o.documentType,
+          pages: o.pages,
+          pagesPaid: o.pagesPaid,
+          deadline: o.deadline,
+          notes: o.notes,
+          email: o.email,
+          phone: o.phone,
+          status: o.status,
+          edited: o.edited,
+        },
+        files: (await listOrderFiles(o.code)).map(({ pathname, name, size, pages }) => ({ pathname, name, size, pages })),
+      })),
+    );
   } catch (err) {
     console.error(err);
     loadError = true;
   }
-  const waiting = orders.filter((o) => pagesUploaded(o.files) < o.order.pages).length;
+
+  const counts = {
+    en_proceso: orders.filter((o) => o.order.status === "en_proceso").length,
+    completado: orders.filter((o) => o.order.status === "completado").length,
+    todos: orders.length,
+  };
+  const filter: Filter = ver === "completado" || ver === "todos" ? ver : "en_proceso";
+  const shown = filter === "todos" ? orders : orders.filter((o) => o.order.status === filter);
+  const waitingDocs = orders.filter((o) => o.order.status === "en_proceso" && o.files.reduce((n, f) => n + f.pages, 0) < o.order.pages).length;
 
   return (
     <section className="section flex flex-col gap-8">
@@ -81,8 +104,9 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           <h1 className="font-display text-4xl font-medium tracking-tight">Pedidos</h1>
           {!loadError && (
             <p className="mt-2 text-ink-soft">
-              {orders.length} pagados en total
-              {waiting > 0 ? ` · ${waiting} con páginas pendientes` : ""}. Horario de Nueva York.
+              {counts.en_proceso} en proceso
+              {waitingDocs > 0 ? `, ${waitingDocs} ${waitingDocs === 1 ? "espera" : "esperan"} documentos` : ""}. Horario de
+              Nueva York.
             </p>
           )}
         </div>
@@ -93,6 +117,24 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         </form>
       </div>
 
+      {!loadError && (
+        <nav aria-label="Filtrar pedidos" className="-mt-2 flex flex-wrap gap-2">
+          {FILTERS.map(({ key, label }) => (
+            <Link
+              key={key}
+              href={key === "en_proceso" ? "/admin" : `/admin?ver=${key}`}
+              aria-current={filter === key ? "page" : undefined}
+              className={`inline-flex min-h-[44px] items-center gap-2 rounded-soft border px-4 text-[15px] font-medium ${
+                filter === key ? "border-ink bg-ink text-paper" : "border-ink/25 text-ink hover:border-ink"
+              }`}
+            >
+              {label}
+              <span className={`tabular-nums ${filter === key ? "text-paper/70" : "text-ink-muted"}`}>{counts[key]}</span>
+            </Link>
+          ))}
+        </nav>
+      )}
+
       {loadError && (
         <p role="alert" className="rounded-card border border-red-700/30 bg-paper-sheet p-6 text-red-700">
           No pudimos cargar los pedidos desde Stripe o el almacenamiento. Recarga la página en un momento; si sigue igual,
@@ -100,106 +142,20 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         </p>
       )}
 
-      {!loadError && orders.length === 0 && (
+      {!loadError && shown.length === 0 && (
         <p className="rounded-card border border-line bg-paper-sheet p-6 text-ink-soft">
-          Todavía no hay pedidos pagados. Cuando alguien pague desde la web aparecerá aquí, con sus documentos.
+          {orders.length === 0
+            ? "Todavía no hay pedidos pagados. Cuando alguien pague desde la web aparecerá aquí, con sus documentos."
+            : filter === "completado"
+              ? "Todavía no marcas ningún pedido como completado."
+              : "No hay pedidos en proceso. Todo al día."}
         </p>
       )}
 
       <ol className="flex flex-col gap-4">
-        {orders.map(({ order, files }) => {
-          const uploaded = pagesUploaded(files);
-          const complete = uploaded >= order.pages;
-          return (
-          <li key={order.sessionId} className="grid gap-5 rounded-card border border-line bg-paper-sheet p-5 sm:p-6 lg:grid-cols-[1fr_1fr]">
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-display text-2xl font-medium">{order.code}</span>
-                <span className="text-sm text-ink-muted">{dateTime.format(order.createdAt)}</span>
-                <span
-                  className={`rounded-soft px-2 py-0.5 text-sm font-medium tabular-nums ${
-                    complete ? "bg-paper-alt text-ink-soft" : "bg-marker/60 text-ink"
-                  }`}
-                >
-                  {uploaded === 0 ? "Sin documentos" : complete ? "Documentos completos" : `${uploaded} de ${order.pages} páginas`}
-                </span>
-              </div>
-              <dl className="grid grid-cols-[auto_1fr] gap-x-5 gap-y-1.5 text-[15px] tabular-nums">
-                <dt className="text-ink-muted">Cliente</dt>
-                <dd className="font-medium">{order.name}</dd>
-                <dt className="text-ink-muted">Documento</dt>
-                <dd>{order.documentType}</dd>
-                <dt className="text-ink-muted">Páginas</dt>
-                <dd>
-                  {order.pages} · {formatUsd(order.amountTotal)}
-                </dd>
-                {order.deadline && (
-                  <>
-                    <dt className="text-ink-muted">Para el</dt>
-                    <dd>{formatDeadline(order.deadline)}</dd>
-                  </>
-                )}
-                {order.notes && (
-                  <>
-                    <dt className="text-ink-muted">Comentarios</dt>
-                    <dd>{order.notes}</dd>
-                  </>
-                )}
-                {order.email && (
-                  <>
-                    <dt className="text-ink-muted">Correo</dt>
-                    <dd className="break-all">
-                      <a href={`mailto:${order.email}`} className="underline underline-offset-4">
-                        {order.email}
-                      </a>
-                    </dd>
-                  </>
-                )}
-                {order.phone && (
-                  <>
-                    <dt className="text-ink-muted">Teléfono</dt>
-                    <dd>
-                      <a href={whatsappLink(order.phone)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 underline underline-offset-4">
-                        <MessageCircle size={15} aria-hidden="true" />
-                        {order.phone}
-                      </a>
-                    </dd>
-                  </>
-                )}
-              </dl>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <p className="text-sm font-medium text-ink-muted">Documentos</p>
-              {files.length ? (
-                <ul className="flex flex-col divide-y divide-line rounded-soft border border-line">
-                  {files.map((file) => (
-                    <li key={file.pathname}>
-                      <a
-                        href={`/api/admin/file?p=${encodeURIComponent(file.pathname)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex min-h-[44px] items-center gap-3 px-3 py-2 hover:bg-paper-alt"
-                      >
-                        <FileText size={18} aria-hidden="true" className="shrink-0 text-ink-muted" />
-                        <span className="min-w-0 flex-1 truncate">{file.name}</span>
-                        <span className="shrink-0 text-sm tabular-nums text-ink-muted">
-                          {file.pages} pág. · {formatSize(file.size)}
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-[15px] leading-relaxed text-ink-soft">
-                  El cliente todavía no sube nada. Puede hacerlo desde el enlace de su confirmación de pago, o escríbele
-                  para recordárselo.
-                </p>
-              )}
-            </div>
-          </li>
-          );
-        })}
+        {shown.map(({ order, files }) => (
+          <OrderCard key={order.code} order={order} files={files} />
+        ))}
       </ol>
     </section>
   );

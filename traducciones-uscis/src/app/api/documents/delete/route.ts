@@ -1,7 +1,7 @@
 import { del } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { uploadsEnabled } from "@/lib/features";
-import { getPaidOrder } from "@/lib/stripe";
+import { loadOrder } from "@/lib/order-store";
 import { orderFolder } from "@/lib/upload-rules";
 
 // Lets a client take back a file they uploaded by mistake, which frees its
@@ -9,8 +9,8 @@ import { orderFolder } from "@/lib/upload-rules";
 export async function POST(request: Request) {
   if (!uploadsEnabled()) return NextResponse.json({ error: "uploads_disabled" }, { status: 503 });
   const { sessionId, pathname } = (await request.json().catch(() => ({}))) as { sessionId?: string; pathname?: string };
-  const order = sessionId ? await getPaidOrder(sessionId) : null;
-  if (!order?.paid || !pathname || !pathname.startsWith(orderFolder(order.code)) || pathname.includes("..")) {
+  const order = sessionId ? await loadOrder(sessionId) : null;
+  if (!order || order.deleted || !pathname || !pathname.startsWith(orderFolder(order.code)) || pathname.includes("..")) {
     return NextResponse.json({ error: "not_allowed" }, { status: 403 });
   }
   try {

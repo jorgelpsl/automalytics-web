@@ -7,6 +7,7 @@ import { SITE } from "@/data/site";
 import { listOrderFiles } from "@/lib/documents";
 import { uploadsEnabled } from "@/lib/features";
 import { notifySale } from "@/lib/notify";
+import { applyRecord, readOrderRecords, type OrderRecord } from "@/lib/order-store";
 import { formatUsd } from "@/lib/pricing";
 import { getPaidOrder } from "@/lib/stripe";
 import { generalWhatsAppUrl, paidOrderWhatsAppUrl } from "@/lib/whatsapp";
@@ -23,11 +24,32 @@ export default async function PaymentReceivedPage({
   searchParams: Promise<{ session_id?: string }>;
 }) {
   const { session_id } = await searchParams;
-  const order = session_id ? await getPaidOrder(session_id) : null;
-  const canUpload = Boolean(order?.paid) && uploadsEnabled();
+  const payment = session_id ? await getPaidOrder(session_id) : null;
+  const records: Record<string, OrderRecord> =
+    payment?.paid && uploadsEnabled() ? await readOrderRecords().catch(() => ({})) : {};
+  const order = payment?.paid ? applyRecord(payment, records[payment.code]) : payment;
+  const cancelled = Boolean(order && "deleted" in order && order.deleted);
+  const canUpload = Boolean(order?.paid) && !cancelled && uploadsEnabled();
   const storedFiles = canUpload ? await listOrderFiles(order!.code).catch(() => []) : [];
-  if (order?.paid) {
+  if (order?.paid && !cancelled) {
     after(() => notifySale(order).catch((err) => console.error(err)));
+  }
+
+  if (cancelled) {
+    return (
+      <section className="section">
+        <div className="mx-auto flex max-w-2xl flex-col gap-6 rounded-card border border-line bg-paper-sheet p-6 sm:p-10">
+          <h1 className="font-display text-4xl font-medium leading-[1.1] tracking-tight">Este pedido fue cancelado.</h1>
+          <p className="leading-relaxed text-ink-soft">
+            El pedido {order!.code} ya no acepta documentos. Si crees que es un error, escríbenos por WhatsApp con ese número.
+          </p>
+          <a href={generalWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="btn-primary self-start">
+            <MessageCircle size={19} aria-hidden="true" />
+            Escribir por WhatsApp
+          </a>
+        </div>
+      </section>
+    );
   }
 
   return (
