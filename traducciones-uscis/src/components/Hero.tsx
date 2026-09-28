@@ -31,7 +31,7 @@ export function Hero() {
             ? "Pagas en línea, subes una foto del documento y te devolvemos el PDF firmado."
             : "Nos mandas una foto por WhatsApp y te devolvemos el PDF firmado."}
         </p>
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <a href="#cotizar" className="btn-primary">
             Comprar mi traducción
           </a>
