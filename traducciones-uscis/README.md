@@ -18,6 +18,7 @@ All business details live in `src/data/site.ts`: name "Certa Traducciones", volu
 - `email` — `null` hides it.
 - `priceTiers` — an empty list would show "Cotización sin costo" instead of the live estimate.
 - `turnaround` — `null` would make the FAQ say the turnaround is confirmed when quoting.
+- `googleAdsId` / `googleAdsPurchaseLabel` — the Google Ads tag (`AW-18480857137`) loads on every page except `/admin`. Once the label of the "Purchase" conversion is set, `/pago-recibido` reports each paid order once, with its amount and the order code as transaction id. URLs are reported without the Stripe `session_id`. Override with `NEXT_PUBLIC_GOOGLE_ADS_ID` / `NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_LABEL`.
 
 The requirements section quotes 8 CFR § 103.2(b)(3). The footer and FAQ state the service is not affiliated with USCIS — keep that.
 
