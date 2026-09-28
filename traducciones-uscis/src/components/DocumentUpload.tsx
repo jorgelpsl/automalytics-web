@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { upload } from "@vercel/blob/client";
+import { uploadPresigned } from "@vercel/blob/client";
 import { AlertCircle, Check, Copy, FileText, LoaderCircle, RotateCcw, Upload } from "lucide-react";
 import {
   ALLOWED_UPLOAD_TYPES,
@@ -71,12 +71,11 @@ export function DocumentUpload({
     const file = item.file!;
     patch(item.id, { status: "uploading", progress: 0, error: undefined });
     try {
-      await upload(`${orderFolder(orderCode)}${safeFileName(file.name)}`, file, {
+      await uploadPresigned(`${orderFolder(orderCode)}${safeFileName(file.name)}`, file, {
         access: "private",
         handleUploadUrl: "/api/documents",
         clientPayload: JSON.stringify({ sessionId }),
         contentType: contentTypeOf(file) ?? undefined,
-        multipart: file.size > 8 * 1024 * 1024,
         onUploadProgress: ({ percentage }) => patch(item.id, { progress: Math.round(percentage) }),
       });
       patch(item.id, { status: "done", progress: 100, file: undefined });

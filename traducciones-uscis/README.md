@@ -29,6 +29,6 @@ Use a `sk_test_…` key first and pay with card `4242 4242 4242 4242`; switch to
 
 ## Document uploads and /admin
 
-- **Uploads** turn on when a private Vercel Blob store is connected to the project (`BLOB_READ_WRITE_TOKEN`) and payments are on. After paying, `/pago-recibido` becomes the upload page; `/api/documents` only issues upload tokens for a paid Stripe session and only inside `pedidos/<order code>/`. JPG, PNG, WebP, HEIC or PDF, 20 MB each, 20 files per order.
+- **Uploads** turn on when a private Vercel Blob store is connected to the project (`BLOB_STORE_ID` with OIDC, or a legacy `BLOB_READ_WRITE_TOKEN`) and payments are on. After paying, `/pago-recibido` becomes the upload page; `/api/documents` only issues upload tokens for a paid Stripe session and only inside `pedidos/<order code>/`. JPG, PNG, WebP, HEIC or PDF, 20 MB each, 20 files per order.
 - **/admin** turns on with `ADMIN_PASSWORD` (plus the Blob store). It lists paid orders from Stripe with the client's details and files; files are served only through `/api/admin/file` to a signed-in admin. Changing the password signs everyone out.
 - Without these variables the site falls back to sending documents over WhatsApp.
