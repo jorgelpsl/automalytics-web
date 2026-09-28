@@ -14,8 +14,8 @@ export const SITE = {
   description:
     "Traducciones certificadas del español al inglés para trámites de USCIS: actas, certificados, diplomas y antecedentes, con la declaración del traductor que exige la norma.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://certa-traducciones.com",
-  // Automalytics' own WhatsApp number, same default the other demos use.
-  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "56932954075",
+  // Certa's US WhatsApp line, (832) 964-5305.
+  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "18329645305",
   email: null as string | null,
   // USD per page by order size. The tier the whole order falls in sets the
   // rate for every page. Empty → the site offers a free quote instead.

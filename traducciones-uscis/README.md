@@ -14,7 +14,7 @@ npm run build
 
 All business details live in `src/data/site.ts`: name "Certa Traducciones", volume pricing (1–4 pages USD 30, 5–9 USD 27, 10+ USD 25 per page — the order's tier applies to every page), delivery in 24 to 48 hours, served at `certa-traducciones.com` (`www` redirects to it).
 
-- `whatsappNumber` — still defaults to Automalytics' number; set `NEXT_PUBLIC_WHATSAPP_NUMBER` once the business has its own.
+- `whatsappNumber` — Certa's US line, +1 (832) 964-5305 (override with `NEXT_PUBLIC_WHATSAPP_NUMBER`).
 - `email` — `null` hides it.
 - `priceTiers` — an empty list would show "Cotización sin costo" instead of the live estimate.
 - `turnaround` — `null` would make the FAQ say the turnaround is confirmed when quoting.
