@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Check, ChevronDown, CreditCard, MessageCircle } from "lucide-react";
 import { SITE } from "@/data/site";
+import { gtagEvent } from "@/lib/gtag";
 import { DOCUMENT_OPTIONS, MAX_NOTES, MAX_PAGES, formatDeadline } from "@/lib/order";
 import { PRICE_TIERS, estimateFor, formatUsd, tierFor, tierRange } from "@/lib/pricing";
 import { quoteWhatsAppUrl } from "@/lib/whatsapp";
@@ -88,6 +89,13 @@ export function Quote({
   async function startPayment() {
     setPaying(true);
     setPayError(null);
+    if (estimate !== null) {
+      gtagEvent("begin_checkout", {
+        currency: "USD",
+        value: estimate,
+        items: [{ item_name: documentType, price: estimate / pageCount, quantity: pageCount }],
+      });
+    }
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",

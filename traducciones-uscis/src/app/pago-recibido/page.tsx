@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { after } from "next/server";
 import Link from "next/link";
 import { Check, MessageCircle } from "lucide-react";
-import { AdsPurchaseConversion } from "@/components/AdsPurchaseConversion";
 import { DocumentUpload } from "@/components/DocumentUpload";
+import { PurchaseTracking } from "@/components/PurchaseTracking";
 import { SITE } from "@/data/site";
 import { listOrderFiles } from "@/lib/documents";
 import { uploadsEnabled } from "@/lib/features";
@@ -59,13 +59,17 @@ export default async function PaymentReceivedPage({
       <div className="mx-auto flex max-w-2xl flex-col gap-6 rounded-card border border-line bg-paper-sheet p-6 sm:p-10">
         {order?.paid ? (
           <>
-            {SITE.googleAdsId && SITE.googleAdsPurchaseLabel && (
-              <AdsPurchaseConversion
-                sendTo={`${SITE.googleAdsId}/${SITE.googleAdsPurchaseLabel}`}
-                value={order.amountTotal}
-                transactionId={order.code}
-              />
-            )}
+            <PurchaseTracking
+              adsSendTo={SITE.googleAdsId && SITE.googleAdsPurchaseLabel ? `${SITE.googleAdsId}/${SITE.googleAdsPurchaseLabel}` : null}
+              analyticsId={SITE.googleAnalyticsId}
+              value={order.amountTotal}
+              transactionId={order.code}
+              item={{
+                item_name: order.documentType,
+                quantity: order.pages,
+                price: order.pages > 0 ? order.amountTotal / order.pages : order.amountTotal,
+              }}
+            />
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-marker text-ink">
               <Check size={24} strokeWidth={2.6} aria-hidden="true" />
             </span>

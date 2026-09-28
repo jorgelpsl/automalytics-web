@@ -18,7 +18,7 @@ All business details live in `src/data/site.ts`: name "Certa Traducciones", volu
 - `email` — `null` hides it.
 - `priceTiers` — an empty list would show "Cotización sin costo" instead of the live estimate.
 - `turnaround` — `null` would make the FAQ say the turnaround is confirmed when quoting.
-- `googleAdsId` / `googleAdsPurchaseLabel` — the Google Ads tag (`AW-18480857137`) loads on every page except `/admin`. With the "Purchase" conversion label (`N1jxCMG4t4kdELGAruxE`), `/pago-recibido` reports each paid order once, with its amount and the order code as transaction id. URLs are reported without the Stripe `session_id`. Override with `NEXT_PUBLIC_GOOGLE_ADS_ID` / `NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_LABEL`.
+- `googleAdsId` / `googleAdsPurchaseLabel` / `googleAnalyticsId` — one Google tag (`AW-18480857137` + `G-2RKVG0DRM2`) loads on every page except `/admin`. Hits report the URL without its query string except utm_* and ad click ids, so the Stripe `session_id` never reaches Google; in-app navigations are reported by `GooglePageViews`. The quote form sends `begin_checkout`; `/pago-recibido` reports each paid order once — the Ads "Purchase" conversion (label `N1jxCMG4t4kdELGAruxE`) and a GA4 `purchase` — with its amount and the order code as transaction id. Override with `NEXT_PUBLIC_GOOGLE_ADS_ID` / `NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_LABEL` / `NEXT_PUBLIC_GA_ID`.
 
 The requirements section quotes 8 CFR § 103.2(b)(3). The footer and FAQ state the service is not affiliated with USCIS — keep that.
 

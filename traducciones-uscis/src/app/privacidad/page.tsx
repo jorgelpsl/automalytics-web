@@ -61,9 +61,9 @@ export default function PrivacyPage() {
           de forma anónima.
         </li>
         <li>
-          <strong>Google</strong>, que recibe datos de navegación para medir si nuestros anuncios en Google generan
-          pedidos. Cuando pagas, le informamos el número de pedido y el monto, nunca tu nombre, tus documentos ni tu
-          tarjeta.
+          <strong>Google</strong> (Google Analytics y Google Ads), que recibe datos de navegación para medir cómo se usa
+          el sitio y si nuestros anuncios generan pedidos. Cuando pagas, le informamos el número de pedido, el tipo de
+          documento, las páginas y el monto; nunca tu nombre, tus documentos ni tu tarjeta.
         </li>
         <li>
           <strong>WhatsApp (Meta)</strong>, si te comunicas con nosotros por ese medio.
@@ -94,9 +94,9 @@ export default function PrivacyPage() {
       <h2>Cookies</h2>
       <p>
         Para saber cuántas personas visitan el sitio y qué páginas ven, usamos Vercel Web Analytics, que cuenta visitas
-        de forma agregada, sin cookies y sin identificarte. Para saber si una compra vino de un anuncio nuestro en Google,
-        el sitio carga la etiqueta de Google Ads, que usa cookies de Google para relacionar el clic en el anuncio con el
-        pedido. Puedes bloquearlas desde la configuración de tu navegador o administrar los anuncios que ves en{" "}
+        de forma agregada, sin cookies y sin identificarte. También usamos Google Analytics, para entender de dónde llegan
+        las visitas y cuántas terminan en un pedido, y la etiqueta de Google Ads, para saber si una compra vino de un
+        anuncio nuestro. Ambos usan cookies de Google. Puedes bloquearlas desde la configuración de tu navegador o administrar los anuncios que ves en{" "}
         <a href="https://myadcenter.google.com" target="_blank" rel="noopener noreferrer">
           Mi Centro de anuncios de Google
         </a>

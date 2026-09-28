@@ -30,6 +30,8 @@ export const SITE = {
   // not secrets. null label → the tag loads but no purchase is reported.
   googleAdsId: process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? "AW-18480857137",
   googleAdsPurchaseLabel: (process.env.NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_LABEL ?? "N1jxCMG4t4kdELGAruxE") as string | null,
+  // Google Analytics 4 web stream, loaded through the same Google tag.
+  googleAnalyticsId: (process.env.NEXT_PUBLIC_GA_ID ?? "G-2RKVG0DRM2") as string | null,
 } as const;
 
 export const NAV_LINKS = [
