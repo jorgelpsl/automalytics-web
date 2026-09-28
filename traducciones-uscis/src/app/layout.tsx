@@ -3,6 +3,7 @@ import { Newsreader, Onest } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { SiteAnalytics } from "@/components/SiteAnalytics";
 import { SITE } from "@/data/site";
 
 const newsreader = Newsreader({
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main id="contenido">{children}</main>
         <Footer />
+        <SiteAnalytics />
       </body>
     </html>
   );

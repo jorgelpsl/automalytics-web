@@ -57,7 +57,8 @@ export default function PrivacyPage() {
           <strong>Stripe</strong>, que procesa los pagos.
         </li>
         <li>
-          <strong>Vercel</strong>, que aloja el sitio y guarda los documentos en almacenamiento privado.
+          <strong>Vercel</strong>, que aloja el sitio, guarda los documentos en almacenamiento privado y mide las visitas
+          de forma anónima.
         </li>
         <li>
           <strong>WhatsApp (Meta)</strong>, si te comunicas con nosotros por ese medio.
@@ -87,8 +88,9 @@ export default function PrivacyPage() {
 
       <h2>Cookies</h2>
       <p>
-        No usamos cookies de publicidad ni de analítica. La página de pago de Stripe usa sus propias cookies para procesar el
-        pago y prevenir fraudes.
+        No usamos cookies de publicidad ni de analítica. Para saber cuántas personas visitan el sitio y qué páginas ven,
+        usamos Vercel Web Analytics, que cuenta visitas de forma agregada, sin cookies y sin identificarte. La página de
+        pago de Stripe usa sus propias cookies para procesar el pago y prevenir fraudes.
       </p>
 
       <h2>Menores de edad</h2>
