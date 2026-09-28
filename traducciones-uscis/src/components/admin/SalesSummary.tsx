@@ -1,36 +1,10 @@
 import { ArrowUpRight } from "lucide-react";
 import { formatUsd } from "@/lib/pricing";
+import type { SalesPeriod } from "@/lib/sales";
 
-export interface Sale {
-  createdAt: Date;
-  amountTotal: number;
-  pages: number;
-}
-
-const TZ = "America/New_York";
-const dayKey = new Intl.DateTimeFormat("en-CA", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" });
-const DAY_MS = 24 * 60 * 60 * 1000;
-
-function summarize(sales: Sale[]) {
-  return {
-    total: sales.reduce((sum, s) => sum + s.amountTotal, 0),
-    orders: sales.length,
-    pages: sales.reduce((sum, s) => sum + s.pages, 0),
-  };
-}
-
-// What came in, in three windows the owner actually checks: today (New York
-// calendar day), the last 7 days and the last 30. Amounts are what Stripe
-// charged, before its fees and any refunds made in the Stripe dashboard.
-export function SalesSummary({ sales, truncated }: { sales: Sale[]; truncated: boolean }) {
-  const now = Date.now();
-  const today = dayKey.format(now);
-  const periods = [
-    { label: "Hoy", ...summarize(sales.filter((s) => dayKey.format(s.createdAt) === today)) },
-    { label: "Últimos 7 días", ...summarize(sales.filter((s) => now - s.createdAt.getTime() < 7 * DAY_MS)) },
-    { label: "Últimos 30 días", ...summarize(sales.filter((s) => now - s.createdAt.getTime() < 30 * DAY_MS)) },
-  ];
-
+// What came in, in the windows the owner actually checks. Amounts are what
+// Stripe charged, before its fees and any refunds made in the Stripe dashboard.
+export function SalesSummary({ periods, truncated }: { periods: SalesPeriod[]; truncated: boolean }) {
   return (
     <section aria-labelledby="ventas-title" className="flex flex-col gap-3">
       <h2 id="ventas-title" className="text-sm font-medium text-ink-muted">

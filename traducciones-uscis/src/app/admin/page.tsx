@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { OrderCard } from "@/components/admin/OrderCard";
-import { SalesSummary, type Sale } from "@/components/admin/SalesSummary";
+import { SalesSummary } from "@/components/admin/SalesSummary";
 import type { AdminFile, AdminOrder } from "@/components/admin/types";
 import { isAdmin } from "@/lib/admin-auth";
 import { listOrderFiles } from "@/lib/documents";
 import { adminEnabled } from "@/lib/features";
 import { applyRecord, readOrderRecords } from "@/lib/order-store";
+import { salesPeriods, type SalesPeriod } from "@/lib/sales";
 import { listPaidOrders } from "@/lib/stripe";
 import { login, logout } from "./actions";
 
@@ -60,13 +61,13 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   }
 
   let orders: { order: AdminOrder; files: AdminFile[] }[] = [];
-  let sales: Sale[] = [];
+  let periods: SalesPeriod[] = [];
   let salesTruncated = false;
   let loadError = false;
   try {
     const [paid, records] = await Promise.all([listPaidOrders(100), readOrderRecords()]);
     // Every paid checkout counts as a sale, including orders later hidden from the list.
-    sales = paid.map((p) => ({ createdAt: p.createdAt, amountTotal: p.amountTotal, pages: p.pages }));
+    periods = salesPeriods(paid.map((p) => ({ createdAt: p.createdAt, amountTotal: p.amountTotal, pages: p.pages })));
     salesTruncated = paid.length >= 100;
     const visible = paid.map((p) => applyRecord(p, records[p.code])).filter((o) => !o.deleted);
     orders = await Promise.all(
@@ -125,7 +126,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         </form>
       </div>
 
-      {!loadError && <SalesSummary sales={sales} truncated={salesTruncated} />}
+      {!loadError && <SalesSummary periods={periods} truncated={salesTruncated} />}
 
       {!loadError && (
         <nav aria-label="Filtrar pedidos" className="-mt-2 flex flex-wrap gap-2">
