@@ -26,6 +26,8 @@ The requirements section quotes 8 CFR § 103.2(b)(3). The footer and FAQ state t
 
 Off until `STRIPE_SECRET_KEY` is set in the Vercel project (then redeploy, since the home page is static). With it, the quote form adds "Pagar $X con tarjeta": `/api/checkout` re-validates the order and prices it server-side from `priceTiers`, then sends the client to Stripe Checkout. After paying they land on `/pago-recibido`, which confirms the session with Stripe and hands them to WhatsApp with their order code (`CT-XXXXXX`, the `client_reference_id` in Stripe) to send the document photos.
 
+Checkout accepts promotion codes (`allow_promotion_codes`): create a coupon and its customer-facing code in Stripe → Products → Coupons, and Checkout shows an "Add promotion code" field and charges the discounted total. Sales, `/admin` and the Google Ads/Analytics purchase value all use the amount actually charged.
+
 Use a `sk_test_…` key first and pay with card `4242 4242 4242 4242`; switch to `sk_live_…` when it works. The key lives only in Vercel — never in the repo or client code.
 
 ## Document uploads and /admin

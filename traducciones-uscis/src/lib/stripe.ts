@@ -89,6 +89,9 @@ export async function createCheckoutSession(order: Order, origin: string): Promi
     success_url: `${origin}/pago-recibido?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/#cotizar`,
     "phone_number_collection[enabled]": "true",
+    // Codes are created and retired in the Stripe dashboard (Products →
+    // Coupons); Checkout validates them and charges the discounted total.
+    allow_promotion_codes: "true",
     // Shown above Stripe's Pay button: a clear final-sale notice at the
     // moment of payment is what card networks look at in a dispute.
     "custom_text[submit][message]": `Todas las compras son finales y no tienen reembolso. Al pagar aceptas los Términos del servicio: ${SITE.url}/terminos`,
