@@ -25,6 +25,7 @@ export interface PaidOrder {
 interface StripeSession {
   id: string;
   created: number;
+  status: string;
   payment_status: string;
   amount_total: number | null;
   client_reference_id: string | null;
@@ -32,11 +33,17 @@ interface StripeSession {
   customer_details: { email: string | null; phone: string | null } | null;
 }
 
+// A promotion code that covers the whole total completes the checkout with
+// nothing to charge; that order is as settled as a paid one.
+function isSettled(s: StripeSession): boolean {
+  return s.payment_status === "paid" || (s.status === "complete" && s.payment_status === "no_payment_required");
+}
+
 function toOrder(s: StripeSession): PaidOrder {
   return {
     sessionId: s.id,
     code: s.client_reference_id ?? "",
-    paid: s.payment_status === "paid",
+    paid: isSettled(s),
     createdAt: new Date(s.created * 1000),
     amountTotal: (s.amount_total ?? 0) / 100,
     name: s.metadata.name ?? "",
@@ -142,7 +149,7 @@ export async function listAllPaidOrderCodes(): Promise<Set<string>> {
   for (let page = 0; page < 100; page++) {
     const query: string = `/checkout/sessions?status=complete&limit=100${startingAfter ? `&starting_after=${startingAfter}` : ""}`;
     const res: { data: StripeSession[]; has_more: boolean } = await stripeRequest(query);
-    for (const s of res.data) if (s.payment_status === "paid" && s.client_reference_id) codes.add(s.client_reference_id);
+    for (const s of res.data) if (isSettled(s) && s.client_reference_id) codes.add(s.client_reference_id);
     if (!res.has_more || res.data.length === 0) return codes;
     startingAfter = res.data[res.data.length - 1].id;
   }
