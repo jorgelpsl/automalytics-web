@@ -1,11 +1,12 @@
-import { del } from "@vercel/blob";
+import { del, head } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { uploadsEnabled } from "@/lib/features";
 import { loadOrder } from "@/lib/order-store";
-import { orderFolder } from "@/lib/upload-rules";
+import { orderFolder, removalOpen } from "@/lib/upload-rules";
 
 // Lets a client take back a file they uploaded by mistake, which frees its
-// pages for the right one. Only files inside their own order's folder.
+// pages for the right one. Only files inside their own order's folder, and
+// only shortly after uploading them.
 export async function POST(request: Request) {
   if (!uploadsEnabled()) return NextResponse.json({ error: "uploads_disabled" }, { status: 503 });
   const { sessionId, pathname } = (await request.json().catch(() => ({}))) as { sessionId?: string; pathname?: string };
@@ -14,6 +15,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "not_allowed" }, { status: 403 });
   }
   try {
+    const blob = await head(pathname);
+    if (!removalOpen(new Date(blob.uploadedAt))) {
+      return NextResponse.json({ error: "locked" }, { status: 409 });
+    }
     await del(pathname);
     return NextResponse.json({ ok: true });
   } catch (err) {

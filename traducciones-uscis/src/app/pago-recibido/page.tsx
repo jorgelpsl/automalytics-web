@@ -9,6 +9,7 @@ import { listOrderFiles } from "@/lib/documents";
 import { uploadsEnabled } from "@/lib/features";
 import { notifySale } from "@/lib/notify";
 import { applyRecord, readOrderRecords, type OrderRecord } from "@/lib/order-store";
+import { removalOpen } from "@/lib/upload-rules";
 import { formatUsd } from "@/lib/pricing";
 import { getPaidOrder } from "@/lib/stripe";
 import { generalWhatsAppUrl, paidOrderWhatsAppUrl } from "@/lib/whatsapp";
@@ -103,7 +104,7 @@ export default async function PaymentReceivedPage({
                 sessionId={order.sessionId}
                 orderCode={order.code}
                 pagesPaid={order.pages}
-                initialFiles={storedFiles.map((f) => ({ pathname: f.pathname, name: f.name, size: f.size, pages: f.pages }))}
+                initialFiles={storedFiles.map((f) => ({ pathname: f.pathname, name: f.name, size: f.size, pages: f.pages, locked: !removalOpen(f.uploadedAt) }))}
                 turnaround={SITE.turnaround}
                 whatsappUrl={paidOrderWhatsAppUrl(order)}
               />

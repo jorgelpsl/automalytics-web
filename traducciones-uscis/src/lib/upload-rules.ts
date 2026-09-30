@@ -11,6 +11,15 @@ export const ALLOWED_UPLOAD_TYPES = [
 ];
 export const MAX_UPLOAD_MB = 20;
 export const MAX_UPLOAD_BYTES = MAX_UPLOAD_MB * 1024 * 1024;
+// A client can take back a file for this long after uploading it, to fix a
+// wrong photo. After that the file may already be in translation, so swapping
+// it goes through WhatsApp; the server enforces this, the widget mirrors it.
+export const REMOVE_WINDOW_MINUTES = 60;
+
+export function removalOpen(uploadedAt: Date, now = Date.now()): boolean {
+  return now - uploadedAt.getTime() < REMOVE_WINDOW_MINUTES * 60 * 1000;
+}
+
 export function orderFolder(code: string): string {
   return `pedidos/${code}/`;
 }

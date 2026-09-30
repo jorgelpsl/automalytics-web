@@ -5,7 +5,14 @@ import Link from "next/link";
 import { uploadPresigned } from "@vercel/blob/client";
 import { AlertCircle, Check, Copy, FileText, LoaderCircle, RotateCcw, Upload, X } from "lucide-react";
 import { countPdfPages } from "@/lib/pdf-pages";
-import { MAX_UPLOAD_BYTES, MAX_UPLOAD_MB, contentTypeOf, formatFileSize as formatSize, uploadPathname } from "@/lib/upload-rules";
+import {
+  MAX_UPLOAD_BYTES,
+  MAX_UPLOAD_MB,
+  REMOVE_WINDOW_MINUTES,
+  contentTypeOf,
+  formatFileSize as formatSize,
+  uploadPathname,
+} from "@/lib/upload-rules";
 
 interface Item {
   id: string;
@@ -17,9 +24,15 @@ interface Item {
   pathname?: string;
   error?: string;
   file?: File;
+  /** Past the window in which the client may remove it. */
+  locked?: boolean;
 }
 
 const pagesLabel = (n: number) => `${n} ${n === 1 ? "página" : "páginas"}`;
+const removeWindow =
+  REMOVE_WINDOW_MINUTES % 60 === 0
+    ? `${REMOVE_WINDOW_MINUTES / 60} ${REMOVE_WINDOW_MINUTES === 60 ? "hora" : "horas"}`
+    : `${REMOVE_WINDOW_MINUTES} minutos`;
 
 export function DocumentUpload({
   sessionId,
@@ -32,7 +45,7 @@ export function DocumentUpload({
   sessionId: string;
   orderCode: string;
   pagesPaid: number;
-  initialFiles: { pathname: string; name: string; size: number; pages: number }[];
+  initialFiles: { pathname: string; name: string; size: number; pages: number; locked: boolean }[];
   turnaround: string | null;
   whatsappUrl: string;
 }) {
@@ -140,6 +153,11 @@ export function DocumentUpload({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId, pathname: item.pathname }),
       });
+      if (res.status === 409) {
+        patch(item.id, { status: "done", locked: true });
+        setNotice(`${item.name} ya no se puede quitar desde aquí. Para cambiarlo, escríbenos por WhatsApp.`);
+        return;
+      }
       if (!res.ok) throw new Error(String(res.status));
       setItems((current) => current.filter((i) => i.id !== item.id));
     } catch {
@@ -181,7 +199,7 @@ export function DocumentUpload({
 
       {full ? (
         <p className="rounded-soft border border-line px-4 py-3 text-[15px] leading-relaxed text-ink-soft">
-          Ya elegiste las {pagesLabel(pagesPaid)} que pagaste. Si subiste algo por error, quítalo para liberar esa página.
+          Ya elegiste las {pagesLabel(pagesPaid)} que pagaste. Si subiste algo por error, quítalo para liberar esa página (tienes {removeWindow} desde que lo subiste).
         </p>
       ) : (
         <label
@@ -248,7 +266,7 @@ export function DocumentUpload({
                 {item.status === "done" && (
                   <>
                     <Check size={18} strokeWidth={2.6} className="shrink-0 text-ink" aria-label="Recibido" />
-                    {item.pathname && (
+                    {item.pathname && !item.locked ? (
                       <button
                         type="button"
                         onClick={() => void remove(item)}
@@ -258,6 +276,8 @@ export function DocumentUpload({
                       >
                         <X size={18} aria-hidden="true" />
                       </button>
+                    ) : (
+                      <span aria-hidden="true" className="-mr-2 h-11 w-11 shrink-0" />
                     )}
                   </>
                 )}
@@ -299,6 +319,15 @@ export function DocumentUpload({
             </li>
           ))}
         </ul>
+      )}
+      {items.some((i) => i.status === "done") && (
+        <p className="-mt-2 text-sm text-ink-muted">
+          Puedes quitar un archivo durante {removeWindow} después de subirlo. Si necesitas cambiarlo más tarde,{" "}
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-ink-soft underline underline-offset-4">
+            escríbenos por WhatsApp
+          </a>
+          .
+        </p>
       )}
 
       {pagesDone > 0 && !busy && (

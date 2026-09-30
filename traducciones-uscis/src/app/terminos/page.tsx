@@ -4,6 +4,7 @@ import { LegalPage } from "@/components/LegalPage";
 import { CORRECTION_DAYS } from "@/data/legal";
 import { SITE } from "@/data/site";
 import { PRICE_TIERS, formatUsd, tierRange } from "@/lib/pricing";
+import { REMOVE_WINDOW_MINUTES } from "@/lib/upload-rules";
 
 export const metadata: Metadata = {
   title: `Términos del servicio | ${SITE.name}`,
@@ -57,6 +58,12 @@ export default function TermsPage() {
         Cobramos según el número de páginas que indicas al pagar, y puedes subir hasta esa cantidad. Si tu documento tiene
         más páginas, necesitas pagar las adicionales en un pedido nuevo antes de que las traduzcamos. Podemos cambiar los
         precios en el futuro, pero el precio de un pedido ya pagado no cambia.
+      </p>
+      <p>
+        Traducimos los documentos que subes a tu pedido. Puedes quitar un archivo durante {REMOVE_WINDOW_MINUTES / 60}{" "}
+        {REMOVE_WINDOW_MINUTES === 60 ? "hora" : "horas"} después de subirlo, por ejemplo si la foto salió mal. Después,
+        cualquier cambio lo coordinamos por WhatsApp; si ya empezamos a traducir, reemplazar un documento por otro distinto
+        se cobra como un pedido nuevo.
       </p>
 
       <h2>3. Pago</h2>
