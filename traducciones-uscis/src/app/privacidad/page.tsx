@@ -1,21 +1,35 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LegalPage } from "@/components/LegalPage";
-import { DOCUMENT_RETENTION_DAYS } from "@/data/legal";
+import { CORRECTION_DAYS, DOCUMENT_RETENTION_DAYS } from "@/data/legal";
 import { SITE } from "@/data/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+const DESCRIPTION = `Qué datos y documentos recibe ${SITE.name}, para qué los usa, con quién los comparte y cómo pedir que los eliminemos.`;
+
+export const metadata: Metadata = pageMetadata({
   title: `Política de privacidad | ${SITE.name}`,
-  description: `Qué datos y documentos recibe ${SITE.name}, para qué los usa, con quién los comparte y cómo pedir que los eliminemos.`,
-  alternates: { canonical: "/privacidad" },
-};
+  description: DESCRIPTION,
+  path: "/privacidad",
+});
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Política de privacidad" current="/privacidad">
+    <LegalPage
+      title="Política de privacidad"
+      description={DESCRIPTION}
+      current="/privacidad"
+      summary={[
+        "Usamos tus datos y documentos solo para hacer tu traducción y contactarte sobre tu pedido. No los vendemos.",
+        `Los documentos se guardan en almacenamiento privado y se borran automáticamente ${DOCUMENT_RETENTION_DAYS} días después de completar tu pedido.`,
+        "Stripe procesa el pago: nosotros no vemos ni guardamos los datos de tu tarjeta.",
+        "Medimos las visitas y los anuncios con Vercel Web Analytics, Google Analytics y Google Ads.",
+      ]}
+    >
       <p>
         Para traducir tus documentos necesitamos ver información personal, a veces muy sensible. Esta política explica qué
         recibimos, para qué lo usamos y cómo lo protegemos. Aplica a {SITE.url.replace("https://", "")} y a los pedidos
-        hechos con {SITE.name}.
+        hechos con {SITE.name}, junto con los <Link href="/terminos">Términos del servicio</Link>.
       </p>
 
       <h2>Qué datos recibimos</h2>
@@ -40,7 +54,10 @@ export default function PrivacyPage() {
 
       <h2>Para qué los usamos</h2>
       <ul>
-        <li>Traducir tus documentos y entregarte la traducción certificada.</li>
+        <li>
+          Traducir tus documentos y entregarte la traducción certificada que{" "}
+          <Link href="/#requisitos">exige USCIS</Link>.
+        </li>
         <li>Contactarte sobre tu pedido.</li>
         <li>Procesar pagos y reembolsos, y prevenir fraudes.</li>
         <li>Cumplir obligaciones legales, contables y tributarias.</li>
@@ -81,7 +98,8 @@ export default function PrivacyPage() {
       <h2>Cuánto tiempo los guardamos</h2>
       <p>
         Guardamos tus documentos mientras trabajamos en tu pedido y los <strong>borramos automáticamente{" "}
-        {DOCUMENT_RETENTION_DAYS} días después de completarlo</strong>, lo que cubre el plazo para pedir correcciones.
+        {DOCUMENT_RETENTION_DAYS} días después de completarlo</strong>, lo que cubre los {CORRECTION_DAYS} días para pedir
+        correcciones que explica la <Link href="/reembolsos">Política de reembolsos</Link>.
         Puedes pedirnos que los borremos antes. Los registros de pago los conserva Stripe según sus obligaciones legales.
       </p>
 

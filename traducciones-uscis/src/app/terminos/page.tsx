@@ -4,17 +4,30 @@ import { LegalPage } from "@/components/LegalPage";
 import { CORRECTION_DAYS } from "@/data/legal";
 import { SITE } from "@/data/site";
 import { PRICE_TIERS, formatUsd, tierRange } from "@/lib/pricing";
+import { USCIS_TRANSLATION_RULE_URL, pageMetadata } from "@/lib/seo";
 import { REMOVE_WINDOW_MINUTES } from "@/lib/upload-rules";
 
-export const metadata: Metadata = {
+const DESCRIPTION = `Condiciones para contratar traducciones certificadas para USCIS con ${SITE.name}: precio, plazos, correcciones y responsabilidades.`;
+
+export const metadata: Metadata = pageMetadata({
   title: `Términos del servicio | ${SITE.name}`,
-  description: `Condiciones para contratar traducciones certificadas para USCIS con ${SITE.name}: precio, plazos, correcciones y responsabilidades.`,
-  alternates: { canonical: "/terminos" },
-};
+  description: DESCRIPTION,
+  path: "/terminos",
+});
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Términos del servicio" current="/terminos">
+    <LegalPage
+      title="Términos del servicio"
+      description={DESCRIPTION}
+      current="/terminos"
+      summary={[
+        `Traducimos del español al inglés y entregamos en PDF la traducción completa con la certificación firmada del traductor${SITE.turnaround ? `, en ${SITE.turnaround}` : ""}.`,
+        `Cobramos por página: ${PRICE_TIERS.map((tier) => `${formatUsd(tier.perPage)} de ${tierRange(tier)}`).join(", ")}.`,
+        `Todas las compras son finales; corregimos gratis los errores que nos avises dentro de ${CORRECTION_DAYS} días.`,
+        "Somos un servicio privado: no estamos afiliados a USCIS ni damos asesoría legal o migratoria.",
+      ]}
+    >
       <p>
         Estos términos regulan el uso de {SITE.url.replace("https://", "")} y la compra de traducciones a {SITE.name}{" "}
         (“Certa”, “nosotros”). Al pagar un pedido aceptas estos términos, la{" "}
@@ -23,9 +36,13 @@ export default function TermsPage() {
 
       <h2>1. Qué ofrecemos</h2>
       <p>
-        Traducimos documentos del español al inglés y entregamos, en PDF, la traducción completa junto con una certificación
+        Traducimos <Link href="/#documentos">documentos</Link> del español al inglés y entregamos, en PDF, la traducción completa junto con una certificación
         firmada por el traductor. En ella declara que es competente para traducir del español al inglés y que la traducción
-        es completa y exacta, que es lo que USCIS pide para documentos en otro idioma (8 CFR § 103.2(b)(3)).
+        es completa y exacta, que es lo que USCIS pide para documentos en otro idioma (
+        <a href={USCIS_TRANSLATION_RULE_URL} target="_blank" rel="noopener noreferrer">
+          8 CFR § 103.2(b)(3)
+        </a>
+        ).
       </p>
       <ul>
         <li>

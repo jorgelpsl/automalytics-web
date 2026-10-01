@@ -1,3 +1,5 @@
+import { USCIS_TRANSLATION_RULE_URL } from "@/lib/seo";
+
 const REQUIREMENTS = [
   {
     title: "Traducción completa al inglés",
@@ -29,7 +31,11 @@ export function Requirements() {
               translator&apos;s certification that he or she is competent to translate from the foreign language into
               English.”
             </p>
-            <cite className="mt-3 block text-sm not-italic text-ink-muted">8 CFR § 103.2(b)(3)</cite>
+            <cite className="mt-3 block text-sm not-italic text-ink-muted">
+              <a href={USCIS_TRANSLATION_RULE_URL} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-ink">
+                8 CFR § 103.2(b)(3)
+              </a>
+            </cite>
           </blockquote>
         </div>
 

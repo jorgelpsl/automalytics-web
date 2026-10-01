@@ -7,9 +7,7 @@ import { Faq } from "@/components/Faq";
 import { ClosingCta } from "@/components/ClosingCta";
 import { SITE } from "@/data/site";
 import { onlineOrdersEnabled, paymentsEnabled } from "@/lib/features";
-import { PRICE_TIERS, tierRange } from "@/lib/pricing";
-
-const ORG_ID = `${SITE.url}/#organization`;
+import { ORG_ID, WEBSITE_ID, offerNodes, organizationNode } from "@/lib/seo";
 
 // Only facts the page itself states: who we are, how to reach us, what we
 // sell, where, and the published per-page prices. No address, hours or
@@ -17,23 +15,10 @@ const ORG_ID = `${SITE.url}/#organization`;
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "Organization",
-      "@id": ORG_ID,
-      name: SITE.name,
-      url: SITE.url,
-      logo: `${SITE.url}/logo.png`,
-      contactPoint: {
-        "@type": "ContactPoint",
-        telephone: `+${SITE.whatsappNumber}`,
-        contactType: "customer service",
-        areaServed: "US",
-        availableLanguage: ["Spanish", "English"],
-      },
-    },
+    organizationNode(),
     {
       "@type": "WebSite",
-      "@id": `${SITE.url}/#website`,
+      "@id": WEBSITE_ID,
       name: SITE.name,
       url: SITE.url,
       inLanguage: "es-US",
@@ -47,12 +32,7 @@ const jsonLd = {
       url: SITE.url,
       provider: { "@id": ORG_ID },
       areaServed: { "@type": "Country", name: "United States" },
-      offers: PRICE_TIERS.map((tier) => ({
-        "@type": "Offer",
-        priceCurrency: "USD",
-        price: tier.perPage,
-        description: `${tierRange(tier)}, precio por página`,
-      })),
+      offers: offerNodes(`${SITE.url}/#cotizar`),
     },
   ],
 };

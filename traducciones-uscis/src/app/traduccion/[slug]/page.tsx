@@ -5,6 +5,7 @@ import { ArrowRight, Check, MessageCircle, Plus } from "lucide-react";
 import { DOCUMENT_PAGES, findDocumentPage } from "@/data/document-pages";
 import { SITE } from "@/data/site";
 import { PRICE_TIERS, estimateFor, formatUsd, tierFor, tierRange } from "@/lib/pricing";
+import { USCIS_TRANSLATION_RULE_URL, offerNodes, organizationNode, pageMetadata } from "@/lib/seo";
 import { generalWhatsAppUrl } from "@/lib/whatsapp";
 
 export function generateStaticParams() {
@@ -14,31 +15,18 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const page = findDocumentPage((await params).slug);
   if (!page) return {};
-  const title = page.metaTitle;
-  // Setting openGraph here replaces the root one, so the share image is
-  // named again instead of being inherited.
-  const image = { url: "/opengraph-image.png", width: 1200, height: 630, alt: SHARE_IMAGE_ALT };
-  return {
-    title,
-    description: page.metaDescription,
-    alternates: { canonical: `/traduccion/${page.slug}` },
-    openGraph: {
-      title,
-      description: page.metaDescription,
-      url: `${SITE.url}/traduccion/${page.slug}`,
-      siteName: SITE.name,
-      locale: "es_US",
-      type: "website",
-      images: [image],
-    },
-    twitter: { card: "summary_large_image", title, description: page.metaDescription, images: [image] },
-  };
+  return pageMetadata({ title: page.metaTitle, description: page.metaDescription, path: `/traduccion/${page.slug}` });
 }
 
-const SHARE_IMAGE_ALT =
-  "Certa Traducciones: traducciones certificadas para USCIS, junto a un certificado de nacimiento en español y su traducción certificada al inglés.";
-
 const pagesLabel = (n: number) => `${n} ${n === 1 ? "página" : "páginas"}`;
+
+// "El precio es de $30 por página de 1 a 4 páginas, $27 de 5 a 9 páginas y $25
+// de 10 o más páginas." — the same tiers the order form charges.
+function pricesInWords(): string {
+  const parts = PRICE_TIERS.map((tier) => `${formatUsd(tier.perPage)} por página de ${tierRange(tier)}`);
+  const list = parts.length > 1 ? `${parts.slice(0, -1).join(", ")} y ${parts.at(-1)}` : parts[0];
+  return `El precio es de ${list}.`;
+}
 
 export default async function DocumentLandingPage({ params }: { params: Promise<{ slug: string }> }) {
   const page = findDocumentPage((await params).slug);
@@ -65,15 +53,11 @@ export default async function DocumentLandingPage({ params }: { params: Promise<
       "@type": "Service",
       name: page.title,
       serviceType: "Traducción certificada",
+      description: page.metaDescription,
       url,
       areaServed: { "@type": "Country", name: "United States" },
-      provider: { "@type": "Organization", "@id": `${SITE.url}/#organization`, name: SITE.name, url: SITE.url },
-      offers: PRICE_TIERS.map((tier) => ({
-        "@type": "Offer",
-        priceCurrency: "USD",
-        price: tier.perPage,
-        description: `${tierRange(tier)}, precio por página`,
-      })),
+      provider: organizationNode(),
+      offers: offerNodes(url),
     },
   ];
 
@@ -156,12 +140,21 @@ export default async function DocumentLandingPage({ params }: { params: Promise<
                 </li>
               ))}
             </ul>
+            <p className="mt-4 text-[15px] leading-relaxed text-ink-muted">
+              Es lo que exige la norma de USCIS para documentos en otro idioma:{" "}
+              <a href={USCIS_TRANSLATION_RULE_URL} target="_blank" rel="noopener noreferrer" className="text-ink underline underline-offset-4">
+                8 CFR § 103.2(b)(3)
+              </a>
+              .
+            </p>
           </div>
           <div className="border-t-2 border-ink pt-5">
             <h2 className="font-display text-2xl font-medium">Cuántas páginas suele tener</h2>
             <p className="mt-4 leading-relaxed text-ink-soft">{page.typicalPages.text}</p>
             <p className="mt-3 leading-relaxed text-ink-soft">
-              Cada cara con texto, sellos o firmas cuenta como una página, y pagas según las páginas que indicas.
+              Cada cara con texto, sellos o firmas cuenta como una página, y pagas según las páginas que indicas.{" "}
+              {pricesInWords()} Por ejemplo, si tu {page.name} tiene {pagesLabel(example)}, la traducción cuesta{" "}
+              {formatUsd(estimateFor(example) ?? 0)} y te la entregamos en {SITE.turnaround}.
             </p>
           </div>
           <div className="border-t-2 border-ink pt-5">
