@@ -51,10 +51,12 @@ export function SiteAnalytics() {
       <Script src="/_vercel/insights/script.js" strategy="afterInteractive" />
       {googleIds.length > 0 && (
         <>
-          <Script id="google-tag-setup" strategy="afterInteractive">
+          {/* Loaded once the page is idle: the tag weighs ~400 KB of script and
+              would otherwise compete with the page for the main thread. */}
+          <Script id="google-tag-setup" strategy="lazyOnload">
             {googleTagSetup(googleIds)}
           </Script>
-          <Script src={`https://www.googletagmanager.com/gtag/js?id=${googleIds[0]}`} strategy="afterInteractive" />
+          <Script src={`https://www.googletagmanager.com/gtag/js?id=${googleIds[0]}`} strategy="lazyOnload" />
           {SITE.googleAnalyticsId && <GooglePageViews analyticsId={SITE.googleAnalyticsId} />}
         </>
       )}

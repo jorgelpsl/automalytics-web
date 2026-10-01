@@ -14,14 +14,29 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const page = findDocumentPage((await params).slug);
   if (!page) return {};
-  const title = `${page.title} | ${SITE.name}`;
+  const title = page.metaTitle;
+  // Setting openGraph here replaces the root one, so the share image is
+  // named again instead of being inherited.
+  const image = { url: "/opengraph-image.png", width: 1200, height: 630, alt: SHARE_IMAGE_ALT };
   return {
     title,
     description: page.metaDescription,
     alternates: { canonical: `/traduccion/${page.slug}` },
-    openGraph: { title, description: page.metaDescription, url: `${SITE.url}/traduccion/${page.slug}`, type: "website" },
+    openGraph: {
+      title,
+      description: page.metaDescription,
+      url: `${SITE.url}/traduccion/${page.slug}`,
+      siteName: SITE.name,
+      locale: "es_US",
+      type: "website",
+      images: [image],
+    },
+    twitter: { card: "summary_large_image", title, description: page.metaDescription, images: [image] },
   };
 }
+
+const SHARE_IMAGE_ALT =
+  "Certa Traducciones: traducciones certificadas para USCIS, junto a un certificado de nacimiento en español y su traducción certificada al inglés.";
 
 const pagesLabel = (n: number) => `${n} ${n === 1 ? "página" : "páginas"}`;
 
@@ -52,7 +67,7 @@ export default async function DocumentLandingPage({ params }: { params: Promise<
       serviceType: "Traducción certificada",
       url,
       areaServed: { "@type": "Country", name: "United States" },
-      provider: { "@type": "Organization", name: SITE.name, url: SITE.url },
+      provider: { "@type": "Organization", "@id": `${SITE.url}/#organization`, name: SITE.name, url: SITE.url },
       offers: PRICE_TIERS.map((tier) => ({
         "@type": "Offer",
         priceCurrency: "USD",

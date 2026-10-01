@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { type GtagItem } from "@/lib/gtag";
 
 const WAIT_MS = 200;
-const MAX_TRIES = 50;
+// The tag loads when the page goes idle; give it up to 30 s on slow phones.
+const MAX_TRIES = 150;
 
 // Reports one paid order to Google Ads (the "Purchase" conversion) and to
 // Google Analytics (a purchase). The order code is the transaction id, so
@@ -35,7 +36,6 @@ export function PurchaseTracking({
 
     let tries = 0;
     let timer: ReturnType<typeof setTimeout> | undefined;
-    // The tag loads after hydration, so wait for it rather than race it.
     const send = () => {
       if (!window.gtag) {
         if (++tries < MAX_TRIES) timer = setTimeout(send, WAIT_MS);

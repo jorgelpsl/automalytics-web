@@ -12,7 +12,7 @@ export const SITE = {
   name: "Certa Traducciones",
   shortName: "Certa",
   description:
-    "Traducciones certificadas del español al inglés para trámites de USCIS: actas, certificados, diplomas y antecedentes, con la declaración del traductor que exige la norma.",
+    "Traducciones certificadas del español al inglés para USCIS: actas, diplomas y antecedentes, con la certificación del traductor. Lista en 24 a 48 horas.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://certa-traducciones.com",
   // Certa's US WhatsApp line, (832) 964-5305.
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "18329645305",

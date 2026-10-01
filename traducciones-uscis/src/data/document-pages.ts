@@ -11,6 +11,9 @@ export interface DocumentPage {
   /** Lowercase noun phrase used inside sentences. */
   name: string;
   title: string;
+  /** Search result title, kept under ~60 characters so it isn't cut off. */
+  metaTitle: string;
+  /** Kept under ~155 characters for the same reason. */
   metaDescription: string;
   intro: string;
   whenNeeded: string[];
@@ -26,6 +29,7 @@ export const DOCUMENT_PAGES: DocumentPage[] = [
     documentType: "Acta o certificado de nacimiento",
     name: "acta de nacimiento",
     title: "Traducción certificada de acta de nacimiento para USCIS",
+    metaTitle: "Traducción de acta de nacimiento para USCIS | Certa",
     metaDescription:
       "Traducción certificada al inglés de tu acta o certificado de nacimiento para USCIS: completa, con sellos y notas marginales, lista en 24 a 48 horas.",
     intro:
@@ -67,8 +71,9 @@ export const DOCUMENT_PAGES: DocumentPage[] = [
     documentType: "Acta de matrimonio",
     name: "acta de matrimonio",
     title: "Traducción certificada de acta de matrimonio para USCIS",
+    metaTitle: "Traducción de acta de matrimonio para USCIS | Certa",
     metaDescription:
-      "Traducción certificada al inglés de tu acta de matrimonio para peticiones familiares, residencia y ciudadanía ante USCIS. Completa, firmada y en 24 a 48 horas.",
+      "Traducción certificada al inglés de tu acta de matrimonio para peticiones familiares, residencia y ciudadanía ante USCIS. Lista en 24 a 48 horas.",
     intro:
       "Si tu trámite depende de tu matrimonio, USCIS necesita el acta traducida completa al inglés. La traducimos con todos sus datos y la certificación del traductor.",
     whenNeeded: [
@@ -108,6 +113,7 @@ export const DOCUMENT_PAGES: DocumentPage[] = [
     documentType: "Sentencia o acta de divorcio",
     name: "sentencia de divorcio",
     title: "Traducción certificada de sentencia de divorcio para USCIS",
+    metaTitle: "Traducción de sentencia de divorcio para USCIS | Certa",
     metaDescription:
       "Traducción certificada al inglés de sentencias y actas de divorcio para probar ante USCIS que un matrimonio anterior terminó. Completa y en 24 a 48 horas.",
     intro:
@@ -149,8 +155,9 @@ export const DOCUMENT_PAGES: DocumentPage[] = [
     documentType: "Certificado de defunción",
     name: "acta de defunción",
     title: "Traducción certificada de acta de defunción para USCIS",
+    metaTitle: "Traducción de acta de defunción para USCIS | Certa",
     metaDescription:
-      "Traducción certificada al inglés de actas y certificados de defunción para trámites ante USCIS, como probar que un matrimonio anterior terminó. En 24 a 48 horas.",
+      "Traducción certificada al inglés de actas y certificados de defunción para USCIS, por ejemplo para probar que terminó un matrimonio. En 24 a 48 horas.",
     intro:
       "Un acta de defunción puede ser clave en tu trámite, por ejemplo para probar que un matrimonio anterior terminó. La traducimos completa al inglés, con la certificación del traductor.",
     whenNeeded: [
@@ -183,8 +190,9 @@ export const DOCUMENT_PAGES: DocumentPage[] = [
     documentType: "Certificado de antecedentes penales",
     name: "certificado de antecedentes penales",
     title: "Traducción certificada de antecedentes penales para USCIS",
+    metaTitle: "Traducción de antecedentes penales para USCIS | Certa",
     metaDescription:
-      "Traducción certificada al inglés de certificados de antecedentes penales y documentos judiciales para trámites migratorios. Completa, firmada y en 24 a 48 horas.",
+      "Traducción certificada al inglés de certificados de antecedentes penales y documentos judiciales para trámites migratorios. Firmada, en 24 a 48 horas.",
     intro:
       "Los certificados de antecedentes y los documentos de tribunales se presentan en varios trámites migratorios. Si están en español, deben ir con una traducción completa y certificada al inglés.",
     whenNeeded: [
@@ -217,8 +225,9 @@ export const DOCUMENT_PAGES: DocumentPage[] = [
     documentType: "Títulos y diplomas",
     name: "título o diploma",
     title: "Traducción certificada de títulos y diplomas para USCIS",
+    metaTitle: "Traducción de títulos y diplomas para USCIS | Certa",
     metaDescription:
-      "Traducción certificada al inglés de títulos, diplomas y certificados de notas para peticiones de empleo y otros trámites ante USCIS. Lista en 24 a 48 horas.",
+      "Traducción certificada al inglés de títulos, diplomas y certificados de notas para peticiones de empleo y otros trámites ante USCIS. En 24 a 48 horas.",
     intro:
       "Si tu trámite se basa en tus estudios o en tu profesión, tus títulos y certificados de notas deben ir traducidos completos al inglés, con la certificación del traductor.",
     whenNeeded: [
