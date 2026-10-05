@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 const pagesLabel = (n: number) => `${n} ${n === 1 ? "página" : "páginas"}`;
 
-// "El precio es de $30 por página de 1 a 4 páginas, $27 de 5 a 9 páginas y $25
+// "El precio es de $15 por página de 1 a 4 páginas, $14 de 5 a 9 páginas y $13
 // de 10 o más páginas." — the same tiers the order form charges.
 function pricesInWords(): string {
   const parts = PRICE_TIERS.map((tier) => `${formatUsd(tier.perPage)} por página de ${tierRange(tier)}`);

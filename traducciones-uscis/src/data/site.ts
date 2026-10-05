@@ -20,9 +20,9 @@ export const SITE = {
   // USD per page by order size. The tier the whole order falls in sets the
   // rate for every page. Empty → the site offers a free quote instead.
   priceTiers: [
-    { minPages: 1, perPage: 30 },
-    { minPages: 5, perPage: 27 },
-    { minPages: 10, perPage: 25 },
+    { minPages: 1, perPage: 15 },
+    { minPages: 5, perPage: 14 },
+    { minPages: 10, perPage: 13 },
   ] as readonly PriceTier[],
   // null → turnaround is confirmed when quoting.
   turnaround: "24 a 48 horas" as string | null,

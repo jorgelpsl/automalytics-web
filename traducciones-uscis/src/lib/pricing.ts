@@ -1,6 +1,6 @@
 import { SITE, type PriceTier } from "@/data/site";
 
-// US-style amounts ("$30"): the audience pays in dollars from the US.
+// US-style amounts ("$15"): the audience pays in dollars from the US.
 export function formatUsd(amount: number): string {
   return `$${amount.toLocaleString("en-US")}`;
 }
