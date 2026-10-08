@@ -3,6 +3,7 @@ import { Newsreader, Onest } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { FunnelTracking } from "@/components/FunnelTracking";
 import { SiteAnalytics } from "@/components/SiteAnalytics";
 import { SITE } from "@/data/site";
 
@@ -61,6 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="contenido">{children}</main>
         <Footer />
         <SiteAnalytics />
+        <FunnelTracking />
       </body>
     </html>
   );
