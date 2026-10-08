@@ -237,7 +237,7 @@
     <h1>Sabe cuánto pujar <em>antes</em> de pujar.</h1>
     <p class="hero-sub">Por cada lote: reparación estimada, valor de reventa, comisiones, transporte y la puja máxima que todavía te deja ganancia. Hecho para compradores que reparan y revenden.</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#radar">Probar con 8 lotes de ejemplo</a>
+      <a class="btn btn-primary" href="#radar">Ver el lote real y 8 de ejemplo</a>
       <a class="btn btn-ghost" href="https://wa.me/56932954075?text=Hola!%20Quiero%20un%20sistema%20como%20el%20Radar%20de%20subastas%20de%20Automalytics" target="_blank" rel="noopener">Hablar con Automalytics</a>
     </div>
   </div>
@@ -248,19 +248,19 @@
   <div class="wrap">
     <div class="bench-head">
       <h2 id="radarTitle">Lotes filtrados por tu capital</h2>
-      <p class="sample-note">Datos de ejemplo para la demo: los lotes, precios y valores de referencia son ilustrativos, no vienen de Copart, IAA ni KBB.</p>
+      <p class="sample-note">El Nissan Altima 2017 (lote 63307176) es un lote real con datos de su listado. Los otros 8 son ilustrativos. Ningún valor viene de KBB.</p>
     </div>
 
     <div class="controls">
       <div class="field">
         <label for="capital">Capital disponible (USD)</label>
-        <input type="number" id="capital" inputmode="numeric" min="0" step="250" value="6000" />
+        <input type="number" id="capital" inputmode="numeric" min="0" step="250" value="7000" />
       </div>
       <fieldset class="field">
         <legend>Dificultad de reparación</legend>
         <div class="chips" id="diffChips">
-          <input type="radio" name="diff" id="d-easy" value="easy" checked /><label for="d-easy">Fácil</label>
-          <input type="radio" name="diff" id="d-mid" value="mid" /><label for="d-mid">Fácil y media</label>
+          <input type="radio" name="diff" id="d-easy" value="easy" /><label for="d-easy">Fácil</label>
+          <input type="radio" name="diff" id="d-mid" value="mid" checked /><label for="d-mid">Fácil y media</label>
           <input type="radio" name="diff" id="d-all" value="all" /><label for="d-all">Todas</label>
         </div>
       </fieldset>
@@ -322,7 +322,7 @@
 </main>
 
 <footer>
-  <div class="wrap">Demo con datos de ejemplo. Los cálculos son estimaciones y no sustituyen la inspección del vehículo ni la verificación de tarifas y requisitos vigentes.</div>
+  <div class="wrap">Demo: un lote real y ocho de ejemplo. Los cálculos son estimaciones y no sustituyen la inspección del vehículo ni la verificación de tarifas y requisitos vigentes.</div>
 </footer>
 
 <script>
@@ -331,6 +331,9 @@
 
   /* Lotes de ejemplo. repair.shop = costo que siempre va a taller (p. ej. enderezado). */
   var LOTS = [
+    { id: 9, real: true, lotNo: '63307176', vin: '1N4AL3AP4HC108405', src: 'Copart / IAA', yard: 'yard por confirmar', year: 2017, make: 'Nissan', model: 'Altima 2.5', miles: 112986, damage: 'Frontal', zone: 'front', diff: 'mid', diffWhy: 'Piezas atornilladas, pero puede haber suspensión, radiador o riel dañados', clean: 8500, resaleDelta: 0.07, bid: null, runs: 'arranque por confirmar', airbag: null,
+      items: [ { n: 'Parachoques delantero', parts: 150, h: 2, paint: 1 }, { n: 'Faro izquierdo', parts: 180, h: 1, paint: 0 }, { n: 'Guardabarros izquierdo', parts: 120, h: 2, paint: 1 }, { n: 'Parrilla y luz antiniebla', parts: 140, h: 1, paint: 0 }, { n: 'Refuerzo y absorbedor de parachoques', parts: 180, h: 1.5, paint: 0 }, { n: 'Radiador y condensador (parcial)', parts: 350, h: 4, paint: 0 }, { n: 'Suspensión: brazo, terminal y alineación', parts: 400, h: 3, paint: 0 } ],
+      notes: ['Fotos del interior: confirma que los airbags no se desplegaron.', 'Revisa abajo: riel izquierdo, subchasis y brazo de control.', 'Verifica en NMVTIS o Carfax que el título siga limpio.'] },
     { id: 1, src: 'Copart', yard: 'Chicago, IL', year: 2014, make: 'Honda', model: 'Civic LX', miles: 98000, damage: 'Frontal leve', zone: 'front', diff: 'easy', diffWhy: 'Piezas atornilladas, sin airbags', clean: 9800, bid: 1900, runs: 'Arranca', airbag: false,
       items: [ { n: 'Parachoques delantero', parts: 180, h: 2, paint: 1 }, { n: 'Faro derecho', parts: 140, h: 1, paint: 0 }, { n: 'Capó', parts: 260, h: 2, paint: 1 } ],
       notes: ['Confirma en fotos que la barra de refuerzo no esté doblada.', 'Revisa que el radiador no tenga fugas.'] },
@@ -386,21 +389,23 @@
     var base = parts + labor + paint + shop;
     var contingency = base * a.cont;
     var repair = base + contingency;
-    var resale = lot.clean * a.resalePct;
+    var resale = lot.clean * (a.resalePct + (lot.resaleDelta || 0));
     var fixed = a.broker + a.transport + a.title;
     var net = resale - repair - fixed - a.profit;
     var maxBid = Math.max(0, Math.floor(((net - a.feeFlat) / (1 + a.feePct)) / 25) * 25);
     var feeAt = function (bid) { return bid * a.feePct + a.feeFlat; };
     var profitAt = function (bid) { return resale - repair - fixed - bid - feeAt(bid); };
+    var bid = lot.bid == null ? maxBid : lot.bid;
     return {
       parts: parts, labor: labor, paint: paint, shop: shop, contingency: contingency, repair: repair,
-      resale: resale, fixed: fixed, net: net, maxBid: maxBid, feeAtMax: feeAt(maxBid), feeAtBid: feeAt(lot.bid),
-      profitNow: profitAt(lot.bid), cashNow: lot.bid + feeAt(lot.bid) + fixed + repair, viable: net - a.feeFlat > 0
+      resale: resale, fixed: fixed, net: net, maxBid: maxBid, feeAtMax: feeAt(maxBid), feeAtBid: feeAt(bid),
+      profitNow: profitAt(bid), cashNow: bid + feeAt(bid) + fixed + repair, viable: net - a.feeFlat > 0
     };
   }
 
   function verdict(lot, r) {
     if (!r.viable || r.maxBid < 100) return { cls: 'bad', label: 'Sin margen', why: 'Con estos costos no queda la ganancia mínima, aunque el lote salga casi gratis.' };
+    if (lot.bid == null) return { cls: 'warn', label: 'Define tu límite', why: 'Aún no hay puja actual cargada. No pujes por encima de la puja máxima.' };
     if (lot.bid > r.maxBid) return { cls: 'bad', label: 'Ya pasa tu límite', why: 'La puja actual supera tu puja máxima. Solo tendría sentido si bajas tu ganancia mínima.' };
     if (lot.bid > r.maxBid * 0.85) return { cls: 'warn', label: 'Ajustado', why: 'Estás cerca del límite: cualquier imprevisto en la reparación se come la ganancia.' };
     return { cls: 'good', label: 'Hay margen', why: 'Con la puja actual aún queda espacio antes de llegar a tu límite.' };
@@ -417,7 +422,7 @@
         if (diff === 'mid' && x.lot.diff === 'hard') return false;
         return x.r.cashNow <= capital;
       })
-      .sort(function (p, q) { return q.r.profitNow - p.r.profitNow; });
+      .sort(function (p, q) { return (q.lot.real ? 1 : 0) - (p.lot.real ? 1 : 0) || q.r.profitNow - p.r.profitNow; });
   }
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -436,8 +441,8 @@
       var l = x.lot;
       return '<li><button type="button" class="lot-btn" data-id="' + l.id + '"' + (l.id === selected ? ' aria-current="true"' : '') + '>' +
         '<span class="lot-name">' + l.year + ' ' + esc(l.make) + ' ' + esc(l.model) + '</span>' +
-        '<span class="lot-max"><strong class="num">' + (x.r.viable ? usd.format(x.r.maxBid) : '—') + '</strong><span>puja actual <span class="num">' + usd.format(l.bid) + '</span></span></span>' +
-        '<span class="lot-meta"><span class="dot ' + l.diff + '"></span>' + DIFF_LABEL[l.diff] + ' · ' + esc(l.damage) + ' · ' + l.src + '</span>' +
+        '<span class="lot-max"><strong class="num">' + (x.r.viable ? usd.format(x.r.maxBid) : '—') + '</strong><span>' + (l.bid == null ? 'sin puja cargada' : 'puja actual <span class="num">' + usd.format(l.bid) + '</span>') + '</span></span>' +
+        '<span class="lot-meta"><span class="dot ' + l.diff + '"></span>' + DIFF_LABEL[l.diff] + ' · ' + esc(l.damage) + ' · ' + (l.real ? 'Lote real' : l.src) + '</span>' +
         '</button></li>';
     }).join('');
   }
@@ -474,20 +479,21 @@
 
     $('detail').innerHTML =
       '<div class="detail-top"><div>' +
-        '<p class="src-tag">' + lot.src + ' · ' + esc(lot.yard) + ' · lote de ejemplo</p>' +
+        '<p class="src-tag">' + (lot.real ? lot.src + ' · lote ' + lot.lotNo + ' · datos del listado' : lot.src + ' · ' + esc(lot.yard) + ' · lote de ejemplo') + '</p>' +
         '<h3>' + lot.year + ' ' + esc(lot.make) + ' ' + esc(lot.model) + '</h3>' +
-        '<p class="specs"><span class="num">' + lot.miles.toLocaleString('en-US') + '</span> mi · ' + lot.runs + ' · ' + esc(lot.damage) + ' · ' + (lot.airbag ? 'airbags desplegados' : 'sin airbags desplegados') + '</p>' +
+        '<p class="specs"><span class="num">' + lot.miles.toLocaleString('en-US') + '</span> mi · ' + lot.runs + ' · ' + esc(lot.damage) + ' · ' + (lot.airbag === null ? 'airbags por confirmar' : lot.airbag ? 'airbags desplegados' : 'sin airbags desplegados') + '</p>' +
+        (lot.vin ? '<p class="specs">VIN <span class="num">' + lot.vin + '</span></p>' : '') +
         '<p class="specs"><span class="dot ' + lot.diff + '"></span>Dificultad ' + DIFF_LABEL[lot.diff].toLowerCase() + ': ' + esc(lot.diffWhy) + '</p>' +
       '</div><figure class="zone-fig">' + zoneSvg(lot.zone) + '<figcaption>Zona dañada</figcaption></figure></div>' +
 
       '<div class="verdict"><div class="verdict-main"><small>Puja máxima</small><span class="big num">' + (r.viable ? usd.format(r.maxBid) : '—') + '</span></div>' +
         '<div class="verdict-side"><span class="badge ' + v.cls + '">' + v.label + '</span>' +
-        '<span class="hint">Puja actual <b class="num">' + usd.format(lot.bid) + '</b> → ganancia estimada <b class="num">' + profitTxt + '</b></span></div>' +
-        '<p class="verdict-why">' + v.why + ' Efectivo necesario a la puja actual: <span class="num">' + usd.format(r.cashNow) + '</span>.</p></div>' +
+        '<span class="hint">' + (lot.bid == null ? 'Sin puja actual. A la puja máxima ganas <b class="num">' + profitTxt + '</b>' : 'Puja actual <b class="num">' + usd.format(lot.bid) + '</b> → ganancia estimada <b class="num">' + profitTxt + '</b>') + '</span></div>' +
+        '<p class="verdict-why">' + v.why + ' Efectivo necesario ' + (lot.bid == null ? 'a la puja máxima' : 'a la puja actual') + ': <span class="num">' + usd.format(r.cashNow) + '</span>.</p></div>' +
 
       '<h4 class="section-label">Cómo se calcula</h4>' +
       '<ul class="flow">' +
-        flowRow('Reventa en Chicago', 'Ref. KBB limpio ' + usd.format(lot.clean) + ' × ' + Math.round(a.resalePct * 100) + '%', r.resale, scale, 'plus') +
+        flowRow('Reventa en Chicago', (lot.real ? 'Anuncios en Chicago ' : 'Ref. KBB limpio ') + usd.format(lot.clean) + ' × ' + Math.round((a.resalePct + (lot.resaleDelta || 0)) * 100) + '%', r.resale, scale, 'plus') +
         flowRow('Reparación', mode === 'diy' ? 'Piezas y materiales, tú trabajas' : 'Piezas, mano de obra y pintura', r.repair, scale) +
         flowRow('Comisiones de subasta', 'Calculadas sobre la puja máxima', r.feeAtMax, scale) +
         flowRow('Broker, transporte y trámites', '', r.fixed, scale) +
