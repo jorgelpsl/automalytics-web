@@ -331,7 +331,7 @@
 
   /* Lotes de ejemplo. repair.shop = costo que siempre va a taller (p. ej. enderezado). */
   var LOTS = [
-    { id: 9, real: true, lotNo: '63307176', vin: '1N4AL3AP4HC108405', src: 'Copart / IAA', yard: 'yard por confirmar', year: 2017, make: 'Nissan', model: 'Altima 2.5', miles: 112986, damage: 'Frontal', zone: 'front', diff: 'mid', diffWhy: 'Piezas atornilladas, pero puede haber suspensión, radiador o riel dañados', clean: 8500, resaleDelta: 0.07, bid: null, runs: 'arranque por confirmar', airbag: null,
+    { id: 9, real: true, lotNo: '63307176', vin: '1N4AL3AP4HC108405', src: 'Copart / IAA', yard: 'Illinois', feeFixed: 668, feeNote: 'Fees reales: buyer $455, internet $99, gate $79, ambiental $15, título $20', transportOverride: 150, year: 2017, make: 'Nissan', model: 'Altima 2.5', miles: 112986, damage: 'Frontal', zone: 'front', diff: 'mid', diffWhy: 'Piezas atornilladas, pero puede haber suspensión, radiador o riel dañados', clean: 8500, resaleDelta: 0.07, bid: null, runs: 'arranque por confirmar', airbag: null,
       items: [ { n: 'Parachoques delantero', parts: 150, h: 2, paint: 1 }, { n: 'Faro izquierdo', parts: 180, h: 1, paint: 0 }, { n: 'Guardabarros izquierdo', parts: 120, h: 2, paint: 1 }, { n: 'Parrilla y luz antiniebla', parts: 140, h: 1, paint: 0 }, { n: 'Refuerzo y absorbedor de parachoques', parts: 180, h: 1.5, paint: 0 }, { n: 'Radiador y condensador (parcial)', parts: 350, h: 4, paint: 0 }, { n: 'Suspensión: brazo, terminal y alineación', parts: 400, h: 3, paint: 0 } ],
       notes: ['Fotos del interior: confirma que los airbags no se desplegaron.', 'Revisa abajo: riel izquierdo, subchasis y brazo de control.', 'Verifica en NMVTIS o Carfax que el título siga limpio.'] },
     { id: 1, src: 'Copart', yard: 'Chicago, IL', year: 2014, make: 'Honda', model: 'Civic LX', miles: 98000, damage: 'Frontal leve', zone: 'front', diff: 'easy', diffWhy: 'Piezas atornilladas, sin airbags', clean: 9800, bid: 1900, runs: 'Arranca', airbag: false,
@@ -390,16 +390,20 @@
     var contingency = base * a.cont;
     var repair = base + contingency;
     var resale = lot.clean * (a.resalePct + (lot.resaleDelta || 0));
-    var fixed = a.broker + a.transport + a.title;
+    var transport = lot.transportOverride != null ? lot.transportOverride : a.transport;
+    var fixed = a.broker + transport + a.title;
     var net = resale - repair - fixed - a.profit;
-    var maxBid = Math.max(0, Math.floor(((net - a.feeFlat) / (1 + a.feePct)) / 25) * 25);
-    var feeAt = function (bid) { return bid * a.feePct + a.feeFlat; };
+    /* feeFixed: fees reales del lote, válidos solo cerca de la puja del screenshot (mismo tramo del buyer fee). */
+    var pct = lot.feeFixed != null ? 0 : a.feePct;
+    var flat = lot.feeFixed != null ? lot.feeFixed : a.feeFlat;
+    var maxBid = Math.max(0, Math.floor(((net - flat) / (1 + pct)) / 25) * 25);
+    var feeAt = function (bid) { return bid * pct + flat; };
     var profitAt = function (bid) { return resale - repair - fixed - bid - feeAt(bid); };
     var bid = lot.bid == null ? maxBid : lot.bid;
     return {
       parts: parts, labor: labor, paint: paint, shop: shop, contingency: contingency, repair: repair,
       resale: resale, fixed: fixed, net: net, maxBid: maxBid, feeAtMax: feeAt(maxBid), feeAtBid: feeAt(bid),
-      profitNow: profitAt(bid), cashNow: bid + feeAt(bid) + fixed + repair, viable: net - a.feeFlat > 0
+      profitNow: profitAt(bid), cashNow: bid + feeAt(bid) + fixed + repair, viable: net - flat > 0
     };
   }
 
@@ -495,7 +499,7 @@
       '<ul class="flow">' +
         flowRow('Reventa en Chicago', (lot.real ? 'Anuncios en Chicago ' : 'Ref. KBB limpio ') + usd.format(lot.clean) + ' × ' + Math.round((a.resalePct + (lot.resaleDelta || 0)) * 100) + '%', r.resale, scale, 'plus') +
         flowRow('Reparación', mode === 'diy' ? 'Piezas y materiales, tú trabajas' : 'Piezas, mano de obra y pintura', r.repair, scale) +
-        flowRow('Comisiones de subasta', 'Calculadas sobre la puja máxima', r.feeAtMax, scale) +
+        flowRow('Comisiones de subasta', (lot.feeNote || 'Calculadas sobre la puja máxima'), r.feeAtMax, scale) +
         flowRow('Broker, transporte y trámites', '', r.fixed, scale) +
         flowRow('Ganancia mínima', 'Tu objetivo por carro', a.profit, scale) +
         flowRow('Puja máxima', '', r.maxBid, scale, 'result') +
