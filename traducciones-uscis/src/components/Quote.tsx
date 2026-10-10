@@ -360,14 +360,14 @@ export function Quote({
                   )}
                   <p className="text-sm leading-relaxed text-ink-muted">
                     Pago seguro con Stripe: tarjeta, Apple Pay o Google Pay. Cobramos según las páginas que indicas y, después
-                    del pago, {uploadAfterPayment ? "subes tu documento aquí mismo." : "nos envías las fotos por WhatsApp."}  <strong className="font-medium text-ink">Todas las compras son finales</strong>{" "}
-                    (
-                    <Link href="/reembolsos" className="underline underline-offset-4 hover:text-ink">
-                      sin reembolsos
-                    </Link>
-                    ). Al pagar aceptas los{" "}
+                    del pago, {uploadAfterPayment ? "subes tu documento aquí mismo." : "nos envías las fotos por WhatsApp."} Si la
+                    traducción tiene un error, la corregimos gratis. Al pagar aceptas los{" "}
                     <Link href="/terminos" className="underline underline-offset-4 hover:text-ink">
                       Términos del servicio
+                    </Link>{" "}
+                    y la{" "}
+                    <Link href="/reembolsos" className="underline underline-offset-4 hover:text-ink">
+                      Política de reembolsos
                     </Link>
                     .
                   </p>
