@@ -128,8 +128,6 @@ export default async function DocumentLandingPage({ params }: { params: Promise<
         defaultDocumentType={page.documentType}
       />
 
-      <Reviews />
-
       <section className="border-t border-line bg-paper-alt">
         <div className="mx-auto grid w-full max-w-content gap-x-8 gap-y-12 px-4 py-16 sm:px-6 md:grid-cols-2 lg:px-8 lg:py-20">
           <div className="border-t-2 border-ink pt-5">
@@ -211,6 +209,8 @@ export default async function DocumentLandingPage({ params }: { params: Promise<
           </p>
         </div>
       </section>
+
+      <Reviews />
 
       <section className="border-t border-line bg-paper-alt">
         <div className="section flex flex-col gap-10 md:flex-row md:items-end md:justify-between">

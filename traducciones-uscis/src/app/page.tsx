@@ -46,9 +46,9 @@ export default function HomePage() {
       <Requirements />
       <Documents />
       <Process />
-      <Reviews />
       <Quote paymentsEnabled={paymentsEnabled()} uploadAfterPayment={onlineOrdersEnabled()} />
       <Faq />
+      <Reviews />
       <ClosingCta />
     </>
   );
