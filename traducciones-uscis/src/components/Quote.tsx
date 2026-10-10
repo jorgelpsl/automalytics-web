@@ -28,12 +28,17 @@ function todayIso(): string {
 export function Quote({
   paymentsEnabled,
   uploadAfterPayment,
+  defaultDocumentType,
 }: {
   paymentsEnabled: boolean;
   uploadAfterPayment: boolean;
+  /** Preselected document, for pages that are about a single document type. */
+  defaultDocumentType?: string;
 }) {
   const [name, setName] = useState("");
-  const [documentType, setDocumentType] = useState("");
+  const [documentType, setDocumentType] = useState(
+    defaultDocumentType && DOCUMENT_OPTIONS.includes(defaultDocumentType) ? defaultDocumentType : "",
+  );
   const [pages, setPages] = useState("1");
   const [deadline, setDeadline] = useState("");
   const [notes, setNotes] = useState("");
@@ -150,7 +155,7 @@ export function Quote({
 
   function reset() {
     setName("");
-    setDocumentType("");
+    setDocumentType(defaultDocumentType && DOCUMENT_OPTIONS.includes(defaultDocumentType) ? defaultDocumentType : "");
     setPages("1");
     setDeadline("");
     setNotes("");
@@ -164,8 +169,8 @@ export function Quote({
 
   return (
     <section id="cotizar" className="border-t border-line bg-paper-alt">
-      <div className="section grid gap-12 lg:grid-cols-12 lg:gap-8">
-        <div className="flex flex-col gap-6 lg:col-span-4">
+      <div className="section grid gap-12 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-6">
+        <div className="flex flex-col gap-6 lg:col-span-4 lg:row-start-1">
           <p className="eyebrow">{paymentsEnabled ? "Tu pedido" : "Cotización"}</p>
           <h2 className="font-display text-4xl font-medium leading-[1.1] tracking-tight sm:text-5xl">
             Cuéntanos qué necesitas traducir.
@@ -177,48 +182,9 @@ export function Quote({
                 ? "Eliges el documento y las páginas, pagas en línea y nos mandas las fotos por WhatsApp."
                 : "Completas esto, se abre WhatsApp con tu solicitud escrita y ahí nos mandas las fotos del documento."}
           </p>
-          <div className="rounded-card border border-line bg-paper-sheet p-6">
-            <p className="text-sm font-medium text-ink-muted">{estimate ? (paymentsEnabled ? "Total a pagar" : "Precio estimado") : "Precio"}</p>
-            <p className="mt-1 font-display text-3xl font-medium" aria-live="polite">
-              {estimate ? formatUsd(estimate) : "Cotización sin costo"}
-            </p>
-            {estimate ? (
-              <p className="mt-1 text-sm text-ink-muted">
-                {pageCount} {pageCount === 1 ? "página" : "páginas"} × {activeTier && formatUsd(activeTier.perPage)}.
-              </p>
-            ) : (
-              <p className="mt-1 text-sm text-ink-muted">Te confirmamos precio y plazo antes de empezar.</p>
-            )}
-            {PRICE_TIERS.length > 1 && (
-              <dl className="mt-5 flex flex-col border-t border-line pt-4 text-[15px]">
-                {PRICE_TIERS.map((tier) => {
-                  const active = tier === activeTier;
-                  return (
-                    <div
-                      key={tier.minPages}
-                      className={`flex items-baseline justify-between gap-4 rounded-soft px-2 py-1.5 tabular-nums ${
-                        active ? "bg-marker/45 text-ink" : "text-ink-soft"
-                      }`}
-                    >
-                      <dt className={active ? "font-medium" : ""}>{tierRange(tier)}</dt>
-                      <dd className={active ? "font-medium" : ""}>{formatUsd(tier.perPage)} / página</dd>
-                    </div>
-                  );
-                })}
-              </dl>
-            )}
-            <ul className="mt-5 flex flex-col gap-2.5 border-t border-line pt-5 text-[15px] text-ink-soft">
-              {INCLUDED.map((item) => (
-                <li key={item} className="flex items-start gap-2.5">
-                  <Check size={18} strokeWidth={2.4} className="mt-0.5 shrink-0 text-ink" aria-hidden="true" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
 
-        <div className="lg:col-span-7 lg:col-start-6">
+        <div className="lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1">
           {sentUrl ? (
             <div
               ref={successRef}
@@ -417,6 +383,46 @@ export function Quote({
               )}
             </form>
           )}
+        </div>
+
+        <div className="rounded-card border border-line bg-paper-sheet p-6 lg:col-span-4 lg:row-start-2 lg:self-start">
+          <p className="text-sm font-medium text-ink-muted">{estimate ? (paymentsEnabled ? "Total a pagar" : "Precio estimado") : "Precio"}</p>
+          <p className="mt-1 font-display text-3xl font-medium" aria-live="polite">
+            {estimate ? formatUsd(estimate) : "Cotización sin costo"}
+          </p>
+          {estimate ? (
+            <p className="mt-1 text-sm text-ink-muted">
+              {pageCount} {pageCount === 1 ? "página" : "páginas"} × {activeTier && formatUsd(activeTier.perPage)}.
+            </p>
+          ) : (
+            <p className="mt-1 text-sm text-ink-muted">Te confirmamos precio y plazo antes de empezar.</p>
+          )}
+          {PRICE_TIERS.length > 1 && (
+            <dl className="mt-5 flex flex-col border-t border-line pt-4 text-[15px]">
+              {PRICE_TIERS.map((tier) => {
+                const active = tier === activeTier;
+                return (
+                  <div
+                    key={tier.minPages}
+                    className={`flex items-baseline justify-between gap-4 rounded-soft px-2 py-1.5 tabular-nums ${
+                      active ? "bg-marker/45 text-ink" : "text-ink-soft"
+                    }`}
+                  >
+                    <dt className={active ? "font-medium" : ""}>{tierRange(tier)}</dt>
+                    <dd className={active ? "font-medium" : ""}>{formatUsd(tier.perPage)} / página</dd>
+                  </div>
+                );
+              })}
+            </dl>
+          )}
+          <ul className="mt-5 flex flex-col gap-2.5 border-t border-line pt-5 text-[15px] text-ink-soft">
+            {INCLUDED.map((item) => (
+              <li key={item} className="flex items-start gap-2.5">
+                <Check size={18} strokeWidth={2.4} className="mt-0.5 shrink-0 text-ink" aria-hidden="true" />
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

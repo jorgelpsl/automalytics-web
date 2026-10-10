@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Check, MessageCircle, Plus } from "lucide-react";
 import { DOCUMENT_PAGES, findDocumentPage } from "@/data/document-pages";
+import { Quote } from "@/components/Quote";
 import { SITE } from "@/data/site";
+import { onlineOrdersEnabled, paymentsEnabled } from "@/lib/features";
 import { PRICE_TIERS, estimateFor, formatUsd, tierFor, tierRange } from "@/lib/pricing";
 import { USCIS_TRANSLATION_RULE_URL, offerNodes, organizationNode, pageMetadata } from "@/lib/seo";
 import { generalWhatsAppUrl } from "@/lib/whatsapp";
@@ -32,7 +34,9 @@ export default async function DocumentLandingPage({ params }: { params: Promise<
   const page = findDocumentPage((await params).slug);
   if (!page) notFound();
 
-  const buyHref = `/?documento=${encodeURIComponent(page.documentType)}#cotizar`;
+  // The order form sits on this page, so the buy buttons scroll to it instead of
+  // sending visitors from the ad's landing page to the long home page.
+  const buyHref = "#cotizar";
   const example = page.typicalPages.example;
   const exampleTier = tierFor(example);
   const related = DOCUMENT_PAGES.filter((p) => p.slug !== page.slug);
@@ -116,6 +120,12 @@ export default async function DocumentLandingPage({ params }: { params: Promise<
           </ul>
         </aside>
       </section>
+
+      <Quote
+        paymentsEnabled={paymentsEnabled()}
+        uploadAfterPayment={onlineOrdersEnabled()}
+        defaultDocumentType={page.documentType}
+      />
 
       <section className="border-t border-line bg-paper-alt">
         <div className="mx-auto grid w-full max-w-content gap-x-8 gap-y-12 px-4 py-16 sm:px-6 md:grid-cols-2 lg:px-8 lg:py-20">
