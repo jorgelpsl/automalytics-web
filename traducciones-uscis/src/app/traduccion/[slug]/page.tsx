@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, Check, MessageCircle, Plus } from "lucide-react";
 import { DOCUMENT_PAGES, findDocumentPage } from "@/data/document-pages";
 import { Quote } from "@/components/Quote";
+import { Reviews } from "@/components/Reviews";
 import { SITE } from "@/data/site";
 import { onlineOrdersEnabled, paymentsEnabled } from "@/lib/features";
 import { PRICE_TIERS, estimateFor, formatUsd, tierFor, tierRange } from "@/lib/pricing";
@@ -126,6 +127,8 @@ export default async function DocumentLandingPage({ params }: { params: Promise<
         uploadAfterPayment={onlineOrdersEnabled()}
         defaultDocumentType={page.documentType}
       />
+
+      <Reviews />
 
       <section className="border-t border-line bg-paper-alt">
         <div className="mx-auto grid w-full max-w-content gap-x-8 gap-y-12 px-4 py-16 sm:px-6 md:grid-cols-2 lg:px-8 lg:py-20">

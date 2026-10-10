@@ -3,6 +3,7 @@ import { Requirements } from "@/components/Requirements";
 import { Documents } from "@/components/Documents";
 import { Process } from "@/components/Process";
 import { Quote } from "@/components/Quote";
+import { Reviews } from "@/components/Reviews";
 import { Faq } from "@/components/Faq";
 import { ClosingCta } from "@/components/ClosingCta";
 import { SITE } from "@/data/site";
@@ -45,6 +46,7 @@ export default function HomePage() {
       <Requirements />
       <Documents />
       <Process />
+      <Reviews />
       <Quote paymentsEnabled={paymentsEnabled()} uploadAfterPayment={onlineOrdersEnabled()} />
       <Faq />
       <ClosingCta />
