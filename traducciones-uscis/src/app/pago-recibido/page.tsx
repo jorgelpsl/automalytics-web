@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { after } from "next/server";
 import Link from "next/link";
-import { Check, MessageCircle } from "lucide-react";
+import { Check } from "lucide-react";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { DocumentUpload } from "@/components/DocumentUpload";
 import { PurchaseTracking } from "@/components/PurchaseTracking";
 import { SITE } from "@/data/site";
@@ -47,7 +48,7 @@ export default async function PaymentReceivedPage({
             El pedido {order!.code} ya no acepta documentos. Si crees que es un error, escríbenos por WhatsApp con ese número.
           </p>
           <a href={generalWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="btn-primary self-start">
-            <MessageCircle size={19} aria-hidden="true" />
+            <WhatsAppIcon size={19} />
             Escribir por WhatsApp
           </a>
         </div>
@@ -115,7 +116,7 @@ export default async function PaymentReceivedPage({
                   apenas la recibamos{SITE.turnaround ? ` y te entregamos el PDF en ${SITE.turnaround}` : ""}.
                 </p>
                 <a href={paidOrderWhatsAppUrl(order)} target="_blank" rel="noopener noreferrer" className="btn-primary self-start">
-                  <MessageCircle size={19} aria-hidden="true" />
+                  <WhatsAppIcon size={19} />
                   Enviar mi documento por WhatsApp
                 </a>
               </>
@@ -134,7 +135,7 @@ export default async function PaymentReceivedPage({
             </p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <a href={generalWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="btn-primary">
-                <MessageCircle size={19} aria-hidden="true" />
+                <WhatsAppIcon size={19} />
                 Escribir por WhatsApp
               </a>
               <Link href="/#cotizar" className="btn-secondary">

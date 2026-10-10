@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, MessageCircle, Plus } from "lucide-react";
+import { ArrowRight, Check, Plus } from "lucide-react";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { DOCUMENT_PAGES, findDocumentPage } from "@/data/document-pages";
 import { Quote } from "@/components/Quote";
 import { Reviews } from "@/components/Reviews";
@@ -90,7 +91,7 @@ export default async function DocumentLandingPage({ params }: { params: Promise<
               Comprar la traducción
             </Link>
             <a href={generalWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-              <MessageCircle size={19} aria-hidden="true" />
+              <WhatsAppIcon size={19} />
               Preguntar por WhatsApp
             </a>
           </div>

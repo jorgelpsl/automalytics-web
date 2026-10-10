@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { DOCUMENT_PAGES } from "@/data/document-pages";
 import { SITE } from "@/data/site";
 import { generalWhatsAppUrl } from "@/lib/whatsapp";
@@ -31,7 +32,7 @@ export default function NotFound() {
             Ir al inicio
           </Link>
           <a href={generalWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-            <MessageCircle size={19} aria-hidden="true" />
+            <WhatsAppIcon size={19} />
             Preguntar por WhatsApp
           </a>
         </div>

@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Check, ChevronDown, CreditCard, MessageCircle } from "lucide-react";
+import { Check, ChevronDown, CreditCard } from "lucide-react";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { SITE } from "@/data/site";
 import { gtagEvent } from "@/lib/gtag";
 import { DOCUMENT_OPTIONS, MAX_NOTES, MAX_PAGES, formatDeadline } from "@/lib/order";
@@ -349,7 +350,7 @@ export function Quote({
                       {paying ? "Abriendo el pago…" : estimate ? `Pagar ${formatUsd(estimate)} ahora` : "Pagar ahora"}
                     </button>
                     <button type="submit" name="action" value="whatsapp" disabled={paying} className="btn-secondary w-full sm:w-auto">
-                      <MessageCircle size={19} aria-hidden="true" />
+                      <WhatsAppIcon size={19} />
                       Consultar por WhatsApp
                     </button>
                   </div>
@@ -375,7 +376,7 @@ export function Quote({
               ) : (
                 <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
                   <button type="submit" className="btn-primary w-full sm:w-auto">
-                    <MessageCircle size={19} aria-hidden="true" />
+                    <WhatsAppIcon size={19} />
                     Enviar por WhatsApp
                   </button>
                   <p className="text-sm text-ink-muted">Sin costo y sin compromiso.</p>

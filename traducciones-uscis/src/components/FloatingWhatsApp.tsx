@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { MessageCircle } from "lucide-react";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { floatingWhatsAppUrl } from "@/lib/whatsapp";
 
 // Pages with their own WhatsApp flow (the owner's panel and the post-payment
@@ -47,10 +47,9 @@ export function FloatingWhatsApp({ documentNames }: { documentNames: Record<stri
       rel="noopener noreferrer"
       data-source="floating"
       aria-label="Escribir por WhatsApp para preguntar antes de pagar"
-      className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-40 inline-flex min-h-[48px] items-center gap-2 rounded-soft bg-ink px-4 text-base font-medium text-paper shadow-lg transition-colors hover:bg-ink-soft active:bg-ink sm:right-6"
+      className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-lg transition-transform hover:scale-105 active:scale-95 motion-reduce:transition-none sm:right-6"
     >
-      <MessageCircle size={20} aria-hidden="true" />
-      WhatsApp
+      <WhatsAppIcon size={30} />
     </a>
   );
 }

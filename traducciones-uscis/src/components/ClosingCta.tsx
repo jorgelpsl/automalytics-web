@@ -1,4 +1,4 @@
-import { MessageCircle } from "lucide-react";
+import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { SITE } from "@/data/site";
 import { onlineOrdersEnabled } from "@/lib/features";
 import { generalWhatsAppUrl } from "@/lib/whatsapp";
@@ -22,7 +22,7 @@ export function ClosingCta() {
               Comprar mi traducción
             </a>
             <a href={generalWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-              <MessageCircle size={19} aria-hidden="true" />
+              <WhatsAppIcon size={19} />
               Preguntar por WhatsApp
             </a>
           </div>
@@ -37,7 +37,7 @@ export function ClosingCta() {
           ¿Tienes el documento a mano? Mándanos una <span className="marker">foto</span> y te cotizamos.
         </h2>
         <a href={generalWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="btn-primary w-full shrink-0 md:w-auto">
-          <MessageCircle size={19} aria-hidden="true" />
+          <WhatsAppIcon size={19} />
           Escribir por WhatsApp
         </a>
       </div>

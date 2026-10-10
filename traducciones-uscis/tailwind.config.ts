@@ -20,6 +20,9 @@ const config: Config = {
           soft: "#FBE3A6",
         },
         line: "rgba(20, 33, 61, 0.12)",
+        // WhatsApp's own green: the one colour outside the palette, so the floating
+        // button is recognizable as WhatsApp at a glance.
+        whatsapp: "#25D366",
       },
       fontFamily: {
         display: ["var(--font-newsreader)", "Georgia", "serif"],
