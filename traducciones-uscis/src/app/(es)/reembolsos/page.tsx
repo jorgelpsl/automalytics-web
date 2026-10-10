@@ -3,6 +3,7 @@ import Link from "next/link";
 import { LegalPage } from "@/components/LegalPage";
 import { CORRECTION_DAYS } from "@/data/legal";
 import { SITE } from "@/data/site";
+import { ROUTES } from "@/i18n/routes";
 import { pageMetadata } from "@/lib/seo";
 import { generalWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -12,11 +13,13 @@ export const metadata: Metadata = pageMetadata({
   title: `Política de reembolsos | ${SITE.name}`,
   description: DESCRIPTION,
   path: "/reembolsos",
+  alternates: { es: ROUTES.refunds.es, en: ROUTES.refunds.en },
 });
 
 export default function RefundsPage() {
   return (
     <LegalPage
+      lang="es"
       title="Política de reembolsos"
       description={DESCRIPTION}
       current="/reembolsos"

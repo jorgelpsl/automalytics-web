@@ -5,16 +5,14 @@ import Link from "next/link";
 import { Check, ChevronDown, CreditCard } from "lucide-react";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { SITE } from "@/data/site";
+import { canonicalDocumentType, documentLabel, documentOptions } from "@/data/documents";
+import { type Lang } from "@/i18n/config";
+import { QUOTE } from "@/i18n/copy/quote";
+import { ROUTES } from "@/i18n/routes";
 import { gtagEvent } from "@/lib/gtag";
-import { DOCUMENT_OPTIONS, MAX_NOTES, MAX_PAGES, formatDeadline } from "@/lib/order";
+import { MAX_NOTES, MAX_PAGES, formatDeadline } from "@/lib/order";
 import { PRICE_TIERS, estimateFor, formatUsd, tierFor, tierRange } from "@/lib/pricing";
 import { quoteWhatsAppUrl } from "@/lib/whatsapp";
-
-const INCLUDED = [
-  "Traducción completa al inglés, sellos y firmas incluidos",
-  "Certificación del traductor firmada y fechada",
-  SITE.turnaround ? `PDF listo en ${SITE.turnaround}` : "Entrega en PDF, lista para subir o imprimir",
-];
 
 type Field = "name" | "documentType" | "pages" | "deadline";
 type Action = "pay" | "whatsapp";
@@ -27,19 +25,25 @@ function todayIso(): string {
 }
 
 export function Quote({
+  lang,
   paymentsEnabled,
   uploadAfterPayment,
   defaultDocumentType,
 }: {
+  lang: Lang;
   paymentsEnabled: boolean;
   uploadAfterPayment: boolean;
-  /** Preselected document, for pages that are about a single document type. */
+  /** Preselected document (its Spanish name), for pages about a single document type. */
   defaultDocumentType?: string;
 }) {
+  const t = QUOTE[lang];
+  const options = documentOptions(lang);
+  const turnaround = lang === "en" ? SITE.turnaroundEn : SITE.turnaround;
+  const included = [t.included.complete, t.included.certified, turnaround ? t.included.pdfIn(turnaround) : t.included.pdfPlain];
+  const initialDocument = defaultDocumentType ? documentLabel(lang, defaultDocumentType) : "";
   const [name, setName] = useState("");
-  const [documentType, setDocumentType] = useState(
-    defaultDocumentType && DOCUMENT_OPTIONS.includes(defaultDocumentType) ? defaultDocumentType : "",
-  );
+  // What the select shows: the label in the page's language.
+  const [documentType, setDocumentType] = useState(options.includes(initialDocument) ? initialDocument : "");
   const [pages, setPages] = useState("1");
   const [deadline, setDeadline] = useState("");
   const [notes, setNotes] = useState("");
@@ -63,10 +67,12 @@ export function Quote({
   // query only exists in the browser, so it's applied after hydration.
   useEffect(() => {
     const requested = new URLSearchParams(window.location.search).get("documento");
-    if (!requested || !DOCUMENT_OPTIONS.includes(requested)) return;
-    const frame = requestAnimationFrame(() => setDocumentType(requested));
+    if (!requested) return;
+    const label = documentLabel(lang, requested);
+    if (!documentOptions(lang).includes(label)) return;
+    const frame = requestAnimationFrame(() => setDocumentType(label));
     return () => cancelAnimationFrame(frame);
-  }, []);
+  }, [lang]);
 
   // Going back from Stripe restores this page from the back/forward cache
   // with the button still saying "Abriendo el pago…".
@@ -85,35 +91,38 @@ export function Quote({
 
   function validate(): Errors {
     const next: Errors = {};
-    if (!name.trim()) next.name = "Escribe tu nombre para saber a quién responder.";
-    if (!documentType) next.documentType = "Elige el tipo de documento. Si no está en la lista, elige “Otro”.";
-    if (!validPages) next.pages = `Indica cuántas páginas tiene, entre 1 y ${MAX_PAGES}.`;
-    if (deadline && deadline < todayIso()) next.deadline = "Esa fecha ya pasó. Elige hoy o una fecha futura.";
+    if (!name.trim()) next.name = t.errors.name;
+    if (!documentType) next.documentType = t.errors.documentType;
+    if (!validPages) next.pages = t.errors.pages(MAX_PAGES);
+    if (deadline && deadline < todayIso()) next.deadline = t.errors.deadlinePast;
     return next;
   }
 
   async function startPayment() {
     setPaying(true);
     setPayError(null);
+    // Orders and analytics always carry the Spanish name, in either language.
+    const canonicalType = canonicalDocumentType(lang, documentType);
     if (estimate !== null) {
       gtagEvent("begin_checkout", {
         currency: "USD",
         value: estimate,
-        items: [{ item_name: documentType, price: estimate / pageCount, quantity: pageCount }],
+        language: lang,
+        items: [{ item_name: canonicalType, price: estimate / pageCount, quantity: pageCount }],
       });
     }
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), documentType, pages: pageCount, deadline, notes }),
+        body: JSON.stringify({ name: name.trim(), documentType: canonicalType, pages: pageCount, deadline, notes, lang }),
       });
       const data = (await res.json().catch(() => ({}))) as { url?: string };
       if (!res.ok || !data.url) throw new Error(`checkout ${res.status}`);
       window.location.assign(data.url);
     } catch {
       setPaying(false);
-      setPayError("No pudimos abrir la página de pago. Intenta de nuevo en un momento o envíanos tu solicitud por WhatsApp.");
+      setPayError(t.payError);
     }
   }
 
@@ -143,20 +152,23 @@ export function Quote({
       void startPayment();
       return;
     }
-    const url = quoteWhatsAppUrl({
-      name: name.trim(),
-      documentType,
-      pages: pageCount,
-      deadline: formatDeadline(deadline),
-      notes,
-    });
+    const url = quoteWhatsAppUrl(
+      {
+        name: name.trim(),
+        documentType,
+        pages: pageCount,
+        deadline: formatDeadline(deadline, lang),
+        notes,
+      },
+      lang,
+    );
     window.open(url, "_blank", "noopener,noreferrer");
     setSentUrl(url);
   }
 
   function reset() {
     setName("");
-    setDocumentType(defaultDocumentType && DOCUMENT_OPTIONS.includes(defaultDocumentType) ? defaultDocumentType : "");
+    setDocumentType(options.includes(initialDocument) ? initialDocument : "");
     setPages("1");
     setDeadline("");
     setNotes("");
@@ -172,16 +184,12 @@ export function Quote({
     <section id="cotizar" className="border-t border-line bg-paper-alt">
       <div className="section grid gap-12 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-6">
         <div className="flex flex-col gap-6 lg:col-span-4 lg:row-start-1">
-          <p className="eyebrow">{paymentsEnabled ? "Tu pedido" : "Cotización"}</p>
+          <p className="eyebrow">{paymentsEnabled ? t.eyebrowPay : t.eyebrowQuote}</p>
           <h2 className="font-display text-4xl font-medium leading-[1.1] tracking-tight sm:text-5xl">
-            Cuéntanos qué necesitas traducir.
+            {t.title}
           </h2>
           <p className="leading-relaxed text-ink-soft">
-            {uploadAfterPayment
-              ? "Eliges el documento y las páginas, pagas en línea y, en la misma página, subes las fotos."
-              : paymentsEnabled
-                ? "Eliges el documento y las páginas, pagas en línea y nos mandas las fotos por WhatsApp."
-                : "Completas esto, se abre WhatsApp con tu solicitud escrita y ahí nos mandas las fotos del documento."}
+            {uploadAfterPayment ? t.introUpload : paymentsEnabled ? t.introPay : t.introQuote}
           </p>
         </div>
 
@@ -196,27 +204,24 @@ export function Quote({
               <span className="flex h-12 w-12 items-center justify-center rounded-full bg-marker text-ink">
                 <Check size={24} strokeWidth={2.6} aria-hidden="true" />
               </span>
-              <h3 className="font-display text-3xl font-medium">Tu solicitud está lista en WhatsApp.</h3>
-              <p className="leading-relaxed text-ink-soft">
-                Envía el mensaje y, en el mismo chat, las fotos de cada página del documento. Te respondemos con el precio y
-                el plazo.
-              </p>
+              <h3 className="font-display text-3xl font-medium">{t.success.title}</h3>
+              <p className="leading-relaxed text-ink-soft">{t.success.body}</p>
               <p className="text-ink-soft">
-                ¿No se abrió WhatsApp?{" "}
+                {t.success.notOpened}{" "}
                 <a href={sentUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-ink underline underline-offset-4">
-                  Ábrelo con este enlace
+                  {t.success.link}
                 </a>
                 .
               </p>
               <button type="button" onClick={reset} className="btn-secondary mt-2 self-start">
-                Cotizar otro documento
+                {t.success.another}
               </button>
             </div>
           ) : (
             <form noValidate onSubmit={handleSubmit} className="grid gap-6 rounded-card border border-line bg-paper-sheet p-6 sm:grid-cols-2 sm:p-10">
               <div className="sm:col-span-2">
                 <label htmlFor="q-name" className="text-[15px] font-medium">
-                  Tu nombre
+                  {t.labels.name}
                 </label>
                 <input
                   ref={nameRef}
@@ -229,7 +234,7 @@ export function Quote({
                   aria-invalid={Boolean(errors.name)}
                   aria-describedby={errors.name ? "q-name-error" : undefined}
                   className={`${inputBase} ${borderFor("name")}`}
-                  placeholder="Ej: Camila Rojas"
+                  placeholder={t.labels.namePlaceholder}
                 />
                 {errors.name && (
                   <p id="q-name-error" className="mt-2 text-sm text-red-700">
@@ -240,7 +245,7 @@ export function Quote({
 
               <div className="sm:col-span-2">
                 <label htmlFor="q-doc" className="text-[15px] font-medium">
-                  Tipo de documento
+                  {t.labels.document}
                 </label>
                 <div className="relative">
                   <select
@@ -254,9 +259,9 @@ export function Quote({
                     className={`${inputBase} ${borderFor("documentType")} appearance-none pr-12`}
                   >
                     <option value="" disabled>
-                      Elige un documento
+                      {t.labels.documentPlaceholder}
                     </option>
-                    {DOCUMENT_OPTIONS.map((opt) => (
+                    {options.map((opt) => (
                       <option key={opt} value={opt}>
                         {opt}
                       </option>
@@ -277,7 +282,7 @@ export function Quote({
 
               <div>
                 <label htmlFor="q-pages" className="text-[15px] font-medium">
-                  Número de páginas
+                  {t.labels.pages}
                 </label>
                 <input
                   ref={pagesRef}
@@ -299,14 +304,14 @@ export function Quote({
                   </p>
                 ) : (
                   <p id="q-pages-hint" className="mt-2 text-sm text-ink-muted">
-                    Cada cara con texto cuenta como una página.
+                    {t.labels.pagesHint}
                   </p>
                 )}
               </div>
 
               <div>
                 <label htmlFor="q-deadline" className="text-[15px] font-medium">
-                  ¿Para cuándo lo necesitas? <span className="font-normal text-ink-muted">(opcional)</span>
+                  {t.labels.deadline} <span className="font-normal text-ink-muted">{t.labels.optional}</span>
                 </label>
                 <input
                   ref={deadlineRef}
@@ -328,7 +333,7 @@ export function Quote({
 
               <div className="sm:col-span-2">
                 <label htmlFor="q-notes" className="text-[15px] font-medium">
-                  Comentarios <span className="font-normal text-ink-muted">(opcional)</span>
+                  {t.labels.comments} <span className="font-normal text-ink-muted">{t.labels.optional}</span>
                 </label>
                 <textarea
                   id="q-notes"
@@ -338,7 +343,7 @@ export function Quote({
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   className={`${inputBase} border-ink/25 py-3`}
-                  placeholder="Ej: son dos actas de nacimiento, para una petición familiar."
+                  placeholder={t.labels.commentsPlaceholder}
                 />
               </div>
 
@@ -347,11 +352,11 @@ export function Quote({
                   <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                     <button type="submit" name="action" value="pay" disabled={paying} className="btn-primary w-full sm:w-auto">
                       <CreditCard size={19} aria-hidden="true" />
-                      {paying ? "Abriendo el pago…" : estimate ? `Pagar ${formatUsd(estimate)} ahora` : "Pagar ahora"}
+                      {paying ? t.buttons.opening : estimate ? t.buttons.payNow(formatUsd(estimate)) : t.buttons.payNowPlain}
                     </button>
                     <button type="submit" name="action" value="whatsapp" disabled={paying} className="btn-secondary w-full sm:w-auto">
                       <WhatsAppIcon size={19} />
-                      Consultar por WhatsApp
+                      {t.buttons.ask}
                     </button>
                   </div>
                   {payError && (
@@ -360,15 +365,14 @@ export function Quote({
                     </p>
                   )}
                   <p className="text-sm leading-relaxed text-ink-muted">
-                    Pago seguro con Stripe: tarjeta, Apple Pay o Google Pay. Cobramos según las páginas que indicas y, después
-                    del pago, {uploadAfterPayment ? "subes tu documento aquí mismo." : "nos envías las fotos por WhatsApp."} Si la
-                    traducción tiene un error, la corregimos gratis. Al pagar aceptas los{" "}
-                    <Link href="/terminos" className="underline underline-offset-4 hover:text-ink">
-                      Términos del servicio
+                    {t.note.secure} {uploadAfterPayment ? t.note.afterUpload : t.note.afterWhatsApp} {t.note.correction}{" "}
+                    {t.note.accept}{" "}
+                    <Link href={ROUTES.terms[lang]} className="underline underline-offset-4 hover:text-ink">
+                      {t.note.terms}
                     </Link>{" "}
-                    y la{" "}
-                    <Link href="/reembolsos" className="underline underline-offset-4 hover:text-ink">
-                      Política de reembolsos
+                    {t.note.and}{" "}
+                    <Link href={ROUTES.refunds[lang]} className="underline underline-offset-4 hover:text-ink">
+                      {t.note.refunds}
                     </Link>
                     .
                   </p>
@@ -377,9 +381,9 @@ export function Quote({
                 <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
                   <button type="submit" className="btn-primary w-full sm:w-auto">
                     <WhatsAppIcon size={19} />
-                    Enviar por WhatsApp
+                    {t.buttons.sendWhatsApp}
                   </button>
-                  <p className="text-sm text-ink-muted">Sin costo y sin compromiso.</p>
+                  <p className="text-sm text-ink-muted">{t.buttons.free}</p>
                 </div>
               )}
             </form>
@@ -387,16 +391,16 @@ export function Quote({
         </div>
 
         <div className="rounded-card border border-line bg-paper-sheet p-6 lg:col-span-4 lg:row-start-2 lg:self-start">
-          <p className="text-sm font-medium text-ink-muted">{estimate ? (paymentsEnabled ? "Total a pagar" : "Precio estimado") : "Precio"}</p>
+          <p className="text-sm font-medium text-ink-muted">{estimate ? (paymentsEnabled ? t.priceTotal : t.priceEstimate) : t.price}</p>
           <p className="mt-1 font-display text-3xl font-medium" aria-live="polite">
-            {estimate ? formatUsd(estimate) : "Cotización sin costo"}
+            {estimate ? formatUsd(estimate) : t.priceFree}
           </p>
           {estimate ? (
             <p className="mt-1 text-sm text-ink-muted">
-              {pageCount} {pageCount === 1 ? "página" : "páginas"} × {activeTier && formatUsd(activeTier.perPage)}.
+              {t.priceLine(pageCount, activeTier ? formatUsd(activeTier.perPage) : "")}
             </p>
           ) : (
-            <p className="mt-1 text-sm text-ink-muted">Te confirmamos precio y plazo antes de empezar.</p>
+            <p className="mt-1 text-sm text-ink-muted">{t.priceUnconfirmed}</p>
           )}
           {PRICE_TIERS.length > 1 && (
             <dl className="mt-5 flex flex-col border-t border-line pt-4 text-[15px]">
@@ -409,15 +413,15 @@ export function Quote({
                       active ? "bg-marker/45 text-ink" : "text-ink-soft"
                     }`}
                   >
-                    <dt className={active ? "font-medium" : ""}>{tierRange(tier)}</dt>
-                    <dd className={active ? "font-medium" : ""}>{formatUsd(tier.perPage)} / página</dd>
+                    <dt className={active ? "font-medium" : ""}>{tierRange(tier, lang)}</dt>
+                    <dd className={active ? "font-medium" : ""}>{formatUsd(tier.perPage)} / {t.perPage}</dd>
                   </div>
                 );
               })}
             </dl>
           )}
           <ul className="mt-5 flex flex-col gap-2.5 border-t border-line pt-5 text-[15px] text-ink-soft">
-            {INCLUDED.map((item) => (
+            {included.map((item) => (
               <li key={item} className="flex items-start gap-2.5">
                 <Check size={18} strokeWidth={2.4} className="mt-0.5 shrink-0 text-ink" aria-hidden="true" />
                 {item}

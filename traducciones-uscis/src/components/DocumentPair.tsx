@@ -2,6 +2,23 @@
 // certificate) beside what they get back (the English translation with the
 // translator's certification USCIS asks for). Sample data, labelled as such.
 
+import { type Lang } from "@/i18n/config";
+
+const COPY = {
+  es: {
+    caption: "Ejemplo: un certificado de nacimiento en español junto a su traducción certificada al inglés.",
+    original: "Original · Español",
+    translation: "Traducción · Inglés",
+    example: "Ejemplo",
+  },
+  en: {
+    caption: "Example: a birth certificate in Spanish next to its certified English translation.",
+    original: "Original · Spanish",
+    translation: "Translation · English",
+    example: "Example",
+  },
+} as const;
+
 function Field({ label, value, marked = false }: { label: string; value: string; marked?: boolean }) {
   return (
     <div className="grid grid-cols-[42%_1fr] gap-2 border-b border-dotted border-ink/20 py-[0.35em]">
@@ -13,11 +30,12 @@ function Field({ label, value, marked = false }: { label: string; value: string;
   );
 }
 
-export function DocumentPair() {
+export function DocumentPair({ lang }: { lang: Lang }) {
+  const copy = COPY[lang];
   return (
     <figure className="relative mx-auto aspect-[10/11] w-full max-w-[560px] text-[8.5px] leading-snug min-[420px]:text-[10px] sm:text-[11.5px]">
       <figcaption className="sr-only">
-        Ejemplo: un certificado de nacimiento en español junto a su traducción certificada al inglés.
+        {copy.caption}
       </figcaption>
 
       <div aria-hidden="true" className="absolute left-0 top-0 w-[68%] -rotate-3 bg-paper-sheet p-[5%] shadow-sheet">
@@ -35,7 +53,7 @@ export function DocumentPair() {
           <span className="w-[45%] border-t border-ink/40 pt-[0.3em] text-center text-ink-muted">Registrador civil</span>
         </div>
         <span className="absolute -top-[1.1em] left-[5%] rounded-soft bg-ink px-[0.8em] py-[0.25em] text-[0.95em] font-medium text-paper">
-          Original · Español
+          {copy.original}
         </span>
       </div>
 
@@ -61,12 +79,12 @@ export function DocumentPair() {
           </div>
         </div>
         <span className="absolute -top-[1.1em] right-[5%] rounded-soft bg-marker px-[0.8em] py-[0.25em] text-[0.95em] font-medium text-ink">
-          Traducción · Inglés
+          {copy.translation}
         </span>
       </div>
 
       <span className="absolute left-[2%] bottom-[3%] rounded-soft border border-line bg-paper px-[0.7em] py-[0.2em] text-[0.95em] text-ink-muted">
-        Ejemplo
+        {copy.example}
       </span>
     </figure>
   );

@@ -1,14 +1,16 @@
 import { Plus } from "lucide-react";
-import { getFaq } from "@/data/faq";
+import { faqHeading, getFaq } from "@/data/faq";
+import { type Lang } from "@/i18n/config";
 import { onlineOrdersEnabled, paymentsEnabled } from "@/lib/features";
 
-export function Faq() {
-  const items = getFaq({ payments: paymentsEnabled(), online: onlineOrdersEnabled() });
+export function Faq({ lang }: { lang: Lang }) {
+  const items = getFaq({ lang, payments: paymentsEnabled(), online: onlineOrdersEnabled() });
+  const { eyebrow, heading } = faqHeading(lang, paymentsEnabled());
   return (
     <section id="preguntas" className="section grid gap-12 lg:grid-cols-12 lg:gap-8">
       <div className="flex flex-col gap-4 lg:col-span-4">
-        <p className="eyebrow">Preguntas frecuentes</p>
-        <h2 className="font-display text-4xl font-medium leading-[1.1] tracking-tight sm:text-5xl">{paymentsEnabled() ? "Antes de comprar." : "Antes de cotizar."}</h2>
+        <p className="eyebrow">{eyebrow}</p>
+        <h2 className="font-display text-4xl font-medium leading-[1.1] tracking-tight sm:text-5xl">{heading}</h2>
       </div>
 
       <div className="border-t border-line lg:col-span-7 lg:col-start-6">

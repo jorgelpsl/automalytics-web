@@ -1,8 +1,29 @@
+import { DOCUMENT_COPY_EN } from "@/data/document-pages-en";
+import { type Lang } from "@/i18n/config";
+import { englishSlug } from "@/i18n/slugs";
+
 // One landing page per document people search for by name. Each carries
 // what is specific to that document — when it's requested, what the
 // translation must cover, how long it usually is — so no two pages are the
 // same text with a different noun. Keep claims to what USCIS publishes;
 // "suele" where it varies by country.
+
+/** Everything on a document page that is written text, in one language. */
+export interface DocumentCopy {
+  /** The slug this page has in the language's URL. */
+  slug: string;
+  /** Lowercase noun phrase used inside sentences. */
+  name: string;
+  title: string;
+  metaTitle: string;
+  metaDescription: string;
+  intro: string;
+  whenNeeded: string[];
+  whatWeTranslate: string[];
+  typicalPages: string;
+  tips: string[];
+  faq: { question: string; answer: string }[];
+}
 
 export interface DocumentPage {
   slug: string;
@@ -257,6 +278,20 @@ export const DOCUMENT_PAGES: DocumentPage[] = [
     ],
   },
 ];
+
+/** The page's text in the given language. */
+export function pageCopy(page: DocumentPage, lang: Lang): DocumentCopy {
+  if (lang === "es") {
+    const { slug, name, title, metaTitle, metaDescription, intro, whenNeeded, whatWeTranslate, tips, faq } = page;
+    return { slug, name, title, metaTitle, metaDescription, intro, whenNeeded, whatWeTranslate, typicalPages: page.typicalPages.text, tips, faq };
+  }
+  return { slug: englishSlug(page.slug) ?? page.slug, ...DOCUMENT_COPY_EN[page.slug] };
+}
+
+/** The page whose URL slug (in the given language) is `slug`. */
+export function findDocumentPageIn(lang: Lang, slug: string): DocumentPage | undefined {
+  return DOCUMENT_PAGES.find((page) => pageCopy(page, lang).slug === slug);
+}
 
 export function findDocumentPage(slug: string): DocumentPage | undefined {
   return DOCUMENT_PAGES.find((page) => page.slug === slug);

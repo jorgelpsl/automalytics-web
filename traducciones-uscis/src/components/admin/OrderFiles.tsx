@@ -4,7 +4,7 @@ import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { uploadPresigned } from "@vercel/blob/client";
 import { FileText, LoaderCircle, Plus, X } from "lucide-react";
-import { deleteOrderDocument } from "@/app/admin/actions";
+import { deleteOrderDocument } from "@/app/(es)/admin/actions";
 import { countPdfPages } from "@/lib/pdf-pages";
 import { MAX_UPLOAD_BYTES, MAX_UPLOAD_MB, contentTypeOf, formatFileSize, uploadPathname } from "@/lib/upload-rules";
 import type { AdminFile } from "./types";

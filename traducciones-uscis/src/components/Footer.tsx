@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { LEGAL_PAGES } from "@/data/legal";
-import { SITE, NAV_LINKS } from "@/data/site";
+import { SITE } from "@/data/site";
+import { type Lang } from "@/i18n/config";
+import { COMMON } from "@/i18n/copy/common";
 import { Logo } from "@/components/Logo";
 import { generalWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -10,7 +11,8 @@ function formatUsPhone(digits: string): string {
   return m ? `(${m[1]}) ${m[2]}-${m[3]}` : digits;
 }
 
-export function Footer() {
+export function Footer({ lang }: { lang: Lang }) {
+  const copy = COMMON[lang];
   return (
     <footer className="bg-ink text-paper">
       <div className="mx-auto grid w-full max-w-content gap-10 px-4 py-14 sm:px-6 md:grid-cols-12 lg:px-8">
@@ -19,13 +21,12 @@ export function Footer() {
             <Logo />
           </span>
           <p className="max-w-sm text-sm leading-relaxed text-paper/70">
-            Servicio privado de traducción. No estamos afiliados a USCIS ni al gobierno de Estados Unidos, y no damos
-            asesoría legal migratoria.
+            {copy.footer.disclaimer}
           </p>
         </div>
 
-        <nav aria-label="Secciones" className="-my-3 flex flex-col text-sm md:col-span-3">
-          {NAV_LINKS.map((link) => (
+        <nav aria-label={copy.footer.sections} className="-my-3 flex flex-col text-sm md:col-span-3">
+          {copy.nav.map((link) => (
             <a key={link.href} href={link.href} className="inline-flex min-h-[44px] w-fit items-center text-paper/80 hover:text-paper">
               {link.label}
             </a>
@@ -33,14 +34,14 @@ export function Footer() {
         </nav>
 
         <div className="flex flex-col text-sm md:col-span-4">
-          <p className="mb-1 font-medium">Contacto</p>
+          <p className="mb-1 font-medium">{copy.footer.contact}</p>
           <a
-            href={generalWhatsAppUrl()}
+            href={generalWhatsAppUrl(lang)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-h-[44px] w-fit items-center text-paper/80 hover:text-paper"
           >
-            WhatsApp {formatUsPhone(SITE.whatsappNumber)}
+            {copy.footer.whatsapp} {formatUsPhone(SITE.whatsappNumber)}
           </a>
           {SITE.email && (
             <a href={`mailto:${SITE.email}`} className="inline-flex min-h-[44px] w-fit items-center text-paper/80 hover:text-paper">
@@ -54,8 +55,8 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} {SITE.name}
           </p>
-          <nav aria-label="Legal" className="flex flex-wrap gap-x-5">
-            {LEGAL_PAGES.map((page) => (
+          <nav aria-label={copy.footer.legalAria} className="flex flex-wrap gap-x-5">
+            {copy.footer.legal.map((page) => (
               <Link key={page.href} href={page.href} className="inline-flex min-h-[44px] items-center hover:text-paper">
                 {page.label}
               </Link>

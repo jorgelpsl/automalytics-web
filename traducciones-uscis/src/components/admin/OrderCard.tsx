@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Check, MessageCircle, Pencil, RotateCcw, Trash2 } from "lucide-react";
-import { deleteOrder, setOrderStatus } from "@/app/admin/actions";
+import { deleteOrder, setOrderStatus } from "@/app/(es)/admin/actions";
 import { DOCUMENT_RETENTION_DAYS } from "@/data/legal";
 import { formatDeadline } from "@/lib/order";
 import { formatUsd } from "@/lib/pricing";

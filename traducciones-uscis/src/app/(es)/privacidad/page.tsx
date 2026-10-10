@@ -3,6 +3,7 @@ import Link from "next/link";
 import { LegalPage } from "@/components/LegalPage";
 import { CORRECTION_DAYS, DOCUMENT_RETENTION_DAYS } from "@/data/legal";
 import { SITE } from "@/data/site";
+import { ROUTES } from "@/i18n/routes";
 import { pageMetadata } from "@/lib/seo";
 
 const DESCRIPTION = `Qué datos y documentos recibe ${SITE.name}, para qué los usa, con quién los comparte y cómo pedir que los eliminemos.`;
@@ -11,11 +12,13 @@ export const metadata: Metadata = pageMetadata({
   title: `Política de privacidad | ${SITE.name}`,
   description: DESCRIPTION,
   path: "/privacidad",
+  alternates: { es: ROUTES.privacy.es, en: ROUTES.privacy.en },
 });
 
 export default function PrivacyPage() {
   return (
     <LegalPage
+      lang="es"
       title="Política de privacidad"
       description={DESCRIPTION}
       current="/privacidad"

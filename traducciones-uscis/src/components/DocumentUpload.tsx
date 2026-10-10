@@ -4,6 +4,9 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { uploadPresigned } from "@vercel/blob/client";
 import { AlertCircle, Check, Copy, FileText, LoaderCircle, RotateCcw, Upload, X } from "lucide-react";
+import { type Lang } from "@/i18n/config";
+import { UPLOAD } from "@/i18n/copy/upload";
+import { homeSection } from "@/i18n/routes";
 import { countPdfPages } from "@/lib/pdf-pages";
 import {
   MAX_UPLOAD_BYTES,
@@ -28,13 +31,8 @@ interface Item {
   locked?: boolean;
 }
 
-const pagesLabel = (n: number) => `${n} ${n === 1 ? "página" : "páginas"}`;
-const removeWindow =
-  REMOVE_WINDOW_MINUTES % 60 === 0
-    ? `${REMOVE_WINDOW_MINUTES / 60} ${REMOVE_WINDOW_MINUTES === 60 ? "hora" : "horas"}`
-    : `${REMOVE_WINDOW_MINUTES} minutos`;
-
 export function DocumentUpload({
+  lang,
   sessionId,
   orderCode,
   pagesPaid,
@@ -42,6 +40,7 @@ export function DocumentUpload({
   turnaround,
   whatsappUrl,
 }: {
+  lang: Lang;
   sessionId: string;
   orderCode: string;
   pagesPaid: number;
@@ -49,6 +48,9 @@ export function DocumentUpload({
   turnaround: string | null;
   whatsappUrl: string;
 }) {
+  const t = UPLOAD[lang];
+  const pagesLabel = t.pages;
+  const removeWindow = t.window(REMOVE_WINDOW_MINUTES);
   const [items, setItems] = useState<Item[]>(() =>
     initialFiles.map((f) => ({ id: f.pathname, ...f, status: "done", progress: 100 })),
   );
@@ -81,7 +83,7 @@ export function DocumentUpload({
       patch(item.id, { status: "done", progress: 100, pathname: blob.pathname, file: undefined });
       return true;
     } catch {
-      patch(item.id, { status: "error", error: "No se pudo subir. Revisa tu conexión y vuelve a intentarlo." });
+      patch(item.id, { status: "error", error: t.uploadFailed });
       return false;
     }
   }
@@ -104,20 +106,16 @@ export function DocumentUpload({
     for (const file of Array.from(fileList)) {
       const type = contentTypeOf(file);
       if (!type) {
-        rejected.push(`${file.name}: formato no admitido`);
+        rejected.push(t.unsupported(file.name));
         continue;
       }
       if (file.size > MAX_UPLOAD_BYTES) {
-        rejected.push(`${file.name}: pesa más de ${MAX_UPLOAD_MB} MB`);
+        rejected.push(t.tooBig(file.name, MAX_UPLOAD_MB));
         continue;
       }
       const pages = type === "application/pdf" ? await countPdfPages(file).catch(() => 1) : 1;
       if (pages > room) {
-        rejected.push(
-          room === 0
-            ? `${file.name}: ya completaste las ${pagesLabel(pagesPaid)} que pagaste`
-            : `${file.name}: tiene ${pagesLabel(pages)} y te ${room === 1 ? "queda 1" : `quedan ${room}`}`,
-        );
+        rejected.push(room === 0 ? t.alreadyFull(file.name, pagesLabel(pagesPaid)) : t.tooManyPages(file.name, pagesLabel(pages), room));
         continue;
       }
       room -= pages;
@@ -133,7 +131,7 @@ export function DocumentUpload({
     }
 
     if (rejected.length) {
-      setNotice(`No subimos ${rejected.length === 1 ? "este archivo" : "estos archivos"}: ${rejected.join("; ")}.`);
+      setNotice(t.notUploaded(rejected.length, rejected.join("; ")));
     }
     if (inputRef.current) inputRef.current.value = "";
     setItems((current) => [...current, ...accepted]);
@@ -155,14 +153,14 @@ export function DocumentUpload({
       });
       if (res.status === 409) {
         patch(item.id, { status: "done", locked: true });
-        setNotice(`${item.name} ya no se puede quitar desde aquí. Para cambiarlo, escríbenos por WhatsApp.`);
+        setNotice(t.locked(item.name));
         return;
       }
       if (!res.ok) throw new Error(String(res.status));
       setItems((current) => current.filter((i) => i.id !== item.id));
     } catch {
       patch(item.id, { status: "done" });
-      setNotice(`No pudimos quitar ${item.name}. Intenta de nuevo en un momento.`);
+      setNotice(t.removeFailed(item.name));
     }
   }
 
@@ -172,7 +170,7 @@ export function DocumentUpload({
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      window.prompt("Copia este enlace:", window.location.href);
+      window.prompt(t.copyPrompt, window.location.href);
     }
   }
 
@@ -180,9 +178,9 @@ export function DocumentUpload({
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-          <h2 className="font-display text-2xl font-medium">Sube tu documento</h2>
+          <h2 className="font-display text-2xl font-medium">{t.title}</h2>
           <p className="text-[15px] font-medium tabular-nums text-ink" aria-live="polite">
-            {pagesDone} de {pagesLabel(pagesPaid)}
+            {t.progress(pagesDone, pagesLabel(pagesPaid))}
           </p>
         </div>
         <div className="h-1.5 overflow-hidden rounded-full bg-paper-alt" aria-hidden="true">
@@ -192,14 +190,13 @@ export function DocumentUpload({
           />
         </div>
         <p className="leading-relaxed text-ink-soft">
-          Una foto por cada página, con buena luz y sin cortar los bordes, o el PDF si lo tienes escaneado. Puedes subir
-          hasta las {pagesLabel(pagesPaid)} que pagaste.
+          {t.instructions(pagesLabel(pagesPaid))}
         </p>
       </div>
 
       {full ? (
         <p className="rounded-soft border border-line px-4 py-3 text-[15px] leading-relaxed text-ink-soft">
-          Ya elegiste las {pagesLabel(pagesPaid)} que pagaste. Si subiste algo por error, quítalo para liberar esa página (tienes {removeWindow} desde que lo subiste).
+          {t.fullNotice(pagesLabel(pagesPaid), removeWindow)}
         </p>
       ) : (
         <label
@@ -220,9 +217,9 @@ export function DocumentUpload({
         >
           <Upload size={26} aria-hidden="true" className="text-ink" />
           <span className="text-lg font-medium text-ink">
-            {pagesUsed ? `Agregar ${pagesLeft === 1 ? "la página que falta" : `las ${pagesLeft} páginas que faltan`}` : "Elegir fotos o PDF"}
+            {pagesUsed ? t.addMissing(pagesLeft) : t.choose}
           </span>
-          <span className="text-sm text-ink-muted">JPG, PNG, HEIC o PDF · hasta {MAX_UPLOAD_MB} MB cada uno</span>
+          <span className="text-sm text-ink-muted">{t.formats(MAX_UPLOAD_MB)}</span>
           <input
             ref={inputRef}
             id="doc-files"
@@ -242,11 +239,11 @@ export function DocumentUpload({
             {notice}
           </p>
           <p className="pl-6 text-ink-soft">
-            ¿Tu documento tiene más páginas?{" "}
-            <Link href="/#cotizar" className="font-medium text-ink underline underline-offset-4">
-              Paga las páginas extra
+            {t.morePages}{" "}
+            <Link href={homeSection(lang, "cotizar")} className="font-medium text-ink underline underline-offset-4">
+              {t.payExtra}
             </Link>{" "}
-            y súbelas en ese pedido.
+            {t.uploadThere}
           </p>
         </div>
       )}
@@ -260,18 +257,18 @@ export function DocumentUpload({
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[15px]">{item.name}</span>
                   <span className="block text-sm tabular-nums text-ink-muted">
-                    {item.status === "uploading" ? `Subiendo… ${item.progress}%` : `${pagesLabel(item.pages)} · ${formatSize(item.size)}`}
+                    {item.status === "uploading" ? t.uploading(item.progress) : `${pagesLabel(item.pages)} · ${formatSize(item.size)}`}
                   </span>
                 </span>
                 {item.status === "done" && (
                   <>
-                    <Check size={18} strokeWidth={2.6} className="shrink-0 text-ink" aria-label="Recibido" />
+                    <Check size={18} strokeWidth={2.6} className="shrink-0 text-ink" aria-label={t.received} />
                     {item.pathname && !item.locked ? (
                       <button
                         type="button"
                         onClick={() => void remove(item)}
                         disabled={busy}
-                        aria-label={`Quitar ${item.name}`}
+                        aria-label={t.remove(item.name)}
                         className="-mr-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-soft text-ink-muted hover:bg-paper-alt hover:text-ink disabled:opacity-40"
                       >
                         <X size={18} aria-hidden="true" />
@@ -285,7 +282,7 @@ export function DocumentUpload({
                   <LoaderCircle
                     size={18}
                     className="shrink-0 animate-spin text-ink-muted motion-reduce:animate-none"
-                    aria-label={item.status === "uploading" ? "Subiendo" : "Quitando"}
+                    aria-label={item.status === "uploading" ? t.uploadingAria : t.removingAria}
                   />
                 )}
               </div>
@@ -304,14 +301,14 @@ export function DocumentUpload({
                       className="inline-flex min-h-[44px] items-center gap-1.5 font-medium text-ink underline underline-offset-4"
                     >
                       <RotateCcw size={15} aria-hidden="true" />
-                      Reintentar
+                      {t.retry}
                     </button>
                     <button
                       type="button"
                       onClick={() => setItems((current) => current.filter((i) => i.id !== item.id))}
                       className="inline-flex min-h-[44px] items-center font-medium text-ink-soft underline underline-offset-4"
                     >
-                      Descartar
+                      {t.discard}
                     </button>
                   </span>
                 </div>
@@ -322,9 +319,9 @@ export function DocumentUpload({
       )}
       {items.some((i) => i.status === "done") && (
         <p className="-mt-2 text-sm text-ink-muted">
-          Puedes quitar un archivo durante {removeWindow} después de subirlo. Si necesitas cambiarlo más tarde,{" "}
+          {t.removeHint(removeWindow)}{" "}
           <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-ink-soft underline underline-offset-4">
-            escríbenos por WhatsApp
+            {t.writeUs}
           </a>
           .
         </p>
@@ -333,25 +330,21 @@ export function DocumentUpload({
       {pagesDone > 0 && !busy && (
         <p role="status" className="rounded-soft bg-marker/35 px-4 py-3 leading-relaxed text-ink">
           {pagesDone >= pagesPaid
-            ? `Recibimos las ${pagesLabel(pagesPaid)}. Empezamos a traducir${
-                turnaround ? ` y te enviamos el PDF en ${turnaround}` : ""
-              }, al correo o WhatsApp que dejaste al pagar. Ya puedes cerrar esta página.`
-            : `Recibimos ${pagesDone} de ${pagesLabel(pagesPaid)}. Sube ${
-                pagesPaid - pagesDone === 1 ? "la que falta" : `las ${pagesPaid - pagesDone} que faltan`
-              } para que empecemos a traducir.`}
+            ? t.completeStatus(pagesLabel(pagesPaid), turnaround)
+            : t.partialStatus(pagesDone, pagesLabel(pagesPaid), pagesPaid - pagesDone)}
         </p>
       )}
 
       <div className="flex flex-col gap-2 border-t border-line pt-5 text-[15px] text-ink-soft">
-        <p>¿Lo subes más tarde? Guarda el enlace de esta página: aquí mismo puedes agregar archivos cuando quieras.</p>
+        <p>{t.later}</p>
         <button type="button" onClick={copyLink} className="btn-secondary self-start">
           {copied ? <Check size={18} aria-hidden="true" /> : <Copy size={18} aria-hidden="true" />}
-          {copied ? "Enlace copiado" : "Copiar enlace"}
+          {copied ? t.linkCopied : t.copyLink}
         </button>
         <p className="mt-2">
-          ¿Problemas para subirlos?{" "}
+          {t.trouble}{" "}
           <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-ink underline underline-offset-4">
-            Envíalos por WhatsApp
+            {t.sendWhatsApp}
           </a>
           .
         </p>

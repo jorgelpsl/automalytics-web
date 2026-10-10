@@ -1,6 +1,8 @@
-import { DOCUMENT_GROUPS } from "@/data/documents";
+import { documentOptions } from "@/data/documents";
+import { type Lang } from "@/i18n/config";
 
-export const DOCUMENT_OPTIONS = [...DOCUMENT_GROUPS.flatMap((g) => g.items), "Otro"];
+/** Spanish names: the values stored with an order, whatever language the form was in. */
+export const DOCUMENT_OPTIONS = documentOptions("es");
 export const MAX_PAGES = 200;
 export const MAX_NOTES = 400;
 
@@ -32,9 +34,9 @@ export function parseOrder(raw: unknown): Order | null {
   return { name, documentType, pages, deadline, notes };
 }
 
-/** "2026-10-02" → "2 de octubre de 2026"; read as a calendar date, no time zone shift. */
-export function formatDeadline(iso: string): string {
+/** "2026-10-02" → "2 de octubre de 2026" / "October 2, 2026"; read as a calendar date, no time zone shift. */
+export function formatDeadline(iso: string, lang: Lang = "es"): string {
   if (!iso) return "";
   const [y, m, d] = iso.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("es", { day: "numeric", month: "long", year: "numeric" });
+  return new Date(y, m - 1, d).toLocaleDateString(lang === "en" ? "en-US" : "es", { day: "numeric", month: "long", year: "numeric" });
 }

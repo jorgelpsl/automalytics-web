@@ -17,15 +17,15 @@ export function FunnelTracking() {
       const link = (e.target as Element | null)?.closest("a");
       const href = link?.getAttribute("href") ?? "";
       if (href.includes("wa.me")) {
-        gtagEvent("whatsapp_click", { page_path: pathname, source: link?.dataset.source ?? "page" });
+        gtagEvent("whatsapp_click", { page_path: pathname, source: link?.dataset.source ?? "page", language: document.documentElement.lang });
       } else if (href.includes("#cotizar") || href.includes("documento=")) {
-        gtagEvent("buy_click", { page_path: pathname });
+        gtagEvent("buy_click", { page_path: pathname, language: document.documentElement.lang });
       }
     };
     document.addEventListener("click", onClick);
 
     const form = document.querySelector<HTMLElement>("#cotizar form");
-    const onFirstFocus = () => gtagEvent("form_start", { page_path: pathname });
+    const onFirstFocus = () => gtagEvent("form_start", { page_path: pathname, language: document.documentElement.lang });
     form?.addEventListener("focusin", onFirstFocus, { once: true });
 
     let seen: IntersectionObserver | undefined;
@@ -34,7 +34,7 @@ export function FunnelTracking() {
       seen = new IntersectionObserver(
         (entries) => {
           if (!entries.some((entry) => entry.isIntersecting)) return;
-          gtagEvent("form_view", { page_path: pathname });
+          gtagEvent("form_view", { page_path: pathname, language: document.documentElement.lang });
           seen?.disconnect();
         },
         { threshold: 0.4 },

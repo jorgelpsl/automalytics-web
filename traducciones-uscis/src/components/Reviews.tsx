@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { REVIEWS, type Review } from "@/data/reviews";
+import { type Lang } from "@/i18n/config";
 
-type Lang = "es" | "en";
 
 const COPY = {
   es: {
@@ -100,9 +100,9 @@ function LanguageToggle({ lang, onChange }: { lang: Lang; onChange: (lang: Lang)
 // Opinions as plain quotes. No star rating and no review structured data: a
 // handful of quotes isn't an aggregate score and shouldn't be presented as one.
 // On phones the cards slide sideways, so four of them don't stack into a wall.
-// The page loads in Spanish; the English text is a translation of the same words.
-export function Reviews() {
-  const [lang, setLang] = useState<Lang>("es");
+// It opens in the page's language; the English text is a translation of the same words.
+export function Reviews({ lang: pageLang }: { lang: Lang }) {
+  const [lang, setLang] = useState<Lang>(pageLang);
   if (REVIEWS.length === 0) return null;
   const copy = COPY[lang];
 

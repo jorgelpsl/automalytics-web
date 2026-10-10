@@ -13,6 +13,8 @@ export const SITE = {
   shortName: "Certa",
   description:
     "Traducciones certificadas del español al inglés para USCIS: actas, diplomas y antecedentes, con la certificación del traductor. Lista en 24 a 48 horas.",
+  descriptionEn:
+    "Certified Spanish-to-English translations for USCIS: birth certificates, diplomas and criminal records, with the translator's certification. Ready in 24 to 48 hours.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://certa-traducciones.com",
   // Certa's US WhatsApp line, (832) 964-5305.
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "18329645305",
@@ -26,6 +28,7 @@ export const SITE = {
   ] as readonly PriceTier[],
   // null → turnaround is confirmed when quoting.
   turnaround: "24 a 48 horas" as string | null,
+  turnaroundEn: "24 to 48 hours" as string | null,
   // Google Ads tag and the "Purchase" conversion. Both are public identifiers,
   // not secrets. null label → the tag loads but no purchase is reported.
   googleAdsId: process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? "AW-18480857137",
@@ -33,10 +36,3 @@ export const SITE = {
   // Google Analytics 4 web stream, loaded through the same Google tag.
   googleAnalyticsId: (process.env.NEXT_PUBLIC_GA_ID ?? "G-2RKVG0DRM2") as string | null,
 } as const;
-
-export const NAV_LINKS = [
-  { label: "Qué exige USCIS", href: "/#requisitos" },
-  { label: "Documentos", href: "/#documentos" },
-  { label: "Cómo funciona", href: "/#proceso" },
-  { label: "Preguntas", href: "/#preguntas" },
-] as const;

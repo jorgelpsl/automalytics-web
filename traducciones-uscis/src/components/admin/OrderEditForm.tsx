@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { saveOrderEdits } from "@/app/admin/actions";
+import { saveOrderEdits } from "@/app/(es)/admin/actions";
 import { DOCUMENT_OPTIONS, MAX_NOTES, MAX_PAGES } from "@/lib/order";
 import type { AdminOrder } from "./types";
 

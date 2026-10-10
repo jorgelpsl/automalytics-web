@@ -3,9 +3,13 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
-import { NAV_LINKS } from "@/data/site";
+import { type Lang } from "@/i18n/config";
+import { COMMON } from "@/i18n/copy/common";
+import { homeSection } from "@/i18n/routes";
 
-export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function MobileMenu({ lang, open, onClose }: { lang: Lang; open: boolean; onClose: () => void }) {
+  const copy = COMMON[lang].header;
+  const nav = COMMON[lang].nav;
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -25,22 +29,22 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="Menú">
-      <button type="button" aria-label="Cerrar menú" onClick={onClose} className="absolute inset-0 bg-ink/40" tabIndex={-1} />
+    <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label={copy.menu}>
+      <button type="button" aria-label={copy.closeMenu} onClick={onClose} className="absolute inset-0 bg-ink/40" tabIndex={-1} />
       <div className="absolute right-0 top-0 flex h-full w-full max-w-xs flex-col gap-8 bg-paper p-6 shadow-sheet">
         <div className="flex justify-end">
           <button
             ref={closeRef}
             type="button"
             onClick={onClose}
-            aria-label="Cerrar menú"
+            aria-label={copy.closeMenu}
             className="inline-flex h-11 w-11 items-center justify-center rounded-soft border border-line text-ink"
           >
             <X size={20} aria-hidden="true" />
           </button>
         </div>
-        <nav aria-label="Navegación principal" className="flex flex-col">
-          {NAV_LINKS.map((link) => (
+        <nav aria-label={copy.navAria} className="flex flex-col">
+          {nav.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -51,8 +55,8 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
             </a>
           ))}
         </nav>
-        <Link href="/#cotizar" onClick={onClose} className="btn-primary w-full">
-          Comprar traducción
+        <Link href={homeSection(lang, "cotizar")} onClick={onClose} className="btn-primary w-full">
+          {copy.buy}
         </Link>
       </div>
     </div>

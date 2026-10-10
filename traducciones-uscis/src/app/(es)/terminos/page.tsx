@@ -3,6 +3,7 @@ import Link from "next/link";
 import { LegalPage } from "@/components/LegalPage";
 import { CORRECTION_DAYS } from "@/data/legal";
 import { SITE } from "@/data/site";
+import { ROUTES } from "@/i18n/routes";
 import { PRICE_TIERS, formatUsd, tierRange } from "@/lib/pricing";
 import { USCIS_TRANSLATION_RULE_URL, pageMetadata } from "@/lib/seo";
 import { REMOVE_WINDOW_MINUTES } from "@/lib/upload-rules";
@@ -13,11 +14,13 @@ export const metadata: Metadata = pageMetadata({
   title: `Términos del servicio | ${SITE.name}`,
   description: DESCRIPTION,
   path: "/terminos",
+  alternates: { es: ROUTES.terms.es, en: ROUTES.terms.en },
 });
 
 export default function TermsPage() {
   return (
     <LegalPage
+      lang="es"
       title="Términos del servicio"
       description={DESCRIPTION}
       current="/terminos"

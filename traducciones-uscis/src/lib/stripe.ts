@@ -1,6 +1,9 @@
 // Server-only: talks to Stripe's REST API with the secret key. A handful of
 // calls doesn't justify the SDK. Never import this from a client component.
+import { documentLabel } from "@/data/documents";
 import { SITE } from "@/data/site";
+import { type Lang } from "@/i18n/config";
+import { ROUTES, homeSection } from "@/i18n/routes";
 import type { Order } from "@/lib/order";
 import { paymentsEnabled } from "@/lib/features";
 import { tierFor } from "@/lib/pricing";
@@ -76,7 +79,7 @@ function orderCode(): string {
   return "CT-" + Array.from(bytes, (b) => alphabet[b % alphabet.length]).join("");
 }
 
-export async function createCheckoutSession(order: Order, origin: string): Promise<string> {
+export async function createCheckoutSession(order: Order, origin: string, lang: Lang = "es"): Promise<string> {
   const tier = tierFor(order.pages);
   if (!tier) throw new Error("No price tier for this order");
   const code = orderCode();
@@ -87,28 +90,36 @@ export async function createCheckoutSession(order: Order, origin: string): Promi
     pages: String(order.pages),
     deadline: order.deadline,
     notes: order.notes,
+    lang,
   };
 
   const p = new URLSearchParams({
     mode: "payment",
-    locale: "es-419",
+    locale: lang === "en" ? "en" : "es-419",
     client_reference_id: code,
-    success_url: `${origin}/pago-recibido?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/#cotizar`,
+    success_url: `${origin}${ROUTES.paymentReceived[lang]}?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${origin}${homeSection(lang, "cotizar")}`,
     "phone_number_collection[enabled]": "true",
     // Codes are created and retired in the Stripe dashboard (Products →
     // Coupons); Checkout validates them and charges the discounted total.
     allow_promotion_codes: "true",
     // Shown above Stripe's Pay button: a clear final-sale notice at the
     // moment of payment is what card networks look at in a dispute.
-    "custom_text[submit][message]": `Todas las compras son finales y no tienen reembolso. Al pagar aceptas los Términos del servicio: ${SITE.url}/terminos`,
+    "custom_text[submit][message]":
+      lang === "en"
+        ? `All purchases are final and non-refundable. By paying you accept the Terms of service: ${SITE.url}${ROUTES.terms.en}`
+        : `Todas las compras son finales y no tienen reembolso. Al pagar aceptas los Términos del servicio: ${SITE.url}${ROUTES.terms.es}`,
     "line_items[0][quantity]": String(order.pages),
     "line_items[0][price_data][currency]": "usd",
     "line_items[0][price_data][unit_amount]": String(tier.perPage * 100),
-    "line_items[0][price_data][product_data][name]": `Traducción certificada: ${order.documentType}`,
-    "line_items[0][price_data][product_data][description]": `${SITE.name} · precio por página${
-      SITE.turnaround ? ` · entrega en ${SITE.turnaround}` : ""
-    }`,
+    "line_items[0][price_data][product_data][name]":
+      lang === "en"
+        ? `Certified translation: ${documentLabel("en", order.documentType)}`
+        : `Traducción certificada: ${order.documentType}`,
+    "line_items[0][price_data][product_data][description]":
+      lang === "en"
+        ? `${SITE.name} · price per page${SITE.turnaroundEn ? ` · delivery in ${SITE.turnaroundEn}` : ""}`
+        : `${SITE.name} · precio por página${SITE.turnaround ? ` · entrega en ${SITE.turnaround}` : ""}`,
     "payment_intent_data[description]": `${code} · ${order.documentType} · ${order.pages} pág. · ${order.name}`,
   });
   for (const [key, value] of Object.entries(details)) {
