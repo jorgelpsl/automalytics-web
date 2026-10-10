@@ -17,7 +17,7 @@ export function FunnelTracking() {
       const link = (e.target as Element | null)?.closest("a");
       const href = link?.getAttribute("href") ?? "";
       if (href.includes("wa.me")) {
-        gtagEvent("whatsapp_click", { page_path: pathname });
+        gtagEvent("whatsapp_click", { page_path: pathname, source: link?.dataset.source ?? "page" });
       } else if (href.includes("#cotizar") || href.includes("documento=")) {
         gtagEvent("buy_click", { page_path: pathname });
       }

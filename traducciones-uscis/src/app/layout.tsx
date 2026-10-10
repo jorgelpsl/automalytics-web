@@ -3,8 +3,10 @@ import { Newsreader, Onest } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { FunnelTracking } from "@/components/FunnelTracking";
 import { SiteAnalytics } from "@/components/SiteAnalytics";
+import { DOCUMENT_PAGES } from "@/data/document-pages";
 import { SITE } from "@/data/site";
 
 const newsreader = Newsreader({
@@ -48,6 +50,8 @@ export const viewport: Viewport = {
   themeColor: "#FAFAF7",
 };
 
+const DOCUMENT_NAMES = Object.fromEntries(DOCUMENT_PAGES.map((page) => [page.slug, page.name]));
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
@@ -63,6 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <SiteAnalytics />
         <FunnelTracking />
+        <FloatingWhatsApp documentNames={DOCUMENT_NAMES} />
       </body>
     </html>
   );

@@ -9,6 +9,14 @@ export function generalWhatsAppUrl(): string {
   return buildWhatsAppUrl("Hola, quiero cotizar una traducción certificada para USCIS.");
 }
 
+// Opening line for the floating button. When the visitor is on a document page
+// it names that document ("acta de nacimiento"); the wording stays neutral
+// about whose document it is, since the gender and owner vary.
+export function floatingWhatsAppUrl(documentName?: string): string {
+  const detail = documentName ? ` (${documentName})` : "";
+  return buildWhatsAppUrl(`Hola, quiero traducir un documento al inglés para USCIS${detail}. ¿Me pueden ayudar?`);
+}
+
 export interface QuoteRequest {
   name: string;
   documentType: string;
